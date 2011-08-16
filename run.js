@@ -31,6 +31,7 @@ instance.addListener('JOIN', function(data) {
 instance.addListener('KICK', function(data) {
     if(data.kickee == name) {
 	instance.join(data.channel);
+        instance.say(data.channel, 'Thou shalt not kick ' + name);
     } else {
       instance.say(data.channel, data.kickee + '--');
     }
@@ -60,9 +61,11 @@ instance.addListener('PRIVMSG', function(data) {
         switch(params[0]) {
             case 'join':
                 instance.join(params[1]);
+                instance.say(admin, 'Joined ' + params[1]);
                 break;
             case 'part':
                 instance.part(params[1]);
+                instance.say(admin, 'Left ' + params[1]);
                 break;
             case 'reload':
                 instance.say(admin, 'Reloading DB.');
@@ -109,7 +112,8 @@ instance.addListener('PRIVMSG', function(data) {
                 instance.say(data.channel, db.lampPuns.random());
                 break;
 	    case '~rq':
-	        instance.say(data.channel, Object.values(db.quotes).random());
+                var rQuote = Object.keys(db.quotes).random();
+	        instance.say(data.channel, rQuote + ': ' + db.quotes[rQuote]);
                 break;
         }
     }
