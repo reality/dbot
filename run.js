@@ -89,7 +89,9 @@ instance.addListener('PRIVMSG', function(data) {
 });
 
 instance.addListener('PRIVMSG', function(data) {
-    if(instance.inChannel(data.channel) && data.message.startsWith('~')) {
+    if(data.channel == name) data.channel = data.user;
+
+    if(data.message.startsWith('~')) {
         var params = data.message.split(' ');
         switch(params[0]) {
             case '~kc':
@@ -128,6 +130,14 @@ instance.addListener('PRIVMSG', function(data) {
                     fs.writeFile('db.json', JSON.stringify(db, null, '    '));
                 } else {
                     instance.say(data.channel, 'Burn the invalid syntax!');
+                }
+                break;
+            case '~qcount':
+                var qcount = data.message.match(/~qcount ([\d\w\s]*)/)[1].trim();
+                if(db.quoteArrs[qcount] != undefined) {
+                    instance.say(data.channel, qcount + ' has ' + db.quoteArrs[qcount].length + ' quotes.');
+                } else {
+                    instance.say(data.channel, qcount + ' doesn\'t exist.');
                 }
                 break;
             case '~lamp':
