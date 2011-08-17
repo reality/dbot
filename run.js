@@ -110,6 +110,26 @@ instance.addListener('PRIVMSG', function(data) {
                 var q = data.message.match(/~q ([\d\w\s]*)/)[1].trim();
                 instance.say(data.channel, q + ': ' + db.quotes[q]);
                 break;
+            case '~qa':
+                var q = data.message.match(/~qa ([\d\w\s]*)/)[1].trim();
+                if(db.quoteArrs[q] != undefined) {
+                    instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
+                }
+                break;
+            case '~qadd':
+                var qadd = data.message.match(/~qadd ([\d\w\s]*)=(.+)$/);
+                if(qadd != null && qadd.length >= 3) {
+                    if(Object.isArray(db.quoteArrs[qadd[1]])) {
+                        db.quoteArrs[qadd[1]].push(qadd[2]);
+                    } else {
+                        db.quoteArrs[qadd[1]] = [qadd[2]];
+                    }
+                    instance.say(data.channel, 'Quote saved in \'' + qadd[1] + '\'');
+                    fs.writeFile('db.json', JSON.stringify(db, null, '    '));
+                } else {
+                    instance.say(data.channel, 'Burn the invalid syntax!');
+                }
+                break;
             case '~lamp':
                 instance.say(data.channel, db.lampPuns.random());
                 break;
