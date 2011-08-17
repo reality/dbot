@@ -22,7 +22,7 @@ var instance = jsbot.createJSBot(name, 'elara.ivixor.net', 6667, function() {
 instance.addListener('JOIN', function(data) {
     if(data.user == 'Lamp') {
         instance.say(data.channel, db.lampPuns.random());
-    } else if(data.user == 'Reality') {
+    } else if(data.user == 'reality') {
         instance.say(data.channel, db.realiPuns.random());
     } else if(instance.inChannel(data.channel)) {
         instance.say('aisbot', '.karma ' + data.user);
@@ -83,6 +83,14 @@ instance.addListener('PRIVMSG', function(data) {
                 var c = params[1];
                 var m = params.slice(2).join(' ');
                 instance.say(c, m);
+                break;
+            case 'add':
+                // not very safe, but you're the admin so suck it
+                var c = params[1];
+                var m = params.slice(2).join(' ');
+                db[c].push(m);
+                fs.writeFile('db.json', JSON.stringify(db, null, '    '));
+                instance.say(admin, 'Added.');
                 break;
         }
     }
