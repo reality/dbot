@@ -22,6 +22,8 @@ var instance = jsbot.createJSBot(name, 'elara.ivixor.net', 6667, function() {
 instance.addListener('JOIN', function(data) {
     if(data.user == 'Lamp') {
         instance.say(data.channel, db.lampPuns.random());
+    } else if(data.user == 'Reality') {
+        instance.say(data.channel, db.realiPuns.random());
     } else if(instance.inChannel(data.channel)) {
         instance.say('aisbot', '.karma ' + data.user);
         waitingForKarma = data.channel;
@@ -111,10 +113,24 @@ instance.addListener('PRIVMSG', function(data) {
             case '~lamp':
                 instance.say(data.channel, db.lampPuns.random());
                 break;
+            case '~reality':
+                instance.say(data.channel, db.realiPuns.random());
+                break;
 	    case '~rq':
                 var rQuote = Object.keys(db.quotes).random();
 	        instance.say(data.channel, rQuote + ': ' + db.quotes[rQuote]);
                 break;
+        }
+    }
+});
+
+instance.addListener('PRIVMSG', function(data) {
+    if(data.user == 'reality') {
+        var once = data.message.match(/I ([\d\w\s]* once.)/);
+        if(once != null) {
+            db.realiPuns.push('reality ' + once[1]);
+            instance.say(data.channel, '\'reality ' + once[1] + '\' saved.');
+            fs.writeFile('db.json', JSON.stringify(db, null, '    '));
         }
     }
 });
