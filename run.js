@@ -1,10 +1,128 @@
 var fs = require('fs');
-jsbot = require('./jsbot');
+var jsbot = require('./jsbot');
 
 ///////////////////////////
 
 Array.prototype.random = function() {
     return this[Math.floor((Math.random()*this.length))];
+};
+
+///////////////////////////
+
+var adminCommands = {
+    'join': function(data, params) {
+        instance.join(params[1]); 
+        instance.say(admin, 'Joined ' + params[1]);
+    },
+
+    'part': function(data, params) {
+        instance.part(params[1]);
+        instance.say(admin);
+    },
+
+    'reload': function(data, params) {
+        instance.say(admin, 'Reloading DB.');
+        try {
+            db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+        } catch(err) {
+            instance.say(admin, 'DB reload failed.');
+        } finally {
+            instance.say(admin, 'DB Reload successful.');
+        }
+    },
+
+    'say': function(data, params) {
+        var c = params[1];
+        var m = params.slice(2).join(' ');
+        instance.say(c, m);
+    },
+
+    'add': function(data, params) {
+        var c = params[1];
+        var m = params.slice(2).join(' ');
+        db[c].push(m);
+        fs.writeFile('db.json', JSON.stringify(db, null, '    '));
+        instance.say(admin, 'Added.');
+    }
+};
+
+var userCommands = {
+    '~kc': function(data, params) {
+        instance.say('aisbot', '.karma ' + data.message.split(' ')[1]);
+        waitingForKarma = data.channel;
+    },
+
+    '~qset': function(data, params) {
+        var qset = data.message.match(/~qset ([\d\w\s]*)=(.+)$/);
+        if(qset != null && qset.length >= 3) {
+            db.quotes[qset[1]] = qset[2];
+            instance.say(data.channel, 'Quote saved as \'' + qset[1] + '\'');
+            fs.writeFile('db.json', JSON.stringify(db, null, '    '));
+        } else {
+            instance.say(data.channel, 'Burn the invalid syntax!');
+        }
+    },
+
+    '~q': function(data, params) {
+        var q = data.message.match(/~q ([\d\w\s]*)/)[1].trim();
+        instance.say(data.channel, q + ': ' + db.quotes[q]);
+    },
+
+    '~qa': function(data, params) {
+        var q = data.message.match(/~qa ([\d\w\s]*)/)[1].trim();
+        if(db.quoteArrs[q] != undefined) {
+            instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
+        }
+    },
+
+    '~qadd': function(data, params) {
+        var qadd = data.message.match(/~qadd ([\d\w\s]*)=(.+)$/);
+        if(qadd != null && qadd.length >= 3) {
+            if(Object.isArray(db.quoteArrs[qadd[1]])) {
+                db.quoteArrs[qadd[1]].push(qadd[2]);
+            } else {
+                db.quoteArrs[qadd[1]] = [qadd[2]];
+            }
+            instance.say(data.channel, 'Quote saved in \'' + qadd[1] + '\' (' + db.quoteArrs[qadd[1]].length + ')');
+            fs.writeFile('db.json', JSON.stringify(db, null, '    '));
+        } else {
+            instance.say(data.channel, 'Burn the invalid syntax!');
+        }
+    },
+
+    '~qcount': function(data, params) {
+        var qcount = data.message.match(/~qcount ([\d\w\s]*)/)[1].trim();
+        if(db.quoteArrs[qcount] != undefined) {
+            instance.say(data.channel, qcount + ' has ' + db.quoteArrs[qcount].length + ' quotes.');
+        } else {
+            instance.say(data.channel, qcount + ' doesn\'t exist.');
+        }
+    },
+
+    '~lamp': function(data, params) {
+        instance.say(data.channel, db.quoteArrs.lamp.random());
+    },
+
+    '~reality': function(data, params) {
+        instance.say(data.channel, db.realiPuns.random());
+    },
+
+    '~d': function(data, params) {
+        instance.say(data.channel,  data.user + ': ' + db.quoteArrs['depressionbot'].random());
+    },
+
+    '~rq': function(data, params) {
+        var rQuote = Object.keys(db.quotes).random();
+        instance.say(data.channel, rQuote + ': ' + db.quotes[rQuote]);
+    },
+
+    '~kickcount': function(data, params) {
+        if(db.kicks[params[1]] == undefined) {
+            instance.say(data.channel, params[1] + ' has either never been kicked or does not exist.');
+        } else {
+            instance.say(data.channel, params[1] + ' has been kicked ' + db.kicks[params[1]] + ' times.');
+        }
+    }
 };
 
 ///////////////////////////
@@ -21,7 +139,7 @@ var instance = jsbot.createJSBot(name, 'elara.ivixor.net', 6667, function() {
 
 instance.addListener('JOIN', function(data) {
     if(data.user == 'Lamp') {
-        instance.say(data.channel, db.lampPuns.random());
+        instance.say(data.channel, db.quoteArrs.lamp.random());
     } else if(data.user == 'reality') {
         instance.say(data.channel, db.realiPuns.random());
     } else if(instance.inChannel(data.channel)) {
@@ -34,13 +152,20 @@ instance.addListener('KICK', function(data) {
     if(data.kickee == name) {
 	instance.join(data.channel);
         instance.say(data.channel, 'Thou shalt not kick ' + name);
+        db.kicks[name] += 1;
     } else {
-      instance.say(data.channel, data.kickee + '--');
+        if(db.kicks[data.kickee] == undefined) {
+            db.kicks[data.kickee] = 1;
+        } else {
+            db.kicks[data.kickee] += 1;
+        }
+        instance.say(data.channel, data.kickee + '-- (' + data.kickee + ' has been kicked ' + db.kicks[data.kickee] + ' times)');
     }
+    fs.writeFile('db.json', JSON.stringify(db, null, '    '));
 });
 
 instance.addListener('PRIVMSG', function(data) {
-    if(data.user == 'aisbot' && data.channel == name && waitingForKarma != false) {
+    if(data.user == 'aisbot' && data.channel == name && waitingForKarma != false && data.message.match(/is at/)) {
         var split = data.message.split(' ');
         var target = split[0];
         var karma = split[3];
@@ -58,107 +183,12 @@ instance.addListener('PRIVMSG', function(data) {
 });
 
 instance.addListener('PRIVMSG', function(data) { 
-    if(data.user == admin && data.channel == name) {
-        params = data.message.split(' ');
-        switch(params[0]) {
-            case 'join':
-                instance.join(params[1]);
-                instance.say(admin, 'Joined ' + params[1]);
-                break;
-            case 'part':
-                instance.part(params[1]);
-                instance.say(admin, 'Left ' + params[1]);
-                break;
-            case 'reload':
-                instance.say(admin, 'Reloading DB.');
-                try {
-                    db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-                } catch(err) {
-                    instance.say(admin, 'DB reload failed.');
-                } finally {
-                    instance.say(admin, 'DB Reload successful.');
-                }
-                break;
-            case 'say':
-                var c = params[1];
-                var m = params.slice(2).join(' ');
-                instance.say(c, m);
-                break;
-            case 'add':
-                // not very safe, but you're the admin so suck it
-                var c = params[1];
-                var m = params.slice(2).join(' ');
-                db[c].push(m);
-                fs.writeFile('db.json', JSON.stringify(db, null, '    '));
-                instance.say(admin, 'Added.');
-                break;
-        }
-    }
-});
-
-instance.addListener('PRIVMSG', function(data) {
-    if(data.channel == name) data.channel = data.user;
-
-    if(data.message.startsWith('~')) {
-        var params = data.message.split(' ');
-        switch(params[0]) {
-            case '~kc':
-                instance.say('aisbot', '.karma ' + data.message.split(' ')[1]);
-                waitingForKarma = data.channel;
-                break;
-            case '~qset':
-                var qset = data.message.match(/~qset ([\d\w\s]*)=(.+)$/);
-                if(qset != null && qset.length >= 3) {
-                    db.quotes[qset[1]] = qset[2];
-                    instance.say(data.channel, 'Quote saved as \'' + qset[1] + '\'');
-                    fs.writeFile('db.json', JSON.stringify(db, null, '    '));
-                } else {
-                    instance.say(data.channel, 'Burn the invalid syntax!');
-                }
-                break;
-            case '~q':
-                var q = data.message.match(/~q ([\d\w\s]*)/)[1].trim();
-                instance.say(data.channel, q + ': ' + db.quotes[q]);
-                break;
-            case '~qa':
-                var q = data.message.match(/~qa ([\d\w\s]*)/)[1].trim();
-                if(db.quoteArrs[q] != undefined) {
-                    instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
-                }
-                break;
-            case '~qadd':
-                var qadd = data.message.match(/~qadd ([\d\w\s]*)=(.+)$/);
-                if(qadd != null && qadd.length >= 3) {
-                    if(Object.isArray(db.quoteArrs[qadd[1]])) {
-                        db.quoteArrs[qadd[1]].push(qadd[2]);
-                    } else {
-                        db.quoteArrs[qadd[1]] = [qadd[2]];
-                    }
-                    instance.say(data.channel, 'Quote saved in \'' + qadd[1] + '\'');
-                    fs.writeFile('db.json', JSON.stringify(db, null, '    '));
-                } else {
-                    instance.say(data.channel, 'Burn the invalid syntax!');
-                }
-                break;
-            case '~qcount':
-                var qcount = data.message.match(/~qcount ([\d\w\s]*)/)[1].trim();
-                if(db.quoteArrs[qcount] != undefined) {
-                    instance.say(data.channel, qcount + ' has ' + db.quoteArrs[qcount].length + ' quotes.');
-                } else {
-                    instance.say(data.channel, qcount + ' doesn\'t exist.');
-                }
-                break;
-            case '~lamp':
-                instance.say(data.channel, db.lampPuns.random());
-                break;
-            case '~reality':
-                instance.say(data.channel, db.realiPuns.random());
-                break;
-	    case '~rq':
-                var rQuote = Object.keys(db.quotes).random();
-	        instance.say(data.channel, rQuote + ': ' + db.quotes[rQuote]);
-                break;
-        }
+    params = data.message.split(' ');
+    if(data.user == admin && data.channel == name && adminCommands[params[0]] != undefined) {
+        adminCommands[params[0]](data, params);
+    } else if(userCommands[params[0]] != undefined) {
+        if(data.channel == name) data.channel = data.user;
+        userCommands[params[0]](data, params);
     }
 });
 
