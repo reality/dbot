@@ -52,26 +52,13 @@ var userCommands = {
         waitingForKarma = data.channel;
     },
 
-    '~qset': function(data, params) {
-        var qset = data.message.match(/~qset ([\d\w\s]*)=(.+)$/);
-        if(qset != null && qset.length >= 3) {
-            db.quotes[qset[1]] = qset[2];
-            instance.say(data.channel, 'Quote saved as \'' + qset[1] + '\'');
-            fs.writeFile('db.json', JSON.stringify(db, null, '    '));
-        } else {
-            instance.say(data.channel, 'Burn the invalid syntax!');
-        }
-    },
-
     '~q': function(data, params) {
-        var q = data.message.match(/~q ([\d\w\s]*)/)[1].trim();
-        instance.say(data.channel, q + ': ' + db.quotes[q]);
-    },
-
-    '~qa': function(data, params) {
-        var q = data.message.match(/~qa ([\d\w\s]*)/)[1].trim();
-        if(db.quoteArrs[q] != undefined) {
-            instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
+        var q = data.message.match(/~q ([\d\w\s]*)/)
+        if(q != undefined) {
+            q = q[1].trim();
+            if(db.quoteArrs[q] != undefined) {
+                instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
+            }
         }
     },
 
@@ -112,8 +99,8 @@ var userCommands = {
     },
 
     '~rq': function(data, params) {
-        var rQuote = Object.keys(db.quotes).random();
-        instance.say(data.channel, rQuote + ': ' + db.quotes[rQuote]);
+        var rQuote = Object.keys(db.quoteArrs).random();
+        instance.say(data.channel, rQuote + ': ' + db.quoteArrs[rQuote].random());
     },
 
     '~kickcount': function(data, params) {
@@ -133,7 +120,6 @@ var name = 'depressionbot';
 var db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
 var instance = jsbot.createJSBot(name, 'elara.ivixor.net', 6667, function() {
-    instance.join('#42');
     instance.join('#itonlygetsworse');
 }.bind(this));
 
