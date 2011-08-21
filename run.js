@@ -35,14 +35,6 @@ var adminCommands = {
         var c = params[1];
         var m = params.slice(2).join(' ');
         instance.say(c, m);
-    },
-
-    'add': function(data, params) {
-        var c = params[1];
-        var m = params.slice(2).join(' ');
-        db[c].push(m);
-        fs.writeFile('db.json', JSON.stringify(db, null, '    '));
-        instance.say(admin, 'Added.');
     }
 };
 
@@ -55,39 +47,32 @@ var userCommands = {
     '~q': function(data, params) {
         var q = data.message.match(/~q ([\d\w\s]*)/)
         if(q != undefined) {
-            q = q[1].trim();
-            if(db.quoteArrs[q] != undefined) {
-                instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
-            }
+            instance.say(data.channel, quotes.get(q[1].trim()));
         }
     },
 
     '~qadd': function(data, params) {
-        var qadd = data.message.match(/~qadd ([\d\w\s]*)=(.+)$/);
-        if(qadd != null && qadd.length >= 3) {
-            if(Object.isArray(db.quoteArrs[qadd[1]])) {
-                db.quoteArrs[qadd[1]].push(qadd[2]);
-            } else {
-                db.quoteArrs[qadd[1]] = [qadd[2]];
-            }
-            instance.say(data.channel, 'Quote saved in \'' + qadd[1] + '\' (' + db.quoteArrs[qadd[1]].length + ')');
+        var q = data.message.match(/~qadd ([\d\w\s]*)=(.+)$/);
+        if(q != null && q.length >= 3) {
+            instance.say(data.channel, quotes.add(q));
             fs.writeFile('db.json', JSON.stringify(db, null, '    '));
         } else {
             instance.say(data.channel, 'Burn the invalid syntax!');
         }
     },
 
-    '~qcount': function(data, params) {
-        var qcount = data.message.match(/~qcount ([\d\w\s]*)/)[1].trim();
-        if(db.quoteArrs[qcount] != undefined) {
-            instance.say(data.channel, qcount + ' has ' + db.quoteArrs[qcount].length + ' quotes.');
-        } else {
-            instance.say(data.channel, qcount + ' doesn\'t exist.');
+    '~qset': function(data, params) {
+        var q = data.message.match(/~qset ([\d\w\s]*)=(.+)$/);
+        if(q != undefined && q.length >= 3) {
+            instance.say(data.channel, quotes.set(q));
         }
     },
 
-    '~lamp': function(data, params) {
-        instance.say(data.channel, db.quoteArrs.lamp.random());
+    '~qcount': function(data, params) {
+        var q = data.message.match(/~qcount ([\d\w\s]*)/)[1].trim();
+        if(q != undefined) {
+            instance.say(data.channel, quotes.count(q));
+        }
     },
 
     '~reality': function(data, params) {
@@ -99,8 +84,7 @@ var userCommands = {
     },
 
     '~rq': function(data, params) {
-        var rQuote = Object.keys(db.quoteArrs).random();
-        instance.say(data.channel, rQuote + ': ' + db.quoteArrs[rQuote].random());
+        instance.say(data.channel, quotes.random());
     },
 
     '~kickcount': function(data, params) {
@@ -120,8 +104,52 @@ var name = 'depressionbot';
 var db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
 var instance = jsbot.createJSBot(name, 'elara.ivixor.net', 6667, function() {
-    instance.join('#itonlygetsworse');
+    instance.join('#realitest');
 }.bind(this));
+
+var quotes = function(quotes) {
+    var qArrs = quotes;
+
+    return {
+        get: function(key) { 
+            if(quotes.hasOwnProperty(key)) {
+                return key + ': ' + qArrs[key].random();
+            } else {
+                return 'No quotes under ' + key;
+            }
+        },
+
+        count: function(key) {
+            if(quotes.hasOwnProperty(key)) {
+                return key + ' has ' + quotes[key].length + ' quotes.';
+            } else {
+                return 'No quotes under ' + key;
+            }
+        },
+
+        add: function(key) {
+            if(!Object.isArray(quotes[key[1]])) {
+                quotes[key[1]] = [];
+            }
+            quotes[key[1]].push(key[2]);
+            return 'Quote saved in \'' + key[1] + '\' (' + db.quoteArrs[key[1]].length + ')';
+        },
+
+        set: function(key) {
+            if(!quotes.hasOwnProperty(key[1]) || (quotes.hasOwnProperty(key[1]) && quotes[key[1]].length == 1)) {
+                quotes[key[1]] = [key[2]];
+                return 'Quote saved as ' + key[1];
+            } else {
+                return 'No replacing arrays, you whore.';
+            }
+        },
+
+        random: function() {
+            var rQuote = Object.keys(quotes).random();
+            return rQuote + ': ' + quotes[rQuote].random();
+        }
+    };
+}(db.quoteArrs);
 
 instance.addListener('JOIN', function(data) {
     if(data.user == 'Lamp') {
@@ -172,9 +200,21 @@ instance.addListener('PRIVMSG', function(data) {
     params = data.message.split(' ');
     if(data.user == admin && data.channel == name && adminCommands[params[0]] != undefined) {
         adminCommands[params[0]](data, params);
-    } else if(userCommands[params[0]] != undefined) {
+    } else {
         if(data.channel == name) data.channel = data.user;
-        userCommands[params[0]](data, params);
+
+        if(userCommands[params[0]] != undefined) {
+            userCommands[params[0]](data, params);
+        } else {
+            var q = data.message.match(/~([\d\w\s]*)/)
+            if(q != undefined) {
+            q = q[1].trim();
+            if(db.quoteArrs[q] != undefined) {
+                instance.say(data.channel, q + ': ' + db.quoteArrs[q].random());
+            }
+        }
+
+        }
     }
 });
 
