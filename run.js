@@ -1,3 +1,4 @@
+require('./snippets');
 var fs = require('fs');
 var jsbot = require('./jsbot');
 var quote = require('./quotes');
@@ -7,14 +8,6 @@ var puns = require('./puns');
 var kick = require('./kick');
 var reality = require('./reality');
 var karma = require('./karma');
-
-///////////////////////////
-
-Array.prototype.random = function() {
-    return this[Math.floor((Math.random()*this.length))];
-};
-
-///////////////////////////
 
 var dbot = Class.create({
     initialize: function(dModules, quotes) {
@@ -26,6 +19,9 @@ var dbot = Class.create({
 
         this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
             this.instance.join('#realitest');
+            this.instance.join('#42');
+            this.instance.join('#fail');
+            this.instance.join('#itonlygetsworse');
         }.bind(this));
 
         this.modules = dModules.collect(function(n) {
