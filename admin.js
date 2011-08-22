@@ -4,22 +4,21 @@ var adminCommands = function(dbot) {
     var commands = {
         'join': function(data, params) {
             dbot.join(params[1]); 
-            dbot.say(admin, 'Joined ' + params[1]);
+            dbot.say(dbot.admin, 'Joined ' + params[1]);
         },
 
         'part': function(data, params) {
             dbot.part(params[1]);
-            dbot.say(admin);
         },
 
         'reload': function(data, params) {
-            dbot.say(admin, 'Reloading DB.');
+            dbot.say(dbot.admin, 'Reloading DB.');
             try {
                 dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             } catch(err) {
-                dbot.say(admin, 'DB reload failed.');
+                dbot.say(dbot.admin, 'DB reload failed.');
             } finally {
-                dbot.say(admin, 'DB Reload successful.');
+                dbot.say(dbot.admin, 'DB Reload successful.');
             }
         },
 
