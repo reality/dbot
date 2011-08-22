@@ -1,5 +1,5 @@
-var quotes = function(quotes) {
-    var qArrs = quotes;
+var quotes = function(dbot) {
+    var qArrs = dbot.db.quoteArrs;
 
     return {
         get: function(key) { 
@@ -42,6 +42,6 @@ var quotes = function(quotes) {
     };
 };
 
-exports.fetch = function() {
-    return quotes;
+exports.fetch = function(dbot) {
+    return quotes(dbot);
 };

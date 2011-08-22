@@ -75,7 +75,7 @@ var userCommands = function(dbot) {
         },
 
         'on': 'PRIVMSG'
-    }
+    };
 };
 
 exports.fetch = function(dbot) {

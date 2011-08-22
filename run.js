@@ -2,6 +2,8 @@ var fs = require('fs');
 var jsbot = require('./jsbot');
 var quote = require('./quotes');
 var userCommands = require('./user');
+var adminCommands = require('./admin');
+var puns = require('./puns');
 
 ///////////////////////////
 
@@ -10,64 +12,23 @@ Array.prototype.random = function() {
 };
 
 ///////////////////////////
-
-
-this.adminCommands = {
-            'join': function(data, params) {
-                instance.join(params[1]); 
-                instance.say(admin, 'Joined ' + params[1]);
-            },
-
-            'part': function(data, params) {
-                instance.part(params[1]);
-                instance.say(admin);
-            },
-
-            'reload': function(data, params) {
-                instance.say(admin, 'Reloading DB.');
-                try {
-                    db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-                } catch(err) {
-                    instance.say(admin, 'DB reload failed.');
-                } finally {
-                    instance.say(admin, 'DB Reload successful.');
-                }
-            },
-
-            'say': function(data, params) {
-                var c = params[1];
-                var m = params.slice(2).join(' ');
-                instance.say(c, m);
-            }
-        };
-
-
-///////////////////////////
 var dbot = Class.create({
-    initialize: function(quotes, userCommands) {
+    initialize: function(dModules, quotes) {
         this.admin = 'reality';
         this.waitingForKarma = false;
         this.name = 'depressionbot';
         this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-        this.quotes = quotes(this.db.quoteArrs);
-        this.userCommands = userCommands.fetch(this);
+        this.quotes = quotes.fetch(this);
 
         this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
             this.instance.join('#realitest');
         }.bind(this));
 
-        this.instance.addListener(this.userCommands.on, this.userCommands.listener);
-
-        this.instance.addListener('JOIN', function(data) {
-            if(data.user == 'Lamp') {
-                this.instance.say(data.channel, db.quoteArrs.lamp.random());
-            } else if(data.user == 'reality') {
-                this.instance.say(data.channel, db.realiPuns.random());
-            } else if(instance.inChannel(data.channel)) {
-                this.instance.say('aisbot', '.karma ' + data.user);
-                this.waitingForKarma = data.channel;
-            }
-        });
+        this.modules = dModules.collect(function(n) {
+            var module = n.fetch(this);
+            this.instance.addListener(module.on, module.listener);
+            return n.fetch(this);
+        }.bind(this));
 
         this.instance.addListener('KICK', function(data) {
             if(data.kickee == name) {
@@ -114,6 +75,8 @@ var dbot = Class.create({
                 }
             }
         });
+
+        this.instance.connect();
     },
 
     say: function(channel, data) {
@@ -125,4 +88,4 @@ var dbot = Class.create({
     }
 });
 
-new dbot(quote.fetch(), userCommands);
+new dbot([userCommands, adminCommands, puns], quote);
