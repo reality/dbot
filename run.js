@@ -4,6 +4,9 @@ var quote = require('./quotes');
 var userCommands = require('./user');
 var adminCommands = require('./admin');
 var puns = require('./puns');
+var kick = require('./kick');
+var reality = require('./reality');
+var karma = require('./karma');
 
 ///////////////////////////
 
@@ -12,6 +15,7 @@ Array.prototype.random = function() {
 };
 
 ///////////////////////////
+
 var dbot = Class.create({
     initialize: function(dModules, quotes) {
         this.admin = 'reality';
@@ -30,52 +34,6 @@ var dbot = Class.create({
             return n.fetch(this);
         }.bind(this));
 
-        this.instance.addListener('KICK', function(data) {
-            if(data.kickee == name) {
-                this.instance.join(data.channel);
-                this.instance.say(data.channel, 'Thou shalt not kick ' + name);
-                this.db.kicks[name] += 1;
-            } else {
-                if(this.db.kicks[data.kickee] == undefined) {
-                    this.db.kicks[data.kickee] = 1;
-                } else {
-                    this.db.kicks[data.kickee] += 1;
-                }
-                instance.say(data.channel, data.kickee + '-- (' + data.kickee + ' has been kicked ' + this.db.kicks[data.kickee] + ' times)');
-            }
-
-            this.save();
-        });
-
-        this.instance.addListener('PRIVMSG', function(data) {
-            if(data.user == 'aisbot' && data.channel == name && waitingForKarma != false && data.message.match(/is at/)) {
-                var split = data.message.split(' ');
-                var target = split[0];
-                var karma = split[3];
-
-                if(karma.startsWith('-')) {
-                    this.instance.say(waitingForKarma, target + this.db.hatedPhrases.random() + ' (' + karma + ')');
-                } else if(karma == '0') {
-                    this.instance.say(waitingForKarma, target + this.db.neutralPhrases.random() + ' (0)');
-                } else {
-                    this.instance.say(waitingForKarma, target + this.db.lovedPhrases.random() + ' (' + karma + ')');
-                }
-
-                waitingForKarma = false;
-            }
-        });
-
-        this.instance.addListener('PRIVMSG', function(data) {
-            if(data.user == 'reality') {
-                var once = data.message.match(/I ([\d\w\s]* once.)/);
-                if(once != null) {
-                    this.db.realiPuns.push('reality ' + once[1]);
-                    this.instance.say(data.channel, '\'reality ' + once[1] + '\' saved.');
-                    this.save();
-                }
-            }
-        });
-
         this.instance.connect();
     },
 
@@ -88,4 +46,4 @@ var dbot = Class.create({
     }
 });
 
-new dbot([userCommands, adminCommands, puns], quote);
+new dbot([userCommands, adminCommands, puns, kick, reality, karma], quote);

@@ -1,10 +1,10 @@
 var quotes = function(dbot) {
-    var qArrs = dbot.db.quoteArrs;
+    var quotes = dbot.db.quoteArrs;
 
     return {
         get: function(key) { 
             if(quotes.hasOwnProperty(key)) {
-                return key + ': ' + qArrs[key].random();
+                return key + ': ' + quotes[key].random();
             } else {
                 return 'No quotes under ' + key;
             }
