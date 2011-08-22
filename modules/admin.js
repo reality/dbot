@@ -3,7 +3,7 @@ var adminCommands = function(dbot) {
 
     var commands = {
         'join': function(data, params) {
-            dbot.join(params[1]); 
+            dbot.instance.join(params[1]); 
             dbot.say(dbot.admin, 'Joined ' + params[1]);
         },
 

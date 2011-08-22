@@ -1,13 +1,13 @@
 require('./snippets');
 var fs = require('fs');
 var jsbot = require('./jsbot');
-var quote = require('./quotes');
-var userCommands = require('./user');
-var adminCommands = require('./admin');
-var puns = require('./puns');
-var kick = require('./kick');
-var reality = require('./reality');
-var karma = require('./karma');
+var quote = require('./modules/quotes');
+var userCommands = require('./modules/user');
+var adminCommands = require('./modules/admin');
+var puns = require('./modules/puns');
+var kick = require('./modules/kick');
+var reality = require('./modules/reality');
+var karma = require('./modules/karma');
 
 var dbot = Class.create({
     initialize: function(dModules, quotes) {
