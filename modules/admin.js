@@ -17,7 +17,6 @@ var adminCommands = function(dbot) {
             dbot.say(dbot.admin, 'Reloading DB.');
             try {
                 dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-                dbot.reloadModules();
             } catch(err) {
                 dbot.say(dbot.admin, 'DB reload failed.');
             } finally {
