@@ -3,6 +3,7 @@ var quotes = function(dbot) {
 
     return {
         get: function(key) { 
+            key = key.toLowerCase();
             if(quotes.hasOwnProperty(key)) {
                 return key + ': ' + quotes[key].random();
             } else {
@@ -11,6 +12,7 @@ var quotes = function(dbot) {
         },
 
         count: function(key) {
+            key = key.toLowerCase();
             if(quotes.hasOwnProperty(key)) {
                 return key + ' has ' + quotes[key].length + ' quotes.';
             } else {
@@ -19,6 +21,7 @@ var quotes = function(dbot) {
         },
 
         add: function(key) {
+            key[1] = key[1].toLowerCase();
             if(!Object.isArray(quotes[key[1]])) {
                 quotes[key[1]] = [];
             }
@@ -27,6 +30,7 @@ var quotes = function(dbot) {
         },
 
         set: function(key) {
+            key[1] = key[1].toLowerCase();
             if(!quotes.hasOwnProperty(key[1]) || (quotes.hasOwnProperty(key[1]) && quotes[key[1]].length == 1)) {
                 quotes[key[1]] = [key[2]];
                 return 'Quote saved as ' + key[1];
