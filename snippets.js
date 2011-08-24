@@ -1,3 +1,5 @@
+/*** Array ***/
+
 Array.prototype.random = function() {
     return this[Math.floor((Math.random()*this.length))];
 };
@@ -13,18 +15,16 @@ Array.prototype.collect = function(fun) {
     for(var i=0;i<this.length;i++) {
         collect.push(fun(this[i]));
     }
+    return collect;
 };
 
 Array.prototype.include = function(value) {
-    var includes = false;
     for(var i=0;i<this.length;i++) {
         if(this[i] == value) {
-            includes = true;
-            break;
+            return true;
         }
     }
-
-    return includes;
+    return false;
 };
 
 /*** String ***/

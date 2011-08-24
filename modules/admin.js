@@ -14,14 +14,9 @@ var adminCommands = function(dbot) {
         },
 
         'reload': function(data, params) {
-            dbot.say(dbot.admin, 'Reloading DB.');
-            try {
-                dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-            } catch(err) {
-                dbot.say(dbot.admin, 'DB reload failed.');
-            } finally {
-                dbot.say(dbot.admin, 'DB Reload successful.');
-            }
+            dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+            dbot.reloadModules();
+            dbot.say(dbot.admin, 'Reloaded.');
         },
 
         'say': function(data, params) {
