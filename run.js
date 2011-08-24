@@ -13,6 +13,8 @@ var DBot = function(dModules, quotes) {
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
+        this.instance.join('#42');
+        this.instance.join('#itonlygetsworse');
     }.bind(this));
 
     this.moduleNames = dModules;
@@ -39,7 +41,11 @@ DBot.prototype.reloadModules = function() {
     this.moduleNames.each(function(name) {
         var cacheKey = require.resolve('./modules/' + name);
         require.cache[cacheKey] = undefined; // TODO: snippet to remove element properly
-        this.rawModules.push(require('./modules/' + name));
+        try {
+            this.rawModules.push(require('./modules/' + name));
+        } catch(err) {
+            console.log('Failed to load module: ' + name);
+        }
     }.bind(this));
 
     this.instance.removeListeners();

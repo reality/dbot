@@ -8,14 +8,14 @@ var userCommands = function(dbot) {
         },
 
         '~q': function(data, params) {
-            var q = data.message.match(/~q ([\d\w\s]*)/)
+            var q = data.message.match(/^~q ([\d\w\s]*)/)
             if(q != undefined) {
                 dbot.say(data.channel, dbot.quotes.get(q[1].trim()));
             }
         },
 
         '~qadd': function(data, params) {
-            var q = data.message.match(/~qadd ([\d\w\s]*)=(.+)$/);
+            var q = data.message.match(/^~qadd ([\d\w\s]*)=(.+)$/);
             if(q != null && q.length >= 3) {
                 dbot.say(data.channel, dbot.quotes.add(q));
                 dbot.save();
@@ -25,14 +25,14 @@ var userCommands = function(dbot) {
         },
 
         '~qset': function(data, params) {
-            var q = data.message.match(/~qset ([\d\w\s]*)=(.+)$/);
+            var q = data.message.match(/^~qset ([\d\w\s]*)=(.+)$/);
             if(q != undefined && q.length >= 3) {
                 dbot.say(data.channel, dbot.quotes.set(q));
             }
         },
 
         '~qcount': function(data, params) {
-            var q = data.message.match(/~qcount ([\d\w\s]*)/)[1].trim();
+            var q = data.message.match(/^~qcount ([\d\w\s]*)/)[1].trim();
             if(q != undefined) {
                 dbot.say(data.channel, dbot.quotes.count(q));
             }
