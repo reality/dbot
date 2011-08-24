@@ -15,6 +15,18 @@ Array.prototype.collect = function(fun) {
     }
 };
 
+Array.prototype.include = function(value) {
+    var includes = false;
+    for(var i=0;i<this.length;i++) {
+        if(this[i] == value) {
+            includes = true;
+            break;
+        }
+    }
+
+    return includes;
+};
+
 /*** String ***/
 
 String.prototype.endsWith = function(needle) {
@@ -27,7 +39,7 @@ String.prototype.endsWith = function(needle) {
 };
 
 String.prototype.startsWith = function(needle) {
-    var start = this.slice(0, this.length - needle.length);
+    var start = this.slice(0, needle.length);
     if(needle === start) {
         return true;
     } else {
@@ -39,6 +51,14 @@ String.prototype.startsWith = function(needle) {
 
 Object.prototype.isFunction = function(obj) {
     if(typeof(obj) == 'function') {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+Object.prototype.isArray = function(obj) {
+    if(Object.prototype.toString.call(obj) === '[object Array]') {
         return true;
     } else {
         return false;
