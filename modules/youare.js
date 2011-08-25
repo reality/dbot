@@ -3,8 +3,8 @@ var youAre = function(dbot) {
 
     return {
         'listener': function(data) {
-            var num = Math.floor(Math.random()*6);
-            var key = data.message.match(/(is|are) ([\d\w\s']*)(,|\.)?/);
+            var num = Math.floor(Math.random()*4);
+            var key = data.message.match(/(is|are) ([\d\w\s']*)/);
 
             if(num == 1 && key != undefined) {
                 if(key[2].indexOf('and') !== -1) {

@@ -4,8 +4,7 @@ var getAJob = function(dbot) {
     return {
         'listener': function(data) {
             var num = Math.floor(Math.random()*101);
-            console.log(num);
-            if(num == 50 || data.message.indexOf('bored') !== -1) {
+            if(num == 50) {
                 dbot.say(data.channel, data.user + ': Get a job!');
             }
         },
