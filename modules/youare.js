@@ -3,13 +3,9 @@ var youAre = function(dbot) {
 
     return {
         'listener': function(data) {
-            var key = data.message.valMatch(/(is|are) ([\d\w\s']*)/, 3);
+            var key = data.message.match(/(\bis\b|\bare\b)\s+([\w\s\d]*?)(\s+)?(,|\.|\band\b|$)/);
 
-            if(Number.prototype.chanceIn(1, 3) && key) {
-                if(key[2].indexOf('and') !== -1) {
-                    key[2] = key[2].split('and')[0];
-                } // TODO: fix the regex to do this. i hate regex
-
+            if(key && Number.prototype.chanceIn(1, 3)) {
                 dbot.say(data.channel, data.user + ': You\'re ' + key[2]);
             }
         },
