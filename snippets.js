@@ -29,6 +29,15 @@ Array.prototype.include = function(value) {
 
 /*** String ***/
 
+String.prototype.valMatch = function(regex, expLength) {
+    var key = this.match(regex);
+    if(key !== null && key.length == expLength) {
+        return key;
+    } else {
+        return false;
+    }
+};
+
 String.prototype.endsWith = function(needle) {
     var end = this.slice(this.length - needle.length);
     if(needle === end) {
@@ -60,6 +69,18 @@ Object.prototype.isFunction = function(obj) {
 Object.prototype.isArray = function(obj) {
     if(Object.prototype.toString.call(obj) === '[object Array]') {
         return true;
+    } else {
+        return false;
+    }
+};
+
+/*** Integer ***/
+
+Number.prototype.chanceIn = function(x, y) {
+    var num = Math.floor(Math.random() * (y + 1)) / x;
+    console.log(num);
+    if(num == 1) {
+        return true; 
     } else {
         return false;
     }

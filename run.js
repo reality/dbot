@@ -35,6 +35,11 @@ DBot.prototype.reloadModules = function() {
     this.rawModules = [];
     this.modules = [];
 
+    // Reload snippets
+    var path = require.resolve('./snippets');
+    require.cache[path] = undefined;
+    require('./snippets');
+
     this.moduleNames.each(function(name) {
         var cacheKey = require.resolve('./modules/' + name);
         require.cache[cacheKey] = undefined; // TODO: snippet to remove element properly

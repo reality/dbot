@@ -3,10 +3,9 @@ var youAre = function(dbot) {
 
     return {
         'listener': function(data) {
-            var num = Math.floor(Math.random()*4);
-            var key = data.message.match(/(is|are) ([\d\w\s']*)/);
+            var key = data.message.valMatch(/(is|are) ([\d\w\s']*)/, 3);
 
-            if(num == 1 && key != undefined) {
+            if(Number.prototype.chanceIn(1, 3) && key) {
                 if(key[2].indexOf('and') !== -1) {
                     key[2] = key[2].split('and')[0];
                 } // TODO: fix the regex to do this. i hate regex
