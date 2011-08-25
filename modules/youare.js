@@ -6,8 +6,6 @@ var youAre = function(dbot) {
             var num = Math.floor(Math.random()*11);
             var key = data.message.match(/ is|are ([\d\w\s']*),?\.?/);
 
-             
-
             if(num == 1 && key != undefined) {
                 if(key[1].indexOf('and') !== -1) {
                     key[1] = key[1].split('and')[0];
