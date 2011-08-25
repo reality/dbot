@@ -4,9 +4,9 @@ var reality = function(dbot) {
     return {
         'listener': function(data, params) {
             if(data.user == 'reality') {
-                var once = data.message.match(/^I ([\d\w\s,]* once)/);
+                var once = data.message.match(/^I ([\d\w\s,'-]* once)/);
             } else {
-                var once = data.message.match(/^reality ([\d\w\s,]* once)/);
+                var once = data.message.match(/^reality ([\d\w\s,'-]* once)/);
             }
 
             if(once != null) {

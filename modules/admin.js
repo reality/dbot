@@ -10,7 +10,7 @@ var adminCommands = function(dbot) {
         },
 
         'part': function(data, params) {
-            dbot.part(params[1]);
+            dbot.instance.part(params[1]);
         },
 
         'reload': function(data, params) {
@@ -34,7 +34,7 @@ var adminCommands = function(dbot) {
         'unload': function(data, params) {
             console.log(dbot.moduleNames);
             if(dbot.moduleNames.include(params[1])) {
-                dbot.moduleNames[params[1]] = undefined;
+                dbot.moduleNames[params[1]] = null;
                 dbot.reloadModules();
                 dbot.say(data.channel, 'Turned off module: ' + params[1]);
             } else {

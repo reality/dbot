@@ -14,15 +14,12 @@ var DBot = function(dModules, quotes) {
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
         this.instance.join('#42');
+        this.instance.join('#fail');
         this.instance.join('#itonlygetsworse');
     }.bind(this));
 
     this.moduleNames = dModules;
-    this.rawModules = [];
-    this.modules = [];
-
     this.reloadModules();
-    
     this.instance.connect();
 };
 
