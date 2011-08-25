@@ -5,10 +5,14 @@ var youAre = function(dbot) {
         'listener': function(data) {
             var num = Math.floor(Math.random()*11);
             var key = data.message.match(/ is|are ([\d\w\s']*),?\.?/);
+
+             
+
+            if(num == 1 && key != undefined) {
                 if(key[1].indexOf('and') !== -1) {
                     key[1] = key[1].split('and')[0];
                 } // TODO: fix the regex to do this. i hate regex
-            if(num == 1 && key != undefined) {
+
                 dbot.say(data.channel, data.user + ': You\'re ' + key[1]);
             }
         },
