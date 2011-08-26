@@ -3,10 +3,10 @@ var youAre = function(dbot) {
 
     return {
         'listener': function(data) {
-            var key = data.message.match(/(\bis\b|\bare\b)\s+([\w\s\d]*?)(\s+)?(,|\.|\band\b|$)/);
+            var key = data.message.valMatch(/(\bis\b|\bare\b)\s+([\w\s\d]*?)(\s+)?(,|\.|\band\b|$)/, 5);
 
-            if(key && Number.prototype.chanceIn(1, 3)) {
-                dbot.say(data.channel, data.user + ': You\'re ' + key[2]);
+            if(key && key[2] != "" && Number.prototype.chanceIn(1, 3)) {
+                dbot.say(data.channel, data.user + ': You\'re ' + key[2] + '.');
             }
         },
 

@@ -3,8 +3,7 @@ var getAJob = function(dbot) {
 
     return {
         'listener': function(data) {
-            var num = Math.floor(Math.random()*101);
-            if(num == 50) {
+            if(Number.prototype.chanceIn(1, 50)) {
                 dbot.say(data.channel, data.user + ': Get a job!');
             }
         },
