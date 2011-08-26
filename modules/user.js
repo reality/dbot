@@ -8,33 +8,34 @@ var userCommands = function(dbot) {
         },
 
         '~q': function(data, params) {
-            var q = data.message.match(/^~q ([\d\w\s]*)/)
-            if(q != undefined) {
+            var q = data.message.valMatch(/^~q ([\d\w\s]*)/, 2)
+            if(q) {
                 dbot.say(data.channel, dbot.quotes.get(q[1].trim()));
             }
         },
 
         '~qadd': function(data, params) {
-            var q = data.message.match(/^~qadd ([\d\w\s]*)=(.+)$/);
-            if(q != null && q.length >= 3) {
+            var q = data.message.valMatch(/^~qadd ([\d\w\s]*)=(.+)$/, 3);
+            if(q) {
                 dbot.say(data.channel, dbot.quotes.add(q));
-                dbot.save();
             } else {
                 dbot.say(data.channel, 'Burn the invalid syntax!');
             }
         },
 
         '~qset': function(data, params) {
-            var q = data.message.match(/^~qset ([\d\w\s]*)=(.+)$/);
-            if(q != undefined && q.length >= 3) {
+            var q = data.message.match(/^~qset ([\d\w\s]*)=(.+)$/, 3);
+            if(q) {
                 dbot.say(data.channel, dbot.quotes.set(q));
+            } else {
+                dbot.say(data.channel, 'Burn the invalid syntax!');
             }
         },
 
         '~qcount': function(data, params) {
-            var q = data.message.match(/^~qcount ([\d\w\s]*)/)[1].trim();
-            if(q != undefined) {
-                dbot.say(data.channel, dbot.quotes.count(q));
+            var q = data.message.valMatch(/^~qcount ([\d\w\s]*)/, 2);
+            if(q) {
+                dbot.say(data.channel, dbot.quotes.count(q[1].trim()));
             }
         },
 
@@ -66,9 +67,10 @@ var userCommands = function(dbot) {
 
             if(commands.hasOwnProperty(params[0])) {
                 commands[params[0]](data, params);
+                dbot.save();
             } else {
-                var q = data.message.match(/^~([\d\w\s]*)/)
-                if(q != undefined) {
+                var q = data.message.valMatch(/^~([\d\w\s]*)/, 2)
+                if(q) {
                     dbot.say(data.channel, dbot.quotes.get(q[1].trim()));
                 }
             }
