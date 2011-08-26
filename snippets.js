@@ -39,49 +39,26 @@ String.prototype.valMatch = function(regex, expLength) {
 };
 
 String.prototype.endsWith = function(needle) {
-    var end = this.slice(this.length - needle.length);
-    if(needle === end) {
-        return true;
-    } else {
-        return false;
-    }
+    return needle === this.slice(this.length - needle.length);
 };
 
 String.prototype.startsWith = function(needle) {
-    var start = this.slice(0, needle.length);
-    if(needle === start) {
-        return true;
-    } else {
-        return false;
-    }
+    return needle === this.slice(0, needle.length);
 };
 
 /*** Object ***/
 
 Object.prototype.isFunction = function(obj) {
-    if(typeof(obj) == 'function') {
-        return true;
-    } else {
-        return false;
-    }
+    return typeof(obj) === 'function';
 };
 
 Object.prototype.isArray = function(obj) {
-    if(Object.prototype.toString.call(obj) === '[object Array]') {
-        return true;
-    } else {
-        return false;
-    }
+    return Object.prototype.toString.call(obj) === '[object Array]';
 };
 
 /*** Integer ***/
 
 Number.prototype.chanceIn = function(x, y) {
     var num = Math.floor(Math.random() * (y + 1)) / x;
-    console.log(num);
-    if(num == 1) {
-        return true; 
-    } else {
-        return false;
-    }
+    return num == 1;
 };
