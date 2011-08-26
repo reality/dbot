@@ -3,13 +3,14 @@ var reality = function(dbot) {
 
     return {
         'listener': function(data, params) {
+            // Ternary for I/reality doesn't seem to work with the regex. Investigate.
             if(data.user == 'reality') {
-                var once = data.message.match(/^I ([\d\w\s,'-]* once)/);
+                var once = data.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
             } else {
-                var once = data.message.match(/^reality ([\d\w\s,'-]* once)/);
+                var once = data.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
             }
 
-            if(once != null) {
+            if(once) {
                 dbot.db.realiPuns.push('reality ' + once[1] + '.');
                 dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
                 dbot.save();

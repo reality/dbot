@@ -2,7 +2,7 @@ require('./snippets');
 var fs = require('fs');
 var jsbot = require('./jsbot');
 
-var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma'];
+var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma', 'youare'];
 
 var DBot = function(dModules, quotes) {
     this.admin = 'reality';
