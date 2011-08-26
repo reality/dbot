@@ -24,7 +24,7 @@ var userCommands = function(dbot) {
         },
 
         '~qset': function(data, params) {
-            var q = data.message.match(/^~qset ([\d\w\s]*)=(.+)$/, 3);
+            var q = data.message.valMatch(/^~qset ([\d\w\s]*)=(.+)$/, 3);
             if(q) {
                 dbot.say(data.channel, dbot.quotes.set(q));
             } else {
