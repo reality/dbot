@@ -2,20 +2,17 @@ require('./snippets');
 var fs = require('fs');
 var jsbot = require('./jsbot');
 
-var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma', 'youare'];
+var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma', 'youare', 'quotes'];
 
 var DBot = function(dModules, quotes) {
     this.admin = 'reality';
     this.waitingForKarma = false;
     this.name = 'depressionbot';
+    this.commands = {};
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-    this.quotes = require(quotes).fetch(this);
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
-        this.instance.join('#42');
-        this.instance.join('#fail');
-        this.instance.join('#itonlygetsworse');
     }.bind(this));
 
     this.moduleNames = dModules;
@@ -34,8 +31,8 @@ DBot.prototype.save = function() {
 DBot.prototype.reloadModules = function() {
     this.rawModules = [];
     this.modules = [];
+    this.commands = {};
 
-    // Reload snippets
     var path = require.resolve('./snippets');
     require.cache[path] = undefined;
     require('./snippets');
@@ -54,9 +51,37 @@ DBot.prototype.reloadModules = function() {
 
     this.modules = this.rawModules.collect(function(rawModule) {
         var module = rawModule.fetch(this);
-        this.instance.addListener(module.on, module.listener);
+
+        if(module.listener) {
+            this.instance.addListener(module.on, module.listener);
+        }
+
+        if(module.onLoad) {
+            var newCommands = module.onLoad();
+            for(key in newCommands) {
+                if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
+                    this.commands[key] = newCommands[key];
+                }
+            }
+        }
+
         return module;
+    }.bind(this));
+
+    this.instance.addListener('PRIVMSG', function(data) {
+        params = data.message.split(' ');
+        if(data.channel == this.name) data.channel = data.user;
+
+        if(this.commands.hasOwnProperty(params[0])) {
+            this.commands[params[0]](data, params);
+            this.save();
+        } else {
+            var q = data.message.valMatch(/^~([\d\w\s]*)/, 2)
+            if(q) {
+                this.say(data.channel, this.quotes.get(q[1].trim()));
+            }
+        }
     }.bind(this));
 };
 
-new DBot(modules, './modules/quotes');
+new DBot(modules);
