@@ -17,7 +17,7 @@ var quotes = function(dbot) {
         '~qcount': function(data, params) {
             var q = data.message.valMatch(/^~qcount ([\d\w\s]*)/, 2);
             if(q) {
-                key = key[1].trim().toLowerCase();
+                key = q[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
                     dbot.say(data.channel, key + ' has ' + quotes[key].length + ' quotes.');
                 } else {
