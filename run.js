@@ -13,6 +13,9 @@ var DBot = function(dModules, quotes) {
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
+        this.instance.join('#itonlygetsworse');
+        this.instance.join('#42');
+        this.instance.join('#fail');
     }.bind(this));
 
     this.moduleNames = dModules;
