@@ -76,9 +76,14 @@ DBot.prototype.reloadModules = function() {
             this.commands[params[0]](data, params);
             this.save();
         } else {
-            var q = data.message.valMatch(/^~([\d\w\s]*)/, 2)
+            var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {
-                this.say(data.channel, this.quotes.get(q[1].trim()));
+                key = q[1].trim().toLowerCase();
+                if(this.db.quoteArrs.hasOwnProperty(key)) {
+                    this.say(data.channel, key + ': ' + this.db.quoteArrs[key].random());
+                } else {
+                    this.say(data.channel, 'No quotes under ' + key);
+                }
             }
         }
     }.bind(this));

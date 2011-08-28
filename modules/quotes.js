@@ -3,7 +3,7 @@ var quotes = function(dbot) {
     
     var commands = {
         '~q': function(data, params) { 
-            var q = data.message.valMatch(/^~q ([\d\w\s]*)/, 2)
+            var q = data.message.valMatch(/^~q ([\d\w\s]*)/, 2);
             if(q) {
                 key = q[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
