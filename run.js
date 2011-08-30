@@ -8,7 +8,6 @@ var DBot = function(dModules, quotes) {
     this.admin = 'reality';
     this.waitingForKarma = false;
     this.name = 'depressionbot';
-    this.commands = {};
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {

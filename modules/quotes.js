@@ -63,7 +63,7 @@ var quotes = function(dbot) {
 
         '~d': function(data, params) {
             dbot.say(data.channel,  data.user + ': ' + dbot.db.quoteArrs['depressionbot'].random());
-        },
+        }
 
     };
 
