@@ -18,16 +18,24 @@ var quotes = function(dbot) {
 
         '~rmlast': function(data, params) {
             if(rmAllowed == true) {
-                var last = addStack.pop();
-                if(last) {
-                    quotes[last].pop();
-                    if(quotes[last] === undefined) {
-                        delete quotes[last];
+                var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
+                if(q) {
+                    if(quotes.hasOwnProperty(q[1])) {
+                        var quote = quotes[q[1]].pop();
+                        dbot.say('\'' + quote + '\' removed from ' + q[1]);
+                        rmAllowed = false;
+                    } else {
+                        dbot.say(data.channel, 'No quotes exist under ' + q[1]);
                     }
-                    rmAllowed = false;
-                    dbot.say(data.channel, 'Last quote removed from ' + last + '.');
                 } else {
-                    dbot.say(data.channel, 'No quotes were added recently.');
+                    var last = addStack.pop();
+                    if(last) {
+                        quotes[last].pop();
+                        rmAllowed = false;
+                        dbot.say(data.channel, 'Last quote removed from ' + last + '.');
+                    } else {
+                        dbot.say(data.channel, 'No quotes were added recently.');
+                    }
                 }
             } else {
                 dbot.say(data.channel, 'No spamming that shit. Try again in a few minutes...');
