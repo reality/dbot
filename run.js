@@ -1,20 +1,19 @@
-require('./snippets');
 var fs = require('fs');
+var timers = require('./timer');
 var jsbot = require('./jsbot');
+require('./snippets');
 
 var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma', 'youare', 'quotes'];
 
-var DBot = function(dModules, quotes) {
+var DBot = function(dModules, timers) {
     this.admin = 'reality';
     this.waitingForKarma = false;
-    this.name = 'depressionbot';
+    this.name = 'testressionbot';
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+    this.timers = timers.create();
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
-        this.instance.join('#itonlygetsworse');
-        this.instance.join('#42');
-        this.instance.join('#fail');
     }.bind(this));
 
     this.moduleNames = dModules;
@@ -34,6 +33,7 @@ DBot.prototype.reloadModules = function() {
     this.rawModules = [];
     this.modules = [];
     this.commands = {};
+    this.timers.clearTimers();
 
     var path = require.resolve('./snippets');
     require.cache[path] = undefined;
@@ -91,4 +91,4 @@ DBot.prototype.reloadModules = function() {
     }.bind(this));
 };
 
-new DBot(modules);
+new DBot(modules, timers);

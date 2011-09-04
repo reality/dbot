@@ -1,5 +1,7 @@
 var quotes = function(dbot) {
     var quotes = dbot.db.quoteArrs;
+    var addStack = [];
+    var rmAllowed = true;
     
     var commands = {
         '~q': function(data, params) { 
@@ -11,6 +13,21 @@ var quotes = function(dbot) {
                 } else {
                     dbot.say(data.channel, 'No quotes under ' + key);
                 }
+            }
+        },
+
+        '~rmlast': function(data, params) {
+            if(rmAllowed == true) {
+                var last = addStack.pop();
+                if(last) {
+                    quotes[last].pop();
+                    rmAllowed = false;
+                    dbot.say(data.channel, 'Last quote removed from ' + last + '.');
+                } else {
+                    dbot.say(data.channel, 'No quotes were added recently.');
+                }
+            } else {
+                dbot.say(data.channel, 'No spamming that shit. Try again in a few minutes...');
             }
         },
 
@@ -34,6 +51,8 @@ var quotes = function(dbot) {
                     quotes[q[1]] = [];
                 }
                 quotes[q[1]].push(q[2]);
+                addStack.push(q[1]);
+                rmAllowed = true;
                 dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[q[1]].length + ')');
             }
         },
@@ -69,6 +88,9 @@ var quotes = function(dbot) {
 
     return {
         'onLoad': function() {
+            dbot.timers.addTimer(1000 * 60 * 3, function() {
+                rmAllowed = true;
+            });
             return commands;
         }
     };
