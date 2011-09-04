@@ -21,6 +21,9 @@ var quotes = function(dbot) {
                 var last = addStack.pop();
                 if(last) {
                     quotes[last].pop();
+                    if(quotes[last] === undefined) {
+                        delete quotes[last];
+                    }
                     rmAllowed = false;
                     dbot.say(data.channel, 'Last quote removed from ' + last + '.');
                 } else {
