@@ -17,7 +17,7 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(data, params) {
-            if(rmAllowed == true) {
+            if(rmAllowed == true || data.user == dbot.admin) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
                 if(q) {
                     if(quotes.hasOwnProperty(q[1])) {
