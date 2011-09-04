@@ -8,12 +8,15 @@ var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma', 'youare', 'q
 var DBot = function(dModules, timers) {
     this.admin = 'reality';
     this.waitingForKarma = false;
-    this.name = 'testressionbot';
+    this.name = 'deressionbot';
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
     this.timers = timers.create();
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
+        this.instance.join('#fail');
+        this.instance.join('#42');
+        this.instance.join('#itonlygetsworse');
     }.bind(this));
 
     this.moduleNames = dModules;
