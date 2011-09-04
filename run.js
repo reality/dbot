@@ -8,7 +8,7 @@ var modules = ['user', 'admin', 'puns', 'kick', 'reality', 'karma', 'youare', 'q
 var DBot = function(dModules, timers) {
     this.admin = 'reality';
     this.waitingForKarma = false;
-    this.name = 'deressionbot';
+    this.name = 'depressionbot';
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
     this.timers = timers.create();
 
