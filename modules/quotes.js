@@ -22,7 +22,7 @@ var quotes = function(dbot) {
                 if(q) {
                     if(quotes.hasOwnProperty(q[1])) {
                         var quote = quotes[q[1]].pop();
-                        dbot.say('\'' + quote + '\' removed from ' + q[1]);
+                        dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
                         rmAllowed = false;
                     } else {
                         dbot.say(data.channel, 'No quotes exist under ' + q[1]);
