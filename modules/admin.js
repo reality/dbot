@@ -9,6 +9,10 @@ var adminCommands = function(dbot) {
             dbot.say(dbot.admin, 'Joined ' + params[1]);
         },
 
+        'opme': function(data, params) {
+           dbot.instance.send('MODE #42 +v ', dbot.admin);
+        },
+
         'part': function(data, params) {
             dbot.instance.part(params[1]);
         },
