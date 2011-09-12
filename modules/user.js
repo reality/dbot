@@ -13,6 +13,26 @@ var userCommands = function(dbot) {
             } else {
                 dbot.say(data.channel, params[1] + ' has been kicked ' + dbot.db.kicks[params[1]] + ' times.');
             }
+        },
+
+        '~kickstats': function(data, params) {
+            var kickArr = [];
+            for(var kickUser in dbot.db.kicks) {
+                if(dbot.db.kicks.hasOwnProperty(kickUser)) {
+                    kickArr.push([kickUser, dbot.db.kicks[kickUser]]);
+                }
+            }
+
+            var orderedKicks = kickArr.sort(function(a, b) { return a[1] - b[1]; });
+            var topKicks = kickArr.slice(kickArr.length - 5).reverse();
+            var kickString = "Top Kicks: ";
+
+            for(var i=0;i<topKicks.length;i++) {
+                kickString += topKicks[i][0] + " (" + topKicks[i][1] + "), ";
+            }
+            kickString = kickString.slice(0, -2);
+
+            dbot.say(data.channel, kickString);
         }
     };
 
