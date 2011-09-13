@@ -12,6 +12,7 @@ var webInterface = function(dbot) {
 
     app.get('/', function(req, res) {
         res.render('index', { });
+        console.log('test');
     });
 
     app.listen(1337);
