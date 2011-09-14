@@ -17,6 +17,7 @@ var DBot = function(dModules, timers) {
         this.instance.join('#fail');
         this.instance.join('#42');
         this.instance.join('#itonlygetsworse');
+        this.instance.join('#plur');
     }.bind(this));
 
     this.moduleNames = dModules;
@@ -41,6 +42,12 @@ DBot.prototype.reloadModules = function() {
     var path = require.resolve('./snippets');
     require.cache[path] = undefined;
     require('./snippets');
+
+    this.modules.each(function(module) {
+        if(module.onDestroy) {
+            module.onDestroy();
+        }
+    });
 
     this.moduleNames.each(function(name) {
         var cacheKey = require.resolve('./modules/' + name);

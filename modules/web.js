@@ -16,7 +16,12 @@ var webInterface = function(dbot) {
     });
 
     app.listen(1337);
-    return { };
+
+    return { 
+        'onDestroy': function() {
+            process.exit();
+        }
+    };
 };
 
 exports.fetch = function(dbot) {
