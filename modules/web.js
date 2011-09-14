@@ -19,6 +19,7 @@ var webInterface = function(dbot) {
 
     return { 
         'onDestroy': function() {
+            console.log('on destroy');
             process.exit();
         }
     };

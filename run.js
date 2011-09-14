@@ -14,10 +14,6 @@ var DBot = function(dModules, timers) {
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         this.instance.join('#realitest');
-        this.instance.join('#fail');
-        this.instance.join('#42');
-        this.instance.join('#itonlygetsworse');
-        this.instance.join('#plur');
     }.bind(this));
 
     this.moduleNames = dModules;
