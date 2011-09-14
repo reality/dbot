@@ -30,6 +30,12 @@ DBot.prototype.save = function() {
 };
 
 DBot.prototype.reloadModules = function() {
+    this.modules.each(function(module) {
+        if(module.onDestroy) {
+            module.onDestroy();
+        }
+    });
+
     this.rawModules = [];
     this.modules = [];
     this.commands = {};
@@ -38,12 +44,6 @@ DBot.prototype.reloadModules = function() {
     var path = require.resolve('./snippets');
     require.cache[path] = undefined;
     require('./snippets');
-
-    this.modules.each(function(module) {
-        if(module.onDestroy) {
-            module.onDestroy();
-        }
-    });
 
     this.moduleNames.each(function(name) {
         var cacheKey = require.resolve('./modules/' + name);
