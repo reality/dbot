@@ -30,11 +30,13 @@ DBot.prototype.save = function() {
 };
 
 DBot.prototype.reloadModules = function() {
-    this.modules.each(function(module) {
-        if(module.onDestroy) {
-            module.onDestroy();
-        }
-    });
+    if(this.modules) {
+        this.modules.each(function(module) {
+            if(module.onDestroy) {
+                module.onDestroy();
+            }
+        });
+    }
 
     this.rawModules = [];
     this.modules = [];
