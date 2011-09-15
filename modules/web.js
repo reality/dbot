@@ -13,6 +13,14 @@ var webInterface = function(dbot) {
     app.get('/', function(req, res) {
         res.render('index', { });
     });
+    
+    app.get('/quotes/:key', function(req, res) {
+        if(dbot.db.quoteArrs.hasOwnProperty(req.params.key)) {
+            res.render('quotes', { 'quotes': dbot.db.quoteArrs[req.params.key] });
+        } else {
+            res.render('error', { 'message': 'No quotes under that key.' });
+        }
+    });
 
     app.listen(1337);
 
