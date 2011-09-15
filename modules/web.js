@@ -23,7 +23,7 @@ var webInterface = function(dbot) {
         }
     });
 
-    app.get('/quotes/', function(req, res) {
+    app.get('/quotes', function(req, res) {
         res.render('quotelist', { 'quotes': Object.keys(dbot.db.quoteArrs) });
     });
 
