@@ -15,8 +15,9 @@ var webInterface = function(dbot) {
     });
     
     app.get('/quotes/:key', function(req, res) {
-        if(dbot.db.quoteArrs.hasOwnProperty(req.params.key)) {
-            res.render('quotes', { 'quotes': dbot.db.quoteArrs[req.params.key] });
+        var key = req.params.key.toLowerCase();
+        if(dbot.db.quoteArrs.hasOwnProperty(key)) {
+            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key] });
         } else {
             res.render('error', { 'message': 'No quotes under that key.' });
         }
