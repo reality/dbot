@@ -11,7 +11,7 @@ var quotes = function(dbot) {
                 if(quotes.hasOwnProperty(key)) {
                     dbot.say(data.channel, key + ': ' + quotes[key].random());
                 } else {
-                    dbot.say(data.channel, 'No quotes under ' + key);
+                    dbot.say(data.channel, 'Nobody loves ' + key);
                 }
             }
         },

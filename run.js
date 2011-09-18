@@ -95,7 +95,7 @@ DBot.prototype.reloadModules = function() {
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
                     this.say(data.channel, key + ': ' + this.db.quoteArrs[key].random());
                 } else {
-                    this.say(data.channel, 'No quotes under ' + key);
+                    this.say(data.channel, 'Nobody loves ' + key);
                 }
             }
         }
