@@ -65,6 +65,8 @@ var quotes = function(dbot) {
                 addStack.push(q[1]);
                 rmAllowed = true;
                 dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[q[1]].length + ')');
+            } else {
+                dbot.say(data.channel, 'Invalid syntax, initiate incineration.');
             }
         },
 
