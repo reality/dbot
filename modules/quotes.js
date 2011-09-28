@@ -90,7 +90,7 @@ var quotes = function(dbot) {
         },
         
         '~reality': function(data, params) {
-            dbot.say(data.channel, dbot.db.realiPuns.random());
+            dbot.say(data.channel, dbot.db.quoteArrs['realityonce'].random());
         },
 
         '~d': function(data, params) {

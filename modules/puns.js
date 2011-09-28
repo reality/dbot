@@ -4,7 +4,7 @@ var puns = function(dbot) {
     return {
         'listener': function(data) {
             if(data.user == 'reality') {
-                dbot.instance.say(data.channel, dbot.db.realiPuns.random());
+                dbot.instance.say(data.channel, dbot.db.quoteArrs['realityonce'].random());
             } else if(dbot.db.quoteArrs.hasOwnProperty(data.user.toLowerCase())) {
                 dbot.say(data.channel, data.user + ': ' + dbot.db.quoteArrs[data.user.toLowerCase()].random());
             } else if(dbot.instance.inChannel(data.channel)) {

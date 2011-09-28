@@ -11,7 +11,7 @@ var reality = function(dbot) {
             }
 
             if(once) {
-                dbot.db.realiPuns.push('reality ' + once[1] + '.');
+                dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
                 dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
                 dbot.save();
             }
