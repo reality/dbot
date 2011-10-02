@@ -12,9 +12,11 @@ var DBot = function(dModules, timers) {
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
     this.timers = timers.create();
 
-    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
-        this.instance.join('#42');
+    this.instance = jsbot.createJSBot(this.name, 'irc.aberwiki.org', 6667, this, function() {
+        this.instance.join('#realitest');
+        this.instance.join('#lolhax');
         this.instance.join('#itonlygetsworse');
+        this.instance.join('#42');
     }.bind(this));
 
     this.moduleNames = dModules;
