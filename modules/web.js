@@ -27,7 +27,7 @@ var webInterface = function(dbot) {
         res.render('quotelist', { 'quotes': Object.keys(dbot.db.quoteArrs) });
     });
 
-    app.listen(110);
+    app.listen(443);
 
     return { 
         'onDestroy': function() {
