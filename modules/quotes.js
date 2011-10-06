@@ -109,7 +109,6 @@ var quotes = function(dbot) {
 
         // For automatic quote retrieval
         'listener': function(data, params) {
-            console.log('test');
             if(data.user == 'reality') {
                 var once = data.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
             } else {
