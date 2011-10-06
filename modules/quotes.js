@@ -117,6 +117,8 @@ var quotes = function(dbot) {
 
             if(once) {
                 dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
+                addStack.push('realityonce');
+                rmAllowed = true;
                 dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
                 dbot.save();
             }
