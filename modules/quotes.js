@@ -16,7 +16,7 @@ var quotes = function(dbot) {
             }
         },
 
-        '~rmlast': function(data, params) {
+        /*'~rmlast': function(data, params) {
             if(rmAllowed == true || data.user == dbot.admin) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
                 if(q) {
@@ -40,7 +40,7 @@ var quotes = function(dbot) {
             } else {
                 dbot.say(data.channel, 'No spamming that shit. Try again in a few minutes...');
             }
-        },
+        },*/
 
         '~qcount': function(data, params) {
             var q = data.message.valMatch(/^~qcount ([\d\w\s]*)/, 2);
