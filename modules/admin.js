@@ -46,12 +46,21 @@ var adminCommands = function(dbot) {
         },
 
         'ban': function(data, params) {
-            if(dbot.db.bans[params[2]] === undefined) {
+            if(dbot.db.bans.hasOwnProperty(params[2])) {
                 dbot.db.bans[params[2]] = [ params[1] ];
             } else {
                 dbot.db.bans[params[2]].push(params[1]);
             }
             dbot.say(data.channel, params[1] + ' banned from ' + params[2]);
+        },
+
+        'unban': function(data, params) {
+            if(dbot.db.bans.hasOwnProperty(params[2]) && dbot.db.bans[params[2]].include(params[1])) {
+                dbot.db.bans[params[2]].splice(dbot.db.bans[params[2]].indexOf(params[1]), 1);
+                dbot.say(data.channel, params[1] + ' unbanned from ' + params[2]);
+            } else {
+                dbot.say(data.channel, 'It appears ' + params[1] + 'wasn\'t banned from that command, you fool.');
+            }
         }
     };
 
