@@ -51,6 +51,7 @@ var adminCommands = function(dbot) {
             } else {
                 dbot.db.bans[params[2]].push(params[1]);
             }
+            dbot.say(data.channel, params[1] + ' banned from ' + params[2]);
         }
     };
 
