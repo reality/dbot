@@ -14,9 +14,8 @@ var DBot = function(dModules, timers) {
 
     this.instance = jsbot.createJSBot(this.name, 'irc.aberwiki.org', 6667, this, function() {
         this.instance.join('#realitest');
-        this.instance.join('#lolhax');
-        this.instance.join('#itonlygetsworse');
         this.instance.join('#42');
+        this.instance.join('#itonlygetsworse');
     }.bind(this));
 
     this.moduleNames = dModules;
@@ -86,7 +85,15 @@ DBot.prototype.reloadModules = function() {
         if(data.channel == this.name) data.channel = data.user;
 
         if(this.commands.hasOwnProperty(params[0])) {
-            this.commands[params[0]](data, params);
+            if(this.moduleNames.include('admin') && this.db.bans.hasOwnProperty(params[0])) {
+                if(this.db.bans[params[0]].include(data.user))
+                    this.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
+                else {
+                    this.commands[params[0]](data, params);
+                }
+            } else {
+                this.commands[params[0]](data, params);
+            }
             this.save();
         } else {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);

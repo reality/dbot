@@ -36,13 +36,20 @@ var adminCommands = function(dbot) {
         },
 
         'unload': function(data, params) {
-            console.log(dbot.moduleNames);
             if(dbot.moduleNames.include(params[1])) {
                 dbot.moduleNames[params[1]] = undefined;
                 dbot.reloadModules();
                 dbot.say(data.channel, 'Turned off module: ' + params[1]);
             } else {
                 dbot.say(data.channel, 'Module ' + params[1] + ' isn\'t loaded... Idiot...');
+            }
+        },
+
+        'ban': function(data, params) {
+            if(dbot.db.bans[params[2]] === undefined) {
+                dbot.db.bans[params[2]] = [ params[1] ];
+            } else {
+                dbot.db.bans[params[2]].push(params[1]);
             }
         }
     };
