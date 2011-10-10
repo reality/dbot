@@ -47,9 +47,9 @@ var adminCommands = function(dbot) {
 
         'ban': function(data, params) {
             if(dbot.db.bans.hasOwnProperty(params[2])) {
-                dbot.db.bans[params[2]] = [ params[1] ];
-            } else {
                 dbot.db.bans[params[2]].push(params[1]);
+            } else {
+                dbot.db.bans[params[2]] = [ params[1] ];
             }
             dbot.say(data.channel, params[1] + ' banned from ' + params[2]);
         },
