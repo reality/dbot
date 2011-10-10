@@ -85,8 +85,8 @@ DBot.prototype.reloadModules = function() {
         if(data.channel == this.name) data.channel = data.user;
 
         if(this.commands.hasOwnProperty(params[0])) {
-            if(this.moduleNames.include('admin') && this.db.bans.hasOwnProperty(params[0])) {
-                if(this.db.bans[params[0]].include(data.user))
+            if(this.moduleNames.include('admin') && (this.db.bans.hasOwnProperty(params[0]) || this.db.bans['*'].include(data.user))) {
+                if(this.db.bans[params[0]].include(data.user) || this.db.bans['*'].include(data.user))
                     this.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
                 else {
                     this.commands[params[0]](data, params);
