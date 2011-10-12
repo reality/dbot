@@ -4,7 +4,7 @@ var js = function(dbot) {
     var commands = {
         '~js': function(data, params) {
             var q = data.message.valMatch(/^~js ([\d\w\s]*)/, 2);
-            console.log(q);
+            console.log(q[1]);
             dbot.say(data.channel, eval(q[1]));
         }
     };
