@@ -61,6 +61,10 @@ var adminCommands = function(dbot) {
             } else {
                 dbot.say(data.channel, 'It appears ' + params[1] + 'wasn\'t banned from that command, you fool.');
             }
+        },
+
+        'modehate': function(data, params) {
+            dbot.db.modehate.push(params[2]);
         }
     };
 
