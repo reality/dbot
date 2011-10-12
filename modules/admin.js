@@ -64,7 +64,8 @@ var adminCommands = function(dbot) {
         },
 
         'modehate': function(data, params) {
-            dbot.db.modehate.push(params[2]);
+            dbot.db.modehate.push(params[1]);
+            dbot.say(data.channel, 'Now modehating on ' + params[1]);
         }
     };
 
