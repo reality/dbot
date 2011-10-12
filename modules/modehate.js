@@ -8,7 +8,7 @@ var modehate = function(dbot) {
             }
         },
 
-        'on': 'MODE'
+        'on': 'PRIVMSG'
     };
 };
 
