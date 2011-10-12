@@ -6,7 +6,7 @@ var modehate = function(dbot) {
             console.log('caught modehate');
             if(dbot.db.modehate.include(data.user)) {
                 dbot.instance.send('KICK ' + data.channel + ' ' + data.user + ' :gtfo');
-                dbot.say(data.channel,'KICK ' + data.channel + ' ' + data.user + ' :gtfo');
+                console.log(data.channel,'KICK ' + data.channel + ' ' + data.user + ' :gtfo');
             }
         },
 
