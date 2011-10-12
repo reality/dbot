@@ -7,4 +7,14 @@ var js = function(dbot) {
             dbot.say(data.channel, eval(q));
         }
     };
-}
+
+    return {
+        'onLoad': function() {
+            return commands;
+        }
+    };
+};
+
+exports.fetch = function(dbot) {
+    return js(dbot);
+};
