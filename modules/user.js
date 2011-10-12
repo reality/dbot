@@ -11,7 +11,7 @@ var userCommands = function(dbot) {
             if(!dbot.db.kicks.hasOwnProperty(params[1])) {
                 dbot.say(data.channel, params[1] + ' has either never been kicked or does not exist.');
             } else {
-                dbot.say(data.channel, params[1] + ' has been kicked ' + dbot.db.kicks[params[1]] + ' times.');
+                dbot.say(data.channel, params[1] + ' has been kicked ' + dbot.db.kicks[params[1]] + ' times and has kicked people ' + dbot.db.kickers[params[1]] + ' times.');
             }
         },
 
