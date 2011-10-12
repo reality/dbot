@@ -14,8 +14,6 @@ var DBot = function(dModules, timers) {
 
     this.instance = jsbot.createJSBot(this.name, 'irc.aberwiki.org', 6667, this, function() {
         this.instance.join('#realitest');
-        this.instance.join('#42');
-        this.instance.join('#itonlygetsworse');
     }.bind(this));
 
     this.moduleNames = dModules;
