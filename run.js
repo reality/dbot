@@ -28,7 +28,7 @@ DBot.prototype.say = function(channel, data) {
 };
 
 DBot.prototype.save = function() {
-    fs.writeFile('db.json', JSON.stringify(this.db, null, '    '));
+    fs.writeFileSync('db.json', JSON.stringify(this.db, null, '    '));
 };
 
 DBot.prototype.reloadModules = function() {
@@ -44,6 +44,11 @@ DBot.prototype.reloadModules = function() {
     this.modules = [];
     this.commands = {};
     this.timers.clearTimers();
+
+    this.save();
+    this.timers.addTimer(1000 * 60 * 10, function() {
+        this.save();
+    });
 
     var path = require.resolve('./snippets');
     require.cache[path] = undefined;
@@ -90,7 +95,6 @@ DBot.prototype.reloadModules = function() {
             else {
                 this.commands[params[0]](data, params);
             }
-            this.save();
         } else {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {

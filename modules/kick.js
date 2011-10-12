@@ -15,8 +15,6 @@ var kick = function(dbot) {
                 }
                 dbot.say(data.channel, data.kickee + '-- (' + data.kickee + ' has been kicked ' + dbot.db.kicks[data.kickee] + ' times)');
             }
-
-            dbot.save();
         },
 
         on: 'KICK'

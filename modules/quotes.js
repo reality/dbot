@@ -120,7 +120,6 @@ var quotes = function(dbot) {
                 addStack.push('realityonce');
                 rmAllowed = true;
                 dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
-                dbot.save();
             }
         },
 
