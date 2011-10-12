@@ -116,10 +116,10 @@ var quotes = function(dbot) {
             }
 
             if(once) {
-                if((this.db.bans.hasOwnProperty('~qadd') &&
-                this.db.bans['~qadd'].include(data.user)) ||
-                this.db.bans['*'].include(data.user)) {
-                    this.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
+                if((dbot.db.bans.hasOwnProperty('~qadd') &&
+                dbot.db.bans['~qadd'].include(data.user)) ||
+                dbot.db.bans['*'].include(data.user)) {
+                    dbot.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
                 } else {
                     dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
                     addStack.push('realityonce');
