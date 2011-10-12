@@ -4,7 +4,7 @@ var modehate = function(dbot) {
     return {
         'listener': function(data) {
             if(dbot.db.modehate.include(data.user)) {
-                dbot.instance.send('KICK', data.channel, data.user, 'gtfo')
+                dbot.instance.send('KICK', data.channel, data.user, 'gtfo');
             }
         },
 
