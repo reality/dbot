@@ -34,7 +34,26 @@ var userCommands = function(dbot) {
 
             var orderedKicks = kickArr.sort(function(a, b) { return a[1] - b[1]; });
             var topKicks = kickArr.slice(kickArr.length - 5).reverse();
-            var kickString = "Top Kicks: ";
+            var kickString = "Top Kicked: ";
+
+            for(var i=0;i<topKicks.length;i++) {
+                kickString += topKicks[i][0] + " (" + topKicks[i][1] + "), ";
+            }
+            kickString = kickString.slice(0, -2);
+
+            dbot.say(data.channel, kickString);
+
+            // code repetition bad
+            var kickArr = [];
+            for(var kickUser in dbot.db.kickers) {
+                if(dbot.db.kickers.hasOwnProperty(kickUser)) {
+                    kickArr.push([kickUser, dbot.db.kickers[kickUser]]);
+                }
+            }
+
+            var orderedKicks = kickArr.sort(function(a, b) { return a[1] - b[1]; });
+            var topKicks = kickArr.slice(kickArr.length - 5).reverse();
+            var kickString = "Top Kickers: ";
 
             for(var i=0;i<topKicks.length;i++) {
                 kickString += topKicks[i][0] + " (" + topKicks[i][1] + "), ";
