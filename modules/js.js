@@ -3,7 +3,7 @@ var js = function(dbot) {
 
     var commands = {
         '~js': function(data, params) {
-            var q = data.message.valMatch(/^~js ([\d\w\s]*)/, 2);
+            var q = data.message.valMatch(/^~js ([\d\w\s]\+*)/, 2);
             dbot.say(data.channel, eval(q[1]));
         }
     };
