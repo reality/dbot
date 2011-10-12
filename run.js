@@ -29,6 +29,7 @@ DBot.prototype.say = function(channel, data) {
 
 DBot.prototype.save = function() {
     fs.writeFileSync('db.json', JSON.stringify(this.db, null, '    '));
+    console.log('database saved');
 };
 
 DBot.prototype.reloadModules = function() {
