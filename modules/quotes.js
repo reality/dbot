@@ -20,7 +20,7 @@ var quotes = function(dbot) {
             if(params[2] === undefined) {
                 dbot.say(data.channel, 'Next time provide a search parameter. Commence incineration.');
             } else {
-                if(!quote.hasOwnProperty(params[1])) {
+                if(!quotes.hasOwnProperty(params[1])) {
                     dbot.say(data.channel, 'That category has no quotes in it. Commence incineration.');
                 } else {
                     var matches = [];
