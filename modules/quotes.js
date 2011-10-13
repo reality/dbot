@@ -16,6 +16,31 @@ var quotes = function(dbot) {
             }
         },
 
+        '~qsearch': function(data, params) {
+            if(params[2] === undefined) {
+                dbot.say(data.channel, 'Next time provide a search parameter. Commence incineration.');
+            } else {
+                if(!quote.hasOwnProperty(params[1])) {
+                    dbot.say(data.channel, 'That category has no quotes in it. Commence incineration.');
+                } else {
+                    var matches = [];
+                    
+                    quotes[params[1]].each(function(quote) {
+                        if(quote.indexOf(params[2]) != -1) {
+                            matches.push(quote);
+                        }
+                    }.bind(this));
+
+                    if(matches.length == 0) {
+                        dbot.say(data.channel, 'No results found.');
+                    } else {
+                        dbot.say(data.channel, params[1] + ' (' + params[2] + '): ' + matches.random() + ' [' + matches.length + ' results]');
+                    }
+                }
+
+            }
+        },
+
         '~rmlast': function(data, params) {
             if(rmAllowed == true || data.user == dbot.admin) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
