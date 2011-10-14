@@ -51,7 +51,7 @@ var quotes = function(dbot) {
                             rmAllowed = false;
                             dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
                         } else {
-                            dbot.say(data.channel, param[1] + ' is locked. Commence incineration.');
+                            dbot.say(data.channel, q[1] + ' is locked. Commence incineration.');
                         }
                     } else {
                         dbot.say(data.channel, 'No quotes exist under ' + q[1]);
