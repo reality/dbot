@@ -46,18 +46,26 @@ var quotes = function(dbot) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
                 if(q) {
                     if(quotes.hasOwnProperty(q[1])) {
-                        var quote = quotes[q[1]].pop();
-                        rmAllowed = false;
-                        dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
+                        if(!dbot.db.locks.include(q[1])) {
+                            var quote = quotes[q[1]].pop();
+                            rmAllowed = false;
+                            dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
+                        } else {
+                            dbot.say(data.channel, param[1] + ' is locked. Commence incineration.');
+                        }
                     } else {
                         dbot.say(data.channel, 'No quotes exist under ' + q[1]);
                     }
                 } else {
                     var last = addStack.pop();
                     if(last) {
-                        quotes[last].pop();
-                        rmAllowed = false;
-                        dbot.say(data.channel, 'Last quote removed from ' + last + '.');
+                        if(!dbot.db.locks.include(last)) {
+                            quotes[last].pop();
+                            rmAllowed = false;
+                            dbot.say(data.channel, 'Last quote removed from ' + last + '.');
+                        } else {
+                            dbot.say(data.channel, last + ' is locked. Commence incineration.');
+                        }
                     } else {
                         dbot.say(data.channel, 'No quotes were added recently.');
                     }

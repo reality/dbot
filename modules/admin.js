@@ -66,6 +66,11 @@ var adminCommands = function(dbot) {
         'modehate': function(data, params) {
             dbot.db.modehate.push(params[1]);
             dbot.say(data.channel, 'Now modehating on ' + params[1]);
+        },
+
+        'lock': function(data, params) {
+            dbot.db.locks.push(params[1]);
+            dbot.say(data.channel, 'Locked ' + params[1] + ' quotes.');
         }
     };
 
