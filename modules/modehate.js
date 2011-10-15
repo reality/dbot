@@ -3,15 +3,9 @@ var modehate = function(dbot) {
 
     return {
         'listener': function(data, params) {
-            console.log('caught modehate');
-            console.log(params[0]);
-            console.log(params[1]);
-            console.log(params[2]);
-            console.log(params[3]);
-            console.log(params[4]);
-            //if(dbot.db.modehate.include(data.user)) {
-                //dbot.instance.send('KICK #42 ' + data.user + ' :gtfo');
-            //}
+            if(dbot.db.modehate.include(data.user) && data.raw.indexOf('-o') != -1) {
+                dbot.instance.send('KICK #42 ' + data.user + ' :gtfo');
+            }
         },
 
         'on': 'MODE'
