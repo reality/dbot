@@ -37,7 +37,6 @@ var quotes = function(dbot) {
                         dbot.say(data.channel, params[1] + ' (' + params[2] + '): ' + matches.random() + ' [' + matches.length + ' results]');
                     }
                 }
-
             }
         },
 
