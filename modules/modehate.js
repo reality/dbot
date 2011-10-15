@@ -3,8 +3,7 @@ var modehate = function(dbot) {
 
     return {
         'listener': function(data, params) {
-            console.log(data.raw);
-            if(dbot.db.modehate.include(data.user) && data.raw.indexOf('-o') != -1) {
+            if(dbot.db.modehate.include(data.user) && data.raw[0].indexOf('-o') != -1) {
                 dbot.instance.send('KICK #42 ' + data.user + ' :gtfo');
             }
         },
