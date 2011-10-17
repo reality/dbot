@@ -10,7 +10,7 @@ var adminCommands = function(dbot) {
         },
 
         'opme': function(data, params) {
-           dbot.instance.send('MODE #42 +v ', dbot.admin);
+           dbot.instance.send('MODE #42 +o ', dbot.admin);
         },
 
         'part': function(data, params) {
