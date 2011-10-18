@@ -83,8 +83,10 @@ var adminCommands = function(dbot) {
         'listener': function(data) {
             params = data.message.split(' ');
 
-            if(commands.hasOwnProperty(params[0]) && data.user == dbot.admin) 
+            if(commands.hasOwnProperty(params[0]) && data.user == dbot.admin) {
                 commands[params[0]](data, params);
+                dbot.save();
+            }
         },
 
         'on': 'PRIVMSG'
