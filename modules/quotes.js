@@ -44,6 +44,7 @@ var quotes = function(dbot) {
             if(rmAllowed == true || data.user == dbot.admin) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
                 if(q) {
+                    q[1] = q[1].trim().toLowerCase();
                     if(quotes.hasOwnProperty(q[1])) {
                         if(!dbot.db.locks.include(q[1])) {
                             var quote = quotes[q[1]].pop();
