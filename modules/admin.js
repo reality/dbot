@@ -81,7 +81,7 @@ var adminCommands = function(dbot) {
 
     return {
         'listener': function(data) {
-            if(data.channel == this.name) data.channel = data.user;
+            if(data.channel == dbot.name) data.channel = data.user;
 
             params = data.message.split(' ');
             if(commands.hasOwnProperty(params[0]) && data.user == dbot.admin) {
