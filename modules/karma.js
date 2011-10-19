@@ -3,7 +3,7 @@ var karma = function(dbot) {
 
     return {
         'listener': function(data) {
-            if(data.user == 'aisbot' && data.channel == 'depressionbot' &&
+            if(data.user == 'aisbot' && data.channel == 'aisbot' &&
                     dbot.waitingForKarma != false && data.message.match(/is at/)) {
                 var split = data.message.split(' ');
                 var target = split[0];
