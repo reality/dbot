@@ -5,9 +5,6 @@ var youAre = function(dbot) {
         'listener': function(data) {
             var key = data.message.valMatch(/(\bis\b|\bare\b)\s+([\w\s\d]*?)(\s+)?(,|\.|\band\b|$)/, 5);
 
-            console.log(key[1]);
-            console.log(key[2]);
-            console.log(key[3]);
             if(key && key[2] != "" && Number.prototype.chanceIn(1, 25) && data.user != 'aisbot') {
                 dbot.say(data.channel, data.user + ': You\'re ' + key[2] + '.');
             }
