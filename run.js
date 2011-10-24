@@ -3,7 +3,7 @@ var timers = require('./timer');
 var jsbot = require('./jsbot');
 require('./snippets');
 
-var modules = ['modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
+var modules = ['web', 'modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
 
 var DBot = function(dModules, timers) {
     this.admin = 'reality';
@@ -12,8 +12,11 @@ var DBot = function(dModules, timers) {
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
     this.timers = timers.create();
 
-    this.instance = jsbot.createJSBot(this.name, 'irc.freenode.net', 6667, this, function() {
-        this.instance.join('#tdtrs');
+    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
+        this.instance.join('#42');
+        this.instance.join('#not42');
+        this.instance.join('#itonlygetsworse');
+
     }.bind(this));
 
     this.moduleNames = dModules;
