@@ -22,7 +22,7 @@ var spelling = function(dbot) {
                 console.log(winner + ' ' + winnerDistance); 
 
                 if(winnerDistance < 3) {
-                    var fix = data.message.replace(winner, correction); 
+                    var fix = last[data.channel][data.user].replace(winner, correction); 
                     dbot.say(data.channel, data.user + ':' + fix);
                 }
             } else {
