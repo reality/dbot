@@ -3,7 +3,7 @@ var timers = require('./timer');
 var jsbot = require('./jsbot');
 require('./snippets');
 
-var modules = ['web', 'modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
+var modules = ['spelling', 'web', 'modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
 
 var DBot = function(dModules, timers) {
     this.admin = 'reality';
