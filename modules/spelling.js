@@ -23,7 +23,7 @@ var spelling = function(dbot) {
 
                 if(winnerDistance < 3) {
                     var fix = last[data.channel][data.user].replace(winner, correction); 
-                    dbot.say(data.channel, data.user + ':' + fix);
+                    dbot.say(data.channel, data.user + ': ' + fix);
                 }
             } else {
                  if(last.hasOwnProperty(data.channel)) {
