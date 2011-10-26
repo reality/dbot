@@ -10,7 +10,7 @@ var spelling = function(dbot) {
                 var candidates = last[data.channel][data.user].split(' ');
                 var winner = false;
 
-                for(int i=0;i<candidates.length;i++) {
+                for(var i=0;i<candidates.length;i++) {
                     var distance = String.prototype.distance(correction, candidates[i]);
                     if(distance > winner) {
                         winner = candidates[i];
