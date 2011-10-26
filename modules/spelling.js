@@ -32,6 +32,7 @@ var spelling = function(dbot) {
         },
 
         'on': 'PRIVMSG'
+    }
 } 
 
 exports.fetch = function(dbot) {
