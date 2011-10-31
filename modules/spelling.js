@@ -4,7 +4,7 @@ var spelling = function(dbot) {
     
     return {
         'listener': function(data, params) {
-            var q = data.message.valMatch(/^\*([\d\w\s]*)/, 2);
+            var q = data.message.valMatch(/^(\*|\*\*)([\d\w\s]*)/, 3);
             if(q) {
                 var correction = q[1];
                 var candidates = last[data.channel][data.user].split(' ');
@@ -18,8 +18,6 @@ var spelling = function(dbot) {
                         winnerDistance = distance;
                     }
                 }
-
-                console.log(winner + ' ' + winnerDistance); 
 
                 if(winnerDistance < 3) {
                     if(winner !== correction) {
