@@ -6,10 +6,8 @@ require('./snippets');
 var modules = ['spelling', 'web', 'modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
 
 var DBot = function(dModules, timers) {
-    this.config = fs.readFileSync('conf.json', 'utf-8');
-
-    this.admin = this.config.admin;
-    this.name = this.config.username;
+    this.admin = 'reality';
+    this.name = 'depressionbot';
 
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
     this.timers = timers.create();
