@@ -22,6 +22,7 @@ var spelling = function(dbot) {
                 if(winnerDistance < 3) {
                     if(winner !== correction) {
                         var fix = last[data.channel][data.user].replace(winner, correction); 
+                        last[data.channel][data.user] = fix;
                         dbot.say(data.channel, data.user + ' meant: ' + fix);
                     }
                 }
