@@ -8,6 +8,17 @@ var kick = function(dbot) {
                 dbot.say(data.channel, 'Thou shalt not kick ' + dbot.name);
                 dbot.db.kicks[dbot.name] += 1;
             } else {
+
+                if(dbot.db.modehate.include(data.user)) {
+                    dbot.instance.send('KICK ' + data.channel + ' ' + data.user + ' :gtfo (MODEHATE)');
+
+                    if(!dbot.db.kicks.hasOwnProperty(data.user)) {
+                        dbot.db.kicks[data.user] = 1;
+                    } else {
+                        dbot.db.kicks[data.user] += 1;
+                    }
+                }
+
                 if(!dbot.db.kicks.hasOwnProperty(data.kickee)) {
                     dbot.db.kicks[data.kickee] = 1;
                 } else {
