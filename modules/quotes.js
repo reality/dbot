@@ -93,13 +93,18 @@ var quotes = function(dbot) {
                 q[1] = q[1].toLowerCase();
                 if(!Object.isArray(quotes[q[1]])) {
                     quotes[q[1]] = [];
+                } else {
+                    if (q2 in quotes[q[1]]) {
+                        dbot.say(data.channel, 'Quote already in DB. Initiate incineration.');
+                        return;
+                    }
                 }
                 quotes[q[1]].push(q[2]);
                 addStack.push(q[1]);
                 rmAllowed = true;
                 dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[q[1]].length + ')');
             } else {
-                dbot.say(data.channel, 'Invalid syntax, initiate incineration.');
+                dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
             }
         },
 
