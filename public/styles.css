@@ -61,13 +61,22 @@ div.quotes a {
 
 }
 
-div.quote {
-    background: #CCC;
-    margin: 10px;
-    padding: 20px;
-    border-radius: 15px;
+/* Quote list pages */
+
+div#quotelist {
+    width:100%;
 }
 
-div.quote:hover {
+div#quotelist div.quote {
+    background: white;
+    border-radius: 5px;
+    margin: 5px auto;
+    padding: 10px;
+    font-size: 16px;
+    width:90%;
+    opacity: 0.7;
+}
 
+div#quotelist div.quote:hover {
+    opacity: 1;
 }
