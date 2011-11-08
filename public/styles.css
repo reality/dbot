@@ -18,7 +18,7 @@
 } */
 
 html {
-  background: url(http://dl.dropbox.com/u/13375195/depressionbot/images/background.jpg) no-repeat center center fixed;
+  background: url("/background.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
