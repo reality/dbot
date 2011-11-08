@@ -26,7 +26,7 @@ div#title {
 }
 
 div#main {
-    padding: 0px;
+    padding: 25px 0px;
     margin: 0px; 
     font-size: 21px;
     text-align:center;
@@ -75,7 +75,7 @@ div#quotelist div.quote {
     font-size: 18px;
     width:90%;
     opacity: 0.7;
-    color:#12696B;
+    color:darkblue;
     text-shadow: 1px 1px 1px black;
 }
 
