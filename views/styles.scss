@@ -1,0 +1,65 @@
+/* #quotelist {
+    padding: 10px;
+}
+
+.quotes {
+    border-left: 2px solid red;
+    padding: 10px;
+}
+
+.quote {
+    border-left: 2px solid blue;
+} */
+
+html {
+  background: url(http://dl.dropbox.com/u/13375195/depressionbot/images/background.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+body {
+  padding: 30px;
+  font-size: 46px;
+  font-family: "Lucida Grande";
+  font-weight: bold;
+  margin: 0;
+  color: black;
+  text-shadow: 1px 1px 2px #2B2B2B;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  width: 600px;
+  height: 150px;
+  margin: 25px auto;
+  display: block;
+  background: white;
+  box-shadow: 0 0 20px black;
+  padding: 20px;
+  border-radius: 15px;
+  opacity: 0.5;
+  color: #12699B;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+a span {
+  position: relative;
+  top: -60px;
+}
+
+img {
+  width: 150px;
+  height: 150px;
+  background: url(http://dl.dropbox.com/u/13375195/depressionbot/images/null.png);
+}

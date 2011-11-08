@@ -11,10 +11,17 @@ var webInterface = function(dbot) {
     app.set('view engine', 'jade');
 
     app.get('/', function(req, res) {
-        res.render('index', { });
+        res.redirect('/quotes');
+        //res.render('index', { });
+    });
+    
+    app.get('/quotes', function(req, res) {
+        // Lists the quote categories
+        res.render('quotelist', { 'quotelist': Object.keys(dbot.db.quoteArrs) });
     });
     
     app.get('/quotes/:key', function(req, res) {
+        // Lists the quotes in a category
         var key = req.params.key.toLowerCase();
         if(dbot.db.quoteArrs.hasOwnProperty(key)) {
             res.render('quotes', { 'quotes': dbot.db.quoteArrs[key] });
@@ -22,11 +29,11 @@ var webInterface = function(dbot) {
             res.render('error', { 'message': 'No quotes under that key.' });
         }
     });
-
-    app.get('/quotes', function(req, res) {
-        res.render('quotelist', { 'quotes': Object.keys(dbot.db.quoteArrs) });
+    
+    app.get('/css', function(req, res) {
+        res.render('styles.scss', { layout: false });
     });
-
+    
     app.listen(443);
 
     return { 
