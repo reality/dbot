@@ -36,7 +36,7 @@ a {
   text-decoration: none;
 }
 
-div.quote, span.quote {
+div.quotes, div.quote {
     color: #12699B;
     box-shadow: 0 0 20px black;
     opacity: 0.5;
