@@ -24,14 +24,10 @@ var webInterface = function(dbot) {
         // Lists the quotes in a category
         var key = req.params.key.toLowerCase();
         if(dbot.db.quoteArrs.hasOwnProperty(key)) {
-            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key] });
+            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key]});
         } else {
             res.render('error', { 'message': 'No quotes under that key.' });
         }
-    });
-    
-    app.get('/css', function(req, res) {
-        res.render('styles.css', { 'layout': false });
     });
     
     app.listen(443);
