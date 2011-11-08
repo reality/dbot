@@ -4,16 +4,7 @@ html(lang: 'en')
     meta(charset: 'utf-8')
     link(rel: 'stylesheet', type: 'text/css', href: '/styles.css')
     title Depressionbot web interface
-    script
-        var quotes = document.getElementsByTagName("a");
-        var i, ii;
-        for (i = 0, ii = quotes.length; i < ii; i++) {
-            var quote = quotes[i];
-            var q_name = quote.innerHTML;
-            var img = new Image();
-            img.src = 'http://dl.dropbox.com/u/13375195/depressionbot/images/quoted/' + q_name + '.gif';
-            quote.innerHTML = img.outerHTML + ' <span>' + q_name + '</span>';
-        }
   body
     div#title Depressionbot web interface
-    !{body}
+    div#main
+        !{body}
