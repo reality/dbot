@@ -31,7 +31,7 @@ var webInterface = function(dbot) {
     });
     
     app.get('/css', function(req, res) {
-        res.render('styles.scss', { 'layout': false, 'view engine': 'jade' });
+        res.render('styles.css', { 'layout': false });
     });
     
     app.listen(443);
