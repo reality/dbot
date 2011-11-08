@@ -3,7 +3,7 @@ var express = require('express');
 var webInterface = function(dbot) {
     var dbot = dbot;
 
-    var pub = '../public';
+    var pub = 'public';
     var app = express.createServer();
 
     app.use(express.compiler({ src: pub, enable: ['sass'] }));
