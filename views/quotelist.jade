@@ -1,3 +1,4 @@
 div#quotelist
     -each quote in quotelist
-        a.quote(href='/quotes/'+quote) #{quote}
+        div.quote
+            a(href='/quotes/'+quote) #{quote}

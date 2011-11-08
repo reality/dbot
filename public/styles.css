@@ -46,7 +46,7 @@ a.category, a.quote {
 
 /* Quotes list page */
 
-a.category {
+.category {
     background: white;
     float: left;
     display: inline;
@@ -55,8 +55,13 @@ a.category {
     border-radius: 15px;
 }
 
-a.category:hover {
+.category:hover {
   opacity: 0.8;
+}
+
+.category a {
+    width:100%;
+    height:100%;
 }
 
 span.quote {
