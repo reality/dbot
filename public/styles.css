@@ -70,13 +70,13 @@ div#quotelist {
 div#quotelist div.quote {
     background: white;
     border-radius: 5px;
-    margin: 5px auto;
+    margin: 10px auto;
     padding: 10px;
-    font-size: 16px;
+    font-size: 18px;
     width:90%;
     opacity: 0.7;
     color:#12696B;
-    text-shadow: 1px 1px 1px #2B2B2B;
+    text-shadow: 1px 1px 1px black;
 }
 
 div#quotelist div.quote:hover {
