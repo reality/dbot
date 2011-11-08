@@ -94,7 +94,7 @@ var quotes = function(dbot) {
                 if(!Object.isArray(quotes[q[1]])) {
                     quotes[q[1]] = [];
                 } else {
-                    if (q2 in quotes[q[1]]) {
+                    if (q[2] in quotes[q[1]]) {
                         dbot.say(data.channel, 'Quote already in DB. Initiate incineration.');
                         return;
                     }
