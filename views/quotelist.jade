@@ -1,4 +1,3 @@
-div#quotelist
-    -each quote in quotelist
-        div.category
-            a(href='/quotes/' + quote) #{quote}
+-each quote in quotelist
+    div.quotes
+        a(href='/quotes/'+quote) #{quote}
