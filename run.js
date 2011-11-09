@@ -6,18 +6,21 @@ require('./snippets');
 var modules = ['spelling', 'web', 'modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
 
 var DBot = function(dModules, timers) {
-    this.admin = 'reality';
-    this.name = 'depressionbot';
-
+    this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-    this.timers = timers.create();
 
+    this.admin = this.config.admin || 'reality';
+    this.name = this.config.name || 'depressionbot';
+
+    this.timers = timers.create();
     this.waitingForKarma = false;
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
-        this.instance.join('#42');
-        this.instance.join('#not42');
-        this.instance.join('#itonlygetsworse');
+        if(this.config.hasOwnProperty('channels')) {
+            for(channel in this.config.channels) {
+                this.instance.join(channel);
+            }
+        }
     }.bind(this));
 
     this.moduleNames = dModules;
