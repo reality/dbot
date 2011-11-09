@@ -17,9 +17,9 @@ var DBot = function(dModules, timers) {
 
     this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
         if(this.config.hasOwnProperty('channels')) {
-            for(channel in this.config.channels) {
+            this.config.channels.each(function(channel) {
                 this.instance.join(channel);
-            }
+            }.bind(this));
         }
     }.bind(this));
 
