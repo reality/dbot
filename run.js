@@ -101,7 +101,7 @@ DBot.prototype.reloadModules = function() {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {
                 q[1] = q[1].trim();
-                key = q[1].toLowerCase();
+                key = this.cleanNick(q[1])
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
                     this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
                 } else {
@@ -111,5 +111,16 @@ DBot.prototype.reloadModules = function() {
         }
     }.bind(this));
 };
+
+DBot.prototype.cleanNick = function(key) {
+    key = key.toLowerCase();
+    while(key.endsWith("_")) {
+        if(this.db.quoteArrs.hasOwnProperty(key)) {
+            return key;
+        }
+        key = key.substring(0, key.length-1);
+    }
+    return key;
+}
 
 new DBot(modules, timers);
