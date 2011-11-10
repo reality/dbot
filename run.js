@@ -104,7 +104,7 @@ DBot.prototype.reloadModules = function() {
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
                     var output = this.db.quoteArrs[key].random();
                     if(output.indexOf("glee") != -1) {
-                        dbot.instance.send('KICK ' + data.channel + ' ' + data.user + ' :glee off dickhead');
+                        this.instance.send('KICK ' + data.channel + ' ' + data.user + ' :glee off dickhead');
                     } else {
                         this.say(data.channel, key + ': ' + output);
                     }
