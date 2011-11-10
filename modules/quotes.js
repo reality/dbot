@@ -7,11 +7,12 @@ var quotes = function(dbot) {
         '~q': function(data, params) { 
             var q = data.message.valMatch(/^~q ([\d\w\s]*)/, 2);
             if(q) {
-                key = q[1].trim().toLowerCase();
+                q[1] = q[1].trim();
+                key = q[1].toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, key + ': ' + quotes[key].random());
+                    dbot.say(data.channel, q[1] + ': ' + quotes[key].random());
                 } else {
-                    dbot.say(data.channel, 'Nobody loves ' + key);
+                    dbot.say(data.channel, 'Nobody loves ' + q[1]);
                 }
             }
         },
@@ -20,12 +21,14 @@ var quotes = function(dbot) {
             if(params[2] === undefined) {
                 dbot.say(data.channel, 'Next time provide a search parameter. Commence incineration.');
             } else {
-                if(!quotes.hasOwnProperty(params[1])) {
+                params[1].trim();
+                key = params[1].toLowerCase();
+                if(!quotes.hasOwnProperty(key)) {
                     dbot.say(data.channel, 'That category has no quotes in it. Commence incineration.');
                 } else {
                     var matches = [];
                     
-                    quotes[params[1]].each(function(quote) {
+                    quotes[key].each(function(quote) {
                         if(quote.indexOf(params[2]) != -1) {
                             matches.push(quote);
                         }
@@ -44,10 +47,11 @@ var quotes = function(dbot) {
             if(rmAllowed == true || data.user == dbot.admin) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
                 if(q) {
-                    q[1] = q[1].trim().toLowerCase();
+                    q[1] = q[1].trim()
+                    key = q[1].toLowerCase();
                     if(quotes.hasOwnProperty(q[1])) {
                         if(!dbot.db.locks.include(q[1])) {
-                            var quote = quotes[q[1]].pop();
+                            var quote = quotes[key].pop();
                             rmAllowed = false;
                             dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
                         } else {
@@ -78,11 +82,12 @@ var quotes = function(dbot) {
         '~qcount': function(data, params) {
             var q = data.message.valMatch(/^~qcount ([\d\w\s]*)/, 2);
             if(q) {
-                key = q[1].trim().toLowerCase();
+                q[1] = q[1].trim();
+                key = q[1].toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, key + ' has ' + quotes[key].length + ' quotes.');
+                    dbot.say(data.channel, q[1] + ' has ' + quotes[key].length + ' quotes.');
                 } else {
-                    dbot.say(data.channel, 'No quotes under ' + key);
+                    dbot.say(data.channel, 'No quotes under ' + q[1]);
                 }
             }
         },
@@ -90,19 +95,19 @@ var quotes = function(dbot) {
         '~qadd': function(data, params) {
             var q = data.message.valMatch(/^~qadd ([\d\w\s]*)=(.+)$/, 3);
             if(q) {
-                q[1] = q[1].toLowerCase();
-                if(!Object.isArray(quotes[q[1]])) {
-                    quotes[q[1]] = [];
+                key = q[1].toLowerCase();
+                if(!Object.isArray(quotes[key])) {
+                    quotes[key] = [];
                 } else {
-                    if (q[2] in quotes[q[1]]) {
+                    if (q[2] in quotes[key]) {
                         dbot.say(data.channel, 'Quote already in DB. Initiate incineration.');
                         return;
                     }
                 }
-                quotes[q[1]].push(q[2]);
+                quotes[key].push(q[2]);
                 addStack.push(q[1]);
                 rmAllowed = true;
-                dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[q[1]].length + ')');
+                dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[key].length + ')');
             } else {
                 dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
             }
@@ -111,10 +116,11 @@ var quotes = function(dbot) {
         '~qset': function(data, params) {
             var q = data.message.valMatch(/^~qset ([\d\w\s]*)=(.+)$/, 3);
             if(q) {
-                q[1] = q[1].toLowerCase();
-                if(!quotes.hasOwnProperty(q[1]) || (quotes.hasOwnProperty(q[1]) && 
-                        quotes[q[1]].length == 1)) {
-                    quotes[q[1]] = [q[2]];
+                q[1] = q[1].trim();
+                key = q[1].toLowerCase();
+                if(!quotes.hasOwnProperty(key) || (quotes.hasOwnProperty(key) && 
+                        quotes[key].length == 1)) {
+                    quotes[key] = [q[2]];
                     dbot.say(data.channel, 'Quote saved as ' + q[1]);
                 } else {
                     dbot.say(data.channel, 'No replacing arrays, you whore.');
