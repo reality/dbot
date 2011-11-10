@@ -30,7 +30,7 @@ var webInterface = function(dbot) {
         }
     });
     
-    app.listen(9443);
+    app.listen(443);
 
     return { 
         'onDestroy': function() {
