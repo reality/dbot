@@ -4,7 +4,7 @@ div#quotelist
             div.quote 
                 a(href=quote)
                     -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
-                        =img(src=quote)
+                        img(src=quote)
                     -else
                         =quote
         -else
