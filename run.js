@@ -102,7 +102,12 @@ DBot.prototype.reloadModules = function() {
             if(q) {
                 key = q[1].trim().toLowerCase();
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
-                    this.say(data.channel, key + ': ' + this.db.quoteArrs[key].random());
+                    var output = this.db.quoteArrs[key].random();
+                    if(output == "glee") {
+                        dbot.instance.send('KICK ' + data.channel + ' ' + data.user + ' :glee off dickhead');
+                    } else {
+                        this.say(data.channel, key + ': ' + output);
+                    }
                 } else {
                     this.say(data.channel, 'Nobody loves ' + key);
                 }
