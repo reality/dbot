@@ -24,13 +24,13 @@ var webInterface = function(dbot) {
         // Lists the quotes in a category
         var key = req.params.key.toLowerCase();
         if(dbot.db.quoteArrs.hasOwnProperty(key)) {
-            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key]});
+            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key], locals: {url_regex: RegExp.prototype.url_regex()}});
         } else {
             res.render('error', { 'message': 'No quotes under that key.' });
         }
     });
     
-    app.listen(443);
+    app.listen(9443);
 
     return { 
         'onDestroy': function() {

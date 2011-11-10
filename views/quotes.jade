@@ -1,3 +1,7 @@
 div#quotelist
     -each quote in quotes
-        div.quote #{quote}
+        -if(quote.match(locals.url_regex))
+            div.quote 
+                a(href=quote)=quote
+        -else
+            div.quote #{quote}
