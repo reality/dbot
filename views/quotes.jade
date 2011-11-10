@@ -2,6 +2,10 @@ div#quotelist
     -each quote in quotes
         -if(quote.match(locals.url_regex))
             div.quote 
-                a(href=quote)=quote
+                a(href=quote)
+                    -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
+                        img(src=quote)
+                    -else
+                        =quote
         -else
             div.quote #{quote}
