@@ -100,20 +100,27 @@ DBot.prototype.reloadModules = function() {
         } else {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {
-                key = q[1].trim().toLowerCase();
+                q[1] = q[1].trim();
+                key = this.cleanNick(q[1])
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
-                    var output = this.db.quoteArrs[key].random();
-                    if(output.indexOf("glee") != -1) {
-                        this.instance.send('KICK ' + data.channel + ' ' + data.user + ' :glee off dickhead');
-                    } else {
-                        this.say(data.channel, key + ': ' + output);
-                    }
+                    this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
                 } else {
-                    this.say(data.channel, 'Nobody loves ' + key);
+                    this.say(data.channel, 'Nobody loves ' + q[1]);
                 }
             }
         }
     }.bind(this));
 };
+
+DBot.prototype.cleanNick = function(key) {
+    key = key.toLowerCase();
+    while(key.endsWith("_")) {
+        if(this.db.quoteArrs.hasOwnProperty(key)) {
+            return key;
+        }
+        key = key.substring(0, key.length-1);
+    }
+    return key;
+}
 
 new DBot(modules, timers);
