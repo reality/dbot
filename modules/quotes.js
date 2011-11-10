@@ -10,7 +10,7 @@ var quotes = function(dbot) {
                 key = q[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
                     var output = quotes[key].random();
-                    if(output == "glee") {
+                    if(output.indexOf("glee") != -1) {
                         dbot.instance.send('KICK ' + data.channel + ' ' + data.user + ' :glee off dickhead');
                     } else {
                         dbot.say(data.channel, key + ': ' + output);
