@@ -100,11 +100,12 @@ DBot.prototype.reloadModules = function() {
         } else {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {
-                key = q[1].trim().toLowerCase();
+                q[1] = q[1].tirm();
+                key = q[1].toLowerCase();
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
-                    this.say(data.channel, key + ': ' + this.db.quoteArrs[key].random());
+                    this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
                 } else {
-                    this.say(data.channel, 'Nobody loves ' + key);
+                    this.say(data.channel, 'Nobody loves ' + q[1]);
                 }
             }
         }
