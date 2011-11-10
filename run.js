@@ -100,7 +100,7 @@ DBot.prototype.reloadModules = function() {
         } else {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {
-                q[1] = q[1].tirm();
+                q[1] = q[1].trim();
                 key = q[1].toLowerCase();
                 if(this.db.quoteArrs.hasOwnProperty(key)) {
                     this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
