@@ -10,7 +10,7 @@ var DBot = function(dModules, timers) {
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
     this.admin = this.config.admin || 'reality';
-    this.name = this.config.name || 'depressionbot';
+    this.name = this.config.name || 'dbox';
 
     this.timers = timers.create();
     this.waitingForKarma = false;
