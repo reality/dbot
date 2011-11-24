@@ -132,10 +132,6 @@ var quotes = function(dbot) {
             var rQuote = Object.keys(quotes).random();
             dbot.say(data.channel, rQuote + ': ' + quotes[rQuote].random());
         },
-        
-        '~reality': function(data, params) {
-            dbot.say(data.channel, dbot.db.quoteArrs['realityonce'].random());
-        },
 
         '~d': function(data, params) {
             dbot.say(data.channel,  data.user + ': ' + dbot.db.quoteArrs['depressionbot'].random());
@@ -148,7 +144,6 @@ var quotes = function(dbot) {
                 dbot.say(data.channel, 'Link to "'+params[1]+'" - http://nc.no.de:443/quotes/'+params[1]);
             }
         }
-
     };
 
     return {
