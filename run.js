@@ -11,15 +11,17 @@ var DBot = function(dModules, timers) {
 
     this.admin = this.config.admin || 'reality';
     this.name = this.config.name || 'depressionbot';
+    this.password = this.config.password || 'lolturtles';
 
     this.timers = timers.create();
     this.waitingForKarma = false;
 
-    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
-        if(this.config.hasOwnProperty('channels')) {
-            this.config.channels.each(function(channel) {
-                this.instance.join(channel);
-            }.bind(this));
+    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, this.password, 
+        function() {
+            if(this.config.hasOwnProperty('channels')) {
+                this.config.channels.each(function(channel) {
+                    this.instance.join(channel);
+                }.bind(this));
         }
     }.bind(this));
 
