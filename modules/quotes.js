@@ -108,6 +108,10 @@ var quotes = function(dbot) {
                 addStack.push(q[1]);
                 rmAllowed = true;
                 dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[key].length + ')');
+
+                if(data.channel == 'reality') {
+                    dbot.say('#realitest', 'Public Service Announcement: Snow added \'' + q[1] + '\' to ' + key + ' in PM');
+                }
             } else {
                 dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
             }
