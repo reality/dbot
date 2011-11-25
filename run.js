@@ -10,13 +10,13 @@ var DBot = function(dModules, timers) {
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
     this.admin = this.config.admin || 'reality';
-    this.name = this.config.name || 'depressionbot';
     this.password = this.config.password || 'lolturtles';
+    this.name = this.config.name || 'dbox';
 
     this.timers = timers.create();
     this.waitingForKarma = false;
 
-    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, this.password, 
+    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, 
         function() {
             if(this.config.hasOwnProperty('channels')) {
                 this.config.channels.each(function(channel) {
