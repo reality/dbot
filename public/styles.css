@@ -2,6 +2,7 @@
  * Authors 
  * Dafydd "Afal" Francis [ http://www.somethingafal.com/ ]
  * "npc" / Samuel Clements [ http://borntyping.co.uk ]
+ * danharibo / Daniel Evans [ http://bytecove.co.uk]
  */
 
 html {
@@ -16,13 +17,24 @@ body {
     padding: 25px;
     margin: 0;
     font-family: "Lucida Grande";
-    color: black;
+    color: #444;
     text-shadow: 1px 1px 2px #2B2B2B;
+}
+
+div#page {
+	width: 90%;
+	margin: 0 auto 0 auto;
 }
 
 div#title {
     font-size: 42px;
     font-weight: bold;
+    margin: 0 0 10px 0;
+    color: #444;
+}
+
+div#title a {
+	color: #000;
 }
 
 div#main {
@@ -30,35 +42,47 @@ div#main {
     margin: 0px; 
     font-size: 21px;
     text-align:center;
+    background: #FFF;
+    border-radius: 20px;
+    box-shadow: 0px 0px 4px #000;
 }
 
-a {
+div#controls {
+	width: 100%;
+}
+
+input {
+	width: 80%;
+}
+
+a,a:active,a:visited {
   text-decoration: none;
 }
 
-div.quotes, div.quote {
-    color: #12699B;
-    box-shadow: 0 0 20px black;
-    opacity: 0.5;
+ul#quotelist {
+    padding: 0;
+    margin: 0;
+}
+
+li.quotes, li.quote {
+    color: #3333FF;
 }
 
 /* Quotes list page */
 
-div.quotes {
-    background: white;
-    float: left;
-    display: inline;
-    margin: 10px;
-    padding: 20px;
-    border-radius: 15px;
+li.quotes {
+    margin: 8px;
+    padding: 6px;
+    display: inline-block;
+    border-radius: 10px;
 }
 
-div.quotes:hover {
-  opacity: 0.8;
+li.quotes:hover {
+    background: rgba(0,0,255,0.3);
 }
 
-div.quotes a {
-
+.hidden {
+    display: none !important;
 }
 
 /* Quote list pages */
@@ -67,18 +91,17 @@ div#quotelist {
     width:100%;
 }
 
-div#quotelist div.quote {
+li.quote {
     background: white;
     border-radius: 5px;
-    margin: 10px auto;
-    padding: 10px;
+    display: inline-block;
+    margin: 6px auto;
+    padding: 6px;
     font-size: 18px;
-    width:90%;
-    opacity: 0.7;
-    color:darkblue;
+    width: 40%;
     text-shadow: 1px 1px 1px black;
 }
 
-div#quotelist div.quote:hover {
-    opacity: 1;
+img {
+	max-width: 100%;
 }
