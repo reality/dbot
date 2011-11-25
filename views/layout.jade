@@ -1,10 +1,13 @@
 !!! 5
-html(lang: 'en')
+html(lang='en')
   head 
-    meta(charset: 'utf-8')
-    link(rel: 'stylesheet', type: 'text/css', href: '/styles.css')
+    meta(charset='utf-8')
+    link(rel='stylesheet', type='text/css', href='/styles.css')
     title Depressionbot web interface
   body
-    div#title Depressionbot web interface
-    div#main
-        !{body}
+    div#page
+        div#title 
+            a(href='/') Depressionbot web interface
+        div#main
+            !{body}
+    script(type="text/javascript", src="/script.js")
