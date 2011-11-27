@@ -3,7 +3,7 @@ var timers = require('./timer');
 var jsbot = require('./jsbot');
 require('./snippets');
 
-var modules = ['spelling', 'web', 'modehate', 'user', 'admin', 'puns', 'kick', 'karma', 'youare', 'quotes'];
+var modules = [ ];
 
 var DBot = function(dModules, timers) {
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
@@ -13,11 +13,13 @@ var DBot = function(dModules, timers) {
     this.admin = this.config.admin || 'reality';
     this.password = this.config.password || 'lolturtles';
     this.nickserv = this.config.nickserv || 'zippy';
+    this.server = this.config.server || 'elara.ivixor.net';
+    this.port = this.config.port || 6667;
 
     this.timers = timers.create();
     this.waitingForKarma = false;
 
-    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
+    this.instance = jsbot.createJSBot(this.name, this.server, this.port, this, function() {
             if(this.config.hasOwnProperty('channels')) {
                 this.config.channels.each(function(channel) {
                     this.instance.join(channel);
@@ -93,8 +95,10 @@ DBot.prototype.reloadModules = function() {
         if(data.channel == this.name) data.channel = data.user;
 
         if(this.commands.hasOwnProperty(params[0])) {
-            if((this.db.bans.hasOwnProperty(params[0]) && this.db.bans[params[0]].include(data.user)) || this.db.bans['*'].include(data.user))
-                this.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
+            if((this.db.bans.hasOwnProperty(params[0]) && 
+                    this.db.bans[params[0]].include(data.user)) || this.db.bans['*'].include(data.user))
+                this.say(data.channel, data.user + 
+                    ' is banned from using this command. Commence incineration.'); 
             else {
                 this.commands[params[0]](data, params);
                 this.save();
