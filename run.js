@@ -9,21 +9,21 @@ var DBot = function(dModules, timers) {
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
+    this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || 'reality';
     this.password = this.config.password || 'lolturtles';
-    this.name = this.config.name || 'dbox';
+    this.nickserv = this.config.nickserv || 'zippy';
 
     this.timers = timers.create();
     this.waitingForKarma = false;
 
-    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, 
-        function() {
+    this.instance = jsbot.createJSBot(this.name, 'elara.ivixor.net', 6667, this, function() {
             if(this.config.hasOwnProperty('channels')) {
                 this.config.channels.each(function(channel) {
                     this.instance.join(channel);
                 }.bind(this));
         }
-    }.bind(this));
+    }.bind(this), this.nickserv, this.password);
 
     this.moduleNames = dModules;
     this.reloadModules();
