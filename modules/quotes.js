@@ -89,6 +89,12 @@ var quotes = function(dbot) {
                 } else {
                     dbot.say(data.channel, 'No quotes under ' + q[1]);
                 }
+            } else { // Give total quote count
+                var totalQuoteCount = 0;
+                for(var category in dbot.db.quotes) {
+                    totalQuoteCount += category.length;
+                }
+                dbot.say(data.channel, 'There are ' + totalQuoteCount + ' quotes in total.');
             }
         },
 
