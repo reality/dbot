@@ -91,7 +91,7 @@ var quotes = function(dbot) {
                 }
             } else { // Give total quote count
                 var totalQuoteCount = 0;
-                for(var category in dbot.db.quotes) {
+                for(var category in quotes) {
                     totalQuoteCount += category.length;
                 }
                 dbot.say(data.channel, 'There are ' + totalQuoteCount + ' quotes in total.');
