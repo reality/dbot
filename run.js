@@ -104,12 +104,12 @@ DBot.prototype.reloadModules = function() {
                 this.save();
             }
         } else {
-            if(this.db.bans['*'].include(data.user)) {
-                this.say(data.channel, data.user + 
+            var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
+            if(q) {
+                if(this.db.bans['*'].include(data.user)) {
+                    this.say(data.channel, data.user + 
                     ' is banned from using this command. Commence incineration.'); 
-            } else {
-                var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
-                if(q) {
+                } else {
                     q[1] = q[1].trim();
                     key = this.cleanNick(q[1])
                     if(this.db.quoteArrs.hasOwnProperty(key)) {
