@@ -106,12 +106,17 @@ DBot.prototype.reloadModules = function() {
         } else {
             var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
             if(q) {
-                q[1] = q[1].trim();
-                key = this.cleanNick(q[1])
-                if(this.db.quoteArrs.hasOwnProperty(key)) {
-                    this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
+                if(this.db.bans['*'].include(data.user)) {
+                    this.say(data.channel, data.user + 
+                    ' is banned from using this command. Commence incineration.'); 
                 } else {
-                    this.say(data.channel, 'Nobody loves ' + q[1]);
+                    q[1] = q[1].trim();
+                    key = this.cleanNick(q[1])
+                    if(this.db.quoteArrs.hasOwnProperty(key)) {
+                        this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
+                    } else {
+                        this.say(data.channel, 'Nobody loves ' + q[1]);
+                    }
                 }
             }
         }
