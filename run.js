@@ -104,7 +104,7 @@ DBot.prototype.reloadModules = function() {
                 this.save();
             }
         } else {
-            var q = data.message.valMatch(/^~([\d\w\s]*)/, 2);
+            var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
             if(q) {
                 if(this.db.bans['*'].include(data.user)) {
                     this.say(data.channel, data.user + 
