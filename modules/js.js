@@ -4,7 +4,9 @@ var js = function(dbot) {
     var commands = {
         '~js': function(data, params) {
             var q = data.message.valMatch(/^~js (.*)/, 2);
-            dbot.say(data.channel, eval(q[1]));
+            if(data.user == dbot.admin) {
+                dbot.say(data.channel, eval(q[1]));
+            }
         }
     };
 
