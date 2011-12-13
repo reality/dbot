@@ -15,6 +15,10 @@ var quotes = function(dbot) {
                 }
             }
         },
+        
+        '~fishpuns': function (data, params) {
+            dbot.say(data.channel, 'fishpuns: SHUT THE FUCK UP MENTAL MARRIOT YOU PIECE OF SHIT');
+        },
 
         '~qsearch': function(data, params) {
             if(params[2] === undefined) {
