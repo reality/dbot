@@ -18,7 +18,7 @@ var quotes = function(dbot) {
         },
         
         '~fishpuns': function (data, params) {
-            dbot.say(data.channel, 'fishpuns: SHUT THE FUCK UP MENTAL MARRIOT YOU PIECE OF SHIT');
+            dbot.say(data.channel, 'fishpuns: SHUT THE FUCK UP YOU FRESHER PIECES OF SHIT');
         },
 
         '~qsearch': function(data, params) {
