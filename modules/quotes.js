@@ -5,7 +5,7 @@ var quotes = function(dbot) {
     
     var commands = {
         '~q': function(data, params) { 
-            var q = data.message.valMatch(/^~q ([\d\w\s]*)/, 2);
+            var q = data.message.valMatch(/^~q ([\d\w\s-]*)/, 2);
             if(q) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
@@ -49,7 +49,7 @@ var quotes = function(dbot) {
 
         '~rmlast': function(data, params) {
             if(rmAllowed == true || data.user == dbot.admin) {
-                var q = data.message.valMatch(/^~rmlast ([\d\w\s]*)/, 2);
+                var q = data.message.valMatch(/^~rmlast ([\d\w\s-]*)/, 2);
                 if(q) {
                     q[1] = q[1].trim()
                     key = q[1].toLowerCase();
@@ -84,7 +84,7 @@ var quotes = function(dbot) {
         },
 
         '~qcount': function(data, params) {
-            var q = data.message.valMatch(/^~qcount ([\d\w\s]*)/, 2);
+            var q = data.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
             if(q) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
@@ -104,7 +104,7 @@ var quotes = function(dbot) {
         },
 
         '~qadd': function(data, params) {
-            var q = data.message.valMatch(/^~qadd ([\d\w\s]*)=(.+)$/, 3);
+            var q = data.message.valMatch(/^~qadd ([\d\w\s-]*)=(.+)$/, 3);
             if(q) {
                 key = q[1].toLowerCase();
                 if(!Object.isArray(quotes[key])) {
@@ -129,7 +129,7 @@ var quotes = function(dbot) {
         },
 
         '~qset': function(data, params) {
-            var q = data.message.valMatch(/^~qset ([\d\w\s]*)=(.+)$/, 3);
+            var q = data.message.valMatch(/^~qset ([\d\w\s-]*)=(.+)$/, 3);
             if(q) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
