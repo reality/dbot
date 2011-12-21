@@ -3,7 +3,7 @@ var timers = require('./timer');
 var jsbot = require('./jsbot');
 require('./snippets');
 
-var modules = [ 'admin', 'karma', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'user', 'web', 'youare' ];
+var modules = [ 'js', 'admin', 'karma', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'user', 'web', 'youare' ];
 
 var DBot = function(dModules, timers) {
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
