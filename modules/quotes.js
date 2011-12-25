@@ -16,6 +16,10 @@ var quotes = function(dbot) {
                 }
             }
         },
+        
+        '~fishpuns': function (data, params) {
+            dbot.say(data.channel, 'fishpuns: SHUT THE FUCK UP YOU FRESHER PIECES OF SHIT');
+        },
 
         '~qsearch': function(data, params) {
             if(params[2] === undefined) {
