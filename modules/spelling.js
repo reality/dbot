@@ -10,7 +10,7 @@ var spelling = function(dbot) {
                 var correction = q[1];
                 var candidates = last[data.channel][data.user].split(' ');
                 var winner = false;
-                var winnerDistance = 99999999; //urgh fix later
+                var winnerDistance = Infinity; //urgh fix later
 
                 for(var i=0;i<candidates.length;i++) {
                     var distance = String.prototype.distance(correction, candidates[i]);
@@ -32,7 +32,7 @@ var spelling = function(dbot) {
                     var correction = otherQ[2];
                     var candidates = last[data.channel][otherQ[1]].split(' ');
                     var winner = false;
-                    var winnerDistance = 99999999; //urgh fix later
+                    var winnerDistance = Infinity; //urgh fix later
 
                     for(var i=0;i<candidates.length;i++) {
                         var distance = String.prototype.distance(correction, candidates[i]);
