@@ -10,14 +10,14 @@ var spelling = function(dbot) {
         for(var i=0;i<candidates.length;i++) {
             var distance = String.prototype.distance(correction, candidates[i]);
             if(distance < winnerDistance) {
-                winner = candidates[i];
+                winner = i;
                 winnerDistance = distance;
             }
         }
 
         if(winnerDistance < 7) {
             if(winner !== correction) {
-                candidates[i] = correction;
+                candidates[winner] = correction;
                 var fix = candidates.join(' ');
                 last[data.channel][candidate] = fix;
                 if (/^.ACTION/.test(fix)) {
