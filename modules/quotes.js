@@ -153,7 +153,7 @@ var quotes = function(dbot) {
         },
         
         '~link': function(data, params) {
-            if(params[1] === undefined || !quotes.hasOwnProperty(params[1])) {
+            if(params[1] === undefined || !quotes.hasOwnProperty(params[1].toLowerCase())) {
                 dbot.say(data.channel, 'Syntax error. Commence incineration.');
             } else {
                 dbot.say(data.channel, 'Link to "'+params[1]+'" - http://nc.no.de:443/quotes/'+params[1]);
