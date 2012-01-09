@@ -17,7 +17,7 @@ var spelling = function(dbot) {
 
         if(winnerDistance < 7) {
             if(winner !== correction) {
-                var fix = last[data.channel][candidate].replace(winner, correction);
+                var fix = last[data.channel][candidate].replace(' ' + winner + ' ', correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
                 }
