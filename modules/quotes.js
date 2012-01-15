@@ -83,6 +83,34 @@ var quotes = function(dbot) {
             }
         },
 
+        '~rm': function(data, params) {
+            if(rmAllowed == true || data.user == dbot.admin) {
+                var q = data.message.valMatch(/^~rm ([\d\w\s-]*) (.+)$/, 3);
+                if(q) {
+                    if(quotes.hasOwnProperty(q[1])) {
+                        if(!dbot.db.locks.include(q[1])) {
+                            var index = quotes[q[1]].indexOf(q[2]);
+                            if(index != -1) {
+                                quotes[q[1]].splice(index, 1);
+                                rmAllowed = false;
+                                dbot.say(data.channel, '\'' + q[2] + '\' removed from ' + q[1]);
+                            } else {
+                                dbot.say(data.channel, '\'' + q[2] + '\' doesn\'t exist under user \'' + q[1] + '\'.');
+                            }
+                        } else {
+                            dbot.say(data.channel, q[1] + ' is locked. Initiate incineration.');
+                        }
+                    } else {
+                        dbot.say(data.channel, 'No quotes exist under ' + q[1]);
+                    }
+                } else {
+                    dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
+                }
+            } else {
+                dbot.say(data.channel, 'No spamming that shit. Try again in a few minutes...');
+            }
+        },
+
         '~qcount': function(data, params) {
             var q = data.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
             if(q) {
