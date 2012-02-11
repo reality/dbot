@@ -42,8 +42,8 @@ var userCommands = function(dbot) {
                 kickArr = kickArr.slice(kickArr.length - 10).reverse();
                 var kickString = "Top " + topWhat + ": ";
 
-                for(var i=0;i<topKicks.length;i++) {
-                    kickString += topKicks[i][0] + " (" + topKicks[i][1] + "), ";
+                for(var i=0;i<kickArr.length;i++) {
+                    kickString += kickArr[i][0] + " (" + kickArr[i][1] + "), ";
                 }
 
                 return kickString.slice(0, -2);
