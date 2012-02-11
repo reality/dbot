@@ -10,7 +10,7 @@ var adminCommands = function(dbot) {
         },
 
         'opme': function(data, params) {
-           dbot.instance.send('MODE #42 +o ', dbot.admin);
+           dbot.instance.send('MODE ' + params[1] + ' +o ', dbot.admin);
         },
 
         'part': function(data, params) {
@@ -80,6 +80,9 @@ var adminCommands = function(dbot) {
     };
 
     return {
+        // These commands are implemented as their own listener so it can easily
+        // check whether the user is the admin, and so that the admin can't ban
+        // themselves and then not be able to rectify it...
         'listener': function(data) {
             if(data.channel == dbot.name) data.channel = data.user;
 
