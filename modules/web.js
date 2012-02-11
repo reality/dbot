@@ -31,7 +31,7 @@ var webInterface = function(dbot) {
     });
 
     // Load random quote category page
-    app.get('/rq', function() {
+    app.get('/rq', function(req, res) {
         var rCategory = Object.keys(dbot.db.quoteArrs).random();
         res.render('quotes', { 'quotes': dbot.db.quoteArrs[rCategory], locals: { 'url_regex': RegExp.prototype.url_regex() } });
     });
