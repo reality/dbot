@@ -16,7 +16,6 @@ var DBot = function(timers) {
     this.moduleNames = this.config.modules || [ 'js', 'admin', 'karma', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'user', 'web', 'youare' ];
 
     this.timers = timers.create();
-    this.waitingForKarma = false;
 
     this.instance = jsbot.createJSBot(this.name, this.server, this.port, this, function() {
             if(this.config.hasOwnProperty('channels')) {
