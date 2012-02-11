@@ -1,5 +1,6 @@
 var express = require('express');
 
+// Web interface module using the express framework
 var webInterface = function(dbot) {
     var dbot = dbot;
 
