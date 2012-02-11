@@ -131,4 +131,4 @@ DBot.prototype.cleanNick = function(key) {
     return key;
 }
 
-new DBot(modules, timers);
+new DBot(timers);
