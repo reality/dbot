@@ -13,7 +13,7 @@ var DBot = function(timers) {
     this.nickserv = this.config.nickserv || 'zippy';
     this.server = this.config.server || 'elara.ivixor.net';
     this.port = this.config.port || 6667;
-    this.moduleNames = this.config.modules || [ 'js', 'admin', 'karma', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'user', 'web', 'youare' ];
+    this.moduleNames = this.config.modules || [ 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
 
     this.timers = timers.create();
 
