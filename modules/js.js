@@ -3,7 +3,7 @@ var sandbox = require('sandbox');
 
 var js = function(dbot) {
     var dbot = dbot;
-    var s = new Sandbox();
+    var s = new sandbox.Sandbox();
 
     var commands = {
         '~js': function(data, params) {
