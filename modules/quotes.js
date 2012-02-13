@@ -54,7 +54,7 @@ var quotes = function(dbot) {
                     q[1] = q[1].trim()
                     key = q[1].toLowerCase();
                     if(quotes.hasOwnProperty(q[1])) {
-                        if(!dbot.db.locks.include(q[1])) {
+                        if(!dbot.db.locks.include(q[1]) || data.user == dbot.admin) {
                             var quote = quotes[key].pop();
                             rmAllowed = false;
                             dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
