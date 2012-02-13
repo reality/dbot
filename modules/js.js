@@ -1,12 +1,16 @@
 var vm = require('vm');
+var sandbox = require('sandbox');
 
 var js = function(dbot) {
     var dbot = dbot;
+    var s = new Sandbox();
 
     var commands = {
         '~js': function(data, params) {
             var q = data.message.valMatch(/^~js (.*)/, 2);
-            dbot.say(data.channel, vm.runInNewContext(q[1]));
+            s.run(q[1], function(output) {
+                dbot.say(data.channel, output.result);
+            });
         },
 
         '~ajs': function(data, params) {
