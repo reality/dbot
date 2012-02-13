@@ -7,6 +7,13 @@ var js = function(dbot) {
         '~js': function(data, params) {
             var q = data.message.valMatch(/^~js (.*)/, 2);
             dbot.say(data.channel, vm.runInNewContext(q[1]));
+        },
+
+        '~ajs': function(data, params) {
+            var q = data.message.valMatch(/^~ajs (.*)/, 2);
+            if(data.user == dbot.admin) {
+                dbot.say(data.channel, eval(q[1]));
+            }
         }
     };
 
