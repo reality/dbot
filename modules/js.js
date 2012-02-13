@@ -1,5 +1,5 @@
 var vm = require('vm');
-var s = require('sandbox');
+var s = require('sandbox')();
 
 var js = function(dbot) {
     var dbot = dbot;
