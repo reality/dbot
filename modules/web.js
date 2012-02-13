@@ -1,5 +1,6 @@
 var express = require('express');
 
+// Web interface module using the express framework
 var webInterface = function(dbot) {
     var dbot = dbot;
 
@@ -15,19 +16,25 @@ var webInterface = function(dbot) {
         //res.render('index', { });
     });
     
+    // Lists the quote categories
     app.get('/quotes', function(req, res) {
-        // Lists the quote categories
         res.render('quotelist', { 'quotelist': Object.keys(dbot.db.quoteArrs) });
     });
     
+    // Lists quotes in a category
     app.get('/quotes/:key', function(req, res) {
-        // Lists the quotes in a category
         var key = req.params.key.toLowerCase();
         if(dbot.db.quoteArrs.hasOwnProperty(key)) {
-            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key], locals: {url_regex: RegExp.prototype.url_regex()}});
+            res.render('quotes', { 'quotes': dbot.db.quoteArrs[key], locals: { 'url_regex': RegExp.prototype.url_regex() } });
         } else {
             res.render('error', { 'message': 'No quotes under that key.' });
         }
+    });
+
+    // Load random quote category page
+    app.get('/rq', function(req, res) {
+        var rCategory = Object.keys(dbot.db.quoteArrs).random();
+        res.render('quotes', { 'quotes': dbot.db.quoteArrs[rCategory], locals: { 'url_regex': RegExp.prototype.url_regex() } });
     });
     
     app.listen(443);

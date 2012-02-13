@@ -3,9 +3,7 @@ var timers = require('./timer');
 var jsbot = require('./jsbot');
 require('./snippets');
 
-var modules = [ 'js', 'admin', 'karma', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'user', 'web', 'youare' ];
-
-var DBot = function(dModules, timers) {
+var DBot = function(timers) {
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
@@ -15,9 +13,9 @@ var DBot = function(dModules, timers) {
     this.nickserv = this.config.nickserv || 'zippy';
     this.server = this.config.server || 'elara.ivixor.net';
     this.port = this.config.port || 6667;
+    this.moduleNames = this.config.modules || [ 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
 
     this.timers = timers.create();
-    this.waitingForKarma = false;
 
     this.instance = jsbot.createJSBot(this.name, this.server, this.port, this, function() {
             if(this.config.hasOwnProperty('channels')) {
@@ -27,7 +25,6 @@ var DBot = function(dModules, timers) {
         }
     }.bind(this), this.nickserv, this.password);
 
-    this.moduleNames = dModules;
     this.reloadModules();
     this.instance.connect();
 };
@@ -134,4 +131,4 @@ DBot.prototype.cleanNick = function(key) {
     return key;
 }
 
-new DBot(modules, timers);
+new DBot(timers);
