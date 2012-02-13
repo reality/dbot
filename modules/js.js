@@ -1,12 +1,12 @@
+var vm = require('vm');
+
 var js = function(dbot) {
     var dbot = dbot;
 
     var commands = {
         '~js': function(data, params) {
             var q = data.message.valMatch(/^~js (.*)/, 2);
-            if(data.user == dbot.admin) {
-                dbot.say(data.channel, eval(q[1]));
-            }
+            dbot.say(data.channel, vm.runInNewContext(q[1]));
         }
     };
 

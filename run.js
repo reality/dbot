@@ -4,9 +4,11 @@ var jsbot = require('./jsbot');
 require('./snippets');
 
 var DBot = function(timers) {
+    // Load external files
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
 
+    // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || 'reality';
     this.password = this.config.password || 'lolturtles';
@@ -25,20 +27,24 @@ var DBot = function(timers) {
         }
     }.bind(this), this.nickserv, this.password);
 
+    // Load the modules and connect to the server
     this.reloadModules();
     this.instance.connect();
 };
 
+// Say something in a channel
 DBot.prototype.say = function(channel, data) {
     this.instance.say(channel, data);
 };
 
+// Save the database file
 DBot.prototype.save = function() {
     fs.writeFile('db.json', JSON.stringify(this.db, null, '    '));
 };
 
+// Hot-reload module files.
 DBot.prototype.reloadModules = function() {
-    if(this.modules) {
+    if(this.modules) { // Run 'onDestroy' code for each module if it exists.
         this.modules.each(function(module) {
             if(module.onDestroy) {
                 module.onDestroy();
@@ -52,6 +58,7 @@ DBot.prototype.reloadModules = function() {
     this.timers.clearTimers();
     this.save();
 
+    // Reload Javascript snippets
     var path = require.resolve('./snippets');
     delete require.cache[path];
     require('./snippets');
