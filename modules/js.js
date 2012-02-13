@@ -1,9 +1,8 @@
 var vm = require('vm');
-var sandbox = require('sandbox');
+var s = require('sandbox');
 
 var js = function(dbot) {
     var dbot = dbot;
-    var s = new Sandbox();
 
     var commands = {
         '~js': function(data, params) {
