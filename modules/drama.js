@@ -39,11 +39,9 @@ var drama = function(dbot) {
         },
 
         'listener': function(data) {
-            if(reporting == true) {
-                var category = bayes.classify(data.message, function(category) {
-                    console.log(category + '!'); 
-                }.bind(this));
-            }
+            var category = bayes.classify(data.message, function(category) {
+                console.log(category + '!'); 
+            }.bind(this));
 
             if(last.hasOwnProperty(data.channel)) {
                last[data.channel][data.user] = data.message; 
