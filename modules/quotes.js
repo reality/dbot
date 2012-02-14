@@ -17,10 +17,6 @@ var quotes = function(dbot) {
             }
         },
         
-        '~fishpuns': function (data, params) {
-            dbot.say(data.channel, 'fishpuns: SHUT THE FUCK UP YOU FRESHER PIECES OF SHIT');
-        },
-
         '~qsearch': function(data, params) {
             if(params[2] === undefined) {
                 dbot.say(data.channel, 'Next time provide a search parameter. Commence incineration.');
@@ -147,10 +143,6 @@ var quotes = function(dbot) {
                 addStack.push(q[1]);
                 rmAllowed = true;
                 dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[key].length + ')');
-
-                if(data.channel == 'Snow') {
-                    dbot.say('#42', 'Public Service Announcement: Snow added \'' + q[2] + '\' to ' + key + ' in PM');
-                }
             } else {
                 dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
             }
