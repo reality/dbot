@@ -34,7 +34,7 @@ var drama = function(dbot) {
         }, 
 
         '~rtrain': function(data, params) {
-            if(data.user == dbot.admin) {
+            if(data.user == dbot.admin || data.user == 'golem') {
                 var category = params[1];
                 params.splice(0, 2);
                 var msg = params.join(' ');
