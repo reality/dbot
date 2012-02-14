@@ -26,7 +26,7 @@ var drama = function(dbot) {
 
     var commands = {
         '~train': function(data, params) {
-            if(data.user == dbot.admin || data.user == 'golem') {
+            if(data.user == dbot.admin || data.user == 'golem' || data.user == 'Sam') {
                 bayes.train(last[params[1]][params[2]], params[3]);
                 dbot.say(data.channel, 'Last thing ' + params[2] + ' said in ' + 
                         params[1] + ' (' +  last[params[1]][params[2]] + ') classified as \'' + params[3] + '\'');
@@ -34,7 +34,7 @@ var drama = function(dbot) {
         }, 
 
         '~rtrain': function(data, params) {
-            if(data.user == dbot.admin || data.user == 'golem') {
+            if(data.user == dbot.admin || data.user == 'golem' || data.user == 'Sam') {
                 var category = params[1];
                 params.splice(0, 2);
                 var msg = params.join(' ');
