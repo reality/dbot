@@ -26,10 +26,10 @@ var drama = function(dbot) {
 
     var commands = {
         '~train': function(data, params) {
-            if(data.user == dbot.admin) {
+            if(data.user == dbot.admin || data.user == 'golem') {
                 bayes.train(last[params[1]][params[2]], params[3]);
                 dbot.say(data.channel, 'Last thing ' + params[2] + ' said in ' + 
-                        params[1] + ' classified as \'' + params[3] + '\'');
+                        params[1] + ' (' +  last[params[1]][params[2]] + ') classified as \'' + params[3] + '\'');
             }
         }, 
 
