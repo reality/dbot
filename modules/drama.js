@@ -34,10 +34,11 @@ var drama = function(dbot) {
 
         '~rtrain': function(data, params) {
             if(data.user == dbot.admin) {
+                var category = params[1];
                 params.splice(0, 2);
                 var msg = params.join(' ');
-                bayes.train(msg, params[1]);
-                dbot.say(data.channel, '\'' + msg + '\' classified as \'' + params[1] + '\'');
+                bayes.train(msg, category);
+                dbot.say(data.channel, '\'' + msg + '\' classified as \'' + category + '\'');
             }
         }
     }
