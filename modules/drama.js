@@ -30,6 +30,15 @@ var drama = function(dbot) {
                 dbot.say(data.channel, 'Last thing ' + params[2] + ' said in ' + 
                         params[1] + ' classified as \'' + params[3] + '\'');
             }
+        }, 
+
+        '~rtrain': function(data, params) {
+            if(data.user == dbot.admin) {
+                params.splice(0, 2);
+                var msg = params.join(' ');
+                bayes.train(msg, params[1]);
+                dbot.say(data.channel, '\'' + msg + '\' classified as \'' + params[1] + '\'');
+            }
         }
     }
 
