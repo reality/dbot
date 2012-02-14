@@ -37,6 +37,8 @@ var adminCommands = function(dbot) {
 
         'unload': function(data, params) {
             if(dbot.moduleNames.include(params[1])) {
+                var cacheKey = require.resolve('./modules/' + name);
+                delete require.cache[cacheKey];
                 delete dbot.moduleNames[params[1]];
                 dbot.reloadModules();
                 dbot.say(data.channel, 'Turned off module: ' + params[1]);
