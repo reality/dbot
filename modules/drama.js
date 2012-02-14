@@ -16,6 +16,7 @@ var drama = function(dbot) {
         'thresholds': {
             'drama': 3,
             'beinganasshole': 3,
+            'sd': 3, // self depracating
             'normal': 1
         },
 
