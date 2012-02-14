@@ -39,7 +39,10 @@ var adminCommands = function(dbot) {
             if(dbot.moduleNames.include(params[1])) {
                 var cacheKey = require.resolve('../modules/' + params[1]);
                 delete require.cache[cacheKey];
-                delete dbot.moduleNames[params[1]];
+
+                var moduleIndex = dbot.moduleNames.indexOf(params[1]);
+                dbot.moduleNames.splice(moduleIndex, 1);
+
                 dbot.reloadModules();
                 dbot.say(data.channel, 'Turned off module: ' + params[1]);
             } else {
