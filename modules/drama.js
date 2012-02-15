@@ -40,8 +40,7 @@ var drama = function(dbot) {
                 var msg = params.join(' ');
                 bayes.train(msg, category);
                 dbot.say(data.channel, '\'' + msg + '\' classified as \'' + category + '\'');
-            },
-
+            }
         },
         
         '~classify': function(data, params) {
