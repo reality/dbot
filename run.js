@@ -111,7 +111,7 @@ DBot.prototype.reloadModules = function() {
             // See if it's similar to anything
             var winnerDistance = Infinity;
             var winner = false;
-            for(var commandName in dbot.commands) {
+            for(var commandName in this.commands) {
                 var distance = String.prototype.distance(params[0], commandName);
                 if(distance < winnerDistance) {
                     winner = commandName;
@@ -120,7 +120,7 @@ DBot.prototype.reloadModules = function() {
             }
 
             if(winnerDistance < 3) {
-                dbot.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
+                this.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
             } else { // See if there's anything in quotes
                 var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
                 if(q) {
