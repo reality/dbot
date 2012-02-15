@@ -40,6 +40,12 @@ var drama = function(dbot) {
                 var msg = params.join(' ');
                 bayes.train(msg, category);
                 dbot.say(data.channel, '\'' + msg + '\' classified as \'' + category + '\'');
+            },
+
+            '~classify': function() {
+                bayes.classify(data.message, function(category) {
+                    dbot.say(data.channel, 'Classified as: ' + category + '!');
+                }.bind(this));
             }
         }
     }
