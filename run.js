@@ -108,18 +108,33 @@ DBot.prototype.reloadModules = function() {
                 this.save();
             }
         } else {
-            var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
-            if(q) {
-                if(this.db.bans['*'].include(data.user)) {
-                    this.say(data.channel, data.user + 
-                    ' is banned from using this command. Commence incineration.'); 
-                } else {
-                    q[1] = q[1].trim();
-                    key = this.cleanNick(q[1])
-                    if(this.db.quoteArrs.hasOwnProperty(key)) {
-                        this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
+            // See if it's similar to anything
+            var winnerDistance = Infinity;
+            var winner = false;
+            for(var commandName in dbot.commands) {
+                var distance = String.prototype.distance(params[0], commandName);
+                if(distance < winnerDistance) {
+                    winner = commandName;
+                    winnerDistance = distance;
+                }
+            }
+
+            if(winnerDistance < 3) {
+                dbot.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
+            } else { // See if there's anything in quotes
+                var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
+                if(q) {
+                    if(this.db.bans['*'].include(data.user)) {
+                        this.say(data.channel, data.user + 
+                            ' is banned from using this command. Commence incineration.'); 
                     } else {
-                        this.say(data.channel, 'Nobody loves ' + q[1]);
+                        q[1] = q[1].trim();
+                        key = this.cleanNick(q[1])
+                        if(this.db.quoteArrs.hasOwnProperty(key)) {
+                            this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
+                        } else {
+                            this.say(data.channel, 'Nobody loves ' + q[1]);
+                        }
                     }
                 }
             }
