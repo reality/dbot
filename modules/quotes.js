@@ -52,7 +52,7 @@ var quotes = function(dbot) {
                     if(quotes.hasOwnProperty(q[1])) {
                         if(!dbot.db.locks.include(q[1]) || data.user == dbot.admin) {
                             var quote = quotes[key].pop();
-                            if(quotes[key] === undefined) {
+                            if(quotes[key].length) {
                                 delete quotes[key];
                             }
                             rmAllowed = false;
