@@ -27,7 +27,7 @@ var quotes = function(dbot) {
             }
 
             qSizes = qSizes.sort(function(a, b) { return a[1] - b[1]; });
-            qSizes = qSizes.slice(kickArr.length - 10).reverse();
+            qSizes = qSizes.slice(qSizes.length - 10).reverse();
 
             var qString = "Largest categories: ";
 
