@@ -16,6 +16,27 @@ var quotes = function(dbot) {
                 }
             }
         },
+
+        // shows the biggest categories
+        '~qstats': function(data, params) {
+            var qSizes = []; 
+            for(var cat in quotes) {
+                if(quotes[cat].length != 0) {
+                    qSizes.push([cat, quotes[cat].length]);
+                }
+            }
+
+            qSizes = qSizes.sort(function(a, b) { return a[1] - b[1]; });
+            qSizes = qSizes.slice(kickArr.length - 10).reverse();
+
+            var qString = "Largest categories: ";
+
+            for(var i=0;i<qSizes.length;i++) {
+                qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
+            }
+
+            dbot.say(data.channel, qString.slice(0, -2));
+        },
         
         '~qsearch': function(data, params) {
             if(params[2] === undefined) {
