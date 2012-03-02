@@ -36,7 +36,7 @@ var spelling = function(dbot) {
     
     return {
         'listener': function(data, params) {
-            var q = data.message.valMatch(/^\*\*?([\d\w\s']*)$/, 2);
+            var q = data.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 2);
             var otherQ = data.message.valMatch(/^([\d\w\s]*): \*\*?([\d\w\s']*)$/, 3);
             if(q) {
                 correct(data, q[1], data.user, function (e) {
