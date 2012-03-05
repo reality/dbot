@@ -60,6 +60,9 @@ var drama = function(dbot) {
         'listener': function(data) {
             var category = bayes.classify(data.message, function(category) {
                 console.log(category + '!'); 
+                if(category === 'beinganasshole') {
+                    dbot.say(data.channel, data.user + ': Quit being an asshole')
+                }
             }.bind(this));
 
             if(last.hasOwnProperty(data.channel)) {
