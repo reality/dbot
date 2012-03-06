@@ -27,6 +27,19 @@ Array.prototype.include = function(value) {
     return false;
 };
 
+Array.prototype.allGroupings = function() {
+    if (this.length == 0) {
+        return [];  /* short-circuit the empty-array case */
+    }
+    var groupings = [];
+    for(var n=1;n<=this.length;n++) {
+        for(var i=0;i<(this.length-(n-1));i++) {
+            groupings.push(this.slice(i, i+n));
+        }
+    }
+    return groupings;
+}
+
 /*** String ***/
 
 String.prototype.valMatch = function(regex, expLength) {

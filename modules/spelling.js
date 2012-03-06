@@ -3,23 +3,25 @@ var spelling = function(dbot) {
     var last = {};
 
     var correct = function (data, correction, candidate, output_callback) {
-        var candidates = last[data.channel][candidate].split(' ');
+        var rawCandidates = last[data.channel][candidate].split(' ').allGroupings();
+        var candidates = [];
+        for(var i=0;i<rawCandidates.length;i++) {
+            candidates.push(rawCandidates[i].join(' '));
+        }
         var winner = false;
         var winnerDistance = Infinity;
 
         for(var i=0;i<candidates.length;i++) {
             var distance = String.prototype.distance(correction, candidates[i]);
             if(distance < winnerDistance) {
-                winner = i;
+                winner = candidates[i];
                 winnerDistance = distance;
             }
         }
 
         if(winnerDistance < 7) {
             if(winner !== correction) {
-                candidates[winner] = correction;
-                var fix = candidates.join(' ');
-                last[data.channel][candidate] = fix;
+                var fix = last[data.channel][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
                 }
