@@ -19,7 +19,7 @@ var spelling = function(dbot) {
             }
         }
 
-        if(winnerDistance < Math.ceil(correction.length * 1.33)) {
+        if(winnerDistance < Math.ceil(winner.length * 1.33)) {
             if(winner !== correction) {
                 var fix = last[data.channel][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
