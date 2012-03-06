@@ -59,9 +59,20 @@ var drama = function(dbot) {
 
         'listener': function(data) {
             var category = bayes.classify(data.message, function(category) {
-                console.log(category + '!'); 
-                if(category === 'beinganasshole') {
-                    dbot.say(data.channel, data.user + ': Quit being an asshole')
+                if(category !== 'normal') {
+                    if(category === 'beinganasshole') {
+                        if(dbot.db.drama.beinganasshole.hasOwnProperty(data.user)) {
+                            dbot.db.drama.beinganasshole[data.user]++;
+                        } else {
+                            dbot.db.drama.beinganasshole[data.user] = 1;
+                        }
+                    } else if(category === 'sd') {
+                        if(dbot.db.drama.sd.hasOwnProperty(data.user)) {
+                            dbot.db.drama.sd[data.user]++;
+                        } else {
+                            dbot.db.drama.sd[data.user] = 1;
+                        }
+                    }
                 }
             }.bind(this));
 
