@@ -61,6 +61,22 @@ var DBot = function(timers) {
     this.instance.connect();
 };
 
+// Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
+DBot.prototype.interpolatedQuote = function(key) {
+    var quoteString = this.db.quoteArrs[key].random();
+    var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/);
+    if (quoteRefs) {
+        quoteRefs = quoteRefs.slice(1);
+        for(var i=0;i<quoteRefs.length;i++) {
+            var cleanRef = this.cleanNick(quoteRefs[i].trim());
+            if (this.db.quoteArrs.hasOwnProperty(cleanRef)) {
+                quoteString = quoteString.replace("~~"+cleanRef+"~~", this.db.quoteArrs[cleanRef].random());
+            }
+        }
+    }
+    return quoteString;
+};
+
 // Say something in a channel
 DBot.prototype.say = function(channel, data) {
     this.instance.say(channel, data);
@@ -150,7 +166,7 @@ DBot.prototype.reloadModules = function() {
                     q[1] = q[1].trim();
                     key = this.cleanNick(q[1])
                     if(this.db.quoteArrs.hasOwnProperty(key)) {
-                        this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
+                        this.say(data.channel, q[1] + ': ' + this.interpolatedQuote(key));
                     } else {
                         // See if it's similar to anything
                         var winnerDistance = Infinity;

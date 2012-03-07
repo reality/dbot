@@ -10,7 +10,7 @@ var quotes = function(dbot) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, q[1] + ': ' + quotes[key].random());
+                    dbot.say(data.channel, q[1] + ': ' + dbot.interpolatedQuote(key));
                 } else {
                     dbot.say(data.channel, 'Nobody loves ' + q[1]);
                 }
@@ -189,11 +189,11 @@ var quotes = function(dbot) {
 
         '~rq': function(data, params) {
             var rQuote = Object.keys(quotes).random();
-            dbot.say(data.channel, rQuote + ': ' + quotes[rQuote].random());
+            dbot.say(data.channel, rQuote + ': ' + dbot.interpolatedQuote(rQuote));
         },
 
         '~d': function(data, params) {
-            dbot.say(data.channel,  data.user + ': ' + dbot.db.quoteArrs['depressionbot'].random());
+            dbot.say(data.channel,  data.user + ': ' + dbot.interpolatedQuote('depressionbot'));
         },
         
         '~link': function(data, params) {
