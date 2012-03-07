@@ -1,12 +1,13 @@
 var parseDiceSpec = function (specString) {
-    var rawSpec = specString.valMatch(/^([0-9]*)d(%|[0-9]*)$/i, 3);
+    var rawSpec = specString.valMatch(/^([0-9]*)d(%|[0-9]*)(|[+-][0-9]+)$/i, 4);
     if (rawSpec !== false) {
         if (rawSpec[2] === "%") {
             rawSpec[2] = 100;
         }
         return {
             "count": parseInt(rawSpec[1] || 1),
-            "sides": parseInt(rawSpec[2] || 6)
+            "sides": parseInt(rawSpec[2] || 6),
+            "modifier": parseInt(rawSpec[3] || 0)
         };
     } else {
         return false;
@@ -15,7 +16,28 @@ var parseDiceSpec = function (specString) {
 
 var normalizeDiceSpec = function (specString) {
     var diceSpec = parseDiceSpec(specString);
-    return (diceSpec["count"] > 1 ? diceSpec["count"] : "") + "d" + (diceSpec["sides"] === 100 ? "%" : diceSpec["sides"]);
+
+    if (diceSpec["count"] > 1) {
+        var count = diceSpec["count"];
+    } else {
+        var count = "";
+    }
+
+    if (diceSpec["sides"] === 100) {
+        var sides = "%";
+    } else {
+        var sides = diceSpec["sides"];
+    }
+
+    if (diceSpec["modifier"] > 0) {
+        var modifier = "+" + diceSpec["modifier"];
+    } else if (diceSpec["modifier"] < 0) {
+        var modifier = diceSpec["modifier"];
+    } else {
+        var modifier = "";
+    }
+
+    return (count + "d" + sides + modifier);
 };
 
 var dice = function(dbot) {
@@ -34,7 +56,7 @@ var dice = function(dbot) {
                 } else {
                     rolls.push([normalizeDiceSpec(params[i]), []]);
                     for (var j = 0; j < diceSpec["count"] ; j++) {
-                        rolls[rolls.length-1][1].push(Math.ceil(Math.random() * diceSpec["sides"]));
+                        rolls[rolls.length-1][1].push(Math.ceil(Math.random() * diceSpec["sides"]) + diceSpec["modifier"]);
                     }
                 }
             }
