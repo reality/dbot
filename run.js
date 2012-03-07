@@ -20,6 +20,9 @@ var DBot = function(timers) {
         if(!this.db.hasOwnProperty("quoteArrs")) {
             this.db.quoteArrs = {};
         }
+        if(!this.db.quoteArrs.hasOwnProperty("realityonce")) {
+            this.db.quoteArrs.realityonce = [];
+        }
         if(!this.db.hasOwnProperty("kicks")) {
             this.db.kicks = {};
         }
