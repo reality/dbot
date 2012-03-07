@@ -98,6 +98,14 @@ var adminCommands = function(dbot) {
             }
         },
 
+        'onLoad': function() {
+            return {
+                '~resetadmin': function(data, params) {
+                    dbot.admin = dbot.config.admin;
+                }
+            }
+        },
+
         'on': 'PRIVMSG'
     };
 };
