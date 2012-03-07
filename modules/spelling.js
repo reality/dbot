@@ -3,23 +3,25 @@ var spelling = function(dbot) {
     var last = {};
 
     var correct = function (data, correction, candidate, output_callback) {
-        var candidates = last[data.channel][candidate].split(' ');
+        var rawCandidates = last[data.channel][candidate].split(' ').allGroupings();
+        var candidates = [];
+        for(var i=0;i<rawCandidates.length;i++) {
+            candidates.push(rawCandidates[i].join(' '));
+        }
         var winner = false;
         var winnerDistance = Infinity;
 
         for(var i=0;i<candidates.length;i++) {
             var distance = String.prototype.distance(correction, candidates[i]);
-            if(distance < winnerDistance) {
-                winner = i;
+            if((distance < winnerDistance) && (distance > 0)) {
+                winner = candidates[i];
                 winnerDistance = distance;
             }
         }
 
-        if(winnerDistance < 7) {
+        if(winnerDistance < Math.ceil(winner.length * 1.33)) {
             if(winner !== correction) {
-                candidates[winner] = correction;
-                var fix = candidates.join(' ');
-                last[data.channel][candidate] = fix;
+                var fix = last[data.channel][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
                 }
@@ -36,14 +38,14 @@ var spelling = function(dbot) {
     
     return {
         'listener': function(data, params) {
-            var q = data.message.valMatch(/^\*\*?([\d\w\s']*)$/, 2);
-            var otherQ = data.message.valMatch(/^([\d\w\s]*): \*\*?([\d\w\s']*)$/, 3);
+            var q = data.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
+            var otherQ = data.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
             if(q) {
-                correct(data, q[1], data.user, function (e) {
+                correct(data, q[1] || q[2], data.user, function (e) {
                     dbot.say(data.channel, e.correcter + ' meant: ' + e.fix);
                 });
             } else if(otherQ) {
-                correct(data, otherQ[2], otherQ[1], function (e) {
+                correct(data, otherQ[2] || otherQ[3], otherQ[1], function (e) {
                     dbot.say(data.channel, e.correcter + ' thinks ' + e.candidate + ' meant: ' + e.fix);
                 });
             } else {
