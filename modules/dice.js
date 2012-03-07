@@ -54,9 +54,9 @@ var dice = function(dbot) {
                 if (diceSpec === false) {
                     rolls.push([params[i], false]);
                 } else {
-                    rolls.push([normalizeDiceSpec(params[i]), []]);
+                    rolls.push([normalizeDiceSpec(params[i]), [], diceSpec["modifier"]]);
                     for (var j = 0; j < diceSpec["count"] ; j++) {
-                        rolls[rolls.length-1][1].push(Math.ceil(Math.random() * diceSpec["sides"]) + diceSpec["modifier"]);
+                        rolls[rolls.length-1][1].push(Math.ceil(Math.random() * diceSpec["sides"]));
                     }
                 }
             }
@@ -66,7 +66,16 @@ var dice = function(dbot) {
                     dbot.say(data.channel, rolls[i][0] + ": invalid dice spec");
                 } else {
                     if (rolls[i][1].length > 1) {
-                        var total = " (total " + rolls[i][1].sum() + ")";
+                        var total = " (total " + rolls[i][1].sum();
+                        if (rolls[i][2] != 0) {
+                            if (rolls[i][2] > 0) {
+                                total += " + ";
+                            } else {
+                                total += " - ";
+                            }
+                            total += Math.abs(rolls[i][2]) + " -> " + (rolls[i][1].sum() + rolls[i][2]);
+                        }
+                        total += ")"
                     } else {
                         var total = "";
                     }
