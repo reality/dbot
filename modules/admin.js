@@ -24,9 +24,23 @@ var adminCommands = function(dbot) {
         },
 
         'say': function(data, params) {
-            var c = params[1];
+            if (params[1] === "@") {
+                var c = data.channel;
+            } else {
+                var c = params[1];
+            }
             var m = params.slice(2).join(' ');
             dbot.say(c, m);
+        },
+
+        'act': function(data, params) {
+            if (params[1] === "@") {
+                var c = data.channel;
+            } else {
+                var c = params[1];
+            }
+            var m = params.slice(2).join(' ');
+            dbot.act(c, m);
         },
 
         'load': function(data, params) {
