@@ -247,6 +247,9 @@ var quotes = function(dbot) {
                 dbot.db.bans['*'].include(data.user)) {
                     dbot.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
                 } else {
+                    if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
+                        dbot.db.quoteArrs['realityonce'] = [];
+                    }
                     dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
                     addStack.push('realityonce');
                     rmAllowed = true;
