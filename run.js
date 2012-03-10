@@ -6,35 +6,38 @@ require('./snippets');
 var DBot = function(timers) {
     // Load external files
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+    this.db = null;
+    var rawDB;
     try {
-        this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+        var rawDB = fs.readFileSync('db.json', 'utf-8');
     } catch (e) {
-        this.db = {};
-    } finally {  /* fill any missing parts of the db; if this is a new DB, that's all of them */
-        if(!this.db.hasOwnProperty("bans")) {
-            this.db.bans = {};
-        }
-        if(!this.db.bans.hasOwnProperty("*")) {
-            this.db.bans["*"] = [];
-        }
-        if(!this.db.hasOwnProperty("quoteArrs")) {
-            this.db.quoteArrs = {};
-        }
-        if(!this.db.quoteArrs.hasOwnProperty("realityonce")) {
-            this.db.quoteArrs.realityonce = [];
-        }
-        if(!this.db.hasOwnProperty("kicks")) {
-            this.db.kicks = {};
-        }
-        if(!this.db.hasOwnProperty("kickers")) {
-            this.db.kickers = {};
-        }
-        if(!this.db.hasOwnProperty("modehate")) {
-            this.db.modehate = [];
-        }
-        if(!this.db.hasOwnProperty("locks")) {
-            this.db.locks = [];
-        }
+        this.db = {};  /* if no db file, make empty one */
+    }
+    if(!this.db) {  /* if it wasn't empty */
+        this.db = JSON.parse(rawDB);
+    }
+
+    /* repair any deficiencies in the DB; if this is a new DB, that's everything */
+    if(!this.db.hasOwnProperty("bans")) {
+        this.db.bans = {};
+    }
+    if(!this.db.bans.hasOwnProperty("*")) {
+        this.db.bans["*"] = [];
+    }
+    if(!this.db.hasOwnProperty("quoteArrs")) {
+        this.db.quoteArrs = {};
+    }
+    if(!this.db.hasOwnProperty("kicks")) {
+        this.db.kicks = {};
+    }
+    if(!this.db.hasOwnProperty("kickers")) {
+        this.db.kickers = {};
+    }
+    if(!this.db.hasOwnProperty("modehate")) {
+        this.db.modehate = [];
+    }
+    if(!this.db.hasOwnProperty("locks")) {
+        this.db.locks = [];
     }
 
     // Populate bot properties with config data
