@@ -20,7 +20,19 @@ This is the original reason that DBot was created.
 
 Commands:
 
-- ~qadd category=newquote - Add a new quote to the database.
+- _~q category_ - Display a random quote from a given category.
+- _~qadd category=newquote_ - Add a new quote to the database.
+- _~qstats_ - Show a list of the biggest quote categories.
+- _~qsearch category needle_ - Search for a quote in a given category.
+- _~rmlast [category]_ - Remove the last quote added to a given category, or the
+  last quote added.
+- _~rm category quote_ - Remove a given quote from the given category.
+- _~qcount category_ - Show the number of quotes stored in the given category.
+- _~rq_ - Show a random quote from a random category.
+- _~d_ - Show a quote from the category which matches the bot's name.
+- _~link category_ - Create a link to the page on the web interface which displays the
+  given category's quotes.
+- _~qprune_ - Delete empty quote categories.
 
 ### Admin
 
