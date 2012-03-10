@@ -107,6 +107,11 @@ DBot.prototype.reloadModules = function() {
     this.timers.clearTimers();
     this.save();
 
+    // enforce having command. it can still be reloaded, but dbot _will not_ function without it, so not having it should be impossible
+    if(!this.moduleNames.include("command")) {
+        this.moduleNames.push("command");
+    }
+
     // Reload Javascript snippets
     var path = require.resolve('./snippets');
     delete require.cache[path];
