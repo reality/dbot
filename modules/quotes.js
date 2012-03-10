@@ -112,6 +112,9 @@ var quotes = function(dbot) {
                             var index = quotes[q[1]].indexOf(q[2]);
                             if(index != -1) {
                                 quotes[q[1]].splice(index, 1);
+                                if(quotes[q[1]].length === 0) {
+                                    delete quotes[q[1]];
+                                }
                                 rmAllowed = false;
                                 dbot.say(data.channel, '\'' + q[2] + '\' removed from ' + q[1]);
                             } else {
