@@ -30,7 +30,7 @@ For regular users, there is the *~js* command, which is completely sandboxed,
 but can still be used for calculation and the like.
 
 Example:
-    > ~js Array(16).join('wat'-1) + " Batman!";
+    ~js Array(16).join('wat'-1) + " Batman!";
     'NaNNaNNaNNaNNaNNaNNaNNaNNaNNaNNaNNaNNaNNaNNaN Batman!'
 
 This feature is fairly safe as the user doesn't have access to anything
