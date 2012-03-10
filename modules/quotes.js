@@ -193,7 +193,7 @@ var quotes = function(dbot) {
         },
 
         '~d': function(data, params) {
-            dbot.say(data.channel,  data.user + ': ' + dbot.interpolatedQuote('depressionbot'));
+            dbot.say(data.channel,  data.user + ': ' + dbot.interpolatedQuote(dbot.name));
         },
         
         '~link': function(data, params) {
