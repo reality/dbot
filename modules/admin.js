@@ -1,4 +1,6 @@
 var fs = require('fs');
+var sys = require('sys')
+var exec = require('child_process').exec;
 
 var adminCommands = function(dbot) {
     var dbot = dbot;
@@ -15,6 +17,15 @@ var adminCommands = function(dbot) {
 
         'part': function(data, params) {
             dbot.instance.part(params[1]);
+        },
+
+        // Do a git pull and reload
+        'greload': function(data, params) {
+            var child;
+
+            child = exec("cd ../ && git pull", function (error, stdout, stderr) {
+                commands.reload(data, params);
+            }.bind(this));
         },
 
         'reload': function(data, params) {
