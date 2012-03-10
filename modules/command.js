@@ -49,9 +49,7 @@ var command = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG',
-
-        'requires': [ 'quotes' ]
+        'on': 'PRIVMSG'
     };
 };
 
