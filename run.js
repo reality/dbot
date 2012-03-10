@@ -83,7 +83,7 @@ DBot.prototype.say = function(channel, data) {
 };
 
 DBot.prototype.act = function(channel, data) {
-    this.instance.send('PRIVMSG', channel, ':\001ACTION' + data + '\001');
+    this.instance.send('PRIVMSG', channel, ':\001ACTION ' + data + '\001');
 }
 
 // Save the database file
