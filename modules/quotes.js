@@ -112,6 +112,9 @@ var quotes = function(dbot) {
                             var index = quotes[q[1]].indexOf(q[2]);
                             if(index != -1) {
                                 quotes[q[1]].splice(index, 1);
+                                if(quotes[q[1]].length === 0) {
+                                    delete quotes[q[1]];
+                                }
                                 rmAllowed = false;
                                 dbot.say(data.channel, '\'' + q[2] + '\' removed from ' + q[1]);
                             } else {
@@ -201,6 +204,23 @@ var quotes = function(dbot) {
                 dbot.say(data.channel, 'Syntax error. Commence incineration.');
             } else {
                 dbot.say(data.channel, 'Link to "'+params[1]+'" - http://nc.no.de:443/quotes/'+params[1]);
+            }
+        },
+
+        '~qprune': function(data) {
+            var pruned = []
+            for(key in quotes) {
+                if(quotes.hasOwnProperty(key)) {
+                    if(quotes[key].length == 0) {
+                        delete quotes[key];
+                        pruned.push(key);
+                    }
+                }
+            }
+            if(pruned.length > 0) {
+                dbot.say(data.channel, "Pruned empty quote categories: " + pruned.join(", "));
+            } else {
+                dbot.say(data.channel, "No empty quote categories. You're good to go!");
             }
         }
     };
