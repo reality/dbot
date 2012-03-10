@@ -218,9 +218,9 @@ var quotes = function(dbot) {
                 }
             }
             if(pruned.length > 0) {
-                dbot.say(data.channel, "Pruned empty quote categories: " + pruned.join(", "));
+                dbot.say(data.channel, "Pruning empty quote categories: " + pruned.join(", "));
             } else {
-                dbot.say(data.channel, "No empty quote categories. You're good to go!");
+                dbot.say(data.channel, "No empty quote categories. Commence incineration.");
             }
         }
     };
