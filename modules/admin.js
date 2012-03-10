@@ -23,8 +23,8 @@ var adminCommands = function(dbot) {
         'greload': function(data, params) {
             var child;
 
-            child = exec("cd ../ && git pull", function (error, stdout, stderr) {
-                console.log(stdout);
+            child = exec("git pull", function (error, stdout, stderr) {
+                console.log(stderr);
                 commands.reload(data, params);
             }.bind(this));
         },
