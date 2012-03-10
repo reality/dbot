@@ -16,12 +16,18 @@ Requirements:
 
 ### Quotes
 
+This is the original reason that DBot was created.
+
+Commands:
+    - ~qadd category=newquote - Add a new quote to the database.
+
 ### Admin
 
 Various administration functionality such as banning users, hot-reloading the 
 code and ordering him to talk. Note that commands added here are handled with
 their own listener, rather than being part of the command logic which is handled
-by the Command module.
+by the Command module. Functionality in this module can be slightly unsafe as
+not much error checking on the input is performed.
 
 ### JS - Run Javascript code
 
@@ -38,9 +44,14 @@ which is run is killed if it does not finish within a short amount of time.
 
 For administrators, the incredibly useful *~ajs* command is also available. The
 input for this command is simply 'eval'-ed and therefore has full access to
-DBot's memory. Of course, this is incredibly unsafe, but I find it rather fun.
-It's useful for administrative activity for which there isn't an in-built
-command. For example, you could hot-add a new administrator like this:
+DBot's memory. Of course, this is incredibly unsafe, but I find it rather fun;
+remember to only give extremely trusted friends administrator access to DBot, as
+there's nothing to stop them wiping the database or something similar - if
+you're worried about that kind of thing, do not load this module.
+
+However, it's useful for many things, such as administrative activity for 
+which there isn't a command in the admin module. For example, you could hot-add
+a new administrator like this:
 
     > ~ajs dbot.admin.push('batman');
     2
