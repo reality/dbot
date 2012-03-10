@@ -12,7 +12,7 @@ var quotes = function(dbot) {
                 if(quotes.hasOwnProperty(key)) {
                     dbot.say(data.channel, q[1] + ': ' + dbot.interpolatedQuote(key));
                 } else {
-                    dbot.say(data.channel, 'Nobody loves ' + q[1]);
+                    dbot.say(data.channel, 'No one loves ' + q[1]);
                 }
             }
         },
