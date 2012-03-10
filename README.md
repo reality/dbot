@@ -7,10 +7,10 @@ the general standard of software fanciness, dbot is rated as being '75% the same
 as bathing in fine, fine grape juice.'
 
 Requirements: 
-    - Node JS
-    - JSbot, the Javascript library I wrote to handle the IRC protocol and event
-      listeners etc.
-    - Various modules have their own requirements also.
+- Node JS
+- JSbot, the Javascript library I wrote to handle the IRC protocol and event
+  listeners etc.
+- Various modules have their own requirements also.
 
 ## Modules:
 
@@ -60,7 +60,28 @@ their own listener, rather than being part of the command logic which is handled
 by the Command module. Functionality in this module can be slightly unsafe as
 not much error checking on the input is performed.
 
-### JS - Run Javascript code
+TODO: Add summaries for each command in this module.
+
+### Spelling 
+
+Will attempt to correct a users' spelling by using the levenshtein distance
+algorithm. One corrects the spelling of their previous message by simply posting
+a message with their correction and an asterisk:
+
+    > user: I am a tutrle.
+    > user: *turtle
+    user meant: I am a turtle.
+
+The regular expression for this module also accepts two asterisks at the
+beginning of the correction, or at the end, and also accepts several words as
+corrections, and deals with these fairly intelligently. Users may also attempt 
+to correct another users like so:
+
+    > userone: I am a tutrle.
+    > usertwo: userone: *turtle
+    > usertwo thinks userone meant: I am a turtle.
+
+### JS
 
 This module provides two commands which allow the execution of Javascript code.
 For regular users, there is the *~js* command, which is completely sandboxed,
