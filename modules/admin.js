@@ -24,6 +24,7 @@ var adminCommands = function(dbot) {
             var child;
 
             child = exec("cd ../ && git pull", function (error, stdout, stderr) {
+                console.log(stdout);
                 commands.reload(data, params);
             }.bind(this));
         },
