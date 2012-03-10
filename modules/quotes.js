@@ -65,13 +65,13 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(data, params) {
-            if(rmAllowed == true || data.user == dbot.admin) {
+            if(rmAllowed == true || dbot.admin.include(data.user)) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s-]*)/, 2);
                 if(q) {
                     q[1] = q[1].trim()
                     key = q[1].toLowerCase();
                     if(quotes.hasOwnProperty(q[1])) {
-                        if(!dbot.db.locks.include(q[1]) || data.user == dbot.admin) {
+                        if(!dbot.db.locks.include(q[1]) || dbot.admin.include(data.user)) {
                             var quote = quotes[key].pop();
                             if(quotes[key].length === 0) {
                                 delete quotes[key];
@@ -104,7 +104,7 @@ var quotes = function(dbot) {
         },
 
         '~rm': function(data, params) {
-            if(rmAllowed == true || data.user == dbot.admin) {
+            if(rmAllowed == true || dbot.admin.include(data.user)) {
                 var q = data.message.valMatch(/^~rm ([\d\w\s-]*) (.+)$/, 3);
                 if(q) {
                     if(quotes.hasOwnProperty(q[1])) {

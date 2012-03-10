@@ -39,7 +39,7 @@ var DBot = function(timers) {
 
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
-    this.admin = this.config.admin || 'reality';
+    this.admin = this.config.admin || [ 'reality' ];
     this.password = this.config.password || 'lolturtles';
     this.nickserv = this.config.nickserv || 'zippy';
     this.server = this.config.server || 'elara.ivixor.net';

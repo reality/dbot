@@ -6,11 +6,11 @@ var adminCommands = function(dbot) {
     var commands = {
         'join': function(data, params) {
             dbot.instance.join(params[1]); 
-            dbot.say(dbot.admin, 'Joined ' + params[1]);
+            dbot.say(data.channel, 'Joined ' + params[1]);
         },
 
         'opme': function(data, params) {
-           dbot.instance.send('MODE ' + params[1] + ' +o ', dbot.admin);
+           dbot.instance.send('MODE ' + params[1] + ' +o ', data.user);
         },
 
         'part': function(data, params) {
@@ -106,7 +106,7 @@ var adminCommands = function(dbot) {
             if(data.channel == dbot.name) data.channel = data.user;
 
             params = data.message.split(' ');
-            if(commands.hasOwnProperty(params[0]) && data.user == dbot.admin) {
+            if(commands.hasOwnProperty(params[0]) && dbot.admin.include(data.user)) {
                 commands[params[0]](data, params);
                 dbot.save();
             }

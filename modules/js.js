@@ -15,7 +15,7 @@ var js = function(dbot) {
 
         '~ajs': function(data, params) {
             var q = data.message.valMatch(/^~ajs (.*)/, 2);
-            if(data.user == dbot.admin) {
+            if(dbot.admin.include(data.user)) {
                 dbot.say(data.channel, eval(q[1]));
             }
         }

@@ -7,9 +7,6 @@ var puns = function(dbot) {
                 dbot.instance.say(data.channel, dbot.interpolatedQuote('realityonce'));
             } else if(dbot.db.quoteArrs.hasOwnProperty(data.user.toLowerCase())) {
                 dbot.say(data.channel, data.user + ': ' + dbot.interpolatedQuote(data.user.toLowerCase()));
-            } else if(dbot.instance.inChannel(data.channel)) {
-                dbot.instance.say('aisbot', '.karma ' + data.user);
-                dbot.waitingForKarma = data.channel;
             }
         },
 
