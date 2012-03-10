@@ -9,8 +9,8 @@ as bathing in fine, fine grape juice.'
 Requirements: 
 
 - Node JS
-- JSbot, the Javascript library I wrote to handle the IRC protocol and event
-  listeners etc.
+- [JSBot](http://github.com/reality/JSBot "JSBot"), the Javascript library I 
+  wrote to handle the IRC protocol and event listeners etc.
 - Various modules have their own requirements also.
 
 ## Modules:
