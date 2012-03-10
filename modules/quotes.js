@@ -205,6 +205,23 @@ var quotes = function(dbot) {
             } else {
                 dbot.say(data.channel, 'Link to "'+params[1]+'" - http://nc.no.de:443/quotes/'+params[1]);
             }
+        },
+
+        '~qprune': function(data) {
+            var pruned = []
+            for(key in quotes) {
+                if(quotes.hasOwnProperty(key)) {
+                    if(quotes[key].length == 0) {
+                        delete quotes[key];
+                        pruned.push(key);
+                    }
+                }
+            }
+            if(pruned.length > 0) {
+                dbot.say(data.channel, "Pruned empty quote categories: " + pruned.join(", "));
+            } else {
+                dbot.say(data.channel, "No empty quote categories. You're good to go!");
+            }
         }
     };
 
