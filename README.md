@@ -14,9 +14,22 @@ Requirements:
 
 ## Modules:
 
+### Command
+
+This handles the command execution logic for DBot.
+
+1. Does the input match a command key in *dbot.commands* ?
+2. Is there a quote category which matches the first part of the input
+   (*~category*)?
+3. Is there a command name similar to to the first part of the input (*~name*)
+   in *dbot.commands*?
+
+This is the only module which is force loaded, even if it's not in the
+configuration.
+
 ### Quotes
 
-This is the original reason that DBot was created.
+This is the original reason that DBot was created, stores and displays quotes.
 
 Commands:
 
@@ -33,6 +46,11 @@ Commands:
 - _~link category_ - Create a link to the page on the web interface which displays the
   given category's quotes.
 - _~qprune_ - Delete empty quote categories.
+
+Unfortunately, this module is fairly highly coupled with certain other areas of
+the program. I am working on this, but note, for example, that one can still
+access quotes with the *~category* syntax even if the quotes module isn't
+loaded.
 
 ### Admin
 
