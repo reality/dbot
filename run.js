@@ -44,7 +44,7 @@ var DBot = function(timers) {
     this.nickserv = this.config.nickserv || 'zippy';
     this.server = this.config.server || 'elara.ivixor.net';
     this.port = this.config.port || 6667;
-    this.moduleNames = this.config.modules || [ 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
+    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
 
     this.timers = timers.create();
 
@@ -141,51 +141,6 @@ DBot.prototype.reloadModules = function() {
         }
 
         return module;
-    }.bind(this));
-
-    this.instance.addListener('PRIVMSG', function(data) {
-        params = data.message.split(' ');
-        if(data.channel == this.name) data.channel = data.user;
-
-        if(this.commands.hasOwnProperty(params[0])) {
-            if((this.db.bans.hasOwnProperty(params[0]) && 
-                    this.db.bans[params[0]].include(data.user)) || this.db.bans['*'].include(data.user))
-                this.say(data.channel, data.user + 
-                    ' is banned from using this command. Commence incineration.'); 
-            else {
-                this.commands[params[0]](data, params);
-                this.save();
-            }
-        } else {
-            var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
-            if(q) {
-                if(this.db.bans['*'].include(data.user)) {
-                    this.say(data.channel, data.user + 
-                        ' is banned from using this command. Commence incineration.'); 
-                } else {
-                    q[1] = q[1].trim();
-                    key = this.cleanNick(q[1])
-                    if(this.db.quoteArrs.hasOwnProperty(key)) {
-                        this.say(data.channel, q[1] + ': ' + this.interpolatedQuote(key));
-                    } else {
-                        // See if it's similar to anything
-                        var winnerDistance = Infinity;
-                        var winner = false;
-                        for(var commandName in this.commands) {
-                            var distance = String.prototype.distance(params[0], commandName);
-                            if(distance < winnerDistance) {
-                                winner = commandName;
-                                winnerDistance = distance;
-                            }
-                        }
-
-                        if(winnerDistance < 3) {
-                            this.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
-                        }
-                    }
-                }
-            }
-        }
     }.bind(this));
 };
 
