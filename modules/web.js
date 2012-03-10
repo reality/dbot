@@ -37,7 +37,7 @@ var webInterface = function(dbot) {
         res.render('quotes', { 'name': dbot.name, 'quotes': dbot.db.quoteArrs[rCategory], locals: { 'url_regex': RegExp.prototype.url_regex() } });
     });
     
-    app.listen(443);
+    app.listen(dbot.webPort);
 
     return { 
         'onDestroy': function() {
