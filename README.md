@@ -7,6 +7,7 @@ the general standard of software fanciness, dbot is rated as being '75% the same
 as bathing in fine, fine grape juice.'
 
 Requirements: 
+
 - Node JS
 - JSbot, the Javascript library I wrote to handle the IRC protocol and event
   listeners etc.
@@ -73,8 +74,8 @@ a message with their correction and an asterisk:
     user meant: I am a turtle.
 
 The regular expression for this module also accepts two asterisks at the
-beginning of the correction, or at the end, and also accepts several words as
-corrections, and deals with these fairly intelligently. Users may also attempt 
+beginning of the correction, or at the end; it also accepts several words as the
+correction and deals with these fairly intelligently. Users may also attempt 
 to correct another users like so:
 
     > userone: I am a tutrle.
