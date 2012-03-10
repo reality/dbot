@@ -20,7 +20,7 @@ This is the original reason that DBot was created.
 
 Commands:
 
-    - ~qadd category=newquote - Add a new quote to the database.
+- ~qadd category=newquote - Add a new quote to the database.
 
 ### Admin
 
