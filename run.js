@@ -64,8 +64,8 @@ var DBot = function(timers) {
 // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
 DBot.prototype.interpolatedQuote = function(key) {
     var quoteString = this.db.quoteArrs[key].random();
-    var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/);
-    if (quoteRefs) {
+    var quoteRefs;
+    while( (quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/)) ) {
         quoteRefs = quoteRefs.slice(1);
         for(var i=0;i<quoteRefs.length;i++) {
             var cleanRef = this.cleanNick(quoteRefs[i].trim());
