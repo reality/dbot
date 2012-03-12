@@ -62,7 +62,9 @@ var DBot = function(timers) {
 };
 
 // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
-DBot.prototype.interpolatedQuote = function(key) {
+DBot.prototype.interpolatedQuote = function(key, quoteTree) {
+    if( quoteTree !== undefined && quoteTree.indexOf( key ) != -1 ) return ''; 
+    else if( quoteTree === undefined ) quoteTree = [];
     var quoteString = this.db.quoteArrs[key].random();
     var quoteRefs;
     while( (quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/)) ) {
@@ -70,7 +72,10 @@ DBot.prototype.interpolatedQuote = function(key) {
         for(var i=0;i<quoteRefs.length;i++) {
             var cleanRef = this.cleanNick(quoteRefs[i].trim());
             if (this.db.quoteArrs.hasOwnProperty(cleanRef)) {
-                quoteString = quoteString.replace("~~"+cleanRef+"~~", this.db.quoteArrs[cleanRef].random());
+		quoteTree.push( cleanRef );
+		console.log( "Tree: " + quoteTree, "clean: " + cleanRef );
+                quoteString = quoteString.replace("~~"+cleanRef+"~~", this.interpolatedQuote(cleanRef, quoteTree.slice()));
+		quoteTree.pop();
             }
         }
     }
