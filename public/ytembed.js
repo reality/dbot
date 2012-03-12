@@ -13,8 +13,8 @@ function onYouTubePlayerAPIReady() {
         if(videoIDMaybe) {
             var ytVideoID = videoIDMaybe[1];
             var player = new YT.Player(youTubePlaceholders[i], {
-                height: '290',
-                width: '480',
+                height: '203',
+                width: '336',
                 videoId: ytVideoID
             });
         }
