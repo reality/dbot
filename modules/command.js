@@ -46,11 +46,13 @@ var command = function(dbot) {
                 }
             }
 
-            if(dbot.commands.hasOwnProperty(params[0]) && (!(ignoringCommand))) {
+            if(dbot.commands.hasOwnProperty(params[0])) {
                 if((dbot.db.bans.hasOwnProperty(params[0]) && 
                         dbot.db.bans[params[0]].include(data.user)) || dbot.db.bans['*'].include(data.user)) {
                     dbot.say(data.channel, data.user + 
                         ' is banned from using this command. Commence incineration.'); 
+                } else if(ignoringCommand) {
+                    // do nothing, this stops us falling through to the non-command stuff
                 } else {
                     dbot.commands[params[0]](data, params);
                     dbot.save();
