@@ -3,17 +3,55 @@
 var command = function(dbot) {
     var dbot = dbot;
 
+    var ignoreCommands = function (data, params) {
+        if(data.channel == dbot.name) data.channel = data.user;
+        var targetCommand = params[1];
+        var ignoreMins = parseFloat(params[2]);
+
+        if(!dbot.sessionData.hasOwnProperty("ignoreCommands")) {
+            dbot.sessionData.ignoreCommands = {};
+        }
+        if(!dbot.sessionData.ignoreCommands.hasOwnProperty(targetCommand)) {
+            dbot.sessionData.ignoreCommands[targetCommand] = [];
+        }
+
+        if(dbot.sessionData.ignoreCommands[targetCommand].include(data.channel)) {
+            dbot.say(data.channel, "Already ignoring '" + targetCommand + "' in '" + data.channel + "'.");
+        } else {
+            dbot.sessionData.ignoreCommands[targetCommand].push(data.channel);
+            dbot.timers.addOnceTimer(ignoreMins * 60 * 1000, function() {
+                dbot.sessionData.ignoreCommands[targetCommand].splice(dbot.sessionData.ignoreCommands[targetCommand].indexOf(data.channel), 1);
+                dbot.say(data.channel, "No longer ignoring '" + targetCommand + "' in '" + data.channel + "'.");
+            });
+            dbot.say(data.channel, "Ignoring '" + targetCommand + "' in '" + data.channel + "' for the next " + ignoreMins + " minute" + (ignoreMins == 1 ? "" : "s") + ".");
+        }
+    };
+
     return {
+        'onLoad': function() {
+            return {
+                '~ignore': ignoreCommands
+            };
+        },
         'listener': function(data) {
             params = data.message.split(' ');
             if(data.channel == dbot.name) data.channel = data.user;
 
-            if(dbot.commands.hasOwnProperty(params[0])) {
+            var ignoringCommand = false;
+            if(dbot.sessionData.hasOwnProperty("ignoreCommands")) {
+                if(dbot.sessionData.ignoreCommands.hasOwnProperty(params[0])) {
+                    if(dbot.sessionData.ignoreCommands[params[0]].include(data.channel)) {
+                        ignoringCommand = true;
+                    }
+                }
+            }
+
+            if(dbot.commands.hasOwnProperty(params[0]) && (!(ignoringCommand))) {
                 if((dbot.db.bans.hasOwnProperty(params[0]) && 
-                        dbot.db.bans[params[0]].include(data.user)) || dbot.db.bans['*'].include(data.user))
+                        dbot.db.bans[params[0]].include(data.user)) || dbot.db.bans['*'].include(data.user)) {
                     dbot.say(data.channel, data.user + 
                         ' is banned from using this command. Commence incineration.'); 
-                else {
+                } else {
                     dbot.commands[params[0]](data, params);
                     dbot.save();
                 }
