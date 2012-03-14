@@ -13,8 +13,6 @@ var modehate = function(dbot) {
         'on': 'MODE'
     };
 };
-~ajs dbot.instance.addListener('MODE', function(data) { if(data.channel == '#42' && data.raw[0].indexOf('Snow') != -1 && data.raw[0].indexOf('+o') != -1) { dbot.instance.send('MODE #42 -o Snow'); } }
-
 
 exports.fetch = function(dbot) {
     return modehate(dbot);
