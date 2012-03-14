@@ -2,6 +2,24 @@ var quotes = function(dbot) {
     var quotes = dbot.db.quoteArrs;
     var addStack = [];
     var rmAllowed = true;
+
+    // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
+    var interpolatedQuote = function(key, quoteTree) {
+        if( quoteTree !== undefined && quoteTree.indexOf( key ) != -1 ) { console.log('nrll'); return ''; }
+        else if( quoteTree === undefined ) quoteTree = [];
+        var quoteString = quotes[key].random();
+        var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
+        var thisRef;
+        while( quoteRefs && (thisRef = quoteRefs.shift()) !== undefined ) {
+            var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
+            if (quotes.hasOwnProperty(cleanRef)) {
+                quoteTree.push( key );
+                quoteString = quoteString.replace("~~"+cleanRef+"~~", interpolatedQuote(cleanRef, quoteTree.slice()));
+                quoteTree.pop();
+            }
+        }
+        return quoteString;
+    };
     
     var commands = {
         '~q': function(data, params) { 
@@ -10,7 +28,7 @@ var quotes = function(dbot) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, q[1] + ': ' + dbot.interpolatedQuote(key));
+                    dbot.say(data.channel, q[1] + ': ' + interpolatedQuote(key));
                 } else {
                     dbot.say(data.channel, 'Nobody loves ' + q[1]);
                 }
@@ -192,11 +210,11 @@ var quotes = function(dbot) {
 
         '~rq': function(data, params) {
             var rQuote = Object.keys(quotes).random();
-            dbot.say(data.channel, rQuote + ': ' + dbot.interpolatedQuote(rQuote));
+            dbot.say(data.channel, rQuote + ': ' + interpolatedQuote(rQuote));
         },
 
         '~d': function(data, params) {
-            dbot.say(data.channel,  data.user + ': ' + dbot.interpolatedQuote(dbot.name));
+            dbot.say(data.channel,  data.user + ': ' + interpolatedQuote(dbot.name));
         },
         
         '~link': function(data, params) {

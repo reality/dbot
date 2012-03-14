@@ -3,10 +3,14 @@ var puns = function(dbot) {
 
     return {
         'listener': function(data) {
-            if(data.user == 'reality') {
-                dbot.instance.say(data.channel, dbot.interpolatedQuote('realityonce'));
-            } else if(dbot.db.quoteArrs.hasOwnProperty(data.user.toLowerCase())) {
-                dbot.say(data.channel, data.user + ': ' + dbot.interpolatedQuote(data.user.toLowerCase()));
+            if(dbot.moduleNames.include('quotes')) {
+                if(data.user == 'reality') {
+                    data.message = '~q realityonce';
+                } else if(dbot.db.quoteArrs.hasOwnProperty(data.user.toLowerCase())) {
+                    data.message = '~q ' + data.user.toLowerCase();
+                }
+                var params = data.message.split(' ');
+                dbot.commands[params[0]](data, params);
             }
         },
 
