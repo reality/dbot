@@ -18,7 +18,12 @@ var webInterface = function(dbot) {
     
     // Displays any logs collected by the logging module
     app.get('/log', function(req, res) {
-        res.render('log', { 'name': dbot.name, 'log': (dbot.log || []) });
+        res.redirect('/log/identicurse');
+    });
+
+    app.get('/log/:channel', function(req, res) {
+        var channel = '#' + req.params.channel.toLowerCase();
+        res.render('log', { 'name': dbot.name, 'log': (dbot.log[channel] || []), 'channel': channel });
     });
 
     // Lists the quote categories
