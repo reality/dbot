@@ -66,8 +66,14 @@ var command = function(dbot) {
                     } else {
                         q[1] = q[1].trim();
                         key = dbot.cleanNick(q[1])
-                        if(dbot.db.quoteArrs.hasOwnProperty(key)) {
-                            dbot.say(data.channel, q[1] + ': ' + dbot.interpolatedQuote(key));
+                        if(dbot.db.quoteArrs.hasOwnProperty(key) && dbot.moduleNames.include('quotes')) {
+                            var params = ['~q'];
+                            key.split(' ').each((function(word) {
+                                this.push(word);
+                            }).bind(params));
+                            data.message = params.join(' ');
+                            dbot.commands[params[0]](data, params);
+                            dbot.save();
                         } else {
                             // See if it's similar to anything
                             var winnerDistance = Infinity;
