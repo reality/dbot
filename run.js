@@ -66,24 +66,6 @@ var DBot = function(timers) {
     this.instance.connect();
 };
 
-// Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
-DBot.prototype.interpolatedQuote = function(key, quoteTree) {
-    if( quoteTree !== undefined && quoteTree.indexOf( key ) != -1 ) { console.log('nrll'); return ''; }
-    else if( quoteTree === undefined ) quoteTree = [];
-    var quoteString = this.db.quoteArrs[key].random();
-    var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
-    var thisRef;
-    while( quoteRefs && (thisRef = quoteRefs.shift()) !== undefined ) {
-        var cleanRef = this.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
-        if (this.db.quoteArrs.hasOwnProperty(cleanRef)) {
-            quoteTree.push( key );
-            quoteString = quoteString.replace("~~"+cleanRef+"~~", this.interpolatedQuote(cleanRef, quoteTree.slice()));
-            quoteTree.pop();
-        }
-    }
-    return quoteString;
-};
-
 // Say something in a channel
 DBot.prototype.say = function(channel, data) {
     this.instance.say(channel, data);
