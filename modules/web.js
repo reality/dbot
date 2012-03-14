@@ -16,6 +16,11 @@ var webInterface = function(dbot) {
         //res.render('index', { });
     });
     
+    // Displays any logs collected by the logging module
+    app.get('/log', function(req, res) {
+        res.render('log', { 'name': dbot.name, 'log': (dbot.log || []) });
+    });
+
     // Lists the quote categories
     app.get('/quotes', function(req, res) {
         res.render('quotelist', { 'name': dbot.name, 'quotelist': Object.keys(dbot.db.quoteArrs) });
