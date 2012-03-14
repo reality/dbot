@@ -34,7 +34,7 @@ var command = function(dbot) {
             };
         },
         'listener': function(data) {
-            params = data.message.split(' ');
+            var params = data.message.split(' ');
             if(data.channel == dbot.name) data.channel = data.user;
 
             var ignoringCommand = false;
