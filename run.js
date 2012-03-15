@@ -11,13 +11,13 @@ var DBot = function(timers) {
     try {
         var rawDB = fs.readFileSync('db.json', 'utf-8');
     } catch (e) {
-        this.db = {};  /* if no db file, make empty one */
+        this.db = {};  // If no db file, make empty one
     }
-    if(!this.db) {  /* if it wasn't empty */
+    if(!this.db) {  // If it wasn't empty 
         this.db = JSON.parse(rawDB);
     }
 
-    /* repair any deficiencies in the DB; if this is a new DB, that's everything */
+    // Repair any deficiencies in the DB; if this is a new DB, that's everything
     if(!this.db.hasOwnProperty("bans")) {
         this.db.bans = {};
     }
@@ -96,7 +96,8 @@ DBot.prototype.reloadModules = function() {
     this.timers.clearTimers();
     this.save();
 
-    // enforce having command. it can still be reloaded, but dbot _will not_ function without it, so not having it should be impossible
+    // Enforce having command. it can still be reloaded, but dbot _will not_ 
+    //  function without it, so not having it should be impossible
     if(!this.moduleNames.include("command")) {
         this.moduleNames.push("command");
     }
