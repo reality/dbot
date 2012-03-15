@@ -6,7 +6,6 @@ var quotes = function(dbot) {
     // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
     var interpolatedQuote = function(key, quoteTree) {
         if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
-            console.log('nrll'); 
             return ''; 
         } else if(quoteTree === undefined) { 
             quoteTree = [];
@@ -173,7 +172,6 @@ var quotes = function(dbot) {
             } else { // Give total quote count
                 var totalQuoteCount = 0;
                 for(var category in quotes) {
-                    console.log('adding ' + category.length);
                     totalQuoteCount += category.length;
                 }
                 dbot.say(data.channel, 'There are ' + totalQuoteCount + ' quotes in total.');
