@@ -5,19 +5,27 @@ var quotes = function(dbot) {
 
     // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
     var interpolatedQuote = function(key, quoteTree) {
-        if( quoteTree !== undefined && quoteTree.indexOf( key ) != -1 ) { console.log('nrll'); return ''; }
-        else if( quoteTree === undefined ) quoteTree = [];
+        if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
+            console.log('nrll'); 
+            return ''; 
+        } else if(quoteTree === undefined) { 
+            quoteTree = [];
+        }
+
         var quoteString = quotes[key].random();
         var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
         var thisRef;
-        while( quoteRefs && (thisRef = quoteRefs.shift()) !== undefined ) {
+
+        while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
             var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
             if (quotes.hasOwnProperty(cleanRef)) {
-                quoteTree.push( key );
-                quoteString = quoteString.replace("~~"+cleanRef+"~~", interpolatedQuote(cleanRef, quoteTree.slice()));
+                quoteTree.push(key);
+                quoteString = quoteString.replace("~~" + cleanRef + "~~", 
+                        interpolatedQuote(cleanRef, quoteTree.slice()));
                 quoteTree.pop();
             }
         }
+
         return quoteString;
     };
     
