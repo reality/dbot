@@ -25,6 +25,7 @@ var adminCommands = function(dbot) {
 
             child = exec("git pull", function (error, stdout, stderr) {
                 console.log(stderr);
+                dbot.say(data.channel, 'Git pulled that shit.');
                 commands.reload(data, params);
             }.bind(this));
         },
