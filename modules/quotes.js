@@ -179,7 +179,7 @@ var quotes = function(dbot) {
         },
 
         '~qadd': function(data, params) {
-            var q = data.message.valMatch(/^~qadd ([\d\w\s-]*)\t?=\t?(.+)$/, 3);
+            var q = data.message.valMatch(/^~qadd ([\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3);
             if(q) {
                 key = q[1].toLowerCase();
                 if(!Object.isArray(quotes[key])) {
