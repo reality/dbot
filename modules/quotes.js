@@ -4,7 +4,7 @@ var quotes = function(dbot) {
     var rmAllowed = true;
 
     // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
-    var interpolatedQuote = function(key, quoteTree) {
+    var interpolatedQuote = function(key, quoteTree, params) {
         if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
             return ''; 
         } else if(quoteTree === undefined) { 
@@ -12,6 +12,8 @@ var quotes = function(dbot) {
         }
 
         var quoteString = quotes[key].random();
+
+        // Parse quote interpolations
         var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
         var thisRef;
 
@@ -25,9 +27,19 @@ var quotes = function(dbot) {
             }
         }
 
+        // Parse quote parameters
+        var paramRefs = quoteString.match(/~~\$([1-9])~~/g);
+        var thisParam;
+
+        while(paramRefs && (thisParam = paramRefs.shift()) !== undefined) {
+            if(thisParam < params.length) {
+                quoteString = quoteString.replace("~~$" + + "~~", params[thisParam]);
+            }
+        }
+
         return quoteString;
     };
-    
+
     var commands = {
         '~q': function(data, params) { 
             var q = data.message.valMatch(/^~q ([\d\w\s-]*)/, 2);
