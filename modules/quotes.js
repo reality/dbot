@@ -33,6 +33,7 @@ var quotes = function(dbot) {
 
         while(paramRefs && (thisParam = paramRefs.shift()) !== undefined) {
             thisParam = thisParam[1];
+            console.log(thisParam);
             if(thisParam < params.length) {
                 quoteString = quoteString.replace("~~$" + thisParam + "~~", params[thisParam]);
             }
