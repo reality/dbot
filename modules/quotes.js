@@ -28,6 +28,7 @@ var quotes = function(dbot) {
         }
 
         // Parse quote parameters
+        /*
         var paramRefs = quoteString.match(/~~\$([1-9])~~/g);
         var thisParam;
 
@@ -38,6 +39,7 @@ var quotes = function(dbot) {
                 quoteString = quoteString.replace("~~$" + thisParam + "~~", params[thisParam]);
             }
         }
+        */
 
         return quoteString;
     };
