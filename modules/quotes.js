@@ -4,7 +4,7 @@ var quotes = function(dbot) {
     var rmAllowed = true;
 
     // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
-    var interpolatedQuote = function(key, quoteTree, params) {
+    var interpolatedQuote = function(key, quoteTree) {
         if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
             return ''; 
         } else if(quoteTree === undefined) { 
@@ -51,7 +51,7 @@ var quotes = function(dbot) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, q[1] + ': ' + interpolatedQuote(key, params));
+                    dbot.say(data.channel, q[1] + ': ' + interpolatedQuote(key));
                 } else {
                     dbot.say(data.channel, 'Nobody loves ' + q[1]);
                 }
@@ -232,11 +232,11 @@ var quotes = function(dbot) {
 
         '~rq': function(data, params) {
             var rQuote = Object.keys(quotes).random();
-            dbot.say(data.channel, rQuote + ': ' + interpolatedQuote(rQuote, params));
+            dbot.say(data.channel, rQuote + ': ' + interpolatedQuote(rQuote));
         },
 
         '~d': function(data, params) {
-            dbot.say(data.channel,  data.user + ': ' + interpolatedQuote(dbot.name, params));
+            dbot.say(data.channel,  data.user + ': ' + interpolatedQuote(dbot.name));
         },
         
         '~link': function(data, params) {
