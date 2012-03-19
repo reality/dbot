@@ -1,11 +1,19 @@
 ul#quotelist
+    -var hasYouTubeVids=false
     -each quote in quotes
         -if(quote.match(locals.url_regex))
             li.quote 
-                a(href=quote)
-                    -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
+                -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
+                    a(href=quote)
                         img(src=quote)
-                    -else
+                -else if(quote.match(/youtube.com\/watch/))
+                    -hasYouTubeVids = true
+                    span(class='ytplaceholder')
+                        =quote
+                -else
+                    a(href=quote)
                         =quote
         -else
             li.quote #{quote}
+    -if(hasYouTubeVids)
+        script(src='/ytembed.js')

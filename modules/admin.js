@@ -1,4 +1,6 @@
 var fs = require('fs');
+var sys = require('sys')
+var exec = require('child_process').exec;
 
 var adminCommands = function(dbot) {
     var dbot = dbot;
@@ -6,15 +8,26 @@ var adminCommands = function(dbot) {
     var commands = {
         'join': function(data, params) {
             dbot.instance.join(params[1]); 
-            dbot.say(dbot.admin, 'Joined ' + params[1]);
+            dbot.say(data.channel, 'Joined ' + params[1]);
         },
 
         'opme': function(data, params) {
-           dbot.instance.send('MODE ' + params[1] + ' +o ', dbot.admin);
+           dbot.instance.send('MODE ' + params[1] + ' +o ', data.user);
         },
 
         'part': function(data, params) {
             dbot.instance.part(params[1]);
+        },
+
+        // Do a git pull and reload
+        'greload': function(data, params) {
+            var child;
+
+            child = exec("git pull", function (error, stdout, stderr) {
+                console.log(stderr);
+                dbot.say(data.channel, 'Git pulled that shit.');
+                commands.reload(data, params);
+            }.bind(this));
         },
 
         'reload': function(data, params) {
@@ -24,9 +37,23 @@ var adminCommands = function(dbot) {
         },
 
         'say': function(data, params) {
-            var c = params[1];
+            if (params[1] === "@") {
+                var c = data.channel;
+            } else {
+                var c = params[1];
+            }
             var m = params.slice(2).join(' ');
             dbot.say(c, m);
+        },
+
+        'act': function(data, params) {
+            if (params[1] === "@") {
+                var c = data.channel;
+            } else {
+                var c = params[1];
+            }
+            var m = params.slice(2).join(' ');
+            dbot.act(c, m);
         },
 
         'load': function(data, params) {
@@ -92,7 +119,7 @@ var adminCommands = function(dbot) {
             if(data.channel == dbot.name) data.channel = data.user;
 
             params = data.message.split(' ');
-            if(commands.hasOwnProperty(params[0]) && data.user == dbot.admin) {
+            if(commands.hasOwnProperty(params[0]) && dbot.admin.include(data.user)) {
                 commands[params[0]](data, params);
                 dbot.save();
             }

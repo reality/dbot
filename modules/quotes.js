@@ -2,7 +2,48 @@ var quotes = function(dbot) {
     var quotes = dbot.db.quoteArrs;
     var addStack = [];
     var rmAllowed = true;
-    
+
+    // Retrieve a random quote from a given category, interpolating any quote references (~~QUOTE CATEGORY~~) within it
+    var interpolatedQuote = function(key, quoteTree) {
+        if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
+            return ''; 
+        } else if(quoteTree === undefined) { 
+            quoteTree = [];
+        }
+
+        var quoteString = quotes[key].random();
+
+        // Parse quote interpolations
+        var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
+        var thisRef;
+
+        while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
+            var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
+            if (quotes.hasOwnProperty(cleanRef)) {
+                quoteTree.push(key);
+                quoteString = quoteString.replace("~~" + cleanRef + "~~", 
+                        interpolatedQuote(cleanRef, quoteTree.slice()));
+                quoteTree.pop();
+            }
+        }
+
+        // Parse quote parameters
+        /*
+        var paramRefs = quoteString.match(/~~\$([1-9])~~/g);
+        var thisParam;
+
+        while(paramRefs && (thisParam = paramRefs.shift()) !== undefined) {
+            thisParam = thisParam[1];
+            console.log(thisParam);
+            if(thisParam < params.length) {
+                quoteString = quoteString.replace("~~$" + thisParam + "~~", params[thisParam]);
+            }
+        }
+        */
+
+        return quoteString;
+    };
+
     var commands = {
         '~q': function(data, params) { 
             var q = data.message.valMatch(/^~q ([\d\w\s-]*)/, 2);
@@ -10,7 +51,7 @@ var quotes = function(dbot) {
                 q[1] = q[1].trim();
                 key = q[1].toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, q[1] + ': ' + quotes[key].random());
+                    dbot.say(data.channel, q[1] + ': ' + interpolatedQuote(key));
                 } else {
                     dbot.say(data.channel, 'Nobody loves ' + q[1]);
                 }
@@ -65,13 +106,13 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(data, params) {
-            if(rmAllowed == true || data.user == dbot.admin) {
+            if(rmAllowed == true || dbot.admin.include(data.user)) {
                 var q = data.message.valMatch(/^~rmlast ([\d\w\s-]*)/, 2);
                 if(q) {
                     q[1] = q[1].trim()
                     key = q[1].toLowerCase();
                     if(quotes.hasOwnProperty(q[1])) {
-                        if(!dbot.db.locks.include(q[1]) || data.user == dbot.admin) {
+                        if(!dbot.db.locks.include(q[1]) || dbot.admin.include(data.user)) {
                             var quote = quotes[key].pop();
                             if(quotes[key].length === 0) {
                                 delete quotes[key];
@@ -104,7 +145,7 @@ var quotes = function(dbot) {
         },
 
         '~rm': function(data, params) {
-            if(rmAllowed == true || data.user == dbot.admin) {
+            if(rmAllowed == true || dbot.admin.include(data.user)) {
                 var q = data.message.valMatch(/^~rm ([\d\w\s-]*) (.+)$/, 3);
                 if(q) {
                     if(quotes.hasOwnProperty(q[1])) {
@@ -112,6 +153,9 @@ var quotes = function(dbot) {
                             var index = quotes[q[1]].indexOf(q[2]);
                             if(index != -1) {
                                 quotes[q[1]].splice(index, 1);
+                                if(quotes[q[1]].length === 0) {
+                                    delete quotes[q[1]];
+                                }
                                 rmAllowed = false;
                                 dbot.say(data.channel, '\'' + q[2] + '\' removed from ' + q[1]);
                             } else {
@@ -144,7 +188,6 @@ var quotes = function(dbot) {
             } else { // Give total quote count
                 var totalQuoteCount = 0;
                 for(var category in quotes) {
-                    console.log('adding ' + category.length);
                     totalQuoteCount += category.length;
                 }
                 dbot.say(data.channel, 'There are ' + totalQuoteCount + ' quotes in total.');
@@ -152,7 +195,7 @@ var quotes = function(dbot) {
         },
 
         '~qadd': function(data, params) {
-            var q = data.message.valMatch(/^~qadd ([\d\w\s-]*)=(.+)$/, 3);
+            var q = data.message.valMatch(/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3);
             if(q) {
                 key = q[1].toLowerCase();
                 if(!Object.isArray(quotes[key])) {
@@ -189,11 +232,11 @@ var quotes = function(dbot) {
 
         '~rq': function(data, params) {
             var rQuote = Object.keys(quotes).random();
-            dbot.say(data.channel, rQuote + ': ' + quotes[rQuote].random());
+            dbot.say(data.channel, rQuote + ': ' + interpolatedQuote(rQuote));
         },
 
         '~d': function(data, params) {
-            dbot.say(data.channel,  data.user + ': ' + dbot.db.quoteArrs['depressionbot'].random());
+            dbot.say(data.channel,  data.user + ': ' + interpolatedQuote(dbot.name));
         },
         
         '~link': function(data, params) {
@@ -201,6 +244,23 @@ var quotes = function(dbot) {
                 dbot.say(data.channel, 'Syntax error. Commence incineration.');
             } else {
                 dbot.say(data.channel, 'Link to "'+params[1]+'" - http://nc.no.de:443/quotes/'+params[1]);
+            }
+        },
+
+        '~qprune': function(data) {
+            var pruned = []
+            for(key in quotes) {
+                if(quotes.hasOwnProperty(key)) {
+                    if(quotes[key].length == 0) {
+                        delete quotes[key];
+                        pruned.push(key);
+                    }
+                }
+            }
+            if(pruned.length > 0) {
+                dbot.say(data.channel, "Pruning empty quote categories: " + pruned.join(", "));
+            } else {
+                dbot.say(data.channel, "No empty quote categories. Commence incineration.");
             }
         }
     };
@@ -227,6 +287,9 @@ var quotes = function(dbot) {
                 dbot.db.bans['*'].include(data.user)) {
                     dbot.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
                 } else {
+                    if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
+                        dbot.db.quoteArrs['realityonce'] = [];
+                    }
                     dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
                     addStack.push('realityonce');
                     rmAllowed = true;

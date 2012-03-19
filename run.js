@@ -6,16 +6,50 @@ require('./snippets');
 var DBot = function(timers) {
     // Load external files
     this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
-    this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+    this.db = null;
+    var rawDB;
+    try {
+        var rawDB = fs.readFileSync('db.json', 'utf-8');
+    } catch (e) {
+        this.db = {};  // If no db file, make empty one
+    }
+    if(!this.db) {  // If it wasn't empty 
+        this.db = JSON.parse(rawDB);
+    }
+
+    // Repair any deficiencies in the DB; if this is a new DB, that's everything
+    if(!this.db.hasOwnProperty("bans")) {
+        this.db.bans = {};
+    }
+    if(!this.db.bans.hasOwnProperty("*")) {
+        this.db.bans["*"] = [];
+    }
+    if(!this.db.hasOwnProperty("quoteArrs")) {
+        this.db.quoteArrs = {};
+    }
+    if(!this.db.hasOwnProperty("kicks")) {
+        this.db.kicks = {};
+    }
+    if(!this.db.hasOwnProperty("kickers")) {
+        this.db.kickers = {};
+    }
+    if(!this.db.hasOwnProperty("modehate")) {
+        this.db.modehate = [];
+    }
+    if(!this.db.hasOwnProperty("locks")) {
+        this.db.locks = [];
+    }
 
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
-    this.admin = this.config.admin || 'reality';
+    this.admin = this.config.admin || [ 'reality' ];
     this.password = this.config.password || 'lolturtles';
     this.nickserv = this.config.nickserv || 'zippy';
     this.server = this.config.server || 'elara.ivixor.net';
     this.port = this.config.port || 6667;
-    this.moduleNames = this.config.modules || [ 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
+    this.webPort = this.config.webPort || 443;
+    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
+    this.sessionData = {};
 
     this.timers = timers.create();
 
@@ -38,7 +72,7 @@ DBot.prototype.say = function(channel, data) {
 };
 
 DBot.prototype.act = function(channel, data) {
-    this.instance.send('PRIVMSG', channel, ':\001ACTION' + data + '\001');
+    this.instance.send('PRIVMSG', channel, ':\001ACTION ' + data + '\001');
 }
 
 // Save the database file
@@ -61,6 +95,12 @@ DBot.prototype.reloadModules = function() {
     this.commands = {};
     this.timers.clearTimers();
     this.save();
+
+    // Enforce having command. it can still be reloaded, but dbot _will not_ 
+    //  function without it, so not having it should be impossible
+    if(!this.moduleNames.include("command")) {
+        this.moduleNames.push("command");
+    }
 
     // Reload Javascript snippets
     var path = require.resolve('./snippets');
@@ -96,51 +136,6 @@ DBot.prototype.reloadModules = function() {
         }
 
         return module;
-    }.bind(this));
-
-    this.instance.addListener('PRIVMSG', function(data) {
-        params = data.message.split(' ');
-        if(data.channel == this.name) data.channel = data.user;
-
-        if(this.commands.hasOwnProperty(params[0])) {
-            if((this.db.bans.hasOwnProperty(params[0]) && 
-                    this.db.bans[params[0]].include(data.user)) || this.db.bans['*'].include(data.user))
-                this.say(data.channel, data.user + 
-                    ' is banned from using this command. Commence incineration.'); 
-            else {
-                this.commands[params[0]](data, params);
-                this.save();
-            }
-        } else {
-            var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
-            if(q) {
-                if(this.db.bans['*'].include(data.user)) {
-                    this.say(data.channel, data.user + 
-                        ' is banned from using this command. Commence incineration.'); 
-                } else {
-                    q[1] = q[1].trim();
-                    key = this.cleanNick(q[1])
-                    if(this.db.quoteArrs.hasOwnProperty(key)) {
-                        this.say(data.channel, q[1] + ': ' + this.db.quoteArrs[key].random());
-                    } else {
-                        // See if it's similar to anything
-                        var winnerDistance = Infinity;
-                        var winner = false;
-                        for(var commandName in this.commands) {
-                            var distance = String.prototype.distance(params[0], commandName);
-                            if(distance < winnerDistance) {
-                                winner = commandName;
-                                winnerDistance = distance;
-                            }
-                        }
-
-                        if(winnerDistance < 3) {
-                            this.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
-                        }
-                    }
-                }
-            }
-        }
     }.bind(this));
 };
 

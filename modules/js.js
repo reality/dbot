@@ -15,8 +15,11 @@ var js = function(dbot) {
 
         '~ajs': function(data, params) {
             var q = data.message.valMatch(/^~ajs (.*)/, 2);
-            if(data.user == dbot.admin) {
-                dbot.say(data.channel, eval(q[1]));
+            if(dbot.admin.include(data.user) ) {
+                var ret = eval(q[1]);
+                if(ret != undefined) {
+                    dbot.say(data.channel, ret);
+                }
             }
         }
     };
