@@ -12,7 +12,7 @@ var spelling = function(dbot) {
         var winnerDistance = Infinity;
 
         for(var i=0;i<candidates.length;i++) {
-            var distance = String.prototype.distance(correction, candidates[i]);
+            var distance = String.prototype.distance(correction.toLowerCase(), candidates[i].toLowerCase());
             if((distance < winnerDistance) && (distance > 0)) {
                 winner = candidates[i];
                 winnerDistance = distance;
