@@ -26,13 +26,14 @@
         "load_module": "Loaded new module: ",
         "unload_module": "Turned off module: ",
         "unload_error": " isn't loaded. Idiot.",
+        "banned": " banned from ",
+        "unbanned": " unbanned from ",
         "unban_error": " wasn't banned from that command, fool.",
         "modehate": "Hating on ",
         "unmodehate": "No longer hating on ",
         "qlock": "Locked quote category: ",
         "spelling_self": " meant: ",
-        "spelling_other_1": " thinks ",
-        "spelling_other_2": " meant:"
+        "spelling_other": " thinks ",
     },
 
     "spanish": {
@@ -62,6 +63,8 @@
         "load_module": "",
         "unload_module": "",
         "unload_error": "",
+        "banned": "",
+        "unbanned": "",
         "unban_error": ".",
         "modehate": "",
         "unmodehate": "",

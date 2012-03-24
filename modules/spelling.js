@@ -42,11 +42,12 @@ var spelling = function(dbot) {
             var otherQ = data.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
             if(q) {
                 correct(data, q[1] || q[2], data.user, function (e) {
-                    dbot.say(data.channel, e.correcter + ' meant: ' + e.fix);
+                    dbot.say(data.channel, e.correcter + dbot.strings[dbot.language].spelling_self + e.fix);
                 });
             } else if(otherQ) {
                 correct(data, otherQ[2] || otherQ[3], otherQ[1], function (e) {
-                    dbot.say(data.channel, e.correcter + ' thinks ' + e.candidate + ' meant: ' + e.fix);
+                    dbot.say(data.channel, e.correcter + dbot.strings[dbot.language].spelling_other +
+                        e.candidate + dbot.strings[dbot.language].spelling_self + e.fix);
                 });
             } else {
                  if(last.hasOwnProperty(data.channel)) {

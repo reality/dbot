@@ -39,6 +39,9 @@ var DBot = function(timers) {
     if(!this.db.hasOwnProperty("locks")) {
         this.db.locks = [];
     }
+    
+    // Load the strings file
+    this.strings = fs.readFileSync('strings.json', 'utf-8');
 
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
@@ -49,6 +52,7 @@ var DBot = function(timers) {
     this.port = this.config.port || 6667;
     this.webPort = this.config.webPort || 443;
     this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
+    this.language = this.config.language || 'english';
     this.sessionData = {};
 
     this.timers = timers.create();
@@ -113,7 +117,7 @@ DBot.prototype.reloadModules = function() {
         try {
             this.rawModules.push(require('./modules/' + name));
         } catch(err) {
-            console.log('Failed to load module: ' + name);
+            console.log(this.strings[this.language].module_load_error + name);
         }
     }.bind(this));
 

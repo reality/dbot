@@ -53,7 +53,7 @@ var quotes = function(dbot) {
                 if(quotes.hasOwnProperty(key)) {
                     dbot.say(data.channel, q[1] + ': ' + interpolatedQuote(key));
                 } else {
-                    dbot.say(data.channel, 'Nobody loves ' + q[1]);
+                    dbot.say(data.channel, dbot.strings[dbot.language].category_not_found + q[1]);
                 }
             }
         },
@@ -70,7 +70,7 @@ var quotes = function(dbot) {
             qSizes = qSizes.sort(function(a, b) { return a[1] - b[1]; });
             qSizes = qSizes.slice(qSizes.length - 10).reverse();
 
-            var qString = "Largest categories: ";
+            var qString = dbot.strings[dbot.language].large_categories;
 
             for(var i=0;i<qSizes.length;i++) {
                 qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
@@ -81,12 +81,12 @@ var quotes = function(dbot) {
         
         '~qsearch': function(data, params) {
             if(params[2] === undefined) {
-                dbot.say(data.channel, 'Next time provide a search parameter. Commence incineration.');
+                dbot.say(data.channel, dbot.strings[dbot.language].syntax_error);
             } else {
                 params[1].trim();
                 key = params[1].toLowerCase();
                 if(!quotes.hasOwnProperty(key)) {
-                    dbot.say(data.channel, 'That category has no quotes in it. Commence incineration.');
+                    dbot.say(data.channel, dbot.strings[dbot.language].empty_category);
                 } else {
                     var matches = [];
                     
@@ -97,7 +97,7 @@ var quotes = function(dbot) {
                     }.bind(this));
 
                     if(matches.length == 0) {
-                        dbot.say(data.channel, 'No results found.');
+                        dbot.say(data.channel, dbot.strings[dbot.language].no_results);
                     } else {
                         dbot.say(data.channel, params[1] + ' (' + params[2] + '): ' + matches.random() + ' [' + matches.length + ' results]');
                     }
@@ -118,9 +118,10 @@ var quotes = function(dbot) {
                                 delete quotes[key];
                             }
                             rmAllowed = false;
-                            dbot.say(data.channel, '\'' + quote + '\' removed from ' + q[1]);
+                            dbot.say(data.channel, '\'' + quote + '\'' + 
+                                    dbot.strings[dbot.language].removed_from + q[1]);
                         } else {
-                            dbot.say(data.channel, q[1] + ' is locked. Commence incineration.');
+                            dbot.say(data.channel, q[1] + dbot.strings[dbot.language].locked_category);
                         }
                     } else {
                         dbot.say(data.channel, 'No quotes exist under ' + q[1]);
@@ -131,16 +132,16 @@ var quotes = function(dbot) {
                         if(!dbot.db.locks.include(last)) {
                             quotes[last].pop();
                             rmAllowed = false;
-                            dbot.say(data.channel, 'Last quote removed from ' + last + '.');
+                            dbot.say(data.channel, dbot.strings[dbot.language].last_removed + last + '.');
                         } else {
-                            dbot.say(data.channel, last + ' is locked. Commence incineration.');
+                            dbot.say(data.channel, last + dbot.strings[dbot.language].locked_category);
                         }
                     } else {
-                        dbot.say(data.channel, 'No quotes were added recently.');
+                        dbot.say(data.channel, dbot.strings[dbot.language].no_recent_adds);
                     }
                 }
             } else {
-                dbot.say(data.channel, 'No spamming that shit. Try again in a few minutes...');
+                dbot.say(data.channel, dbot.strings[dbot.language].rmlast_spam);
             }
         },
 
@@ -157,21 +158,23 @@ var quotes = function(dbot) {
                                     delete quotes[q[1]];
                                 }
                                 rmAllowed = false;
-                                dbot.say(data.channel, '\'' + q[2] + '\' removed from ' + q[1]);
+                                dbot.say(data.channel, '\'' + q[2] + '\'' +
+                                        dbot.strings[dbot.language].removed_from + q[1]);
                             } else {
-                                dbot.say(data.channel, '\'' + q[2] + '\' doesn\'t exist under user \'' + q[1] + '\'.');
+                                dbot.say(data.channel, '\'' + q[2] + '\'' +
+                                        dbot.strings[dbot.language].q_not_exist_under + '\'' + q[1] + '\'.');
                             }
                         } else {
-                            dbot.say(data.channel, q[1] + ' is locked. Initiate incineration.');
+                            dbot.say(data.channel, q[1] + dbot.strings[dbot.language].locked_category);
                         }
                     } else {
-                        dbot.say(data.channel, 'No quotes exist under ' + q[1]);
+                        dbot.say(data.channel, dbot.strings[dbot.language].no_quotes + q[1]);
                     }
                 } else {
-                    dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
+                    dbot.say(data.channel, dbot.strings[dbot.language].syntax_error);
                 }
             } else {
-                dbot.say(data.channel, 'No spamming that shit. Try again in a few minutes...');
+                dbot.say(data.channel, dbot.strings[dbot.language].rmlast_spam);
             }
         },
 
@@ -190,7 +193,7 @@ var quotes = function(dbot) {
                 for(var category in quotes) {
                     totalQuoteCount += category.length;
                 }
-                dbot.say(data.channel, 'There are ' + totalQuoteCount + ' quotes in total.');
+                dbot.say(data.channel, dbot.strings[dbot.language].total_quotes + totalQuoteCount + '.');
             }
         },
 
@@ -202,16 +205,17 @@ var quotes = function(dbot) {
                     quotes[key] = [];
                 } else {
                     if (quotes[key].include(q[2])) {
-                        dbot.say(data.channel, 'Quote already in DB. Initiate incineration.');
+                        dbot.say(data.channel, dbot.strings[dbot.language].quote_exists);
                         return;
                     }
                 }
                 quotes[key].push(q[2]);
                 addStack.push(q[1]);
                 rmAllowed = true;
-                dbot.say(data.channel, 'Quote saved in \'' + q[1] + '\' (' + quotes[key].length + ')');
+                dbot.say(data.channel, dbot.strings[dbot.language].quote_saved +
+                        '\'' + q[1] + '\' (' + quotes[key].length + ')');
             } else {
-                dbot.say(data.channel, 'Invalid syntax. Initiate incineration.');
+                dbot.say(data.channel, dbot.strings[dbot.language].syntax_error);
             }
         },
 
@@ -223,9 +227,9 @@ var quotes = function(dbot) {
                 if(!quotes.hasOwnProperty(key) || (quotes.hasOwnProperty(key) && 
                         quotes[key].length == 1)) {
                     quotes[key] = [q[2]];
-                    dbot.say(data.channel, 'Quote saved as ' + q[1]);
+                    dbot.say(data.channel, dbot.strings[dbot.language].quote_saved + q[1]);
                 } else {
-                    dbot.say(data.channel, 'No replacing arrays, you whore.');
+                    dbot.say(data.channel, dbot.strings[dbot.language].quote_replace);
                 }
             }
         },
@@ -241,7 +245,7 @@ var quotes = function(dbot) {
         
         '~link': function(data, params) {
             if(params[1] === undefined || !quotes.hasOwnProperty(params[1].toLowerCase())) {
-                dbot.say(data.channel, 'Syntax error. Commence incineration.');
+                dbot.say(data.channel, dbot.strings[dbot.language].syntax_error);
             } else {
                 dbot.say(data.channel, 'Link to "'+params[1]+'" - http://nc.no.de:443/quotes/'+params[1]);
             }
@@ -258,9 +262,9 @@ var quotes = function(dbot) {
                 }
             }
             if(pruned.length > 0) {
-                dbot.say(data.channel, "Pruning empty quote categories: " + pruned.join(", "));
+                dbot.say(data.channel, dbot.strings[dbot.language].prune + pruned.join(", "));
             } else {
-                dbot.say(data.channel, "No empty quote categories. Commence incineration.");
+                dbot.say(data.channel, dbot.strings[dbot.language].no_prune);
             }
         }
     };

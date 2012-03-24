@@ -25,7 +25,7 @@ var adminCommands = function(dbot) {
 
             child = exec("git pull", function (error, stdout, stderr) {
                 console.log(stderr);
-                dbot.say(data.channel, 'Git pulled that shit.');
+                dbot.say(data.channel, dbot.strings[dbot.language].gpull);
                 commands.reload(data, params);
             }.bind(this));
         },
@@ -33,7 +33,7 @@ var adminCommands = function(dbot) {
         'reload': function(data, params) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             dbot.reloadModules();
-            dbot.say(data.channel, 'Reloaded that shit.');
+            dbot.say(data.channel, dbot.strings[dbot.language].reload);
         },
 
         'say': function(data, params) {
@@ -59,7 +59,7 @@ var adminCommands = function(dbot) {
         'load': function(data, params) {
             dbot.moduleNames.push(params[1]);
             dbot.reloadModules();
-            dbot.say(data.channel, 'Loaded new module: ' + params[1]);
+            dbot.say(data.channel, dbot.strings[dbot.language].load_module + params[1]);
         },
 
         'unload': function(data, params) {
@@ -71,9 +71,9 @@ var adminCommands = function(dbot) {
                 dbot.moduleNames.splice(moduleIndex, 1);
 
                 dbot.reloadModules();
-                dbot.say(data.channel, 'Turned off module: ' + params[1]);
+                dbot.say(data.channel, dbot.strings[dbot.language].unload_module + params[1]);
             } else {
-                dbot.say(data.channel, 'Module ' + params[1] + ' isn\'t loaded... Idiot...');
+                dbot.say(data.channel, params[1] + dbot.strings[dbot.language].unload_error);
             }
         },
 
@@ -83,31 +83,31 @@ var adminCommands = function(dbot) {
             } else {
                 dbot.db.bans[params[2]] = [ params[1] ];
             }
-            dbot.say(data.channel, params[1] + ' banned from ' + params[2]);
+            dbot.say(data.channel, params[1] + dbot.strings[dbot.language].banned + params[2]);
         },
 
         'unban': function(data, params) {
             if(dbot.db.bans.hasOwnProperty(params[2]) && dbot.db.bans[params[2]].include(params[1])) {
                 dbot.db.bans[params[2]].splice(dbot.db.bans[params[2]].indexOf(params[1]), 1);
-                dbot.say(data.channel, params[1] + ' unbanned from ' + params[2]);
+                dbot.say(data.channel, params[1] + dbot.strings[dbot.language].unbanned + params[2]);
             } else {
-                dbot.say(data.channel, 'It appears ' + params[1] + 'wasn\'t banned from that command, you fool.');
+                dbot.say(data.channel, params[1] + dbot.strings[dbot.language].unban_error);
             }
         },
 
         'modehate': function(data, params) {
             dbot.db.modehate.push(params[1]);
-            dbot.say(data.channel, 'Now modehating on ' + params[1]);
+            dbot.say(data.channel, dbot.strings[dbot.language].modehate + params[1]);
         },
 
         'unmodehate': function(data, params) {
             dbot.db.modehate.splice(dbot.db.modehate.indexOf(params[1]), 1);
-            dbot.say(data.channel, 'No longer modehating on ' + params[1]);
+            dbot.say(data.channel, dbot.strings[dbot.language].unmodehate + params[1]);
         },
 
         'lock': function(data, params) {
             dbot.db.locks.push(params[1]);
-            dbot.say(data.channel, 'Locked ' + params[1] + ' quotes.');
+            dbot.say(data.channel, dbot.strings[dbot.language].qlock + params[1]);
         }
     };
 
