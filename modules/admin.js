@@ -32,6 +32,7 @@ var adminCommands = function(dbot) {
 
         'reload': function(data, params) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+            dbot.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
             dbot.reloadModules();
             dbot.say(data.channel, dbot.strings[dbot.language].reload);
         },
