@@ -33,9 +33,8 @@
         "unmodehate": "No longer hating on ",
         "qlock": "Locked quote category: ",
         "spelling_self": " meant: ",
-        "spelling_other": " thinks ",
+        "spelling_other": " thinks "
     },
-
     "spanish": {
         "syntax_error": "Sintaxis no válida. Iniciar la incineración.",
         "module_load_error": "No se pudó cargar el módulo: ",
@@ -70,8 +69,6 @@
         "unmodehate": "",
         "qlock": "",
         "spelling_self": "",
-        "spelling_other_1": "",
-        "spelling_other_2": ""
-
+        "spelling_other": ""
     }
 }

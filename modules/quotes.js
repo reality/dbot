@@ -124,7 +124,7 @@ var quotes = function(dbot) {
                             dbot.say(data.channel, q[1] + dbot.strings[dbot.language].locked_category);
                         }
                     } else {
-                        dbot.say(data.channel, 'No quotes exist under ' + q[1]);
+                        dbot.say(data.channel, dbot.strings[dbot.language].no_quotes + q[1]);
                     }
                 } else {
                     var last = addStack.pop();

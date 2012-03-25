@@ -41,7 +41,7 @@ var DBot = function(timers) {
     }
     
     // Load the strings file
-    this.strings = fs.readFileSync('strings.json', 'utf-8');
+    this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
 
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
