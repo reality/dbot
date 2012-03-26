@@ -127,6 +127,21 @@ String.prototype.distance = function(s1, s2) {
     return v0[s1_len];
 }
 
+String.prototype.format = function() { // format takes either multiple indexed arguments, or a single object, whose keys/values will be used
+    var targetStr = this;
+    var replacements = [].splice.call(arguments, 0);
+    if ((replacements.length === 1) && (typeof(replacements[0]) === 'object')) { // if we were passed a single object rather than multiple args
+        replacements = replacements[0]; // use the object as source of replacements
+    };
+    for (key in replacements) {
+        if (replacements.hasOwnProperty(key)) {
+            var replacePattern = new RegExp("\\{"+key+"\\}", "g");
+            targetStr = targetStr.replace(replacePattern, replacements[key]);
+        };
+    };
+    return targetStr;
+};
+
 /*** Object ***/
 
 Object.prototype.isFunction = function(obj) {

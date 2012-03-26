@@ -117,7 +117,7 @@ DBot.prototype.reloadModules = function() {
         try {
             this.rawModules.push(require('./modules/' + name));
         } catch(err) {
-            console.log(this.strings[this.language].module_load_error + name);
+            console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
         }
     }.bind(this));
 
