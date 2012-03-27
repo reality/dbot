@@ -1,0 +1,8 @@
+{
+    "name": "depressionbot",
+    "password": "fishes",
+    "admin": [ "batman" ],
+    "channels": [
+        "#42"
+    ]
+}
