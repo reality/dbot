@@ -1,19 +1,9 @@
 var logging = function(dbot) {
-    var logMessage = function(message, channel) {
+    var logMessage = function(message) {
         if(!(dbot.hasOwnProperty('log'))) {
-            dbot['log'] = {};
+            dbot['log'] = [];
         }
-
-        if(channel) {
-            channel = channel.toLowerCase();
-        } else {
-            channel = '@';  // it's a logger message, shouldn't go in any channel. hence, invalid channel name '@'
-        }
-
-        if(!(dbot.log.hasOwnProperty(channel))) {
-            dbot.log[channel] = [];
-        }
-        dbot.log[channel].push([Date.now(), message]);
+        dbot.log.push([Date.now(), message]);
     };
 
     return {
@@ -40,7 +30,7 @@ var logging = function(dbot) {
                     'eventType': eventType,
                     'data': data
                 }
-            }, data.channel);
+            });
         },
         'on': ['JOIN', 'PART', 'KICK', 'PRIVMSG', 'MODE']
     };
