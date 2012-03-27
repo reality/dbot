@@ -1,5 +1,5 @@
 {
-    "english": {
+    "en_GB": {
         "syntax_error": "Invalid syntax. Initiate incineration.",
         "module_load_error": "Failed to load module: {moduleName}",
         "category_not_found": "Nobody loves {category}",
@@ -35,7 +35,7 @@
         "spelling_self": "{correcter} meant: {fix}",
         "spelling_other": "{correcter} thinks {candidate} meant: {fix}"
     },
-    "spanish": {
+    "es": {
         "syntax_error": "Sintaxis no válida. Iniciar incineración.",
         "module_load_error": "No se pudó cargar el módulo: {moduleName}",
         "category_not_found": "Nadie ama a {category}",

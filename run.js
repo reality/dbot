@@ -52,7 +52,7 @@ var DBot = function(timers) {
     this.port = this.config.port || 6667;
     this.webPort = this.config.webPort || 443;
     this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
-    this.language = this.config.language || 'english';
+    this.language = this.config.language || 'en_GB';
     this.sessionData = {};
 
     this.timers = timers.create();
