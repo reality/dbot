@@ -18,7 +18,7 @@ var quotes = function(dbot) {
         var thisRef;
 
         while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
-            var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
+            var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim().toLowerCase());
             if (quotes.hasOwnProperty(cleanRef)) {
                 quoteTree.push(key);
                 quoteString = quoteString.replace("~~" + cleanRef + "~~", 
