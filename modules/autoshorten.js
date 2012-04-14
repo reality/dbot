@@ -18,6 +18,7 @@ var autoshorten = function(dbot) {
                 };
 
                 http.get(options, function(response) {
+                    console.log(response);
                     dbot.say(data.channel, 'Shortened link from ' + data.user + ': ' + response.surl); 
                 });
             }
