@@ -3,6 +3,7 @@ var puns = function(dbot) {
 
     return {
         'listener': function(data) {
+            if(data.user == dbot.name) return;
             if(dbot.moduleNames.include('quotes')) {
                 if(dbot.db.quoteArrs.hasOwnProperty(data.user.toLowerCase())) {
                     data.message = '~q ' + data.user.toLowerCase();
