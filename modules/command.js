@@ -33,6 +33,7 @@ var command = function(dbot) {
                 '~ignore': ignoreCommands
             };
         },
+
         'listener': function(data) {
             var params = data.message.split(' ');
             if(data.channel == dbot.name) data.channel = data.user;
