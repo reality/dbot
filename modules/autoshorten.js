@@ -11,8 +11,8 @@ var autoshorten = function(dbot) {
             if(urlMatches !== null) {
                 var url = urlMatches[0]; // Only doing one, screw you.
 
-                var site = http.createClient(80, 'http://nc.no.de');
-                var request = site.request("GET", 'mkurl', { 'host' : 'http://nc.no.de/',
+                var site = http.createClient(80, 'nc.no.de');
+                var request = site.request("GET", 'mkurl', { 'host' : 'nc.no.de/',
                     'url': url});
                 request.end();
 
