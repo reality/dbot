@@ -10,16 +10,16 @@ var autoshorten = function(dbot) {
 
             if(urlMatches !== null) {
                 var url = urlMatches[0]; // Only doing one, screw you.
+                
+                var options = {
+                    'host': 'nc.no.de',
+                    'port': 80,
+                    'path': '/mkurl?url=' + escape(url)
+                };
 
-                var site = http.createClient(80, 'nc.no.de');
-                var request = site.request("GET", 'mkurl', { 'host' : 'nc.no.de/',
-                    'url': url});
-                request.end();
-
-                request.on('response', function(response) {
+                http.get(options, function(response) {
                     dbot.say(data.channel, 'Shortened link from ' + data.user + ': ' + response.surl); 
                 });
-
             }
         },
 
