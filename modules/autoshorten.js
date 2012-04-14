@@ -8,7 +8,7 @@ var autoshorten = function(dbot) {
             var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
             var urlMatches = data.message.match(urlRegex);
 
-            if(urlMatches !== null) {
+            if(urlMatches !== null && urlMatches[0].length > 45) {
                 var url = urlMatches[0]; // Only doing one, screw you.
                 
                 var options = {
