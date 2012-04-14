@@ -11,7 +11,7 @@ var autoshorten = function(dbot) {
 
                 var site = http.createClient(80, 'http://nc.no.de');
                 var request = site.request("GET", 'mkurl', { 'host' : 'http://nc.no.de/',
-                    'url' + url});
+                    'url': url});
                 request.end();
 
                 request.on('response', function(response) {
