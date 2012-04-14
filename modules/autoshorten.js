@@ -1,3 +1,5 @@
+var http = require('http');
+
 var autoshorten = function(dbot) {
     var dbot = dbot;
 
