@@ -11,6 +11,7 @@ var autoshorten = function(dbot) {
             if(urlMatches !== null && urlMatches[0].length > 45) {
                 var url = urlMatches[0]; // Only doing one, screw you.
                 
+                // TODO: Make this use a decent URL shortener. Mine is shit.
                 var options = {
                     'host': 'nc.no.de',
                     'port': 80,

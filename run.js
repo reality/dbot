@@ -51,7 +51,7 @@ var DBot = function(timers) {
     this.server = this.config.server || 'elara.ivixor.net';
     this.port = this.config.port || 6667;
     this.webPort = this.config.webPort || 443;
-    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
+    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare', 'autoshorten' ];
     this.language = this.config.language || 'english';
     this.sessionData = {};
 
