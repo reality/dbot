@@ -17,9 +17,11 @@ var autoshorten = function(dbot) {
                     'path': '/mkurl?url=' + escape(url)
                 };
 
-                http.get(options, function(response) {
-                    console.log(response);
-                    dbot.say(data.channel, 'Shortened link from ' + data.user + ': ' + response.surl); 
+                http.get(options, function(res) {
+                    res.setEncoding('utf8');
+                    res.on('data', function (response) {
+                        dbot.say(data.channel, 'Shortened link from ' + data.user + ': ' + JSON.parse(response).surl); 
+                    });
                 });
             }
         },
