@@ -39,6 +39,9 @@ var DBot = function(timers) {
     if(!this.db.hasOwnProperty("locks")) {
         this.db.locks = [];
     }
+    if(!this.db.hasOwnProperty("ignores")) {
+        this.db.locks = {};
+    }
     
     // Load the strings file
     this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
@@ -97,6 +100,7 @@ DBot.prototype.reloadModules = function() {
     this.rawModules = [];
     this.modules = [];
     this.commands = {};
+    this.commandMap = {}; // Map of which commands belong to which modules
     this.timers.clearTimers();
     this.save();
 
@@ -111,35 +115,33 @@ DBot.prototype.reloadModules = function() {
     delete require.cache[path];
     require('./snippets');
 
+    this.instance.removeListeners();
+
     this.moduleNames.each(function(name) {
         var cacheKey = require.resolve('./modules/' + name);
         delete require.cache[cacheKey];
         try {
-            this.rawModules.push(require('./modules/' + name));
+            var rawModule = require('./modules/' + name);
+            var module = rawModule.fetch(this);
+            this.rawModules.push(rawModule);
+
+            if(module.listener) {
+                this.instance.addListener(module.on, module.listener);
+            }
+
+            if(module.onLoad) {
+                var newCommands = module.onLoad();
+                for(key in newCommands) {
+                    if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
+                        this.commands[key] = newCommands[key];
+                    }
+                }
+            }
+
+            this.modules.push(module);
         } catch(err) {
             console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
         }
-    }.bind(this));
-
-    this.instance.removeListeners();
-
-    this.modules = this.rawModules.collect(function(rawModule) {
-        var module = rawModule.fetch(this);
-
-        if(module.listener) {
-            this.instance.addListener(module.on, module.listener);
-        }
-
-        if(module.onLoad) {
-            var newCommands = module.onLoad();
-            for(key in newCommands) {
-                if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
-                    this.commands[key] = newCommands[key];
-                }
-            }
-        }
-
-        return module;
     }.bind(this));
 };
 
