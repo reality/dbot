@@ -100,7 +100,9 @@ var command = function(dbot) {
                     } else {
                         q[1] = q[1].trim();
                         key = dbot.cleanNick(q[1])
-                        if(dbot.db.quoteArrs.hasOwnProperty(key) && dbot.moduleNames.include('quotes')) {
+                        if(dbot.db.quoteArrs.hasOwnProperty(key) && dbot.moduleNames.include('quotes') &&
+                                (dbot.db.ignores.hasOwnProperty(data.user) && 
+                                 dbot.db.ignores[data.user].include(name)) == false) {
                             var params = ['~q'];
                             key.split(' ').each((function(word) {
                                 this.push(word);
