@@ -11,7 +11,7 @@ var autoshorten = function(dbot) {
                 var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                 var urlMatches = data.message.match(urlRegex);
 
-                if(urlMatches !== null && urlMatches[0].length > 65) {
+                if(urlMatches !== null && urlMatches[0].length > 80) {
                     var url = urlMatches[0]; // Only doing one, screw you.
                     
                     // TODO: Make this use a decent URL shortener. Mine is shit.
