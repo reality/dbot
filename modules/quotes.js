@@ -299,7 +299,11 @@ var quotes = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'quotes',
+
+        'ignorable': true
     };
 };
 

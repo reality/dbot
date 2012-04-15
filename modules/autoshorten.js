@@ -27,7 +27,11 @@ var autoshorten = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'autoshorten',
+
+        'ignorable': true
     };
 }
 

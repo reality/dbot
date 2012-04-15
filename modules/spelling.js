@@ -58,7 +58,11 @@ var spelling = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'spelling',
+
+        'ignorable': true
     }
 } 
 

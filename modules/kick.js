@@ -86,8 +86,11 @@ var kick = function(dbot) {
         
         'onLoad': function() {
             return commands;
-        }
+        },
 
+        'name': 'kick',
+
+        'ignorable': false
     };
 };
 

@@ -8,7 +8,11 @@ var youAre = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'youare',
+
+        'ignorable': false
     };
 };
 

@@ -40,7 +40,7 @@ var DBot = function(timers) {
         this.db.locks = [];
     }
     if(!this.db.hasOwnProperty("ignores")) {
-        this.db.locks = {};
+        this.db.ignores = {};
     }
     
     // Load the strings file
@@ -125,7 +125,6 @@ DBot.prototype.reloadModules = function() {
             var rawModule = require('./modules/' + name);
             var module = rawModule.fetch(this);
             this.rawModules.push(rawModule);
-            this.commandMap[name] = [];
 
             if(module.listener) {
                 this.instance.addListener(module.on, module.listener);
@@ -136,7 +135,7 @@ DBot.prototype.reloadModules = function() {
                 for(key in newCommands) {
                     if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
                         this.commands[key] = newCommands[key];
-                        this.commandMap[name].push(key);
+                        this.commandMap[key] = name;
                     }
                 }
             }

@@ -12,7 +12,11 @@ var puns = function(dbot) {
             }
         },
 
-        'on': 'JOIN'
+        'on': 'JOIN',
+
+        'name': 'puns',
+
+        'ignorable': true
     };
 }
 

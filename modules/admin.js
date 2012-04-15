@@ -134,7 +134,11 @@ var adminCommands = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'admin',
+
+        'ignorable': false
     };
 };
 
