@@ -1,5 +1,5 @@
 var puns = function(dbot) {
-    var names = 'puns';
+    var name = 'puns';
     var dbot = dbot;
 
     return {
