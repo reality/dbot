@@ -1,4 +1,5 @@
 var quotes = function(dbot) {
+    var name = 'quotes';
     var quotes = dbot.db.quoteArrs;
     var addStack = [];
     var rmAllowed = true;
@@ -276,32 +277,35 @@ var quotes = function(dbot) {
 
         // For automatic quote retrieval
         'listener': function(data, params) {
-            if(data.user == 'reality') {
-                var once = data.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
-            } else {
-                var once = data.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
-            }
-
-            if(once) {
-                if((dbot.db.bans.hasOwnProperty('~qadd') &&
-                dbot.db.bans['~qadd'].include(data.user)) ||
-                dbot.db.bans['*'].include(data.user)) {
-                    dbot.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
+            if((dbot.db.ignores.hasOwnProperty(data.user) && 
+                        dbot.db.ignores[data.user].include(name)) == false) {
+                if(data.user == 'reality') {
+                    var once = data.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
                 } else {
-                    if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
-                        dbot.db.quoteArrs['realityonce'] = [];
+                    var once = data.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
+                }
+
+                if(once) {
+                    if((dbot.db.bans.hasOwnProperty('~qadd') &&
+                    dbot.db.bans['~qadd'].include(data.user)) ||
+                    dbot.db.bans['*'].include(data.user)) {
+                        dbot.say(data.channel, data.user + ' is banned from using this command. Commence incineration.'); 
+                    } else {
+                        if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
+                            dbot.db.quoteArrs['realityonce'] = [];
+                        }
+                        dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
+                        addStack.push('realityonce');
+                        rmAllowed = true;
+                        dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
                     }
-                    dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
-                    addStack.push('realityonce');
-                    rmAllowed = true;
-                    dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
                 }
             }
         },
 
         'on': 'PRIVMSG',
 
-        'name': 'quotes',
+        'name': name,
 
         'ignorable': true
     };

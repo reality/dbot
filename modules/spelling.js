@@ -1,4 +1,5 @@
 var spelling = function(dbot) {
+    var name = 'spelling';
     var dbot = dbot;
     var last = {};
 
@@ -38,29 +39,32 @@ var spelling = function(dbot) {
     
     return {
         'listener': function(data, params) {
-            var q = data.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
-            var otherQ = data.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
-            if(q) {
-                correct(data, q[1] || q[2], data.user, function (e) {
-                    dbot.say(data.channel, dbot.strings[dbot.language].spelling_self.format(e));
-                });
-            } else if(otherQ) {
-                correct(data, otherQ[2] || otherQ[3], otherQ[1], function (e) {
-                    dbot.say(data.channel, dbot.strings[dbot.language].spelling_other.format(e));
-                });
-            } else {
-                 if(last.hasOwnProperty(data.channel)) {
-                   last[data.channel][data.user] = data.message; 
+            if((dbot.db.ignores.hasOwnProperty(data.user) && 
+                        dbot.db.ignores[data.user].include(name)) == false) {
+                var q = data.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
+                var otherQ = data.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
+                if(q) {
+                    correct(data, q[1] || q[2], data.user, function (e) {
+                        dbot.say(data.channel, dbot.strings[dbot.language].spelling_self.format(e));
+                    });
+                } else if(otherQ) {
+                    correct(data, otherQ[2] || otherQ[3], otherQ[1], function (e) {
+                        dbot.say(data.channel, dbot.strings[dbot.language].spelling_other.format(e));
+                    });
                 } else {
-                    last[data.channel] = { };
-                    last[data.channel][data.user] = data.message;
+                     if(last.hasOwnProperty(data.channel)) {
+                       last[data.channel][data.user] = data.message; 
+                    } else {
+                        last[data.channel] = { };
+                        last[data.channel][data.user] = data.message;
+                    }
                 }
             }
         },
 
         'on': 'PRIVMSG',
 
-        'name': 'spelling',
+        'name': name,
 
         'ignorable': true
     }
