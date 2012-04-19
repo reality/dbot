@@ -143,6 +143,7 @@ DBot.prototype.reloadModules = function() {
             this.modules.push(module);
         } catch(err) {
             console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
+            console.log(err);
         }
     }.bind(this));
 };
