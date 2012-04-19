@@ -49,5 +49,5 @@ var badwords = function(dbot) {
 }
 
 exports.fetch = function(dbot) {
-    return puns(dbot);
+    return badwords(dbot);
 };
