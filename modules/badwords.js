@@ -46,7 +46,7 @@ var badwords = function(dbot) {
 
         'ignorable': true
     };
-}
+};
 
 exports.fetch = function(dbot) {
     return badwords(dbot);
