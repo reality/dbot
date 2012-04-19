@@ -4,6 +4,8 @@ var puns = function(dbot) {
 
     return {
         'listener': function(data) {
+            data.user = dbot.cleanNick(data.user);
+
             if((dbot.db.ignores.hasOwnProperty(data.user) && 
                         dbot.db.ignores[data.user].include(name)) == false) {
                 if(dbot.moduleNames.include('quotes') &&
