@@ -35,7 +35,7 @@ var badwords = function(dbot) {
 
     return {
         'onLoad': function() {
-            if(dbot.sessionData.hasOwnProperty('badwords')) {
+            if(!dbot.sessionData.hasOwnProperty('badwords')) {
                 dbot.sessionData.badwords = {};
             }
 
