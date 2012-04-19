@@ -12,14 +12,14 @@ var badwords = function(dbot) {
                 data.channel = '#42';
                 badWordLock = true;
 
-                dbot.db.sessionData.badwords.finished = false;
+                dbot.sessionData.badwords.finished = false;
 
                 dbot.say('bots', 'badwords ' + data.channel + ' list');
                 dbot.instance.addListener('PRIVMSG', function(data) {
                     if(data.channel === 'bots') {
                         if(data.message.indexOf('bad words list is empty') != -1) {
-                            dbot.db.sessionData.badwords.count = 0;
-                            dbot.db.sessionData.badwords.finished = true;
+                            dbot.sessionData.badwords.count = 0;
+                            dbot.sessionData.badwords.finished = true;
                         } else {
                             var wordMatch = data.message.valMatch(/\w([1-10])\w(.*)/, 2);
                             dbot.say('reality', wordMatch[1]);
@@ -27,7 +27,7 @@ var badwords = function(dbot) {
                     }
                 });
 
-                dbot.db.sessionData.badwords = {};
+                dbot.sessionData.badwords = {};
                 badWordLock = false;
             }
         }
@@ -35,8 +35,8 @@ var badwords = function(dbot) {
 
     return {
         'onLoad': function() {
-            if(dbot.db.sessionData.hasOwnProperty('badwords')) {
-                dbot.db.sessionData.badwords = {};
+            if(dbot.sessionData.hasOwnProperty('badwords')) {
+                dbot.sessionData.badwords = {};
             }
 
             return commands;
