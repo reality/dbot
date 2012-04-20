@@ -12,21 +12,10 @@ var badwords = function(dbot) {
                 data.channel = '#42';
                 badWordLock = true;
 
-                dbot.sessionData.badwords.finished = false;
+                dbot.sessionData.badwords.waiting = true;
 
                 dbot.say('bots', 'badwords ' + data.channel + ' list');
-                dbot.instance.addListener('PRIVMSG', function(data) {
-                    if(data.channel === 'bots') {
-                        if(data.message.indexOf('bad words list is empty') != -1) {
-                            dbot.sessionData.badwords.count = 0;
-                            dbot.sessionData.badwords.finished = true;
-                        } else {
-                            var wordMatch = data.message.valMatch(/\w([1-10])\w(.*)/, 2);
-                            dbot.say('reality', wordMatch[1]);
-                        }
-                    }
-                });
-
+                dbot.instance.addListener('PRIVMSG', 
                 dbot.sessionData.badwords = {};
                 badWordLock = false;
             }
@@ -41,6 +30,20 @@ var badwords = function(dbot) {
 
             return commands;
         },
+
+        'listener': function(data) {
+            if(data.channel === 'bots') {
+                if(data.message.indexOf('bad words list is empty') != -1) {
+                    dbot.sessionData.badwords.count = 0;
+                    dbot.sessionData.badwords.finished = true;
+                } else {
+                    var wordMatch = data.message.valMatch(/\w([1-10])\w(.*)/, 2);
+                    dbot.say('reality', wordMatch[1]);
+                }
+            }
+         },
+
+        'on': 'PRIVMSG',
 
         'name': name,
 
