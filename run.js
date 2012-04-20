@@ -43,34 +43,49 @@ var DBot = function(timers) {
         this.db.ignores = {};
     }
     
-    // Load the strings file
+    // Load Strings file
     this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+
+    // Initialise run-time resources
+    this.sessionData = {};
+    this.timers = timers.create();
 
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || [ 'reality' ];
-    this.password = this.config.password || 'lolturtles';
-    this.nickserv = this.config.nickserv || 'zippy';
-    this.server = this.config.server || 'elara.ivixor.net';
-    this.port = this.config.port || 6667;
-    this.webPort = this.config.webPort || 443;
-    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare', 'autoshorten' ];
+    this.moduleNames = this.config.modules || [ 'command', 'js' ];
     this.language = this.config.language || 'english';
-    this.sessionData = {};
 
-    this.timers = timers.create();
-
-    this.instance = jsbot.createJSBot(this.name, this.server, this.port, this, function() {
-            if(this.config.hasOwnProperty('channels')) {
-                this.config.channels.each(function(channel) {
-                    this.instance.join(channel);
-                }.bind(this));
+    // It's the user's responsibility to fill this data structure up properly in
+    // the config file. They can d-d-d-deal with it if they have problems.
+    this.servers = this.config.servers || {
+        'freenode': {
+            'server': 'irc.freenode.net',
+            'port': 6667,
+            'nickserv': 'nickserv',
+            'password': 'lolturtles',
+            'channels': [
+                '#realitest'
+            ];
         }
-    }.bind(this), this.nickserv, this.password);
+    };
+
+    // Create JSBot and connect to each server
+    this.instance = jsbot.createJSBot(this.name);
+    for(var name in this.servers) {
+        if(this.servers.hasOwnProperty(name)) {
+            var server = this.servers[name];
+            this.instance.addConnection(name, server.server, server.port, this.admin, function(event) {
+                server.channels.each(function(channel) {
+                    instance.join(event, channel) 
+                }.bind(this));
+            }.bind(this), server.nickserv, server.password);
+        }
+    }
 
     // Load the modules and connect to the server
     this.reloadModules();
-    this.instance.connect();
+    this.instance.connectAll();
 };
 
 // Say something in a channel

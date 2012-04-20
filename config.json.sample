@@ -1,8 +1,15 @@
 {
-    "name": "depressionbot",
-    "password": "fishes",
+    "name": "testressionbot",
+    "servers": {
+        "freenode": {
+            "server": "irc.freenode.net",
+            "port": 6667,
+            "nickserv": "nickserv",
+            "password": "lolturtles",
+            "channels": [
+                "#realitest"
+            ]
+        }
+    },
     "admin": [ "batman" ],
-    "channels": [
-        "#42"
-    ]
 }
