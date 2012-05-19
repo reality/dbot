@@ -46,6 +46,19 @@ var quotes = function(dbot) {
     };
 
     var commands = {
+        '~': function(data, params) {
+            var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
+            if(q) {
+                q[1] = q[1].trim();
+                key = q[1].toLowerCase();
+                if(quotes.hasOwnProperty(key)) {
+                    dbot.say(data.channel, q[1] + ': ' + interpolatedQuote(key));
+                } else {
+                    dbot.say(data.channel, dbot.t('category_not_found', {'category': q[1]}));
+                }
+            }
+        },
+
         '~q': function(data, params) { 
             var q = data.message.valMatch(/^~q ([\d\w\s-]*)/, 2);
             if(q) {
