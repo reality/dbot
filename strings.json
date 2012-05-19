@@ -140,5 +140,38 @@
     },
     "quote_link": {
         "english": "Link to {category}"
+    },
+    "shorten_link": {
+        "english": "Shortened link from {user}: "
+    },
+    "ignore_usage": {
+        "english": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}."
+    },
+    "already_ignoring": {
+        "english": "{user}: You're already ignoring that module."
+    },
+    "ignored": {
+        "english": "{user}: Now ignoring {module}."
+    },
+    "invalid_ignore": {
+        "english": "{user}: That isn't a valid module name."
+    },
+    "unignore_usage": {
+        "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}."
+    },
+    "invalid_unignore": {
+        "english": "{user}: You're not ignoring that module or it doesn't exist."
+    },
+    "unignored": {
+        "english": "{user}: No longer ignoring {module}."
+    },
+    "command_typo": {
+        "english": "Did you mean '{command}'? Learn to type."
+    },
+    "user_kicks": {
+        "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times."
+    },
+    "kicked_dbot": {
+        "english": "Thou shalt not kick {botname}"
     }
 }
