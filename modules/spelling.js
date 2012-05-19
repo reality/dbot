@@ -45,11 +45,11 @@ var spelling = function(dbot) {
                 var otherQ = data.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
                 if(q) {
                     correct(data, q[1] || q[2], data.user, function (e) {
-                        dbot.say(data.channel, dbot.strings[dbot.language].spelling_self.format(e));
+                        dbot.say(data.channel, dbot.t('spelling_self', e));
                     });
                 } else if(otherQ) {
                     correct(data, otherQ[2] || otherQ[3], otherQ[1], function (e) {
-                        dbot.say(data.channel, dbot.strings[dbot.language].spelling_other.format(e));
+                        dbot.say(data.channel, dbot.t('spelling_other', e));
                     });
                 } else {
                      if(last.hasOwnProperty(data.channel)) {

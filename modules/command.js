@@ -79,8 +79,7 @@ var command = function(dbot) {
             if(dbot.commands.hasOwnProperty(params[0])) {
                 if((dbot.db.bans.hasOwnProperty(params[0]) && 
                         dbot.db.bans[params[0]].include(data.user)) || dbot.db.bans['*'].include(data.user)) {
-                    dbot.say(data.channel, data.user + 
-                        ' is banned from using this command. Commence incineration.'); 
+                    dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
                 } else {
                     var commandBelongsTo = dbot.commandMap[params[0]];
                     if(dbot.db.ignores.hasOwnProperty(data.user) && 
@@ -95,8 +94,7 @@ var command = function(dbot) {
                 var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
                 if(q) {
                     if(dbot.db.bans['*'].include(data.user)) {
-                        dbot.say(data.channel, data.user + 
-                            ' is banned from using this command. Commence incineration.'); 
+                        dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
                     } else {
                         q[1] = q[1].trim();
                         key = dbot.cleanNick(q[1])
