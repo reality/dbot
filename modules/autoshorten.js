@@ -24,7 +24,7 @@ var autoshorten = function(dbot) {
                     http.get(options, function(res) {
                         res.setEncoding('utf8');
                         res.on('data', function (response) {
-                            dbot.say(data.channel, 'Shortened link from ' + data.user + ': ' + JSON.parse(response).surl); 
+                            dbot.say(data.channel, dbot.t('shorten_link', {'user': data.user}) + JSON.parse(response).surl); 
                         });
                     });
                 }
