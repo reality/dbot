@@ -6,19 +6,20 @@ var js = function(dbot) {
     var s = new sbox();
 
     var commands = {
-        '~js': function(data, params) {
-            var q = data.message.valMatch(/^~js (.*)/, 2);
+        '~js': function(event) {
+            console.log('hello');
+            var q = event.message.valMatch(/^~js (.*)/, 2);
             s.run(q[1], function(output) {
-                dbot.say(data.channel, output.result);
-            });
+                event.reply(output.result);
+            }.bind(this));
         },
 
-        '~ajs': function(data, params) {
+        '~ajs': function(event) {
             var q = data.message.valMatch(/^~ajs (.*)/, 2);
             if(dbot.admin.include(data.user) ) {
                 var ret = eval(q[1]);
                 if(ret != undefined) {
-                    dbot.say(data.channel, ret);
+                    event.reply(ret);
                 }
             }
         }
