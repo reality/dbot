@@ -1,74 +1,177 @@
 {
-    "english": {
-        "syntax_error": "Invalid syntax. Initiate incineration.",
-        "module_load_error": "Failed to load module: {moduleName}",
-        "category_not_found": "Nobody loves {category}",
-        "large_categories": "Largest categories: ",
-        "empty_category": "That category has no quotes in. Commence incineration.",
-        "no_results": "No results found.",
-        "locked_category": "{category} is locked. Commence incineration.",
-        "no_quotes": "No quotes exist under {category}",
-        "last_removed": "Last quote removed from {category}.",
-        "no_recent_adds": "No quotes were added recently.",
-        "rmlast_spam": "No spamming that shit. Try again in a few minutes...",
-        "removed_from": "'{quote}' removed from {category}",
-        "q_not_exist_under": "'{quote}' doesn't exist under '{category}'.",
-        "total_quotes": "Total quote count: {count}.",
-        "quote_exists": "Quote already in DB. Initiate incineration.",
-        "quote_saved": "Quote saved in '{category}' ({count}).",
-        "quote_replace": "No replacing arrays, you whore.",
-        "prune": "Pruning empty quote categories: {categories}",
-        "no_prune": "No empty quote categories. Commence incineration.",
-        "command_ban": " is banned from using this command. Commence incineration.",
-        "correction": "Did you mean: ",
-        "gpull": "Git pulled that shit.",
-        "reload": "Reloaded that shit.",
-        "load_module": "Loaded new module: {moduleName}",
-        "unload_module": "Turned off module: {moduleName}",
-        "unload_error": "{moduleName} isn't loaded. Idiot.",
-        "banned": "{user} banned from {command}",
-        "unbanned": "{user} unbanned from {command}",
-        "unban_error": "{user} wasn't banned from that command, fool.",
-        "modehate": "Hating on {user}",
-        "unmodehate": "No longer hating on {user}",
-        "qlock": "Locked quote category: {category}",
-        "spelling_self": "{correcter} meant: {fix}",
-        "spelling_other": "{correcter} thinks {candidate} meant: {fix}"
+    "syntax_error": { 
+        "english": "Invalid syntax. Initiate incineration.",
+        "spanish": "Sintaxis no válida. Iniciar incineración."
     },
-    "spanish": {
-        "syntax_error": "Sintaxis no válida. Iniciar incineración.",
-        "module_load_error": "No se pudó cargar el módulo: {moduleName}",
-        "category_not_found": "Nadie ama a {category}",
-        "large_categories": "Los categorías más grandes: ",
-        "empty_category": "Categoría vacía. Iniciar incineración.",
-        "no_results": "No hubo ningún resultado.",
-        "locked_category": "{category} está cerrada. Comenzar incineración.",
-        "no_quotes": "Ninguna cita existe en {category}",
-        "last_removed": "Última cita quitado de {category}.",
-        "no_recent_adds": "Ninguna cita fue añadido recientamente.",
-        "rmlast_spam": "No me inundes de mierda. Intenta otra vez en unos minutos.",
-        "removed_from": "'{quote}' quitado de {category}",
-        "q_not_exist_under": "'{quote}' no existe en '{category}'.",
-        "total_quotes": "Total de citas: {count}.",
-        "quote_exists": "Cita ya existe. Iniciar incineración.",
-        "quote_saved": "Cita guardada en '{category}' ({count})",
-        "quote_replace": "No sustituites arrays, hijo de puta.",
-        "prune": "Reduciendo categorías vacías {categories}",
-        "no_prune": "Ninguna categoría vacía. Comenzar incineracíon",
-        "command_ban": " está prohibido de usar esta instrucción. Comenzar incineración.",
-        "correction": "¿Querías decir: ",
-        "gpull": "Hecho git pull en esta mierda.",
-        "reload": "Recargado esta mierda.",
-        "load_module": "Cargado módulo nuevo: {moduleName}",
-        "unload_module": "Descargado modulo: {moduleName}",
-        "unload_error": "{moduleName} no está cargado. Idiota.",
-        "banned": "{user} está prohibido de usar {command}",
-        "unbanned": "{user} no está prohibido de user {command}",
-        "unban_error": "{user} no fue prohibido de esta instrucción, tont@..",
-        "modehate": "Odiando a {user}",
-        "unmodehate": "Ni siquera odiando a {user}",
-        "qlock": "Cerrado la categoría: {category}",
-        "spelling_self": "{correcter} quería decir: {fix}",
-        "spelling_other": "{correcter} piensa que {candidate} queria decir: {fix}"
+    "module_load_error": {
+        "english": "Failed to load module: {moduleName}",
+        "spanish": "No se pudó cargar el módulo: {moduleName}"
+    },
+    "category_not_found": {
+        "english": "Nobody loves {category}",
+        "spanish": "Nadie ama a {category}"
+    },
+    "large_categories": {
+        "english": "Largest categories: ",
+        "spanish": "Los categorías más grandes: "
+    },
+    "empty_category": {
+        "english": "That category has no quotes in. Commence incineration.",
+        "spanish": "Categoría vacía. Iniciar incineración."
+    },
+    "no_results": {
+        "english": "No results found.",
+        "spanish": "No hubo ningún resultado."
+    },
+    "locked_category": {
+        "english": "{category} is locked. Commence incineration.",
+        "spanish": "{category} está cerrada. Comenzar incineración."
+    },
+    "no_quotes": {
+        "english": "No quotes exist under {category}",
+        "spanish": "Ninguna cita existe en {category}"
+    },
+    "last_removed": {
+        "english": "Last quote removed from {category}.",
+        "spanish": "Última cita quitado de {category}."
+    },
+    "no_recent_adds": {
+        "english": "No quotes were added recently.",
+        "spanish": "Ninguna cita fue añadido recientamente."
+    },
+    "rmlast_spam": {
+        "english": "No spamming that shit. Try again in a few minutes...",
+        "spanish": "No me inundes de mierda. Intenta otra vez en unos minutos."
+    },
+    "removed_from": {
+        "english": "'{quote}' removed from {category}",
+        "spanish": "'{quote}' quitado de {category}"
+    },
+    "q_not_exist_under": {
+        "english": "'{quote}' doesn't exist under '{category}'.",
+        "spanish": "'{quote}' no existe en '{category}'."
+    },
+    "total_quotes": {
+        "english": "Total quote count: {count}.",
+        "spanish": "Total de citas: {count}."
+    },
+    "quote_exists": {
+        "english": "Quote already in DB. Initiate incineration.",
+        "spanish": "Cita ya existe. Iniciar incineración."
+    },
+    "quote_saved": {
+        "english": "Quote saved in '{category}' ({count}).",
+        "spanish": "Cita guardada en '{category}' ({count})"
+    },
+    "quote_replace": {
+        "english": "No replacing arrays, you whore.",
+        "spanish": "No sustituites arrays, hijo de puta."
+    },
+    "quote_count": {
+        "english": "{category} has {count} quotes."
+    },
+    "prune": {
+        "english": "Pruning empty quote categories: {categories}",
+        "spanish": "Reduciendo categorías vacías {categories}"
+    },
+    "no_prune": {
+        "english": "No empty quote categories. Commence incineration.",
+        "spanish": "Ninguna categoría vacía. Comenzar incineracíon"
+    },
+    "command_ban": {
+        "english": "{user} is banned from using this command. Commence incineration.",
+        "spanish": "{user} está prohibido de usar esta instrucción. Comenzar incineración."
+    },
+    "correction": {
+        "english": "Did you mean: ",
+        "spanish": "¿Querías decir: "
+    },
+    "gpull": {
+        "english": "Git pulled that shit.",
+        "spanish": "Hecho git pull en esta mierda."
+    },
+    "reload": {
+        "english": "Reloaded that shit.",
+        "spanish": "Recargado esta mierda."
+    },
+    "load_module": {
+        "english": "Loaded new module: {moduleName}",
+        "spanish": "Cargado módulo nuevo: {moduleName}"
+    },
+    "unload_module": {
+        "english": "Turned off module: {moduleName}",
+        "spanish": "Descargado modulo: {moduleName}"
+    },
+    "unload_error": {
+        "english": "{moduleName} isn't loaded. Idiot.",
+        "spanish": "{moduleName} no está cargado. Idiota."
+    },
+    "banned": {
+        "english": "{user} banned from {command}",
+        "spanish": "{user} está prohibido de usar {command}"
+    },
+    "unbanned": {
+        "english": "{user} unbanned from {command}",
+        "spanish": "{user} no está prohibido de user {command}"
+    },
+    "unban_error": {
+        "english": "{user} wasn't banned from that command, fool.",
+        "spanish": "{user} no fue prohibido de esta instrucción, tont.."
+    },
+    "modehate": {
+        "english": "Hating on {user}",
+        "spanish": "Odiando a {user}"
+    },
+    "unmodehate": {
+        "english": "No longer hating on {user}",
+        "spanish": "Ni siquera odiando a {user}"
+    },
+    "qlock": {
+        "english": "Locked quote category: {category}",
+        "spanish": "Cerrado la categoría: {category}"
+    },
+    "spelling_self": {
+        "english": "{correcter} meant: {fix}",
+        "spanish": "{correcter} quería decir: {fix}"
+    },
+    "spelling_other": {
+        "english": "{correcter} thinks {candidate} meant: {fix}",
+        "spanish": "{correcter} piensa que {candidate} queria decir: {fix}"
+    },
+    "quote_link": {
+        "english": "Link to {category}"
+    },
+    "shorten_link": {
+        "english": "Shortened link from {user}: "
+    },
+    "ignore_usage": {
+        "english": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}."
+    },
+    "already_ignoring": {
+        "english": "{user}: You're already ignoring that module."
+    },
+    "ignored": {
+        "english": "{user}: Now ignoring {module}."
+    },
+    "invalid_ignore": {
+        "english": "{user}: That isn't a valid module name."
+    },
+    "unignore_usage": {
+        "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}."
+    },
+    "invalid_unignore": {
+        "english": "{user}: You're not ignoring that module or it doesn't exist."
+    },
+    "unignored": {
+        "english": "{user}: No longer ignoring {module}."
+    },
+    "command_typo": {
+        "english": "Did you mean '{command}'? Learn to type."
+    },
+    "user_kicks": {
+        "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times."
+    },
+    "kicked_dbot": {
+        "english": "Thou shalt not kick {botname}"
     }
 }
