@@ -78,6 +78,16 @@ DBot.prototype.say = function(channel, data) {
     this.instance.say(channel, data);
 };
 
+// Format given stored string in config language
+DBot.prototype.t = function(string, formatData) {
+    var lang = this.language;
+    if(!this.strings[string].hasOwnProperty(lang)) {
+        lang = "english"; 
+    }
+
+    return this.strings[string][lang].format(formatData);
+};
+
 DBot.prototype.act = function(channel, data) {
     this.instance.send('PRIVMSG', channel, ':\001ACTION ' + data + '\001');
 }
