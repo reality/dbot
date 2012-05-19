@@ -14,14 +14,9 @@ var command = function(dbot) {
                         }
                     }
 
-                    var usageString = 'Usage: ~ignore [module]. Modules you can ignore are: ';
-                    for(var i=0;i<ignorableModules.length;i++) {
-                        usageString += ignorableModules[i] + ", ";
-                    }
-                    usageString = usageString.slice(0, -2) + '.';
-
                     if(params[1] == undefined) {
-                        dbot.say(data.channel, data.user + ': ' + usageString);
+                        dbot.say(data.channel, 
+                                dbot.t('ignore_usage', {'user': data.user, 'modules': ignorableModules.join(', ')}));
                     } else {
                         if(dbot.moduleNames.include(params[1])) {
                             if(!dbot.db.ignores.hasOwnProperty(data.user)) {
@@ -29,14 +24,13 @@ var command = function(dbot) {
                             }
 
                             if(dbot.db.ignores[data.user].include(params[1])) {
-                                dbot.say(data.channel, data.user + ': You\'re already ignoring that module.');
+                                dbot.say(data.channel, dbot.t('already_ignoring', {'user': data.user}));
                             } else {
                                 dbot.db.ignores[data.user].push(params[1]);
-                                dbot.say(data.channel, data.user + ': Now ignoring ' + params[1]);
+                                dbot.say(data.channel, dbot.t('ignored', {'user': data.user, 'module': params[1]}));
                             }
                         } else {
-                            dbot.say(data.channel, data.user + ': That isn\'t a valid module name. ' + 
-                                usageString);
+                            dbot.say(data.channel, dbot.t('invalid_ignore', {'user': data.user}));
                         }
                     }
                 }, 
@@ -47,25 +41,15 @@ var command = function(dbot) {
                         ignoredModules = dbot.db.ignores[data.user];
                     }
 
-                    var usageString = 'Usage: ~unignore [module]. Modules you are currently ignoring: ';
-                    if(ignoredModules.length == 0) {
-                        usageString += 'None.';
-                    } else {
-                        for(var i=0;i<ignoredModules.length;i++) {
-                            usageString += ignoredModules[i] + ", ";
-                        }
-                        usageString = usageString.slice(0, -2) + '.';
-                    }
-
                     if(params[1] == undefined) {
-                        dbot.say(data.channel, data.user + ': ' + usageString);
+                        dbot.say(data.channel, 
+                                dbot.t('unignore_usage', {'user': data.user, 'modules': ignoredModules.join(', ')}));
                     } else {
                         if(ignoredModules.include(params[1]) == false) {
-                            dbot.say(data.channel, data.user + 
-                                    ': You\'re not ignoring that module or it doesn\'t exist. ' + usageString);
+                            dbot.say(data.channel, dbot.t('invalid_unignore', {'user': data.user}));
                         } else {
                             dbot.db.ignores[data.user].splice(dbot.db.ignores[data.user].indexOf(params[1]), 1);
-                            dbot.say(data.channel, data.user + ': No longer ignoring ' + params[1]);
+                            dbot.say(data.channel, dbot.t('unignored', {'user': data.user, 'module': params[1]}));
                         }
                     }
                 }
@@ -79,8 +63,7 @@ var command = function(dbot) {
             if(dbot.commands.hasOwnProperty(params[0])) {
                 if((dbot.db.bans.hasOwnProperty(params[0]) && 
                         dbot.db.bans[params[0]].include(data.user)) || dbot.db.bans['*'].include(data.user)) {
-                    dbot.say(data.channel, data.user + 
-                        ' is banned from using this command. Commence incineration.'); 
+                    dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
                 } else {
                     var commandBelongsTo = dbot.commandMap[params[0]];
                     if(dbot.db.ignores.hasOwnProperty(data.user) && 
@@ -95,8 +78,7 @@ var command = function(dbot) {
                 var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
                 if(q) {
                     if(dbot.db.bans['*'].include(data.user)) {
-                        dbot.say(data.channel, data.user + 
-                            ' is banned from using this command. Commence incineration.'); 
+                        dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
                     } else {
                         q[1] = q[1].trim();
                         key = dbot.cleanNick(q[1])
@@ -123,7 +105,7 @@ var command = function(dbot) {
                             }
 
                             if(winnerDistance < 3) {
-                                dbot.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
+                                dbot.say(data.channel, dbot.t('command_typo', {'command': winner}));
                             }
                         }
                     }
