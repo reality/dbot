@@ -17,7 +17,7 @@ var kick = function(dbot) {
                 var kicked = dbot.db.kickers[params[1]];
             }
 
-            dbot.say(data.channel, params[1] + ' has been kicked ' + kicks + ' times and has kicked people ' + kicked + ' times.');
+            dbot.say(data.channel, dbot.t('user_kicks', {'user': params[1], 'kicks': kicks, 'kicked': kicked}));
         },
 
         // Output a list of the people who have been kicked the most and those
@@ -52,7 +52,7 @@ var kick = function(dbot) {
         'listener': function(data) {
            if(data.kickee == dbot.name) {
                 dbot.instance.join(data.channel);
-                dbot.say(data.channel, 'Thou shalt not kick ' + dbot.name);
+                dbot.say(data.channel, dbot.t('kicked_dbot', {'botname': dbot.name}));
                 dbot.db.kicks[dbot.name] += 1;
             } else {
 
@@ -78,7 +78,9 @@ var kick = function(dbot) {
                     dbot.db.kickers[data.user] += 1;
                 }
 
-                dbot.say(data.channel, data.kickee + '-- (' + data.kickee + ' has been kicked ' + dbot.db.kicks[data.kickee] + ' times)');
+                dbot.say(data.channel, data.kickee + '-- (' + 
+                            dbot.t('user_kicks', {'user': data.kickee, 'kicks': dbot.db.kicks[data.kickee], 
+                                'kicked': dbot.db.kickers[data.kickee]}) + ')');
             }
         },
 
@@ -86,8 +88,11 @@ var kick = function(dbot) {
         
         'onLoad': function() {
             return commands;
-        }
+        },
 
+        'name': 'kick',
+
+        'ignorable': false
     };
 };
 

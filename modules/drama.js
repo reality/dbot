@@ -84,7 +84,11 @@ var drama = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'drama',
+
+        'ignorable': false
     };
 }
 

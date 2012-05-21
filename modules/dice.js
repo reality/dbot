@@ -88,7 +88,11 @@ var dice = function(dbot) {
     return {
         'onLoad': function() {
             return commands;
-        }
+        },
+
+        'name': 'dice',
+
+        'ignorable': true
     };
 }
 

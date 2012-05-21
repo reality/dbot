@@ -25,7 +25,7 @@ var adminCommands = function(dbot) {
 
             child = exec("git pull", function (error, stdout, stderr) {
                 console.log(stderr);
-                dbot.say(data.channel, dbot.strings[dbot.language].gpull);
+                dbot.say(data.channel, dbot.t('gpull'));
                 commands.reload(data, params);
             }.bind(this));
         },
@@ -34,7 +34,7 @@ var adminCommands = function(dbot) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             dbot.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
             dbot.reloadModules();
-            dbot.say(data.channel, dbot.strings[dbot.language].reload);
+            dbot.say(data.channel, dbot.t('reload'));
         },
 
         'say': function(data, params) {
@@ -60,7 +60,7 @@ var adminCommands = function(dbot) {
         'load': function(data, params) {
             dbot.moduleNames.push(params[1]);
             dbot.reloadModules();
-            dbot.say(data.channel, dbot.strings[dbot.language].load_module.format({'moduleName': params[1]}));
+            dbot.say(data.channel, dbot.t('load_module', {'moduleName': params[1]}));
         },
 
         'unload': function(data, params) {
@@ -72,9 +72,9 @@ var adminCommands = function(dbot) {
                 dbot.moduleNames.splice(moduleIndex, 1);
 
                 dbot.reloadModules();
-                dbot.say(data.channel, dbot.strings[dbot.language].unload_module.format({'moduleName': params[1]}));
+                dbot.say(data.channel, dbot.t('unload_module', {'moduleName': params[1]}));
             } else {
-                dbot.say(data.channel, dbot.strings[dbot.language].unload_error.format({'moduleName': params[1]}));
+                dbot.say(data.channel, dbot.t('unload_error', {'moduleName': params[1]}));
             }
         },
 
@@ -84,31 +84,31 @@ var adminCommands = function(dbot) {
             } else {
                 dbot.db.bans[params[2]] = [ params[1] ];
             }
-            dbot.say(data.channel, dbot.strings[dbot.language].banned.format({'user': params[1], 'command': params[2]}));
+            dbot.say(data.channel, dbot.t('banned', {'user': params[1], 'command': params[2]}));
         },
 
         'unban': function(data, params) {
             if(dbot.db.bans.hasOwnProperty(params[2]) && dbot.db.bans[params[2]].include(params[1])) {
                 dbot.db.bans[params[2]].splice(dbot.db.bans[params[2]].indexOf(params[1]), 1);
-                dbot.say(data.channel, dbot.strings[dbot.language].unbanned.format({'user': params[1], 'command': params[2]}));
+                dbot.say(data.channel, dbot.t('unbanned', {'user': params[1], 'command': params[2]}));
             } else {
-                dbot.say(data.channel, dbot.strings[dbot.language].unban_error.format({'user': params[1]}));
+                dbot.say(data.channel, dbot.t('unban_error', {'user': params[1]}));
             }
         },
 
         'modehate': function(data, params) {
             dbot.db.modehate.push(params[1]);
-            dbot.say(data.channel, dbot.strings[dbot.language].modehate.format({'user': params[1]}));
+            dbot.say(data.channel, dbot.t('modehate', {'user': params[1]}));
         },
 
         'unmodehate': function(data, params) {
             dbot.db.modehate.splice(dbot.db.modehate.indexOf(params[1]), 1);
-            dbot.say(data.channel, dbot.strings[dbot.language].unmodehate.format({'user': params[1]}));
+            dbot.say(data.channel, dbot.t('unmodehate', {'user': params[1]}));
         },
 
         'lock': function(data, params) {
             dbot.db.locks.push(params[1]);
-            dbot.say(data.channel, dbot.strings[dbot.language].qlock.format({'category': params[1]}));
+            dbot.say(data.channel, dbot.t('qlock', {'category': params[1]}));
         }
     };
 
@@ -134,7 +134,11 @@ var adminCommands = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'admin',
+
+        'ignorable': false
     };
 };
 

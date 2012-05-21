@@ -10,7 +10,11 @@ var modehate = function(dbot) {
             }
         },
 
-        'on': 'MODE'
+        'on': 'MODE',
+
+        'name': 'modehate',
+
+        'ignorable': false
     };
 };
 
