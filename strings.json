@@ -181,10 +181,10 @@
     },
     "user_kicks": {
         "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
-        "spanish": "Se ha kickeado {user} {kicks} veces y {user} ha kickeado personas {kicked} veces."
+        "spanish": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces."
     },
     "kicked_dbot": {
         "english": "Thou shalt not kick {botname}",
-        "spanish": "No kickeás {botname}"
+        "spanish": "No expulsás {botname}"
     }
 }
