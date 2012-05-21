@@ -61,7 +61,7 @@
     },
     "quote_saved": {
         "english": "Quote saved in '{category}' ({count}).",
-        "spanish": "Cita guardada en '{category}' ({count})"
+        "spanish": "Cita guardada en '{category}' ({count})."
     },
     "quote_replace": {
         "english": "No replacing arrays, you whore.",
@@ -73,11 +73,11 @@
     },
     "prune": {
         "english": "Pruning empty quote categories: {categories}",
-        "spanish": "Reduciendo categorías vacías {categories}"
+        "spanish": "Reduciendo categorías vacías: {categories}"
     },
     "no_prune": {
         "english": "No empty quote categories. Commence incineration.",
-        "spanish": "Ninguna categoría vacía. Comenzar incineracíon"
+        "spanish": "Ninguna categoría vacía. Comenzar incineracíon."
     },
     "command_ban": {
         "english": "{user} is banned from using this command. Commence incineration.",
