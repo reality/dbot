@@ -42,7 +42,11 @@ var webInterface = function(dbot) {
     return { 
         'onDestroy': function() {
             app.close();
-        }
+        },
+
+        'name': 'web',
+
+        'ignorable': false
     };
 };
 

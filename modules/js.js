@@ -27,7 +27,11 @@ var js = function(dbot) {
     return {
         'onLoad': function() {
             return commands;
-        }
+        },
+
+        'name': 'js',
+
+        'ignorable': true 
     };
 };
 

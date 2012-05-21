@@ -39,6 +39,9 @@ var DBot = function(timers) {
     if(!this.db.hasOwnProperty("locks")) {
         this.db.locks = [];
     }
+    if(!this.db.hasOwnProperty("ignores")) {
+        this.db.ignores = {};
+    }
     
     // Load the strings file
     this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
@@ -51,8 +54,8 @@ var DBot = function(timers) {
     this.server = this.config.server || 'elara.ivixor.net';
     this.port = this.config.port || 6667;
     this.webPort = this.config.webPort || 443;
-    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare' ];
-    this.language = this.config.language || 'en_GB';
+    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare', 'autoshorten' ];
+    this.language = this.config.language || 'english';
     this.sessionData = {};
 
     this.timers = timers.create();
@@ -73,6 +76,16 @@ var DBot = function(timers) {
 // Say something in a channel
 DBot.prototype.say = function(channel, data) {
     this.instance.say(channel, data);
+};
+
+// Format given stored string in config language
+DBot.prototype.t = function(string, formatData) {
+    var lang = this.language;
+    if(!this.strings[string].hasOwnProperty(lang)) {
+        lang = "english"; 
+    }
+
+    return this.strings[string][lang].format(formatData);
 };
 
 DBot.prototype.act = function(channel, data) {
@@ -97,6 +110,7 @@ DBot.prototype.reloadModules = function() {
     this.rawModules = [];
     this.modules = [];
     this.commands = {};
+    this.commandMap = {}; // Map of which commands belong to which modules
     this.timers.clearTimers();
     this.save();
 
@@ -111,35 +125,36 @@ DBot.prototype.reloadModules = function() {
     delete require.cache[path];
     require('./snippets');
 
+    this.instance.removeListeners();
+
     this.moduleNames.each(function(name) {
         var cacheKey = require.resolve('./modules/' + name);
         delete require.cache[cacheKey];
+
         try {
-            this.rawModules.push(require('./modules/' + name));
-        } catch(err) {
-            console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
-        }
-    }.bind(this));
+            var rawModule = require('./modules/' + name);
+            var module = rawModule.fetch(this);
+            this.rawModules.push(rawModule);
 
-    this.instance.removeListeners();
+            if(module.listener) {
+                this.instance.addListener(module.on, module.listener);
+            }
 
-    this.modules = this.rawModules.collect(function(rawModule) {
-        var module = rawModule.fetch(this);
-
-        if(module.listener) {
-            this.instance.addListener(module.on, module.listener);
-        }
-
-        if(module.onLoad) {
-            var newCommands = module.onLoad();
-            for(key in newCommands) {
-                if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
-                    this.commands[key] = newCommands[key];
+            if(module.onLoad) {
+                var newCommands = module.onLoad();
+                for(key in newCommands) {
+                    if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
+                        this.commands[key] = newCommands[key];
+                        this.commandMap[key] = name;
+                    }
                 }
             }
-        }
 
-        return module;
+            this.modules.push(module);
+        } catch(err) {
+            console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
+            console.log(err);
+        }
     }.bind(this));
 };
 

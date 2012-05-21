@@ -3,70 +3,88 @@
 var command = function(dbot) {
     var dbot = dbot;
 
-    var ignoreCommands = function (data, params) {
-        if(data.channel == dbot.name) data.channel = data.user;
-        var targetCommand = params[1];
-        var ignoreMins = parseFloat(params[2]);
-
-        if(!dbot.sessionData.hasOwnProperty("ignoreCommands")) {
-            dbot.sessionData.ignoreCommands = {};
-        }
-        if(!dbot.sessionData.ignoreCommands.hasOwnProperty(targetCommand)) {
-            dbot.sessionData.ignoreCommands[targetCommand] = [];
-        }
-
-        if(dbot.sessionData.ignoreCommands[targetCommand].include(data.channel)) {
-            dbot.say(data.channel, "Already ignoring '" + targetCommand + "' in '" + data.channel + "'.");
-        } else {
-            dbot.sessionData.ignoreCommands[targetCommand].push(data.channel);
-            dbot.timers.addOnceTimer(ignoreMins * 60 * 1000, function() {
-                dbot.sessionData.ignoreCommands[targetCommand].splice(dbot.sessionData.ignoreCommands[targetCommand].indexOf(data.channel), 1);
-                dbot.say(data.channel, "No longer ignoring '" + targetCommand + "' in '" + data.channel + "'.");
-            });
-            dbot.say(data.channel, "Ignoring '" + targetCommand + "' in '" + data.channel + "' for the next " + ignoreMins + " minute" + (ignoreMins == 1 ? "" : "s") + ".");
-        }
-    };
-
     return {
         'onLoad': function() {
             return {
-                '~ignore': ignoreCommands
+                '~ignore': function(data, params) {
+                    var ignorableModules = [];
+                    for(var i=0;i<dbot.modules.length;i++) {
+                        if(dbot.modules[i].ignorable != null && dbot.modules[i].ignorable == true) {
+                            ignorableModules.push(dbot.modules[i].name);
+                        }
+                    }
+
+                    if(params[1] == undefined) {
+                        dbot.say(data.channel, 
+                                dbot.t('ignore_usage', {'user': data.user, 'modules': ignorableModules.join(', ')}));
+                    } else {
+                        if(dbot.moduleNames.include(params[1])) {
+                            if(!dbot.db.ignores.hasOwnProperty(data.user)) {
+                                dbot.db.ignores[data.user] = [];
+                            }
+
+                            if(dbot.db.ignores[data.user].include(params[1])) {
+                                dbot.say(data.channel, dbot.t('already_ignoring', {'user': data.user}));
+                            } else {
+                                dbot.db.ignores[data.user].push(params[1]);
+                                dbot.say(data.channel, dbot.t('ignored', {'user': data.user, 'module': params[1]}));
+                            }
+                        } else {
+                            dbot.say(data.channel, dbot.t('invalid_ignore', {'user': data.user}));
+                        }
+                    }
+                }, 
+
+                '~unignore': function(data, params) {
+                    var ignoredModules = [];
+                    if(dbot.db.ignores.hasOwnProperty(data.user)) {
+                        ignoredModules = dbot.db.ignores[data.user];
+                    }
+
+                    if(params[1] == undefined) {
+                        dbot.say(data.channel, 
+                                dbot.t('unignore_usage', {'user': data.user, 'modules': ignoredModules.join(', ')}));
+                    } else {
+                        if(ignoredModules.include(params[1]) == false) {
+                            dbot.say(data.channel, dbot.t('invalid_unignore', {'user': data.user}));
+                        } else {
+                            dbot.db.ignores[data.user].splice(dbot.db.ignores[data.user].indexOf(params[1]), 1);
+                            dbot.say(data.channel, dbot.t('unignored', {'user': data.user, 'module': params[1]}));
+                        }
+                    }
+                }
             };
         },
+
         'listener': function(data) {
             var params = data.message.split(' ');
             if(data.channel == dbot.name) data.channel = data.user;
-
-            var ignoringCommand = false;
-            if(dbot.sessionData.hasOwnProperty("ignoreCommands")) {
-                if(dbot.sessionData.ignoreCommands.hasOwnProperty(params[0])) {
-                    if(dbot.sessionData.ignoreCommands[params[0]].include(data.channel)) {
-                        ignoringCommand = true;
-                    }
-                }
-            }
-
+    
             if(dbot.commands.hasOwnProperty(params[0])) {
                 if((dbot.db.bans.hasOwnProperty(params[0]) && 
                         dbot.db.bans[params[0]].include(data.user)) || dbot.db.bans['*'].include(data.user)) {
-                    dbot.say(data.channel, data.user + 
-                        ' is banned from using this command. Commence incineration.'); 
-                } else if(ignoringCommand) {
-                    // do nothing, this stops us falling through to the non-command stuff
+                    dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
                 } else {
-                    dbot.commands[params[0]](data, params);
-                    dbot.save();
+                    var commandBelongsTo = dbot.commandMap[params[0]];
+                    if(dbot.db.ignores.hasOwnProperty(data.user) && 
+                            dbot.db.ignores[data.user].include(commandBelongsTo)) {
+                        // do nothing
+                    } else {
+                        dbot.commands[params[0]](data, params);
+                        dbot.save();
+                    }
                 }
             } else {
                 var q = data.message.valMatch(/^~([\d\w\s-]*)/, 2);
                 if(q) {
                     if(dbot.db.bans['*'].include(data.user)) {
-                        dbot.say(data.channel, data.user + 
-                            ' is banned from using this command. Commence incineration.'); 
+                        dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
                     } else {
                         q[1] = q[1].trim();
                         key = dbot.cleanNick(q[1])
-                        if(dbot.db.quoteArrs.hasOwnProperty(key) && dbot.moduleNames.include('quotes')) {
+                        if(dbot.db.quoteArrs.hasOwnProperty(key) && dbot.moduleNames.include('quotes') &&
+                                (dbot.db.ignores.hasOwnProperty(data.user) && 
+                                 dbot.db.ignores[data.user].include('quotes')) == false) {
                             var params = ['~q'];
                             key.split(' ').each((function(word) {
                                 this.push(word);
@@ -87,7 +105,7 @@ var command = function(dbot) {
                             }
 
                             if(winnerDistance < 3) {
-                                dbot.say(data.channel, 'Did you mean ' + winner + '? Learn to type, hippie!');
+                                dbot.say(data.channel, dbot.t('command_typo', {'command': winner}));
                             }
                         }
                     }
@@ -95,7 +113,11 @@ var command = function(dbot) {
             }
         },
 
-        'on': 'PRIVMSG'
+        'on': 'PRIVMSG',
+
+        'name': 'command',
+
+        'ignorable': false
     };
 };
 
