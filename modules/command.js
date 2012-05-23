@@ -69,7 +69,9 @@ var command = function(dbot) {
                         dbot.commands[commandName](event);
                         dbot.save();
                     } else {
-                        event.reply(dbot.t('syntax_error'));
+                        if(commandName !== '~') {
+                            event.reply(dbot.t('syntax_error'));
+                        }
                     }
                 }
             }
