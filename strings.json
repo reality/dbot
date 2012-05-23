@@ -189,5 +189,11 @@
     }, 
     "search_results": {
         "english": "{category} ({needle}): '{quote}' [{matches} results]"
+    },
+    "join": {
+        "english": "Joined {channel}"
+    },
+    "part": {
+        "english": "Left {channel}"
     }
 }

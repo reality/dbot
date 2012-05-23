@@ -53,7 +53,7 @@ var DBot = function(timers) {
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || [ 'reality' ];
-    this.moduleNames = this.config.modules || [ 'command', 'js', 'quotes' ];
+    this.moduleNames = this.config.modules || [ 'command', 'js', 'quotes', 'admin' ];
     this.language = this.config.language || 'english';
 
     // It's the user's responsibility to fill this data structure up properly in
@@ -89,8 +89,8 @@ var DBot = function(timers) {
 };
 
 // Say something in a channel
-DBot.prototype.say = function(channel, data) {
-    this.instance.say(channel, data);
+DBot.prototype.say = function(server, channel, message) {
+    this.instance.say(server, channel, message);
 };
 
 // Format given stored string in config language
@@ -103,9 +103,9 @@ DBot.prototype.t = function(string, formatData) {
     return this.strings[string][lang].format(formatData);
 };
 
-DBot.prototype.act = function(channel, data) {
+/*DBot.prototype.act = function(channel, data) {
     this.instance.send('PRIVMSG', channel, ':\001ACTION ' + data + '\001');
-}
+}*/
 
 // Save the database file
 DBot.prototype.save = function() {
