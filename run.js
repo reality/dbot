@@ -53,7 +53,7 @@ var DBot = function(timers) {
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || [ 'reality' ];
-    this.moduleNames = this.config.modules || [ 'command', 'js' ];
+    this.moduleNames = this.config.modules || [ 'command', 'js', 'quotes' ];
     this.language = this.config.language || 'english';
 
     // It's the user's responsibility to fill this data structure up properly in
@@ -167,7 +167,7 @@ DBot.prototype.reloadModules = function() {
 
             this.modules.push(module);
         } catch(err) {
-            console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
+            console.log(this.t('module_load_error', {'moduleName': name}));
             console.log(err);
         }
     }.bind(this));

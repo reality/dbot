@@ -186,5 +186,8 @@
     "kicked_dbot": {
         "english": "Thou shalt not kick {botname}",
         "spanish": "No expulsás {botname}"
+    }, 
+    "search_results": {
+        "english": "{category} ({needle}): '{quote}' [{matches} results]"
     }
 }
