@@ -41,7 +41,7 @@
     },
     "rmlast_spam": {
         "english": "No spamming that shit. Try again in a few minutes...",
-        "spanish": "No me inundes de mierda. Intenta otra vez en unos minutos."
+        "spanish": "No me inundes de mierda. Intenta otra vez en unos minutos..."
     },
     "removed_from": {
         "english": "'{quote}' removed from {category}",
@@ -68,7 +68,8 @@
         "spanish": "No sustituites arrays, hijo de puta."
     },
     "quote_count": {
-        "english": "{category} has {count} quotes."
+        "english": "{category} has {count} quotes.",
+        "spanish": "{category} tiene {count} citas."
     },
     "prune": {
         "english": "Pruning empty quote categories: {categories}",
@@ -100,7 +101,7 @@
     },
     "unload_module": {
         "english": "Turned off module: {moduleName}",
-        "spanish": "Descargado modulo: {moduleName}"
+        "spanish": "Descargado módulo: {moduleName}"
     },
     "unload_error": {
         "english": "{moduleName} isn't loaded. Idiot.",
@@ -116,7 +117,7 @@
     },
     "unban_error": {
         "english": "{user} wasn't banned from that command, fool.",
-        "spanish": "{user} no fue prohibido de esta instrucción, tont.."
+        "spanish": "{user} no fue prohibido de esta instrucción, tont@."
     },
     "modehate": {
         "english": "Hating on {user}",
@@ -139,39 +140,51 @@
         "spanish": "{correcter} piensa que {candidate} queria decir: {fix}"
     },
     "quote_link": {
-        "english": "Link to {category}"
+        "english": "Link to {category}",
+        "spanish": "Enlace a {category}"
     },
     "shorten_link": {
-        "english": "Shortened link from {user}: "
+        "english": "Shortened link from {user}: ",
+        "spanish": "Enlace corto de {user}: "
     },
     "ignore_usage": {
-        "english": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}."
+        "english": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}.",
+        "spanish": "{user}: Modo de empleo: ~ignore [módulo]. Módulos que tú puedes ignorar son: {modules}."
     },
     "already_ignoring": {
-        "english": "{user}: You're already ignoring that module."
+        "english": "{user}: You're already ignoring that module.",
+        "spanish": "{user}: Ya ignoras este módulo."
     },
     "ignored": {
-        "english": "{user}: Now ignoring {module}."
+        "english": "{user}: Now ignoring {module}.",
+        "spanish": "{user}: Estás ignorando {module}."
     },
     "invalid_ignore": {
-        "english": "{user}: That isn't a valid module name."
+        "english": "{user}: That isn't a valid module name.",
+        "spanish": "{user}: Ese no es un nombre de un módulo valido."
     },
     "unignore_usage": {
-        "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}."
+        "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
+        "spanish": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}."
     },
     "invalid_unignore": {
-        "english": "{user}: You're not ignoring that module or it doesn't exist."
+        "english": "{user}: You're not ignoring that module or it doesn't exist.",
+        "spanish": "{user}: No ignoras este módulo o no existe."
     },
     "unignored": {
-        "english": "{user}: No longer ignoring {module}."
+        "english": "{user}: No longer ignoring {module}.",
+        "spanish": "{user}: Ya no ignoras {module}."
     },
     "command_typo": {
-        "english": "Did you mean '{command}'? Learn to type."
+        "english": "Did you mean '{command}'? Learn to type.",
+        "spanish": "¿Querías decir '{command}'? Aprende escribir."
     },
     "user_kicks": {
-        "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times."
+        "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
+        "spanish": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces."
     },
     "kicked_dbot": {
-        "english": "Thou shalt not kick {botname}"
+        "english": "Thou shalt not kick {botname}",
+        "spanish": "No expulsás {botname}"
     }
 }
