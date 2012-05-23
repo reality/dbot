@@ -36,7 +36,7 @@ var command = function(dbot) {
      */
     var applyRegex = function(commandName, event) {
         var applies = false;
-        if(dbot.commands[commandName].hasOwnProperty(regex)) {
+        if(dbot.commands[commandName].hasOwnProperty('regex')) {
             var cRegex = dbot.commands[commandName].regex;
             var q = event.message.valMatch(cRegex[0], cRegex[1]);
             if(q) {
@@ -57,20 +57,22 @@ var command = function(dbot) {
          */
         'listener': function(event) {
             var commandName = event.params[0];
-            if(dbot.commands.hasOwnProperty(commandName)) {
-                if(isBanned(event.user, commandName)) {
-                    event.reply(dbot.t('command_ban', {'user': event.user})); 
-                } else {
-                    if(!isIgnoring(event.user, commandName)) {
-                        if(applyRegex(commandName, event)) {
-                            dbot.commands[commandName](event);
-                            dbot.save();
-                        } else {
-                            event.reply(dbot.t('syntax_error'));
-                        }
+            if(!dbot.commands.hasOwnProperty(commandName)) {
+                commandName = '~';
+            }
+
+            if(isBanned(event.user, commandName)) {
+                event.reply(dbot.t('command_ban', {'user': event.user})); 
+            } else {
+                if(!isIgnoring(event.user, commandName)) {
+                    if(applyRegex(commandName, event)) {
+                        dbot.commands[commandName](event);
+                        dbot.save();
+                    } else {
+                        event.reply(dbot.t('syntax_error'));
                     }
                 }
-            } 
+            }
         },
 
         'on': 'PRIVMSG',
