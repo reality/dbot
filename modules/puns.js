@@ -3,11 +3,11 @@ var puns = function(dbot) {
     var dbot = dbot;
 
     return {
-        'listener': function(data) {
-            data.user = dbot.cleanNick(data.user);
+        'listener': function(event) {
+            event.user = dbot.cleanNick(data.user);
 
-            if((dbot.db.ignores.hasOwnProperty(data.user) && 
-                        dbot.db.ignores[data.user].include(name)) == false) {
+            if((dbot.db.ignores.hasOwnProperty(event.user) && 
+                        dbot.db.ignores[event.user].include(name)) == false) {
                 if(dbot.moduleNames.include('quotes') &&
                         dbot.db.quoteArrs.hasOwnProperty(data.user)) {
                     data.message = '~q ' + data.user.toLowerCase();
