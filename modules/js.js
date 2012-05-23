@@ -20,7 +20,7 @@ var js = function(dbot) {
 
         // Run JS code un-sandboxed, with access to DBot memory (admin-only).
         '~ajs': function(event) {
-            if(dbot.admin.include(data.user) ) {
+            if(dbot.admin.include(event.user) ) {
                 var ret = eval(event.input[1]);
                 if(ret !== undefined) {
                     event.reply(ret);
