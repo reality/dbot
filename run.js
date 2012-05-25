@@ -55,6 +55,7 @@ var DBot = function(timers) {
     this.admin = this.config.admin || [ 'reality' ];
     this.moduleNames = this.config.modules || [ 'ignore', 'admin', 'command', 'dice', 'js', 'kick', 'puns', 'quotes', 'spelling', 'youare' ];
     this.language = this.config.language || 'english';
+    this.webPort = this.config.webPort || 80;
 
     // It's the user's responsibility to fill this data structure up properly in
     // the config file. They can d-d-d-deal with it if they have problems.
