@@ -78,6 +78,7 @@ var DBot = function(timers) {
             var server = this.servers[name];
             this.instance.addConnection(name, server.server, server.port, this.admin, function(event) {
                 server.channels.each(function(channel) {
+                    console.log('joining ' + channel + ' on ' + server.server);
                     this.instance.join(event, channel) 
                 }.bind(this));
             }.bind(this), server.nickserv, server.password);
