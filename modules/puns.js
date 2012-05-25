@@ -5,16 +5,12 @@ var puns = function(dbot) {
     return {
         'listener': function(event) {
             event.user = dbot.cleanNick(event.user);
-
-            if((dbot.db.ignores.hasOwnProperty(event.user) && 
-                        dbot.db.ignores[event.user].include(name)) == false) {
-                if(dbot.moduleNames.include('quotes') &&
-                        dbot.db.quoteArrs.hasOwnProperty(event.user)) {
-                    event.message = '~q ' + event.user;
-                    event.action = 'PRIVMSG';
-                    event.params = event.message.split(' ');
-                    dbot.instance.emit(event)
-                }
+            if(dbot.moduleNames.include('quotes') &&
+                    dbot.db.quoteArrs.hasOwnProperty(event.user)) {
+                event.message = '~q ' + event.user;
+                event.action = 'PRIVMSG';
+                event.params = event.message.split(' ');
+                dbot.instance.emit(event)
             }
         },
 

@@ -39,25 +39,22 @@ var spelling = function(dbot) {
     
     return {
         'listener': function(event) {
-            if((dbot.db.ignores.hasOwnProperty(event.user) && 
-                        dbot.db.ignores[event.user].include(name)) == false) {
-                var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
-                var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
-                if(q) {
-                    correct(event, q[1] || q[2], event.user, function (e) {
-                        event.reply(dbot.t('spelling_self', e));
-                    });
-                } else if(otherQ) {
-                    correct(event, otherQ[2] || otherQ[3], otherQ[1], function (e) {
-                        event.reply(dbot.t('spelling_other', e));
-                    });
+            var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
+            var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
+            if(q) {
+                correct(event, q[1] || q[2], event.user, function (e) {
+                    event.reply(dbot.t('spelling_self', e));
+                });
+            } else if(otherQ) {
+                correct(event, otherQ[2] || otherQ[3], otherQ[1], function (e) {
+                    event.reply(dbot.t('spelling_other', e));
+                });
+            } else {
+                 if(last.hasOwnProperty(event.channel)) {
+                   last[event.channel][event.user] = event.message; 
                 } else {
-                     if(last.hasOwnProperty(event.channel)) {
-                       last[event.channel][event.user] = event.message; 
-                    } else {
-                        last[event.channel] = { };
-                        last[event.channel][event.user] = event.message;
-                    }
+                    last[event.channel] = { };
+                    last[event.channel][event.user] = event.message;
                 }
             }
         },
