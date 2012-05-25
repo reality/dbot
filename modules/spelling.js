@@ -3,8 +3,8 @@ var spelling = function(dbot) {
     var dbot = dbot;
     var last = {};
 
-    var correct = function (data, correction, candidate, output_callback) {
-        var rawCandidates = last[data.channel][candidate].split(' ').allGroupings();
+    var correct = function (event, correction, candidate, output_callback) {
+        var rawCandidates = last[event.channel][candidate].split(' ').allGroupings();
         var candidates = [];
         for(var i=0;i<rawCandidates.length;i++) {
             candidates.push(rawCandidates[i].join(' '));
@@ -22,14 +22,14 @@ var spelling = function(dbot) {
 
         if(winnerDistance < Math.ceil(winner.length * 1.33)) {
             if(winner !== correction) {
-                var fix = last[data.channel][candidate].replace(winner, correction);
+                var fix = last[event.channel][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
                 }
-                last[data.channel][candidate] = fix;
+                last[event.channel][candidate] = fix;
                 var output = {
                     'fix': fix,
-                    'correcter': data.user,
+                    'correcter': event.user,
                     'candidate': candidate
                 };
                 output_callback(output);
@@ -38,25 +38,25 @@ var spelling = function(dbot) {
     }
     
     return {
-        'listener': function(data, params) {
-            if((dbot.db.ignores.hasOwnProperty(data.user) && 
-                        dbot.db.ignores[data.user].include(name)) == false) {
-                var q = data.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
-                var otherQ = data.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
+        'listener': function(event) {
+            if((dbot.db.ignores.hasOwnProperty(event.user) && 
+                        dbot.db.ignores[event.user].include(name)) == false) {
+                var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
+                var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
                 if(q) {
-                    correct(data, q[1] || q[2], data.user, function (e) {
-                        dbot.say(data.channel, dbot.t('spelling_self', e));
+                    correct(event, q[1] || q[2], event.user, function (e) {
+                        event.reply(dbot.t('spelling_self', e));
                     });
                 } else if(otherQ) {
-                    correct(data, otherQ[2] || otherQ[3], otherQ[1], function (e) {
-                        dbot.say(data.channel, dbot.t('spelling_other', e));
+                    correct(event, otherQ[2] || otherQ[3], otherQ[1], function (e) {
+                        event.reply(dbot.t('spelling_other', e));
                     });
                 } else {
-                     if(last.hasOwnProperty(data.channel)) {
-                       last[data.channel][data.user] = data.message; 
+                     if(last.hasOwnProperty(event.channel)) {
+                       last[event.channel][event.user] = event.message; 
                     } else {
-                        last[data.channel] = { };
-                        last[data.channel][data.user] = data.message;
+                        last[event.channel] = { };
+                        last[event.channel][event.user] = event.message;
                     }
                 }
             }
