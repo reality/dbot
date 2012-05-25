@@ -77,10 +77,10 @@ var DBot = function(timers) {
         if(this.servers.hasOwnProperty(name)) {
             var server = this.servers[name];
             this.instance.addConnection(name, server.server, server.port, this.admin, function(event) {
-                server.channels.each(function(channel) {
-                    console.log('joining ' + channel + ' on ' + server.server);
-                    this.instance.join(event, channel) 
-                }.bind(this));
+                var server = this.servers[event.server];
+                for(var i=0;i<server.channels.length;i++) {
+                    this.instance.join(event, server.channels[i]);
+                }
             }.bind(this), server.nickserv, server.password);
         }
     }
