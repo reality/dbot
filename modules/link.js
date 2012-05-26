@@ -32,7 +32,7 @@ var link = function(dbot) {
     };
 
     return {
-        'name': 'js', 
+        'name': 'link', 
         'ignorable': true,
 
         'onLoad': function() {
