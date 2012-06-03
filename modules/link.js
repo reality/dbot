@@ -20,6 +20,7 @@ var link = function(dbot) {
 
             request(link, function (error, response, body) {
                 if(!error && response.statusCode == 200) {
+                    body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
                     var title = body.valMatch(/<title>(.*)<\/title>/, 2);
                     if(title) {
                         event.reply(title[1]);
