@@ -93,7 +93,7 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(event) {
-            if(rmAllowed == true || dbot.admin.include(event.user)) {
+            //if(rmAllowed == true || dbot.admin.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
                     if(!dbot.db.locks.include(key) || dbot.admin.include(event.user)) {
@@ -109,9 +109,9 @@ var quotes = function(dbot) {
                 } else {
                     event.reply(dbot.t('no_quotes', {'category': q[1]}));
                 }
-            } else {
+            /*} else {
                 event.reply(dbot.t('rmlast_spam'));
-            }
+            }*/
         },
 
         /*'~rm': function(data, params) {
