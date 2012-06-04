@@ -37,13 +37,12 @@ var webInterface = function(dbot) {
     app.listen(dbot.webPort);
 
     return { 
+        'name': 'web',
+        'ignorable': false,
+
         'onDestroy': function() {
             app.close();
-        },
-
-        'name': 'web',
-
-        'ignorable': false
+        }
     };
 };
 

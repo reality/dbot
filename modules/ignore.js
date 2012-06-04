@@ -61,6 +61,7 @@ var ignore = function(dbot) {
     return {
         'name': 'ignore',
         'ignorable': false, 
+        'commands': commands,
 
         'onLoad': function() {
             dbot.instance.clearIgnores();
@@ -71,7 +72,6 @@ var ignore = function(dbot) {
                     }
                 }
             }
-            return commands;
         }
     };
 };

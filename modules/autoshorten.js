@@ -6,10 +6,10 @@
 var http = require('http');
 
 var autoshorten = function(dbot) {
-    var name = 'autoshorten';
-    var dbot = dbot;
-
     return {
+        'name': 'autoshorten',
+        'ignorable': true,
+
         'listener': function(event) {
             var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
             var urlMatches = event.message.match(urlRegex);
@@ -32,10 +32,7 @@ var autoshorten = function(dbot) {
                 });
             }
         },
-
-        'on': 'PRIVMSG',
-        'name': name,
-        'ignorable': true
+        'on': 'PRIVMSG'
     };
 }
 

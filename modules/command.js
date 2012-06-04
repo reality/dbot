@@ -51,6 +51,7 @@ var command = function(dbot) {
 
     return {
         'name': 'command',
+        'ignorable': false,
 
         /**
          * Run the appropriate command given the input.
@@ -76,9 +77,7 @@ var command = function(dbot) {
                 }
             }
         },
-
-        'on': 'PRIVMSG',
-        'ignorable': false
+        'on': 'PRIVMSG'
     };
 };
 

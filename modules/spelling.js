@@ -1,6 +1,4 @@
 var spelling = function(dbot) {
-    var name = 'spelling';
-    var dbot = dbot;
     var last = {};
 
     var correct = function (event, correction, candidate, output_callback) {
@@ -38,6 +36,9 @@ var spelling = function(dbot) {
     }
     
     return {
+        'name': 'spelling',
+        'ignorable': true,
+
         'listener': function(event) {
             var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
             var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
@@ -58,12 +59,7 @@ var spelling = function(dbot) {
                 }
             }
         },
-
-        'on': 'PRIVMSG',
-
-        'name': name,
-
-        'ignorable': true
+        'on': 'PRIVMSG'
     }
 } 
 

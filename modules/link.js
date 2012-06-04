@@ -34,10 +34,7 @@ var link = function(dbot) {
     return {
         'name': 'link', 
         'ignorable': true,
-
-        'onLoad': function() {
-            return commands;
-        },
+        'commands': commands,
 
         'listener': function(event) {
             var urlMatches = event.message.match(urlRegex);
@@ -45,7 +42,6 @@ var link = function(dbot) {
                 links[event.channel] = urlMatches[0];
             }
         },
-
         'on': 'PRIVMSG'
     };
 };

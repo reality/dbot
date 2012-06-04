@@ -50,6 +50,10 @@ var kick = function(dbot) {
     };
 
     return {
+        'name': 'kick',
+        'ignorable': false,
+        'commands': commands,
+
         'listener': function(event) {
            if(event.kickee == dbot.name) {
                 dbot.instance.join(event, event.channel);
@@ -72,16 +76,7 @@ var kick = function(dbot) {
                     {'user': event.kickee, 'kicks': dbot.db.kicks[event.kickee], 'kicked': dbot.db.kickers[event.kickee]}) + ')');
             }
         },
-
-        on: 'KICK',
-        
-        'onLoad': function() {
-            return commands;
-        },
-
-        'name': 'kick',
-
-        'ignorable': false
+        on: 'KICK'
     };
 };
 

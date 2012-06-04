@@ -57,9 +57,9 @@ var drama = function(dbot) {
     }
 
     return {
-        'onLoad': function() {
-            return commands;
-        },
+        'name': 'drama',
+        'ignorable': false,
+        'commands': commands,
 
         'listener': function(data) {
             var category = bayes.classify(data.message, function(category) {
@@ -87,12 +87,7 @@ var drama = function(dbot) {
                 last[event.channel][event.user] = data.message;
             }
         },
-
-        'on': 'PRIVMSG',
-
-        'name': 'drama',
-
-        'ignorable': false
+        'on': 'PRIVMSG'
     };
 }
 
