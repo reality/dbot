@@ -3,6 +3,9 @@ var puns = function(dbot) {
     var dbot = dbot;
 
     return {
+        'name': name,
+        'ignorable': true,
+
         'listener': function(event) {
             event.user = dbot.cleanNick(event.user);
             if(dbot.moduleNames.include('quotes') &&
@@ -10,15 +13,10 @@ var puns = function(dbot) {
                 event.message = '~q ' + event.user;
                 event.action = 'PRIVMSG';
                 event.params = event.message.split(' ');
-                dbot.instance.emit(event)
+                dbot.instance.emit(event);
             }
         },
-
-        'on': 'JOIN',
-
-        'name': name,
-
-        'ignorable': true
+        'on': 'JOIN'
     };
 }
 

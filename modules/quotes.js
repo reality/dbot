@@ -218,11 +218,14 @@ var quotes = function(dbot) {
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
 
     return {
+        'name': 'quotes',
+        'ignorable': true,
+        'commands': commands,
+
         'onLoad': function() {
             dbot.timers.addTimer(1000 * 60 * 3, function() {
                 rmAllowed = true;
             });
-            return commands;
         },
 
         /* For automatic quote retrieval
@@ -254,10 +257,6 @@ var quotes = function(dbot) {
         },
 
         'on': 'PRIVMSG',*/
-
-        'name': name,
-
-        'ignorable': true
     };
 };
 

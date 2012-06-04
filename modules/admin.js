@@ -114,6 +114,7 @@ var admin = function(dbot) {
 
     return {
         'name': 'admin',
+        'ignorable': false,
 
         /**
          * Run the appropriate admin command given the input (and user).
@@ -125,9 +126,7 @@ var admin = function(dbot) {
                 dbot.save();
             }
         },
-
-        'on': 'PRIVMSG',
-        'ignorable': false
+        'on': 'PRIVMSG'
     };
 };
 

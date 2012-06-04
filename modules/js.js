@@ -34,10 +34,7 @@ var js = function(dbot) {
     return {
         'name': 'js',
         'ignorable': true,
-
-        'onLoad': function() {
-            return commands;
-        }
+        'commands': commands
     };
 };
 

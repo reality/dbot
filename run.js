@@ -158,7 +158,11 @@ DBot.prototype.reloadModules = function() {
             }
 
             if(module.onLoad) {
-                var newCommands = module.onLoad();
+                module.onLoad();
+            }
+
+            if(module.commands) {
+                var newCommands = module.commands;
                 for(key in newCommands) {
                     if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
                         this.commands[key] = newCommands[key];
