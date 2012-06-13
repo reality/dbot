@@ -11,7 +11,8 @@ var poll = function(dbot) {
                 } else {
                     polls[name] = {
                         'name': name,
-                        'owner': event.user
+                        'owner': event.user,
+                        'votes': {}
                     };
 
                     var options = event.input[2].split(',');
