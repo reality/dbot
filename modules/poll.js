@@ -34,7 +34,7 @@ var poll = function(dbot) {
             var vote = event.input[2];
 
             if(polls.hasOwnProperty(name)) {
-                if(event.user in polls[name].votees) {
+                if(polls[name].votees.include(event.user)) {
                     event.reply(dbot.t('alread_voted'));
                 } else {
                     if(polls[name].votes.hasOwnProperty(vote)) {
@@ -50,16 +50,18 @@ var poll = function(dbot) {
             }
         },
 
-        '~rmpoll': function(event) {
+        '~viewpoll': function(event) {
+            var name = event.input[1];
+            if(polls.hasOwnProperty(name)) {
 
-        },
-
-        '~results': function(event) {
-
+            } else {
+                event.reply(dbot.t('poll_unexistent'));
+            }
         }
     };
     commands['~newpoll'].regex = [/~newpoll ([^ ]+) \[options=([^ ]+)\] (.+)/, 4];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
+    commands['~viewpoll'].regex = [/~viewpoll ([^ ]+)/, 2];
 
     return {
         'name': 'poll',
