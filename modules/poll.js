@@ -59,7 +59,7 @@ var poll = function(dbot) {
         }
     };
     commands['~newpoll'].regex = [/~newpoll ([^ ]+) \[options=([^ ]+)\] (.+)/, 4];
-    commands['~vote'].regex = [/~vote ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
 
     return {
         'name': 'poll',
