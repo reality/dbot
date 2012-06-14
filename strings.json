@@ -195,5 +195,26 @@
     },
     "part": {
         "english": "Left {channel}"
+    },
+    "newpoll_usage": {
+        "english": "Usage: ~newpoll name [options=opt1,opt2,opt3] description"
+    },
+    "poll_exists": {
+        "english": "Poll '{name}' already exists."
+    },
+    "poll_created": {
+        "english": "Poll '{name}' created ({description}). Cast thy votations!"
+    },
+    "already_voted": {
+        "english": "You've already voted in this poll!"
+    },
+    "voted": {
+        "english": "Voted for {vote}"
+    },
+    "invalid_vote": {
+        "english": "Invalid vote: {vote}"
+    },
+    "poll_unexistent": {
+        "english": "Poll '{name}' doesn't exist."
     }
 }
