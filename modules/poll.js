@@ -10,7 +10,7 @@ var poll = function(dbot) {
                 event.reply(dbot.t('newpoll_usage'));
             } else {
                 if(polls.hasOwnProperty(name)) {
-                    event.reply(dbot.t('poll_exists'));
+                    event.reply(dbot.t('poll_exists', {'name': name}));
                 } else {
                     polls[name] = {
                         'name': name,
@@ -24,7 +24,7 @@ var poll = function(dbot) {
                         polls[name]['votes'][options[i]] = 0;
                     }
                     
-                    event.reply(dbot.t('poll_created', {'name': name, 'options': options.join(' ')}));
+                    event.reply(dbot.t('poll_created', {'name': name, 'description': description}));
                 }
             }
         },
@@ -46,7 +46,7 @@ var poll = function(dbot) {
                     }
                 }
             } else {
-                event.reply(dbot.t('poll_unexistent'));
+                event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
         },
 
@@ -55,7 +55,7 @@ var poll = function(dbot) {
             if(polls.hasOwnProperty(name)) {
 
             } else {
-                event.reply(dbot.t('poll_unexistent'));
+                event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
         }
     };
