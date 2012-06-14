@@ -3,6 +3,9 @@ var poll = function(dbot) {
     var commands = {
         '~newpoll': function(event) {
             var name = event.input[1];
+            var options = event.input[2].split(',');
+            var description = event.input[3];
+            
             if(name === undefined || name === 'help') {
                 event.reply(dbot.t('newpoll_usage'));
             } else {
@@ -11,20 +14,40 @@ var poll = function(dbot) {
                 } else {
                     polls[name] = {
                         'name': name,
+                        'description': description,
                         'owner': event.user,
-                        'votes': {}
+                        'votes': {},
+                        'votees': []
                     };
 
-                    var options = event.input[2].split(',');
                     for(var i=0;i<options.length;i++) {
                         polls[name]['votes'][options[i]] = 0;
                     }
+                    
+                    event.reply(dbot.t('poll_created', {'name': name, 'options': options.join(' ')}));
                 }
             }
         },
 
         '~vote': function(event) {
+            var name = event.input[1];
+            var vote = event.input[2];
 
+            if(polls.hasOwnProperty(name)) {
+                if(event.user in polls[name].votees) {
+                    event.reply(dbot.t('alread_voted'));
+                } else {
+                    if(polls[name].votes.hasOwnProperty(vote)) {
+                        polls[name].votes[vote]++;
+                        polls[name].votees.push(event.user);
+                        event.reply(dbot.t('voted', {'vote': vote}));
+                    } else {
+                        event.reply(dbot.t('invalid_vote', {'vote': vote}));
+                    }
+                }
+            } else {
+                event.reply(dbot.t('poll_unexistent'));
+            }
         },
 
         '~rmpoll': function(event) {
@@ -35,7 +58,8 @@ var poll = function(dbot) {
 
         }
     };
-    commands['~newpoll'].regex = [/~newpoll ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~newpoll'].regex = [/~newpoll ([^ ]+) \[options=(\[^ ]+)\] (.+)/, 4];
+    commands['~vote'].regex = [/~vote ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
 
     return {
         'name': 'poll',
