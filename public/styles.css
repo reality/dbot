@@ -36,7 +36,11 @@ div#page {
 }
 
 div#backlink {
+	position: absolute;
+	top: 10px;
+	left: 15px;
     text-align: left;
+	font-size: 0.8em;
 }
 
 div#title {
@@ -51,7 +55,8 @@ div#title a {
 }
 
 div#main {
-    padding: 25px 0px;
+	position: relative;
+    padding: 15px 5px;
     margin: 0px; 
     font-size: 21px;
     text-align:center;
