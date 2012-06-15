@@ -1,7 +1,7 @@
 var poll = function(dbot) {
-	if(!dbot.db.hasOwnProperty('polls')) {
-		dbot.db.polls = {};
-	}
+    if(!dbot.db.hasOwnProperty('polls')) {
+        dbot.db.polls = {};
+    }
     var polls = dbot.db.polls;
     var commands = {
         '~newpoll': function(event) {
