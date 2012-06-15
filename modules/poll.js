@@ -43,7 +43,7 @@ var poll = function(dbot) {
                         polls[name].votes[oldVote]--;
                         polls[name].votes[vote]++;
                         polls[name].votees[event.user] = vote;
-                        event.reply(dbot.t('changed_voted', {'vote': vote, 'poll': name,
+                        event.reply(dbot.t('changed_vote', {'vote': vote, 'poll': name,
                             'count': polls[name].votes[vote]}));
                     } else {
                         polls[name].votes[vote]++;
