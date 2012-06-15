@@ -35,6 +35,10 @@ div#page {
 	margin: 0 auto 0 auto;
 }
 
+div#backlink {
+    text-align: left;
+}
+
 div#title {
     font-size: 42px;
     font-weight: bold;
