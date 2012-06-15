@@ -1,0 +1,35 @@
+h2 #{description}
+p Voters (#{locals.totalVotes}): 
+    -each voter in votees
+         | #{voter}
+ul#votelist
+    -var hasYouTubeVids=false
+    -each votes,option in options
+        -var percentage = votes/locals.totalVotes*100
+        -if(options.hasOwnProperty(option))
+            -if(option.match(locals.url_regex))
+                li.option 
+                    -if(option.match(/(jpg|png|gif|jpeg|tiff)$/))
+                        a(href=option)
+                            img(src=option)
+                    -else if(option.match(/youtube.com\/watch/))
+                        -hasYouTubeVids = true
+                        span(class='ytplaceholder')
+                        =option
+                    -else
+                        a(href=option)
+                            =option
+            -else
+                li.option #{option}
+            li.option-votes
+                .vote-track
+                    -if(!isNaN(percentage))
+                        .vote-percentage(style="width: #{percentage}%")
+                -if(votes == 1)
+                    |#{votes} vote
+                -else
+                    |#{votes} votes
+                -if(!isNaN(percentage))
+                    |(#{percentage.toFixed(2)}%) 
+    -if(hasYouTubeVids)
+        script(src='/ytembed.js')
