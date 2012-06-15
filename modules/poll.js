@@ -37,7 +37,7 @@ var poll = function(dbot) {
             var vote = event.input[2];
 
             if(polls.hasOwnProperty(name)) {
-                if(polls[name].votees.hasOwnProperty(vote)) {
+                if(!polls[name].votes.hasOwnProperty(vote)) {
                     if(polls[name].votees.hasOwnProperty(event.user)) {
                         var oldVote = polls[name].votees[event.user];
                         polls[name].votes[oldVote]--;
