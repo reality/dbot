@@ -49,7 +49,7 @@ var quotes = function(dbot) {
             if(quotes.hasOwnProperty(key)) {
                 event.reply(key + ': ' + interpolatedQuote(key));
             } else if(quotes.hasOwnProperty(altKey)) {
-                event.reply(key + ': ' + interpolatedQuote(altKey));
+                event.reply(altKey + ': ' + interpolatedQuote(altKey));
             } else {
                 event.reply(dbot.t('category_not_found', {'category': key}));
             }
