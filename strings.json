@@ -206,10 +206,10 @@
         "english": "Poll '{name}' created ({description}). Cast thy votations!"
     },
     "changed_vote": {
-        "english": "Changed vote in {poll} to '{vote}' ({count})"
+        "english": "{user} changed their vote in {poll} to '{vote}' ({count})"
     },
     "voted": {
-        "english": "Voted for '{vote}' in {poll} ({count})"
+        "english": "{user} voted for '{vote}' in {poll} ({count})"
     },
     "invalid_vote": {
         "english": "Invalid vote: {vote}"
