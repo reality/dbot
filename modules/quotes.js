@@ -41,8 +41,15 @@ var quotes = function(dbot) {
         // Retrieve quote from a category in the database.
         '~q': function(event) { 
             var key = event.input[1].trim().toLowerCase();
+            var altKey;
+            if(key.split(' ').length > 0) {
+                altKey = key.replace(/ /g, '_');
+            }
+
             if(quotes.hasOwnProperty(key)) {
                 event.reply(key + ': ' + interpolatedQuote(key));
+            } else if(quotes.hasOwnProperty(altKey)) {
+                event.reply(key + ': ' + interpolatedQuote(altKey));
             } else {
                 event.reply(dbot.t('category_not_found', {'category': key}));
             }
