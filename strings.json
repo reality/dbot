@@ -205,11 +205,11 @@
     "poll_created": {
         "english": "Poll '{name}' created ({description}). Cast thy votations!"
     },
-    "already_voted": {
-        "english": "You've already voted in this poll!"
+    "changed_vote": {
+        "english": "Changed vote in {poll} to '{vote}' ({count})"
     },
     "voted": {
-        "english": "Voted for {vote}"
+        "english": "Voted for '{vote}' in {poll} ({count})"
     },
     "invalid_vote": {
         "english": "Invalid vote: {vote}"

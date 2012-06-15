@@ -20,7 +20,7 @@ var poll = function(dbot) {
                         'description': description,
                         'owner': event.user,
                         'votes': {},
-                        'votees': []
+                        'votees': {}
                     };
 
                     for(var i=0;i<options.length;i++) {
@@ -37,16 +37,22 @@ var poll = function(dbot) {
             var vote = event.input[2];
 
             if(polls.hasOwnProperty(name)) {
-                if(polls[name].votees.include(event.user)) {
-                    event.reply(dbot.t('alread_voted'));
-                } else {
-                    if(polls[name].votes.hasOwnProperty(vote)) {
+                if(polls[name].votes.hasOwnProperty(vote)) {
+                    if(polls[name].votees.hasOwnProperty(event.user)) {
+                        var oldVote = polls[name].votees[event.user];
+                        polls[name].votes[oldVote]--;
                         polls[name].votes[vote]++;
-                        polls[name].votees.push(event.user);
-                        event.reply(dbot.t('voted', {'vote': vote}));
+                        polls[name].votees[event.user] = vote;
+                        event.reply(dbot.t('changed_voted', {'vote': vote, 'poll': name,
+                            'count': polls[name].votes[vote]}));
                     } else {
-                        event.reply(dbot.t('invalid_vote', {'vote': vote}));
+                        polls[name].votes[vote]++;
+                        polls[name].votees[event.user] = vote;
+                        event.reply(dbot.t('voted', {'vote': vote, 'poll': name,
+                            'count': polls[name].votes[vote]}));
                     }
+                } else {
+                    event.reply(dbot.t('invalid_vote', {'vote': vote}));
                 }
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));

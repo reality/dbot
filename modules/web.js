@@ -51,7 +51,7 @@ var webInterface = function(dbot) {
                     totalVotes += N;
                 }
             }
-            res.render('polls', { 'name': dbot.name, 'description': dbot.db.polls[key].description, 'votees': dbot.db.polls[key].votees, 'options': dbot.db.polls[key].votes, locals: { 'totalVotes': totalVotes, 'url_regex': RegExp.prototype.url_regex() } });
+            res.render('polls', { 'name': dbot.name, 'description': dbot.db.polls[key].description, 'votees': Object.keys(dbot.db.polls[key].votees), 'options': dbot.db.polls[key].votes, locals: { 'totalVotes': totalVotes, 'url_regex': RegExp.prototype.url_regex() } });
         } else {
             res.render('error', { 'name': dbot.name, 'message': 'No polls under that key.' });
         }
