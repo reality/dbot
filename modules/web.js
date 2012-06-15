@@ -9,8 +9,8 @@ var webInterface = function(dbot) {
     app.set('view engine', 'jade');
 
     app.get('/', function(req, res) {
-        res.redirect('/quotes');
-        //res.render('index', { });
+        //res.redirect('/quotes');
+        res.render('index', { 'name': dbot.name });
     });
     
     // Lists the quote categories
