@@ -44,12 +44,12 @@ var poll = function(dbot) {
                         polls[name].votes[vote]++;
                         polls[name].votees[event.user] = vote;
                         event.reply(dbot.t('changed_vote', {'vote': vote, 'poll': name,
-                            'count': polls[name].votes[vote]}));
+                            'count': polls[name].votes[vote], 'user': event.user}));
                     } else {
                         polls[name].votes[vote]++;
                         polls[name].votees[event.user] = vote;
                         event.reply(dbot.t('voted', {'vote': vote, 'poll': name,
-                            'count': polls[name].votes[vote]}));
+                            'count': polls[name].votes[vote], 'user': event.user}));
                     }
                 } else {
                     event.reply(dbot.t('invalid_vote', {'vote': vote}));
