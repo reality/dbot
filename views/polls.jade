@@ -1,7 +1,7 @@
 h2 #{description}
 p Voters (#{locals.totalVotes}): 
     -each voter in votees
-         | #{voter}
+         |  #{voter}
 ul#votelist
     -var hasYouTubeVids=false
     -each votes,option in options
