@@ -1,4 +1,5 @@
-div#backlink a(href='/polls/') <- Poll List
+div#backlink 
+    a(href='/polls/') <- Poll List
 h2 #{description}
 p Voters (#{locals.totalVotes}): 
     -each voter in votees
