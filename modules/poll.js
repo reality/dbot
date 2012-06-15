@@ -27,7 +27,8 @@ var poll = function(dbot) {
                         polls[name]['votes'][options[i]] = 0;
                     }
                     
-                    event.reply(dbot.t('poll_created', {'name': name, 'description': description}));
+                    event.reply(dbot.t('poll_created', {'name': name, 'description': description}) + 
+                        ' - http://nc.no.de:443/polls/' + name);
                 }
             }
         },
@@ -59,10 +60,10 @@ var poll = function(dbot) {
             }
         },
 
-        '~viewpoll': function(event) {
+        '~pdesc': function(event) {
             var name = event.input[1];
             if(polls.hasOwnProperty(name)) {
-
+                event.reply(name + ': ' + polls[name].description + ' - http://nc.no.de:443/polls/' + name);
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
@@ -70,7 +71,7 @@ var poll = function(dbot) {
     };
     commands['~newpoll'].regex = [/~newpoll ([^ ]+) \[options=([^ ]+)\] (.+)/, 4];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
-    commands['~viewpoll'].regex = [/~viewpoll ([^ ]+)/, 2];
+    commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
 
     return {
         'name': 'poll',
