@@ -1,41 +1,38 @@
+/**
+ * Module Name: AutoShorten
+ * Description: Automatically shorten link over a certain length and post the
+ * short link to the channel.
+ */
 var http = require('http');
 
 var autoshorten = function(dbot) {
-    var name = 'autoshorten';
-    var dbot = dbot;
-
     return {
-        'listener': function(data) {
-            if((dbot.db.ignores.hasOwnProperty(data.user) && 
-                        dbot.db.ignores[data.user].include(name)) == false) {
-                var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                var urlMatches = data.message.match(urlRegex);
+        'name': 'autoshorten',
+        'ignorable': true,
 
-                if(urlMatches !== null && urlMatches[0].length > 80) {
-                    var url = urlMatches[0]; // Only doing one, screw you.
-                    
-                    // TODO: Make this use a decent URL shortener. Mine is shit.
-                    var options = {
-                        'host': 'nc.no.de',
-                        'port': 80,
-                        'path': '/mkurl?url=' + escape(url)
-                    };
+        'listener': function(event) {
+            var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            var urlMatches = event.message.match(urlRegex);
 
-                    http.get(options, function(res) {
-                        res.setEncoding('utf8');
-                        res.on('data', function (response) {
-                            dbot.say(data.channel, dbot.t('shorten_link', {'user': data.user}) + JSON.parse(response).surl); 
-                        });
+            if(urlMatches !== null && urlMatches[0].length > 80) {
+                var url = urlMatches[0]; // Only doing one, screw you.
+                
+                // TODO: Make this use a decent URL shortener. Mine is shit.
+                var options = {
+                    'host': 'nc.no.de',
+                    'port': 80,
+                    'path': '/mkurl?url=' + escape(url)
+                };
+
+                http.get(options, function(res) {
+                    res.setEncoding('utf8');
+                    res.on('data', function (response) {
+                        event.reply(dbot.t('shorten_link', {'user': event.user}) + JSON.parse(response).surl); 
                     });
-                }
+                });
             }
         },
-
-        'on': 'PRIVMSG',
-
-        'name': name,
-
-        'ignorable': true
+        'on': 'PRIVMSG'
     };
 }
 

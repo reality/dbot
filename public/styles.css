@@ -21,9 +21,26 @@ body {
     text-shadow: 1px 1px 2px #2B2B2B;
 }
 
+h1,h2 {
+	margin: 0;
+	padding: 0;
+}
+
+p {
+	margin: 15px 5px;
+}
+
 div#page {
 	width: 90%;
 	margin: 0 auto 0 auto;
+}
+
+div#backlink {
+	position: absolute;
+	top: 10px;
+	left: 15px;
+    text-align: left;
+	font-size: 0.8em;
 }
 
 div#title {
@@ -38,7 +55,8 @@ div#title a {
 }
 
 div#main {
-    padding: 25px 0px;
+	position: relative;
+    padding: 15px 5px;
     margin: 0px; 
     font-size: 21px;
     text-align:center;
@@ -57,6 +75,24 @@ input {
 
 a,a:active,a:visited {
   text-decoration: none;
+}
+
+/* Index Page */
+#modulelinks {
+	margin: 0;
+	padding: 0;
+}
+
+.module {
+	display: inline-block;
+	width: 45%;	
+	padding: 15px 0;
+	margin: 0 2%;
+	background: #F5F5F5;
+	border-radius: 15px;
+}
+.module:hover {
+	background: #BBB;
 }
 
 ul#quotelist {
@@ -104,4 +140,35 @@ li.quote {
 
 img {
 	max-width: 100%;
+}
+
+/* Polls */
+#votelist {
+	margin: 10px 0;
+	padding: 0 40px;
+}
+
+li.option {
+	list-style: none;
+	text-align: left;
+	font-size: 1.2em;
+}
+
+li.option-votes {
+	list-style: none;
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.vote-percentage {
+	height: 20px;
+	background: #444;
+}
+.vote-track {
+	height: 20px;
+	width: 100%;
+	background: #EEE;
+	margin: 2px 0;
+
+	box-shadow: inset 0px 0px 3px #444;
 }

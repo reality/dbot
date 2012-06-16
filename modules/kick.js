@@ -4,25 +4,27 @@ var kick = function(dbot) {
     var commands = {
         // Give the number of times a given user has been kicked and has kicked
         // other people.
-        '~kickcount': function(data, params) {
-            if(!dbot.db.kicks.hasOwnProperty(params[1])) {
+        '~kickcount': function(event) {
+            var username = event.params[1];
+
+            if(!dbot.db.kicks.hasOwnProperty(username)) {
                 var kicks = '0';
             } else {
-                var kicks = dbot.db.kicks[params[1]];
+                var kicks = dbot.db.kicks[username];
             }
 
-            if(!dbot.db.kickers.hasOwnProperty(params[1])) {
+            if(!dbot.db.kickers.hasOwnProperty(username)) {
                 var kicked = '0';
             } else {
-                var kicked = dbot.db.kickers[params[1]];
+                var kicked = dbot.db.kickers[username];
             }
 
-            dbot.say(data.channel, dbot.t('user_kicks', {'user': params[1], 'kicks': kicks, 'kicked': kicked}));
+            event.reply(dbot.t('user_kicks', {'user': username, 'kicks': kicks, 'kicked': kicked}));
         },
 
         // Output a list of the people who have been kicked the most and those
         // who have kicked other people the most.
-        '~kickstats': function(data, params) {
+        '~kickstats': function(event) {
             var orderedKickLeague = function(list, topWhat) {
                 var kickArr = [];
                 for(var kickUser in list) {
@@ -42,57 +44,39 @@ var kick = function(dbot) {
                 return kickString.slice(0, -2);
             };
 
-            dbot.say(data.channel, orderedKickLeague(dbot.db.kicks, 'Kicked'));
-            dbot.say(data.channel, orderedKickLeague(dbot.db.kickers, 'Kickers'));
+            event.reply(orderedKickLeague(dbot.db.kicks, 'Kicked'));
+            event.reply(orderedKickLeague(dbot.db.kickers, 'Kickers'));
         }
     };
 
     return {
-        // Counts kicks
-        'listener': function(data) {
-           if(data.kickee == dbot.name) {
-                dbot.instance.join(data.channel);
-                dbot.say(data.channel, dbot.t('kicked_dbot', {'botname': dbot.name}));
+        'name': 'kick',
+        'ignorable': false,
+        'commands': commands,
+
+        'listener': function(event) {
+           if(event.kickee == dbot.name) {
+                dbot.instance.join(event, event.channel);
+                event.reply(dbot.t('kicked_dbot', {'botname': dbot.name}));
                 dbot.db.kicks[dbot.name] += 1;
             } else {
-
-                if(dbot.db.modehate.include(data.user)) {
-                    dbot.instance.send('KICK ' + data.channel + ' ' + data.user + ' :gtfo (MODEHATE)');
-
-                    if(!dbot.db.kicks.hasOwnProperty(data.user)) {
-                        dbot.db.kicks[data.user] = 1;
-                    } else {
-                        dbot.db.kicks[data.user] += 1;
-                    }
-                }
-
-                if(!dbot.db.kicks.hasOwnProperty(data.kickee)) {
-                    dbot.db.kicks[data.kickee] = 1;
+                if(!dbot.db.kicks.hasOwnProperty(event.kickee)) {
+                    dbot.db.kicks[event.kickee] = 1;
                 } else {
-                    dbot.db.kicks[data.kickee] += 1;
+                    dbot.db.kicks[event.kickee] += 1;
                 }
 
-                if(!dbot.db.kickers.hasOwnProperty(data.user)) {
-                    dbot.db.kickers[data.user] = 1; 
+                if(!dbot.db.kickers.hasOwnProperty(event.user)) {
+                    dbot.db.kickers[event.user] = 1; 
                 } else {
-                    dbot.db.kickers[data.user] += 1;
+                    dbot.db.kickers[event.user] += 1;
                 }
 
-                dbot.say(data.channel, data.kickee + '-- (' + 
-                            dbot.t('user_kicks', {'user': data.kickee, 'kicks': dbot.db.kicks[data.kickee], 
-                                'kicked': dbot.db.kickers[data.kickee]}) + ')');
+                event.reply(event.kickee + '-- (' + dbot.t('user_kicks', 
+                    {'user': event.kickee, 'kicks': dbot.db.kicks[event.kickee], 'kicked': dbot.db.kickers[event.kickee]}) + ')');
             }
         },
-
-        on: 'KICK',
-        
-        'onLoad': function() {
-            return commands;
-        },
-
-        'name': 'kick',
-
-        'ignorable': false
+        on: 'KICK'
     };
 };
 
