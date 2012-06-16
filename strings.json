@@ -61,7 +61,7 @@
     },
     "quote_saved": {
         "english": "Quote saved in '{category}' ({count}).",
-        "spanish": "Cita guardada en '{category}' ({count})"
+        "spanish": "Cita guardada en '{category}' ({count})."
     },
     "quote_replace": {
         "english": "No replacing arrays, you whore.",
@@ -73,11 +73,11 @@
     },
     "prune": {
         "english": "Pruning empty quote categories: {categories}",
-        "spanish": "Reduciendo categorías vacías {categories}"
+        "spanish": "Reduciendo categorías vacías: {categories}"
     },
     "no_prune": {
         "english": "No empty quote categories. Commence incineration.",
-        "spanish": "Ninguna categoría vacía. Comenzar incineracíon"
+        "spanish": "Ninguna categoría vacía. Comenzar incineracíon."
     },
     "command_ban": {
         "english": "{user} is banned from using this command. Commence incineration.",
@@ -188,33 +188,46 @@
         "spanish": "No expulsás {botname}"
     }, 
     "search_results": {
-        "english": "{category} ({needle}): '{quote}' [{matches} results]"
+        "english": "{category} ({needle}): '{quote}' [{matches} results]",
+        "spanish" : "{category} ({needle}): '{quote}' [{matches} resultados]"
     },
     "join": {
-        "english": "Joined {channel}"
+        "english": "Joined {channel}",
+        "spanish" : "Entrado en {channel}"
+
     },
     "part": {
-        "english": "Left {channel}"
+        "english": "Left {channel}",
+        "spanish" : "Abandonada {channel}"
+
     },
     "newpoll_usage": {
-        "english": "Usage: ~newpoll name [options=opt1,opt2,opt3] description"
+        "english": "Usage: ~newpoll name [options=opt1,opt2,opt3] description",
+        "spanish" : "Modo de empleo: ~newpoll nombre [options=opción1,opción2,opción3] descripción"
+
     },
     "poll_exists": {
-        "english": "Poll '{name}' already exists."
+        "english": "Poll '{name}' already exists.",
+        "spanish" : "Votación '{name}' ya existe."
     },
     "poll_created": {
-        "english": "Poll '{name}' created ({description}). Cast thy votations!"
+        "english": "Poll '{name}' created ({description}). Cast thy votations!",
+        "spanish" : "Votación '{name}' creado ({descripción}). ¡Emited sus votas!"
     },
     "changed_vote": {
-        "english": "{user} changed their vote in {poll} to '{vote}' ({count})"
+        "english": "{user} changed their vote in {poll} to '{vote}' ({count})",
+        "spanish" : "{user} cambió su voto en {poll} a '{vote}' ({count})."
     },
     "voted": {
-        "english": "{user} voted for '{vote}' in {poll} ({count})"
+        "english": "{user} voted for '{vote}' in {poll} ({count})",
+        "spanish" : "{user} votó para '{vote}' en {poll} ({count})"
     },
     "invalid_vote": {
-        "english": "Invalid vote: {vote}"
+        "english": "Invalid vote: {vote}",
+        "spanish" : "Vota inválida: {vote}"
     },
     "poll_unexistent": {
-        "english": "Poll '{name}' doesn't exist."
+        "english": "Poll '{name}' doesn't exist.",
+        "spanish" : "Votación '{name}' no existe."
     }
 }
