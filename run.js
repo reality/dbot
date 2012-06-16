@@ -43,39 +43,56 @@ var DBot = function(timers) {
         this.db.ignores = {};
     }
     
-    // Load the strings file
+    // Load Strings file
     this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+
+    // Initialise run-time resources
+    this.sessionData = {};
+    this.timers = timers.create();
 
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || [ 'reality' ];
-    this.password = this.config.password || 'lolturtles';
-    this.nickserv = this.config.nickserv || 'zippy';
-    this.server = this.config.server || 'elara.ivixor.net';
-    this.port = this.config.port || 6667;
-    this.webPort = this.config.webPort || 443;
-    this.moduleNames = this.config.modules || [ 'command', 'js', 'admin', 'kick', 'modehate', 'quotes', 'puns', 'spelling', 'web', 'youare', 'autoshorten' ];
+    this.moduleNames = this.config.modules || [ 'ignore', 'admin', 'command', 'dice', 'js', 'kick', 'puns', 'quotes', 'spelling', 'youare' ];
     this.language = this.config.language || 'english';
-    this.sessionData = {};
+    this.webPort = this.config.webPort || 80;
 
-    this.timers = timers.create();
-
-    this.instance = jsbot.createJSBot(this.name, this.server, this.port, this, function() {
-            if(this.config.hasOwnProperty('channels')) {
-                this.config.channels.each(function(channel) {
-                    this.instance.join(channel);
-                }.bind(this));
+    // It's the user's responsibility to fill this data structure up properly in
+    // the config file. They can d-d-d-deal with it if they have problems.
+    this.servers = this.config.servers || {
+        'freenode': {
+            'server': 'irc.freenode.net',
+            'port': 6667,
+            'nickserv': 'nickserv',
+            'password': 'lolturtles',
+            'channels': [
+                '#realitest'
+            ]
         }
-    }.bind(this), this.nickserv, this.password);
+    };
+
+    // Create JSBot and connect to each server
+    this.instance = jsbot.createJSBot(this.name);
+    for(var name in this.servers) {
+        if(this.servers.hasOwnProperty(name)) {
+            var server = this.servers[name];
+            this.instance.addConnection(name, server.server, server.port, this.admin, function(event) {
+                var server = this.servers[event.server];
+                for(var i=0;i<server.channels.length;i++) {
+                    this.instance.join(event, server.channels[i]);
+                }
+            }.bind(this), server.nickserv, server.password);
+        }
+    }
 
     // Load the modules and connect to the server
     this.reloadModules();
-    this.instance.connect();
+    this.instance.connectAll();
 };
 
 // Say something in a channel
-DBot.prototype.say = function(channel, data) {
-    this.instance.say(channel, data);
+DBot.prototype.say = function(server, channel, message) {
+    this.instance.say(server, channel, message);
 };
 
 // Format given stored string in config language
@@ -88,9 +105,9 @@ DBot.prototype.t = function(string, formatData) {
     return this.strings[string][lang].format(formatData);
 };
 
-DBot.prototype.act = function(channel, data) {
+/*DBot.prototype.act = function(channel, data) {
     this.instance.send('PRIVMSG', channel, ':\001ACTION ' + data + '\001');
-}
+}*/
 
 // Save the database file
 DBot.prototype.save = function() {
@@ -137,11 +154,15 @@ DBot.prototype.reloadModules = function() {
             this.rawModules.push(rawModule);
 
             if(module.listener) {
-                this.instance.addListener(module.on, module.listener);
+                this.instance.addListener(module.on, module.name, module.listener);
             }
 
             if(module.onLoad) {
-                var newCommands = module.onLoad();
+                module.onLoad();
+            }
+
+            if(module.commands) {
+                var newCommands = module.commands;
                 for(key in newCommands) {
                     if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
                         this.commands[key] = newCommands[key];
@@ -152,7 +173,7 @@ DBot.prototype.reloadModules = function() {
 
             this.modules.push(module);
         } catch(err) {
-            console.log(this.strings[this.language].module_load_error.format({'moduleName': name}));
+            console.log(this.t('module_load_error', {'moduleName': name}));
             console.log(err);
         }
     }.bind(this));

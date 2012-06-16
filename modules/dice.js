@@ -42,19 +42,19 @@ var normalizeDiceSpec = function (specString) {
 
 var dice = function(dbot) {
     var commands = {
-        '~roll': function (data, params) {
+        '~roll': function (event) {
             var rolls = [];
 
-            if (params.length === 1) {
-                params.push("d6");
+            if (event.params.length === 1) {
+                event.params.push("d6");
             }
 
-            for (var i = 1; i < params.length; i++) {
-                var diceSpec = parseDiceSpec(params[i]);
+            for (var i = 1; i < event.params.length; i++) {
+                var diceSpec = parseDiceSpec(event.params[i]);
                 if (diceSpec === false) {
-                    rolls.push([params[i], false]);
+                    rolls.push([event.params[i], false]);
                 } else {
-                    rolls.push([normalizeDiceSpec(params[i]), [], diceSpec["modifier"]]);
+                    rolls.push([normalizeDiceSpec(event.params[i]), [], diceSpec["modifier"]]);
                     for (var j = 0; j < diceSpec["count"] ; j++) {
                         rolls[rolls.length-1][1].push(Math.ceil(Math.random() * diceSpec["sides"]));
                     }
@@ -63,7 +63,7 @@ var dice = function(dbot) {
 
             for (var i = 0; i < rolls.length; i++) {
                 if (rolls[i][1] === false) {
-                    dbot.say(data.channel, rolls[i][0] + ": invalid dice spec");
+                    event.reply(rolls[i][0] + ": invalid dice spec");
                 } else {
                     if (rolls[i][1].length > 1) {
                         var total = " (total " + rolls[i][1].sum();
@@ -79,7 +79,7 @@ var dice = function(dbot) {
                     } else {
                         var total = "";
                     }
-                    dbot.say(data.channel, rolls[i][0] + ": " + rolls[i][1].join(" ") + total);
+                    event.reply(rolls[i][0] + ": " + rolls[i][1].join(" ") + total);
                 }
             }
         }

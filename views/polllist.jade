@@ -3,7 +3,7 @@ div#backlink
 div#controls
     input(type="text", name="search", id="search-text", oninput="search(this.value)")
 ul#quotelist
-    -each quote in quotelist
-        a(href='/quotes/'+quote)
-            li.quotes #{quote}
+    -each poll in polllist
+        a(href='/polls/'+poll)
+            li.quotes #{poll}
 

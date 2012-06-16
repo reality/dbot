@@ -3,25 +3,20 @@ var puns = function(dbot) {
     var dbot = dbot;
 
     return {
-        'listener': function(data) {
-            data.user = dbot.cleanNick(data.user);
+        'name': name,
+        'ignorable': true,
 
-            if((dbot.db.ignores.hasOwnProperty(data.user) && 
-                        dbot.db.ignores[data.user].include(name)) == false) {
-                if(dbot.moduleNames.include('quotes') &&
-                        dbot.db.quoteArrs.hasOwnProperty(data.user)) {
-                    data.message = '~q ' + data.user.toLowerCase();
-                    var params = data.message.split(' ');
-                    dbot.commands[params[0]](data, params);
-                }
+        'listener': function(event) {
+            event.user = dbot.cleanNick(event.user);
+            if(dbot.moduleNames.include('quotes') &&
+                    dbot.db.quoteArrs.hasOwnProperty(event.user)) {
+                event.message = '~q ' + event.user;
+                event.action = 'PRIVMSG';
+                event.params = event.message.split(' ');
+                dbot.instance.emit(event);
             }
         },
-
-        'on': 'JOIN',
-
-        'name': name,
-
-        'ignorable': true
+        'on': 'JOIN'
     };
 }
 

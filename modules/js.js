@@ -1,37 +1,40 @@
+/**
+ * Module Name: JS
+ * Description: Allows users to run sandboxed JS code, printing the result in
+ * the channel. Also allows admins to run un-sandboxed Javascript code with
+ * access to the DepressionBot instance memory.
+ */
 var vm = require('vm');
 var sbox = require('sandbox');
 
 var js = function(dbot) {
-    var dbot = dbot;
     var s = new sbox();
 
     var commands = {
-        '~js': function(data, params) {
-            var q = data.message.valMatch(/^~js (.*)/, 2);
-            s.run(q[1], function(output) {
-                dbot.say(data.channel, output.result);
-            });
+        // Run JS code sandboxed, return result to channel.
+        '~js': function(event) {
+            s.run(event.input[1], function(output) {
+                event.reply(output.result);
+            }.bind(this));
         },
 
-        '~ajs': function(data, params) {
-            var q = data.message.valMatch(/^~ajs (.*)/, 2);
-            if(dbot.admin.include(data.user) ) {
-                var ret = eval(q[1]);
-                if(ret != undefined) {
-                    dbot.say(data.channel, ret);
+        // Run JS code un-sandboxed, with access to DBot memory (admin-only).
+        '~ajs': function(event) {
+            if(dbot.admin.include(event.user) ) {
+                var ret = eval(event.input[1]);
+                if(ret !== undefined) {
+                    event.reply(ret);
                 }
             }
         }
     };
+    commands['~js'].regex = [/^~js (.*)/, 2];
+    commands['~ajs'].regex = [/^~ajs (.*)/, 2];
 
     return {
-        'onLoad': function() {
-            return commands;
-        },
-
         'name': 'js',
-
-        'ignorable': true 
+        'ignorable': true,
+        'commands': commands
     };
 };
 
