@@ -15,7 +15,12 @@ ul#quotelist
                 -else
                     a(href=quote)
                         =quote
-        -else
+        -else if(quote.match(/~~([^~]+)~~/))
+            -var res = quote.match(/~~([^~]+)~~/)
+            -if(res != null)
+                li.quote
+                    a(href="/quotes/#{res[1]}") #{quote}
+        -else 
             li.quote #{quote}
     -if(hasYouTubeVids)
         script(src='/ytembed.js')
