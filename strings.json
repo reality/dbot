@@ -232,7 +232,7 @@
     },
     "option_added": {
         "english": "{user}: '{option}' added to '{name}'.",
-        "spanish" : "{user{: '{option}' añadido a '{name}'."
+        "spanish" : "{user}: '{option}' añadido a '{name}'."
     },
     "option_exists": {
         "english": "{user}: '{option}' already exists in '{name}'.",
