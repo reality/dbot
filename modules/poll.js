@@ -42,11 +42,11 @@ var poll = function(dbot) {
                 if(polls[name].owner === event.user) {
                     if(!polls[name].votes.hasOwnProperty(name)) {
                         polls[name]['votes'][option] = 0;
-                        event.reply(dbot.t('option_added'), {'user': event.user, 
-                            'name': name, 'option': option});
+                        event.reply(dbot.t('option_added', {'user': event.user, 
+                            'name': name, 'option': option}));
                     } else {
-                        event.reply(dbot.t('option_exists'), {'option': option,
-                            'name': name, 'user': event.user});
+                        event.reply(dbot.t('option_exists', {'option': option,
+                            'name': name, 'user': event.user}));
                     }
                 } else {
                     event.reply(dbot.t('not_poll_owner', {'user': event.user,
@@ -65,10 +65,10 @@ var poll = function(dbot) {
                 if(polls[name].owner === event.user) {
                     if(polls[name].votes.hasOwnProperty(option)) {
                         delete polls[name]['votes'][option];
-                        event.reply(dbot.t('option_removed'), {'user': event.user,
-                            'name': name, 'option': option});
+                        event.reply(dbot.t('option_removed', {'user': event.user,
+                            'name': name, 'option': option}));
                     } else {
-                        event.reply(dbot.t('invalid_vote'), {'vote': option});
+                        event.reply(dbot.t('invalid_vote', {'vote': option}));
                     }
                 } else {
                     event.reply(dbot.t('not_poll_owner', {'name': name}));
