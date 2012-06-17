@@ -115,8 +115,8 @@ var poll = function(dbot) {
         }
     };
     commands['~newpoll'].regex = [/~newpoll ([^ ]+) \[options=([^ ]+)\] (.+)/, 4];
-    commands['~addoption'].regex = [/~addoption ([^ ]+)/, 2];
-    commands['~rmoption'].regex = [/~rmoption ([^ ]+)/, 2];
+    commands['~addoption'].regex = [/~addoption ([^ ]+) ([^ ]+)/, 3];
+    commands['~rmoption'].regex = [/~rmoption ([^ ]+) ([^ ]+)/, 3];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
 
