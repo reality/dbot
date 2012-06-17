@@ -229,5 +229,17 @@
     "poll_unexistent": {
         "english": "Poll '{name}' doesn't exist.",
         "spanish" : "Votación '{name}' no existe."
+    },
+    "option_added": {
+        "english": "{user}: '{option}' added to '{name}'"
+    },
+    "option_exists": {
+        "english": "{user}: '{option}' already exists in '{name}'"
+    },
+    "not_poll_owner": {
+        "english": "{user}: You don't own the '{name}' poll"
+    },
+    "option_removed": {
+        "english": "{user}: '{option}' removed from '{name}'"
     }
 }
