@@ -212,7 +212,7 @@
     },
     "poll_created": {
         "english": "Poll '{name}' created ({description}). Cast thy votations!",
-        "spanish" : "Votación '{name}' creado ({descripción}). ¡Emited sus votas!"
+        "spanish" : "Votación '{name}' creado ({description}). ¡Emited sus votas!"
     },
     "changed_vote": {
         "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
