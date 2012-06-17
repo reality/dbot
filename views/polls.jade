@@ -27,10 +27,9 @@ ul#votelist
                 .vote-track
                     -if(!isNaN(percentage))
                         .vote-percentage(style="width: #{percentage}%")
-                -if(votes == 1)
-                    |#{votes} vote
-                -else
-                    |#{votes} votes
+                case votes
+                    when 1: #{votes} vote 
+                    default: #{votes} votes 
                 -if(!isNaN(percentage))
                     |(#{percentage.toFixed(2)}%) 
     -if(hasYouTubeVids)
