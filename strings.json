@@ -215,12 +215,12 @@
         "spanish" : "Votación '{name}' creado ({descripción}). ¡Emited sus votas!"
     },
     "changed_vote": {
-        "english": "{user} changed their vote in {poll} to '{vote}' ({count})",
+        "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
         "spanish" : "{user} cambió su voto en {poll} a '{vote}' ({count})."
     },
     "voted": {
-        "english": "{user} voted for '{vote}' in {poll} ({count})",
-        "spanish" : "{user} votó para '{vote}' en {poll} ({count})"
+        "english": "{user} voted for '{vote}' in {poll} ({count}).",
+        "spanish" : "{user} votó para '{vote}' en {poll} ({count})."
     },
     "invalid_vote": {
         "english": "Invalid vote: {vote}",
@@ -231,15 +231,19 @@
         "spanish" : "Votación '{name}' no existe."
     },
     "option_added": {
-        "english": "{user}: '{option}' added to '{name}'"
+        "english": "{user}: '{option}' added to '{name}'.",
+        "spanish" : "{user{: '{option}' añadido a '{name}'."
     },
     "option_exists": {
-        "english": "{user}: '{option}' already exists in '{name}'"
+        "english": "{user}: '{option}' already exists in '{name}'.",
+        "spanish" : "{user}: '{option}' ya existe en '{name}'."
     },
     "not_poll_owner": {
-        "english": "{user}: You don't own the '{name}' poll"
+        "english": "{user}: You don't own the '{name}' poll.",
+        "spanish" : "{user}: La votación '{name}' no es tuyo."
     },
     "option_removed": {
-        "english": "{user}: '{option}' removed from '{name}'"
+        "english": "{user}: '{option}' removed from '{name}'",
+        "spanish" : "{user}: '{option}' eliminado de '{name}'"
     }
 }
