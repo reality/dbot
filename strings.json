@@ -245,5 +245,9 @@
     "option_removed": {
         "english": "{user}: '{option}' removed from '{name}'",
         "spanish" : "{user}: '{option}' eliminado de '{name}'"
+    },
+    "av_voted": {
+        "english": "{user} voted '{vote}' in {poll}.",
+        "spanish": "{user} votó '{vote}' en {poll}."
     }
 }
