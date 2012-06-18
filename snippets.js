@@ -152,6 +152,12 @@ Object.prototype.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 };
 
+Object.prototype.each = function(fun) {
+    for(key in this)
+        if(this.hasOwnProperty(key))
+            fun(key, this[key]);
+};
+
 /*** Integer ***/
 
 Number.prototype.chanceIn = function(x, y) {

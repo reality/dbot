@@ -24,7 +24,11 @@ var poll = function(dbot) {
                             'description': description,
                             'owner': event.user,
                             'votes': {},
+                            'options': []
                         };
+                        for(var i=0;i<options.length;i++) {
+                            polls[name].options.push(options[i]);
+                        }
                     } else {
                         polls[name] = {
                             'av': av,
@@ -34,10 +38,9 @@ var poll = function(dbot) {
                             'votes': {},
                             'votees': {}
                         };
-                    }
-
-                    for(var i=0;i<options.length;i++) {
-                        polls[name]['votes'][options[i]] = 0;
+                        for(var i=0;i<options.length;i++) {
+                            polls[name]['votes'][options[i]] = 0;
+                        }
                     }
                     
                     event.reply(dbot.t('poll_created', {'name': name, 'description': description}) + 
@@ -100,11 +103,14 @@ var poll = function(dbot) {
                     var valid = true;
                     
                     prefs.each(function(pref) {
-                        valid = valid && polls[name].votes.hasOwnProperty(pref);
+                        console.log(pref);
+                        console.log(polls[name].options);
+                        valid = valid && polls[name].options.hasOwnProperty(pref);
                     });
                     if(valid){
                         if(polls[name].votes.hasOwnProperty(event.user)) {
                             polls[name].votes[event.user] = prefs;
+                            event.reply(dbot.t('av_changed_vote', {'vote': vote, 'poll': name, 'user': event.user}));
                         } else {
                             polls[name].votes[event.user] = prefs;
                             event.reply(dbot.t('av_voted', {'vote': vote, 'poll': name, 'user': event.user}));
@@ -143,10 +149,38 @@ var poll = function(dbot) {
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
-        }
+        },
         
         '~count': function(event) {
+            var name = event.input[1];
             
+            if(polls.hasOwnProperty(name)) {
+                if(polls[name].av) {
+                    var finished = false;
+                    var rounds = [];
+                    var eliminated = [];
+                    
+                    for(var roundn = 0; !finished; roundn++) {
+                        // Populate candidates for this round
+                        rounds[roundn] = {};
+                        polls[name].options.each(function (option) {
+                            if(!eliminated.hasOwnProperty(option))
+                                rounds[roundn][option] = 0;
+                        });
+                        
+                        // Count votes
+                        polls[name].votes.each(function (name, vote) {
+                            console.log(name);
+                        });
+                        break;
+                    }
+                    
+                } else {
+                    event.reply("Not yet implemented.");
+                }
+            } else {
+                event.reply(dbot.t('poll_unexistent', {'name': name}));
+            }
         }
     };
     commands['~newpoll'].regex = [/~newpoll (av )?([^ ]+) \[options=([^ ]+)\] (.+)/, 5];
@@ -154,6 +188,7 @@ var poll = function(dbot) {
     commands['~rmoption'].regex = [/~rmoption ([^ ]+) ([^ ]+)/, 3];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
+    commands['~count'].regex = [/~count ([^ ]+)/, 2];
 
     return {
         'name': 'poll',
