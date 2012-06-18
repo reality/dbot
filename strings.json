@@ -249,5 +249,9 @@
     "av_voted": {
         "english": "{user} voted '{vote}' in {poll}.",
         "spanish": "{user} votó '{vote}' en {poll}."
+    },
+    "av_changed_vote": {
+        "english": "{user} changed their vote in {poll} to '{vote}'.",
+        "spanish" : "{user} cambió su voto en {poll} a '{vote}'."
     }
 }
