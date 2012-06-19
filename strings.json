@@ -245,5 +245,17 @@
     "option_removed": {
         "english": "{user}: '{option}' removed from '{name}'",
         "spanish" : "{user}: '{option}' eliminado de '{name}'"
+    },
+    "av_voted": {
+        "english": "{user} voted '{vote}' in {poll}.",
+        "spanish": "{user} votó '{vote}' en {poll}."
+    },
+    "av_changed_vote": {
+        "english": "{user} changed their vote in {poll} to '{vote}'.",
+        "spanish" : "{user} cambió su voto en {poll} a '{vote}'."
+    },
+    "count": {
+        "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
+        "spanish": ""
     }
 }
