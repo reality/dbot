@@ -172,7 +172,7 @@ var poll = function(dbot) {
                         });
                         
                         // Count votes
-                        polls[name].votes.each(function (name, vote) {
+                        polls[name].votes.withAll(function (name, vote) {
                             voted = false;
                             vote.each(function (pref) {
                                 if(!voted && rounds[roundn].hasOwnProperty(pref)) {
@@ -184,7 +184,7 @@ var poll = function(dbot) {
                         
                         // Find the loser
                         var min = polls[name].votes.length() + 1;
-                        rounds[roundn].each(function (option, count) {
+                        rounds[roundn].withAll(function (option, count) {
                             if(count < min) {
                                 roundLoser = option;
                                 min = count;
@@ -197,7 +197,7 @@ var poll = function(dbot) {
                     order = eliminated.reverse().join(', ')
                 } else {
                     var votesArr = [];
-                    polls[name].votes.each(function(option, count) {
+                    polls[name].votes.withAll(function(option, count) {
                         votesArr.push([option, count]);
                     });
 
