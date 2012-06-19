@@ -48,6 +48,18 @@ Array.prototype.allGroupings = function() {
     return groupings;
 }
 
+Array.prototype.uniq = function() {
+    var hash = {}
+    var result = [];
+    this.each(function(item) {
+        if(!hash.hasOwnProperty(item)){
+            hash[item] = true;
+            result.push(item);
+        }
+    });
+    return result;
+}
+
 /*** String ***/
 
 String.prototype.valMatch = function(regex, expLength) {
@@ -157,6 +169,14 @@ Object.prototype.each = function(fun) {
         if(this.hasOwnProperty(key))
             fun(key, this[key]);
 };
+
+Object.prototype.length = function() {
+    var l = 0;
+    for(key in this)
+        if(this.hasOwnProperty(key))
+            l++;
+    return l;
+}
 
 /*** Integer ***/
 
