@@ -254,8 +254,8 @@
         "english": "{user} changed their vote in {poll} to '{vote}'.",
         "spanish" : "{user} cambió su voto en {poll} a '{vote}'."
     },
-    "winner": {
-        "english": "The winner of poll '{poll}' ({description}) is: '{winner}'.",
-        "spanish": "La ganera de la votación '{poll}' ({description}) es: '{winner}'."
+    "count": {
+        "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
+        "spanish": ""
     }
 }

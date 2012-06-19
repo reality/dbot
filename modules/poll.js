@@ -150,18 +150,18 @@ var poll = function(dbot) {
             }
         },
         
-        '~winner': function(event) {
+        '~count': function(event) {
             var name = event.input[1];
             
             if(polls.hasOwnProperty(name)) {
-                var winner;
+                var order;
                 if(polls[name].av) {
                     var finished = false;
                     var rounds = [];
                     var eliminated = [];
                     var voted;
                     
-                    for(var roundn = 0; !finished; roundn++) {
+                    for(var roundn = 0; roundn < polls[name].options.length; roundn++) {
                         var roundLoser;
                         
                         // Populate candidates for this round
@@ -182,38 +182,30 @@ var poll = function(dbot) {
                             });
                         });
                         
-                        // Check for 50%
-                        var max = 0;
-                        var min = polls[name].votes.length()
+                        // Find the loser
+                        var min = polls[name].votes.length() + 1;
                         rounds[roundn].each(function (option, count) {
-                            if(count > max) {
-                                winner = option;
-                                max = count;
-                            }
-                            
                             if(count < min) {
                                 roundLoser = option;
                                 min = count;
                             }
                         });
-                        if((2*max) > polls[name].votes.length()) {
-                            finished = true;
-                            break;
-                        }
                         
                         // Eliminate loser
                         eliminated.push(roundLoser);
                     }
+                    order = eliminated.reverse().join(', ')
                 } else {
-                    var max = 0;
-                    polls[name].votes.each(function (name, count) {
-                        if(count > max) {
-                            winner = name;
-                            max = count;
-                        }
+                    var votesArr = [];
+                    polls[name].votes.each(function(option, count) {
+                        votesArr.push([option, count]);
                     });
+
+                    votesArr = votesArr.sort(function(a, b) { return b[1] - a[1]; });
+                    
+                    order = votesArr.map(function(vote) { return vote[0]; });
                 }
-                event.reply(dbot.t('winner', {'poll': name, 'description': polls[name].description, 'winner': winner}));
+                event.reply(dbot.t('count', {'poll': name, 'description': polls[name].description, 'places': order}));
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
@@ -224,7 +216,7 @@ var poll = function(dbot) {
     commands['~rmoption'].regex = [/~rmoption ([^ ]+) ([^ ]+)/, 3];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
-    commands['~winner'].regex = [/~winner ([^ ]+)/, 2];
+    commands['~count'].regex = [/~count ([^ ]+)/, 2];
 
     return {
         'name': 'poll',
