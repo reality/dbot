@@ -100,20 +100,19 @@ var poll = function(dbot) {
             if(polls.hasOwnProperty(name)) {
                 if(polls[name].av) {
                     var prefs = vote.split(',');
+                    prefs = prefs.uniq();
                     var valid = true;
                     
                     prefs.each(function(pref) {
-                        console.log(pref);
-                        console.log(polls[name].options);
-                        valid = valid && polls[name].options.hasOwnProperty(pref);
+                        valid = valid && polls[name].options.indexOf(pref) != -1;
                     });
                     if(valid){
                         if(polls[name].votes.hasOwnProperty(event.user)) {
                             polls[name].votes[event.user] = prefs;
-                            event.reply(dbot.t('av_changed_vote', {'vote': vote, 'poll': name, 'user': event.user}));
+                            event.reply(dbot.t('av_changed_vote', {'vote': prefs.join(','), 'poll': name, 'user': event.user}));
                         } else {
                             polls[name].votes[event.user] = prefs;
-                            event.reply(dbot.t('av_voted', {'vote': vote, 'poll': name, 'user': event.user}));
+                            event.reply(dbot.t('av_voted', {'vote': prefs.join(','), 'poll': name, 'user': event.user}));
                         }
                     } else {
                         event.reply(dbot.t('invalid_vote', {'vote': vote}));
@@ -151,33 +150,70 @@ var poll = function(dbot) {
             }
         },
         
-        '~count': function(event) {
+        '~winner': function(event) {
             var name = event.input[1];
             
             if(polls.hasOwnProperty(name)) {
+                var winner;
                 if(polls[name].av) {
                     var finished = false;
                     var rounds = [];
                     var eliminated = [];
+                    var voted;
                     
                     for(var roundn = 0; !finished; roundn++) {
+                        var roundLoser;
+                        
                         // Populate candidates for this round
                         rounds[roundn] = {};
                         polls[name].options.each(function (option) {
-                            if(!eliminated.hasOwnProperty(option))
+                            if(eliminated.indexOf(option) == -1)
                                 rounds[roundn][option] = 0;
                         });
                         
                         // Count votes
                         polls[name].votes.each(function (name, vote) {
-                            console.log(name);
+                            voted = false;
+                            vote.each(function (pref) {
+                                if(!voted && rounds[roundn].hasOwnProperty(pref)) {
+                                    rounds[roundn][pref]++;
+                                    voted = true;
+                                }
+                            });
                         });
-                        break;
+                        
+                        // Check for 50%
+                        var max = 0;
+                        var min = polls[name].votes.length()
+                        rounds[roundn].each(function (option, count) {
+                            if(count > max) {
+                                winner = option;
+                                max = count;
+                            }
+                            
+                            if(count < min) {
+                                roundLoser = option;
+                                min = count;
+                            }
+                        });
+                        if((2*max) > polls[name].votes.length()) {
+                            finished = true;
+                            break;
+                        }
+                        
+                        // Eliminate loser
+                        eliminated.push(roundLoser);
                     }
-                    
                 } else {
-                    event.reply("Not yet implemented.");
+                    var max = 0;
+                    polls[name].votes.each(function (name, count) {
+                        if(count > max) {
+                            winner = name;
+                            max = count;
+                        }
+                    });
                 }
+                event.reply(dbot.t('winner', {'poll': name, 'description': polls[name].description, 'winner': winner}));
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
@@ -188,7 +224,7 @@ var poll = function(dbot) {
     commands['~rmoption'].regex = [/~rmoption ([^ ]+) ([^ ]+)/, 3];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
-    commands['~count'].regex = [/~count ([^ ]+)/, 2];
+    commands['~winner'].regex = [/~winner ([^ ]+)/, 2];
 
     return {
         'name': 'poll',
