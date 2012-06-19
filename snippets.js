@@ -164,7 +164,7 @@ Object.prototype.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 };
 
-Object.prototype.each = function(fun) {
+Object.prototype.withAll = function(fun) {
     for(key in this)
         if(this.hasOwnProperty(key))
             fun(key, this[key]);
