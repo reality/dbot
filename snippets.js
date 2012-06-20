@@ -165,9 +165,11 @@ Object.prototype.isArray = function(obj) {
 };
 
 Object.prototype.withAll = function(fun) {
-    for(key in this)
-        if(this.hasOwnProperty(key))
+    for(key in this) {
+        if(this.hasOwnProperty(key)){
             fun(key, this[key]);
+        }
+    }
 };
 
 Object.prototype.length = function() {
