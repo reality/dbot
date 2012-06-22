@@ -42,6 +42,9 @@ var DBot = function(timers) {
     if(!this.db.hasOwnProperty("ignores")) {
         this.db.ignores = {};
     }
+    if(!this.db.hasOwnProperty('polls')) {
+        this.db.polls = {};
+    }
     
     // Load Strings file
     this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
