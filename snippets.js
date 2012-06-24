@@ -178,7 +178,17 @@ Object.prototype.length = function() {
         if(this.hasOwnProperty(key))
             l++;
     return l;
-}
+};
+
+Object.prototype.sort = function(object, scorer) {
+    var sortArr = [];
+    for(var key in object) {
+        if(object.hasOwnProperty(key)) {
+            sortArr.push([key, scorer(key, object)]);
+        }
+    }
+    return sortArr.sort(function(a, b) { return a[1] - b[1]; });
+};
 
 /*** Integer ***/
 

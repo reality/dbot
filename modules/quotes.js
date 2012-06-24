@@ -57,18 +57,10 @@ var quotes = function(dbot) {
 
         // Shows a list of the biggest categories
         '~qstats': function(event) {
-            var qSizes = []; 
-            for(var cat in quotes) {
-                if(quotes[cat].length != 0) {
-                    qSizes.push([cat, quotes[cat].length]);
-                }
-            }
-
-            qSizes = qSizes.sort(function(a, b) { return a[1] - b[1]; });
+            var qSsizes = Object.prototype.sort(quotes, function(key, obj) { obj[key].length });
             qSizes = qSizes.slice(qSizes.length - 10).reverse();
 
             var qString = dbot.t('large_categories');
-
             for(var i=0;i<qSizes.length;i++) {
                 qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
             }
