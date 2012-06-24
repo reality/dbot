@@ -57,7 +57,7 @@ var quotes = function(dbot) {
 
         // Shows a list of the biggest categories
         '~qstats': function(event) {
-            var qSsizes = Object.prototype.sort(quotes, function(key, obj) { return obj[key].length });
+            var qSizes = Object.prototype.sort(quotes, function(key, obj) { return obj[key].length });
             qSizes = qSizes.slice(qSizes.length - 10).reverse();
 
             var qString = dbot.t('large_categories');
