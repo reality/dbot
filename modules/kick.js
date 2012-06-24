@@ -26,7 +26,13 @@ var kick = function(dbot) {
         // who have kicked other people the most.
         '~kickstats': function(event) {
             var orderedKickLeague = function(list, topWhat) {
-                var kickArr = Object.keys(list);
+                var kickArr = [];
+                for(var kickUser in list) {
+                    if(list.hasOwnProperty(kickUser)) {
+                        kickArr.push([kickUser, list[kickUser]]);
+                    }
+                }
+
                 kickArr = kickArr.sort(function(a, b) { return a[1] - b[1]; });
                 kickArr = kickArr.slice(kickArr.length - 10).reverse();
                 var kickString = "Top " + topWhat + ": ";
