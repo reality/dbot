@@ -46,12 +46,14 @@ var quotes = function(dbot) {
                 altKey = key.replace(/ /g, '_');
             }
 
-            if(quotes.hasOwnProperty(key)) {
-                event.reply(key + ': ' + interpolatedQuote(key));
-            } else if(quotes.hasOwnProperty(altKey)) {
-                event.reply(altKey + ': ' + interpolatedQuote(altKey));
-            } else {
-                event.reply(dbot.t('category_not_found', {'category': key}));
+            if(key.charAt(0) !== '_') { // lol
+                if(quotes.hasOwnProperty(key)) {
+                    event.reply(key + ': ' + interpolatedQuote(key));
+                } else if(quotes.hasOwnProperty(altKey)) {
+                    event.reply(altKey + ': ' + interpolatedQuote(altKey));
+                } else {
+                    event.reply(dbot.t('category_not_found', {'category': key}));
+                }
             }
         },
 

@@ -1,6 +1,4 @@
 var kick = function(dbot) {
-    var dbot = dbot;
-    
     var commands = {
         // Give the number of times a given user has been kicked and has kicked
         // other people.
