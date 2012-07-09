@@ -164,13 +164,13 @@ Object.prototype.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 };
 
-/*Object.prototype.withAll = function(fun) {
+Object.prototype.withAll = function(fun) {
     for(key in this) {
         if(this.hasOwnProperty(key)){
             fun(key, this[key]);
         }
     }
-};*/
+};
 
 Object.prototype.length = function() {
     var l = 0;
