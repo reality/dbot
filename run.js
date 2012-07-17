@@ -1,6 +1,6 @@
 var fs = require('fs');
 var timers = require('./timer');
-var jsbot = require('./jsbot');
+var jsbot = require('./jsbot/jsbot');
 require('./snippets');
 
 var DBot = function(timers) {
