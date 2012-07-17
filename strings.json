@@ -257,5 +257,39 @@
     "count": {
         "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
         "spanish": ""
+    },
+    "badword_added": {
+		"english": "Added badword '{word}' for channel {channel}",
+		"spanish": ""
+    },
+    "badword_error": {
+		"english": "Badword '{word}' has already been added for channel {channel}",
+		"spanish": ""
+    },
+    "badword_stats": {
+		"english": "'{word}' has been said {count} times since {starttime}. '{word}' was last said at {last}.",
+		"spanish": ""
+    },
+    "badword_removed": {
+		"english": "Badword '{word}' has been removed from channel {channel}",
+		"spanish": ""
+    },
+    "badword_none": {
+		"english": "Badword '{word}' does not exist for channel {channel}",
+		"spanish": ""
+    },
+    "badword_said_first": {
+		"english": "{user}: Did you have to say that? Really? You awful person.",
+		"spanish": ""
+    },
+    "badword_said_user": {
+		"english": "It has been {time_since_user} minutes since {user} last said '{word}', and {time_since} minutes since anyone said '{word}' in this channel. {user}, you are a terrible person.",
+		"spanish": ""
+    },
+    "badword_said": {
+		"english": "It has been {time_since} minutes since anyone said '{word}' in this channel. {user} is a terrible person.",
+		"spanish": ""
     }
+    
+    
 }
