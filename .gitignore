@@ -1,0 +1,5 @@
+# Ignore the user config files
+config.json
+
+# Ignore the user database
+db.json
