@@ -14,9 +14,16 @@ writing documentation.
 Requirements: 
 
 - Node JS
-- [JSBot](http://github.com/reality/JSBot "JSBot"), the Javascript library I 
-  wrote to handle the IRC protocol and event listeners etc.
+- [JSBot](http://github.com/reality/JSBot "JSBot"), a Javascript library which
+  handles the IRC protocol.
 - Various modules have their own requirements also.
+
+### JSBot
+
+JSBot can be imported by running the following commands in the cloned repository:
+	
+	git submodule init
+	git submodule update
 
 ## Modules:
 
