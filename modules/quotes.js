@@ -229,7 +229,6 @@ var quotes = function(dbot) {
             });
         },
 
-        /* For automatic quote retrieval
         'listener': function(data, params) {
             if((dbot.db.ignores.hasOwnProperty(data.user) && 
                         dbot.db.ignores[data.user].include(name)) == false) {
@@ -243,7 +242,7 @@ var quotes = function(dbot) {
                     if((dbot.db.bans.hasOwnProperty('~qadd') &&
                     dbot.db.bans['~qadd'].include(data.user)) ||
                     dbot.db.bans['*'].include(data.user)) {
-                        dbot.say(data.channel, dbot.t('command_ban', {'user': data.user})); 
+                        event.reply(dbot.t('command_ban', {'user': data.user})); 
                     } else {
                         if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
                             dbot.db.quoteArrs['realityonce'] = [];
@@ -251,13 +250,13 @@ var quotes = function(dbot) {
                         dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
                         addStack.push('realityonce');
                         rmAllowed = true;
-                        dbot.instance.say(data.channel, '\'reality ' + once[1] + '.\' saved.');
+                        event.reply('\'reality ' + once[1] + '.\' saved.');
                     }
                 }
             }
         },
 
-        'on': 'PRIVMSG',*/
+        'on': 'PRIVMSG'
     };
 };
 
