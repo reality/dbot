@@ -247,10 +247,14 @@ var quotes = function(dbot) {
                         if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
                             dbot.db.quoteArrs['realityonce'] = [];
                         }
-                        dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
-                        addStack.push('realityonce');
-                        rmAllowed = true;
-                        event.reply('\'reality ' + once[1] + '.\' saved.');
+                        if(dbot.db.quoteArrs['realityonce'].include('reality ' + once[1] + '.')) {
+                            event.reply(event.user + ': reality has already done that once.');
+                        } else {
+                            dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
+                            addStack.push('realityonce');
+                            rmAllowed = true;
+                            event.reply('\'reality ' + once[1] + '.\' saved.');
+                        }
                     }
                 }
             }
