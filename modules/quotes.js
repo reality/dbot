@@ -229,20 +229,20 @@ var quotes = function(dbot) {
             });
         },
 
-        'listener': function(data, params) {
-            if((dbot.db.ignores.hasOwnProperty(data.user) && 
-                        dbot.db.ignores[data.user].include(name)) == false) {
-                if(data.user == 'reality') {
-                    var once = data.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
+        'listener': function(event) {
+            if((dbot.db.ignores.hasOwnProperty(event) && 
+                        dbot.db.ignores[event.user].include(name)) == false) {
+                if(event.user == 'reality') {
+                    var once = event.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
                 } else {
-                    var once = data.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
+                    var once = event.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
                 }
 
                 if(once) {
                     if((dbot.db.bans.hasOwnProperty('~qadd') &&
-                    dbot.db.bans['~qadd'].include(data.user)) ||
-                    dbot.db.bans['*'].include(data.user)) {
-                        event.reply(dbot.t('command_ban', {'user': data.user})); 
+                    dbot.db.bans['~qadd'].include(event.user)) ||
+                    dbot.db.bans['*'].include(event.user)) {
+                        event.reply(dbot.t('command_ban', {'user': event.user})); 
                     } else {
                         if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
                             dbot.db.quoteArrs['realityonce'] = [];
