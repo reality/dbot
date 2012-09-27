@@ -131,7 +131,7 @@
     },
     "unload_error": {
         "english": "{moduleName} isn't loaded. Idiot.",
-        "spanish": "{moduleName} no está cargado. Idiota."
+        "spanish": "{moduleName} no está cargado. Idiota.",
         "na'vi": "Oel {moduleName}it omum. Nga skxawng lu."
     },
     "banned": {
@@ -232,7 +232,7 @@
     "kicked_dbot": {
         "english": "Thou shalt not kick {botname}",
         "spanish": "No expulsás {botname}",
-        "na'vi": "Ngal {botname}it ke tsun tsrive'i
+        "na'vi": "Ngal {botname}it ke tsun tsrive'i"
     }, 
     "search_results": {
         "english": "{category} ({needle}): '{quote}' [{matches} results]",
@@ -243,19 +243,16 @@
         "english": "Joined {channel}",
         "spanish" : "Entrado en {channel}",
         "na'vi": "fpxäkìm {channel}(nemfa)"
-
     },
     "part": {
         "english": "Left {channel}",
         "spanish" : "Abandonada {channel}",
-        "na'vi": "Hum {channel}".
-
+        "na'vi": "Hum {channel}"
     },
     "newpoll_usage": {
         "english": "Usage: ~newpoll name [options=opt1,opt2,opt3] description",
         "spanish" : "Modo de empleo: ~newpoll nombre [options=opción1,opción2,opción3] descripción",
         "na'vi": "Usage: ~newpoll tstxo [sìftxey=tìfxey1,tìfxey2,fìfxey3] tìsla'tsu"
-
     },
     "poll_exists": {
         "english": "Poll '{name}' already exists.",
