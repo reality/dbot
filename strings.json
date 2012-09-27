@@ -217,7 +217,7 @@
     "unignored": {
         "english": "{user}: No longer ignoring {module}.",
         "spanish": "{user}: Ya no ignoras {module}.",
-        "na'vi": "{user}: "Nga terìng mikyun {module}ne set"
+        "na'vi": "{user}: Nga terìng mikyun {module}ne set"
     },
     "command_typo": {
         "english": "Did you mean '{command}'? Learn to type.",
