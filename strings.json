@@ -206,7 +206,7 @@
     },
     "unignore_usage": {
         "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
-        "spanish": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}."
+        "spanish": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}.",
         "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}."
     },
     "invalid_unignore": {
@@ -296,8 +296,8 @@
     },
     "not_poll_owner": {
         "english": "{user}: You don't own the '{name}' poll.",
-        "spanish" : "{user}: La votación '{name}' no es tuyo."
-                "na'vi": "{user}: ngaru '{name}' sìpawm sna'o ke lu." 
+        "spanish" : "{user}: La votación '{name}' no es tuyo.",
+        "na'vi": "{user}: ngaru '{name}' sìpawm sna'o ke lu." 
     },
     "option_removed": {
         "english": "{user}: '{option}' removed from '{name}'",
@@ -316,7 +316,6 @@
     },
     "count": {
         "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
-        "spanish": "",
         "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}." 
     }
 }
