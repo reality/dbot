@@ -13,9 +13,11 @@ var js = function(dbot) {
     var commands = {
         // Run JS code sandboxed, return result to channel.
         '~js': function(event) {
-            s.run(event.input[1], function(output) {
-                event.reply(output.result);
-            }.bind(this));
+            try {
+                s.run(event.input[1], function(output) {
+                    event.reply(output.result);
+                }.bind(this));
+            } catch(err) {}
         },
 
         // Run JS code un-sandboxed, with access to DBot memory (admin-only).
