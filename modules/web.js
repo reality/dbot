@@ -51,16 +51,16 @@ var webInterface = function(dbot) {
             var quoteCount = dbot.db.quoteArrs[user].length;
         }
 
-        if(!dbot.db.kicks.hasOwnProperty(user)) {
+        if(!dbot.db.kicks.hasOwnProperty(req.params.user)) {
             var kicks = '0';
         } else {
-            var kicks = dbot.db.kicks[user];
+            var kicks = dbot.db.kicks[req.params.user];
         }
 
-        if(!dbot.db.kickers.hasOwnProperty(user)) {
+        if(!dbot.db.kickers.hasOwnProperty(req.params.user)) {
             var kicked = '0';
         } else {
-            var kicked = dbot.db.kickers[user];
+            var kicked = dbot.db.kickers[req.params.user];
         }
 
         res.render('user', { 'name': dbot.name, 'user': req.params.user,
