@@ -40,7 +40,7 @@ var poll = function(dbot) {
                     }
                     
                     event.reply(dbot.t('poll_created', {'name': name, 'description': description}) + 
-                        ' - http://nc.no.de:443/polls/' + name);
+                        ' - http://nourishedcloud.com:8080/polls/' + name);
                 }
             }
         },
