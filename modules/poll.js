@@ -140,7 +140,7 @@ var poll = function(dbot) {
         '~pdesc': function(event) {
             var name = event.input[1];
             if(polls.hasOwnProperty(name)) {
-                event.reply(name + ': ' + polls[name].description + ' - http://nc.no.de:443/polls/' + name);
+                event.reply(name + ': ' + polls[name].description + ' - http://nourishedcloud.com:8080/polls/' + name);
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
