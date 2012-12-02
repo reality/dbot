@@ -164,6 +164,10 @@ Object.prototype.isArray = function(obj) {
     return Object.prototype.toString.call(obj) === '[object Array]';
 };
 
+Object.prototype.isString = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object String]';
+};
+
 Object.prototype.withAll = function(fun) {
     for(key in this) {
         if(this.hasOwnProperty(key)){

@@ -12,21 +12,34 @@ var admin = function(dbot) {
         // Join a channel
         'join': function(event) {
             var channel = event.params[1];
-            dbot.instance.join(event, channel); 
-            event.reply(dbot.t('join', {'channel': channel}));
+            if(event.allChannels.hasOwnProperty(channel)) {
+                event.reply("I'm already in that channel.");
+            } else {
+                dbot.instance.join(event, channel); 
+                event.reply(dbot.t('join', {'channel': channel}));
+            }
         },
 
         // Leave a channel
         'part': function(event) {
             var channel = event.params[1];
-            event.instance.part(event, channel); 
-            event.reply(dbot.t('part', {'channel': channel}));
+            if(!event.allChannels.hasOwnProperty(channel)) {
+                event.reply("I'm not in that channel.");
+            } else {
+                event.instance.part(event, channel); 
+                event.reply(dbot.t('part', {'channel': channel}));
+            }
         },
 
         // Op admin caller in given channel
         'opme': function(event) {
-            event.channel = event.params[1];
-            dbot.instance.mode(event, '+o ' + event.user);
+            var channel = event.params[1];
+
+            // If given channel isn't valid just op in current one.
+            if(!event.allChannels.hasOwnProperty(channel)) {
+                channel = event.channel.name;
+            }
+            dbot.instance.mode(event, channel, ' +o ' + event.user);
         },
 
         // Do a git pull and reload
@@ -49,7 +62,7 @@ var admin = function(dbot) {
         'say': function(event) {
             var channel = event.params[1];
             if(event.params[1] === "@") {
-                var channel = event.channel;
+                var channel = event.channel.name;
             }             
             var message = event.params.slice(2).join(' ');
             dbot.say(event.server, channel, message);
