@@ -38,6 +38,7 @@ var report = function(dbot) {
 
     };
     commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
+    commands['report'].usage = '~report [#channel] [username] [reason for reporting]';
 
     return {
         'name': 'report',

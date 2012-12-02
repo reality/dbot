@@ -218,6 +218,11 @@ var quotes = function(dbot) {
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
 
+    commands['~q'].usage = '~q [category]';
+    commands['~qsearch'].usage = '~qsearch [category]=[search]';
+    commands['~rmlast'].usage = '~rmlast [category]'
+    commands['~qadd'].usage = '~qadd [category]=[content]';
+
     return {
         'name': 'quotes',
         'ignorable': true,

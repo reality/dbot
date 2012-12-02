@@ -32,6 +32,8 @@ var js = function(dbot) {
     };
     commands['~js'].regex = [/^~js (.*)/, 2];
     commands['~ajs'].regex = [/^~ajs (.*)/, 2];
+    commands['~js'].usage = '~js [command]';
+    commands['~ajs'].usage = '~ajs [command]';
 
     return {
         'name': 'js',
