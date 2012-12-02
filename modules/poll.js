@@ -207,12 +207,18 @@ var poll = function(dbot) {
             }
         }
     };
-    commands['~newpoll'].regex = [/~newpoll (av )?([^ ]+) \[options=([^ ]+)\] (.+)/, 5];
+    commands['~newpoll'].regex = [/~newpoll (av )?([^ ]+) options=([^ ]+) (.+)/, 5];
     commands['~addoption'].regex = [/~addoption ([^ ]+) ([^ ]+)/, 3];
     commands['~rmoption'].regex = [/~rmoption ([^ ]+) ([^ ]+)/, 3];
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
     commands['~count'].regex = [/~count ([^ ]+)/, 2];
+
+    commands['~newpoll'].usage = '~newpoll [pollname] options=[each,poll,option] [Poll Description]';
+    commands['~addoption'].usage = '~addoption [pollname] [newoption]';
+    commands['~rmoption'].usage= '~rmoption [pollname] [optiontoremove]';
+    commands['~vote'].usage= '~vote [pollname] [option]';
+    commands['~pdesc'].usage = '~pdesc [pollname]';
 
     return {
         'name': 'poll',

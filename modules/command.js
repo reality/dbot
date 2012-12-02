@@ -71,7 +71,11 @@ var command = function(dbot) {
                         dbot.save();
                     } else {
                         if(commandName !== '~') {
-                            event.reply(dbot.t('syntax_error'));
+                            if(dbot.commands[commandName].hasOwnProperty('usage')){
+                                event.reply('Usage: ' + dbot.commands[commandName].usage);
+                            } else {
+                                event.reply(dbot.t('syntax_error'));
+                            }
                         }
                     }
                 }
