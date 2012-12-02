@@ -2,7 +2,7 @@ var spelling = function(dbot) {
     var last = {};
 
     var correct = function (event, correction, candidate, output_callback) {
-        var rawCandidates = last[event.channel][candidate].split(' ').allGroupings();
+        var rawCandidates = last[event.channel.name][candidate].split(' ').allGroupings();
         var candidates = [];
         for(var i=0;i<rawCandidates.length;i++) {
             candidates.push(rawCandidates[i].join(' '));
@@ -20,11 +20,11 @@ var spelling = function(dbot) {
 
         if(winnerDistance < Math.ceil(winner.length * 1.33)) {
             if(winner !== correction) {
-                var fix = last[event.channel][candidate].replace(winner, correction);
+                var fix = last[event.channel.name][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
                 }
-                last[event.channel][candidate] = fix;
+                last[event.channel.name][candidate] = fix;
                 var output = {
                     'fix': fix,
                     'correcter': event.user,
@@ -51,11 +51,11 @@ var spelling = function(dbot) {
                     event.reply(dbot.t('spelling_other', e));
                 });
             } else {
-                 if(last.hasOwnProperty(event.channel)) {
-                   last[event.channel][event.user] = event.message; 
+                 if(last.hasOwnProperty(event.channel.name)) {
+                   last[event.channel.name][event.user] = event.message; 
                 } else {
-                    last[event.channel] = { };
-                    last[event.channel][event.user] = event.message;
+                    last[event.channel.name] = { };
+                    last[event.channel.name][event.user] = event.message;
                 }
             }
         },

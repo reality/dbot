@@ -10,7 +10,7 @@ var link = function(dbot) {
 
     var commands = {
         '~title': function(event) {
-            var link = links[event.channel];
+            var link = links[event.channel.name];
             if(event.params[1] !== undefined) {
                 var urlMatches = event.params[1].match(urlRegex);
                 if(urlMatches !== null) {
@@ -40,7 +40,7 @@ var link = function(dbot) {
         'listener': function(event) {
             var urlMatches = event.message.match(urlRegex);
             if(urlMatches !== null) {
-                links[event.channel] = urlMatches[0];
+                links[event.channel.name] = urlMatches[0];
             }
         },
         'on': 'PRIVMSG'

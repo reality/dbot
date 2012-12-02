@@ -32,8 +32,9 @@ var webInterface = function(dbot) {
         var channel = '#' + req.params.channel;
         var connections = dbot.instance.connections;
 
-        if(connections.hasOwnProperty(connection) && connections[connection].channels.hasOwnProperty(channel)) {
-            var nicks = connections[connection].channels[channel].nicks;
+        if(connections.hasOwnProperty(connection) && 
+            connections[connection].channels.hasOwnProperty(channel)) {
+            var nicks = Object.keys(connections[connection].channels[channel].nicks);
             res.render('users', { 'name': dbot.name, 'connection': connection,
                 'channel': channel, 'nicks': nicks });
         } else {

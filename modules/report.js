@@ -5,14 +5,19 @@ var report = function(dbot) {
             var nick = event.input[2];
             var reason = event.input[3];
 
-            if(dbot.instance.connections[event.server].channels.hasOwnProperty(channelName)) {
-                var channel = dbot.instance.connections[event.server].channels[channelName];
+            if(event.allChannels.hasOwnProperty(channelName)) {
+                var channel = event.allChannels[channelName];
                 if(channel.nicks.hasOwnProperty(nick)) {
                     var ops = [];
                     for(var possibOps in channel.nicks) {
                         if(channel.nicks[possibOps].op == true) {
                             ops.push(possibOps);
                         }
+                    }
+
+                    // Does the channel have an admin channel?
+                    if(event.allChannels.hasOwnProperty('#' + channelName)) {
+                        ops.push('#' + channelName);
                     }
 
                     for(var i=0;i<ops.length;i++) {
@@ -22,21 +27,12 @@ var report = function(dbot) {
                             'given was: "' + reason + '."');
                     }
 
-                    if(dbot.instance.connections[event.server].channels.hasOwnProperty('#'+
-                        channelName)) {
-                        var adminChannel = '#' + channelName;
-                        dbot.say(event.server, adminChannel, 
-                            'Attention: ' + event.user + ' has reported ' +
-                            nick + ' in ' + channelName + '. The reason ' +
-                            'given was: "' + reason + '."');
-                    }
-
                     event.reply('Thank you, ' + nick + ' has been reported the channel administrators.');
                 } else {
-                    event.reply('Nick is not in channel.');
+                    event.reply('User is not in that channel.');
                 }
             } else {
-                event.reply('Channel does not exist.');
+                event.reply('I am not in that channel.');
             }
         }
 
