@@ -55,7 +55,8 @@ var command = function(dbot) {
 
         'commands': {
             '~usage': function(event) {
-                var commandName = event.params[0];
+                var commandName = event.params[1];
+                console.log(commandName);
                 if(dbot.commands.hasOwnProperty(commandName)) {
                     event.reply('Usage for ' + commandName + ': ' +
                         dbot.commands[commandName].usage); 
