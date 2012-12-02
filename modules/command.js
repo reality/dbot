@@ -53,6 +53,18 @@ var command = function(dbot) {
         'name': 'command',
         'ignorable': false,
 
+        'commands': {
+            '~usage': function(event) {
+                var commandName = event.params[0];
+                if(dbot.commands.hasOwnProperty(commandName)) {
+                    event.reply('Usage for ' + commandName + ': ' +
+                        dbot.commands[commandName].usage); 
+                } else {
+                    event.reply('No usage information for ' + commandName);
+                }
+            }
+        },
+
         /**
          * Run the appropriate command given the input.
          */
