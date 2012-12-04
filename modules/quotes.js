@@ -115,36 +115,34 @@ var quotes = function(dbot) {
             }
         },
 
-        /*'~rm': function(data, params) {
-            if(rmAllowed == true || dbot.admin.include(data.user)) {
-                var q = data.message.valMatch(/^~rm ([\d\w\s-]*) (.+)$/, 3);
-                if(q) {
-                    if(quotes.hasOwnProperty(q[1])) {
-                        if(!dbot.db.locks.include(q[1])) {
-                            var index = quotes[q[1]].indexOf(q[2]);
-                            if(index != -1) {
-                                quotes[q[1]].splice(index, 1);
-                                if(quotes[q[1]].length === 0) {
-                                    delete quotes[q[1]];
-                                }
-                                rmAllowed = false;
-                                dbot.say(data.channel, dbot.t('removed_from', {'category': q[1], 'quote': q[2]}));
-                            } else {
-                                dbot.say(data.channel, dbot.t('q_not_exist_under', {'category': q[1], 'quote': q[2]}));
+        '~rm': function(event) {
+            if(rmAllowed == true || dbot.admin.include(event.user)) {
+                var key = event.input[1].trim().toLowerCase();
+                var quote = event.input[2];
+
+                if(quotes.hasOwnProperty(key)) {
+                    if(!dbot.db.locks.include(key)) {
+                        var category = quotes[key];
+                        var index = category.indexOf(quote);
+                        if(index !== -1) {
+                            category.splice(index, 1);
+                            if(category.length === 0) {
+                                delete quotes[key];
                             }
+                            event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
                         } else {
-                            dbot.say(data.channel, dbot.t('locked_category', {'category': q[1]}));
+                            event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote)});
                         }
                     } else {
-                        dbot.say(data.channel, dbot.t('no_quotes', {'category': q[1]}));
+                        event.reply('locked_category', {'category': key}));
                     }
                 } else {
-                    dbot.say(data.channel, dbot.t('syntax_error'));
+                    event.reply(dbot.t('category_not_found'));
                 }
             } else {
-                dbot.say(data.channel, dbot.t('rmlast_spam'));
+                event.reply(dbot.t('rmlast_spam'));
             }
-        },*/
+        },
 
         '~qcount': function(event) {
             var input = event.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
@@ -215,11 +213,13 @@ var quotes = function(dbot) {
     commands['~'].regex = [/^~([\d\w\s-]*)/, 2];
     commands['~q'].regex = [/^~q ([\d\w\s-]*)/, 2];
     commands['~qsearch'].regex = [/^~qsearch ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
 
     commands['~q'].usage = '~q [category]';
     commands['~qsearch'].usage = '~qsearch [category]=[search]';
+    commands['~rm'].usage = '~rm [category]=[quote to delete]';
     commands['~rmlast'].usage = '~rmlast [category]'
     commands['~qadd'].usage = '~qadd [category]=[content]';
 
