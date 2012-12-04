@@ -194,6 +194,18 @@ Object.prototype.sort = function(object, scorer) {
     return sortArr.sort(function(a, b) { return a[1] - b[1]; });
 };
 
+Object.prototype.filter = function(fun) {
+    var filtered = [];
+    for(var key in this) {
+        if(this.hasOwnProperty(key)) {
+            if(fun(this[key]) == true) {
+                filtered.push(this[key]);
+            }
+        }
+    }
+    return filtered;
+}
+
 /*** Integer ***/
 
 Number.prototype.chanceIn = function(x, y) {
