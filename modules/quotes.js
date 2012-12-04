@@ -137,7 +137,7 @@ var quotes = function(dbot) {
                         event.reply(dbot.t('locked_category', {'category': key}));
                     }
                 } else {
-                    event.reply(dbot.t('category_not_found'));
+                    event.reply(dbot.t('category_not_found', {'category': key}));
                 }
             } else {
                 event.reply(dbot.t('rmlast_spam'));
