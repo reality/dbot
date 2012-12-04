@@ -131,10 +131,10 @@ var quotes = function(dbot) {
                             }
                             event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
                         } else {
-                            event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote)});
+                            event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
                         }
                     } else {
-                        event.reply('locked_category', {'category': key}));
+                        event.reply(dbot.t('locked_category', {'category': key}));
                     }
                 } else {
                     event.reply(dbot.t('category_not_found'));
