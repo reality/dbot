@@ -1,5 +1,7 @@
 {
     "name": "testressionbot",
+    "webUrl": "http://localhost",
+    "webPort": 80,
     "servers": {
         "freenode": {
             "server": "irc.freenode.net",
