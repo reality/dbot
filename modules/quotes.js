@@ -186,7 +186,7 @@ var quotes = function(dbot) {
         '~link': function(event) {
             var key = event.params[1].trim().toLowerCase();
             if(quotes.hasOwnProperty(key)) {
-                event.reply(dbot.t('quote_link', {'category': key}) + ' - http://nc.no.de:443/quotes/' + key);
+                event.reply(dbot.t('quote_link', {'category': key}) + ' - ' dbot.webUrl + ':' dbot.webPort + '/quotes/' + key);
             } else {
                 event.reply(dbot.t('category_not_found'));
             }
