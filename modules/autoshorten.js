@@ -19,7 +19,7 @@ var autoshorten = function(dbot) {
                 
                 // TODO: Make this use a decent URL shortener. Mine is shit.
                 var options = {
-                    'host': dbot.webUrl,
+                    'host': dbot.webHost,
                     'port': dbot.webPort,
                     'path': '/mkurl?url=' + escape(url)
                 };
