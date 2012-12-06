@@ -39,8 +39,8 @@ var poll = function(dbot) {
                         }
                     }
                     
-                    event.reply(dbot.t('poll_created', {'name': name, 'description': description}) + 
-                        ' - http://nourishedcloud.com:8080/polls/' + name);
+                    event.reply(dbot.t('poll_created', {'name': name, 'description': description, 
+                        'url': dbot.t('url', {'host': dbot.webHost, 'port': dbot.webPort, 'path': 'polls/' + name})})); 
                 }
             }
         },
@@ -140,7 +140,8 @@ var poll = function(dbot) {
         '~pdesc': function(event) {
             var name = event.input[1];
             if(polls.hasOwnProperty(name)) {
-                event.reply(name + ': ' + polls[name].description + ' - http://nourishedcloud.com:8080/polls/' + name);
+                event.reply(dbot.t('poll_describe', {'name': name, 'description': polls[name].description,
+                    'url': dbot.t('url', {'host': dbot.webHost, 'port': dbot.webPort, 'path': 'polls/' + name})}));
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }

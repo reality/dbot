@@ -56,8 +56,9 @@ var DBot = function(timers) {
     // Populate bot properties with config data
     this.name = this.config.name || 'dbox';
     this.admin = this.config.admin || [ 'reality' ];
-    this.moduleNames = this.config.modules || [ 'ignore', 'admin', 'command', 'dice', 'js', 'kick', 'puns', 'quotes', 'spelling', 'youare' ];
+    this.moduleNames = this.config.modules || [ 'ignore', 'admin', 'command', 'dice', 'js', 'kick', 'puns', 'quotes', 'spelling', 'youare', 'poll' ];
     this.language = this.config.language || 'english';
+    this.webHost = this.config.webHost || 'localhost';
     this.webPort = this.config.webPort || 80;
 
     // It's the user's responsibility to fill this data structure up properly in
