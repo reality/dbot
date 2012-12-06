@@ -1,6 +1,6 @@
 {
     "name": "testressionbot",
-    "webUrl": "http://localhost",
+    "webHost": "lolcathost",
     "webPort": 80,
     "servers": {
         "freenode": {
