@@ -175,7 +175,7 @@
         "na'vi": "{correcter} fpìl futa sweylu {candiate} pamrel sivi: {fix}"
     },
     "quote_link": {
-        "english": "Link to {category}",
+        "english": "Link to {category} - {url}",
         "spanish": "Enlace a {category}",
         "na'vi": "Fya'o {category}ne"
     },
@@ -260,9 +260,12 @@
         "na'vi": "sìpawm sna'o '{name}' fkeytok srekrr."
     },
     "poll_created": {
-        "english": "Poll '{name}' created ({description}). Cast thy votations!",
-        "spanish" : "Votación '{name}' creado ({description}). ¡Emited sus votas!",
-        "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun"
+        "english": "Poll '{name}' created ({description}). Cast thy votations! - {url}",
+        "spanish" : "Votación '{name}' creado ({description}). ¡Emited sus votas! - {url}",
+        "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun - {url}"
+    },
+    "poll_describe": {
+      "english": "{name}: {description} - {url}"
     },
     "changed_vote": {
         "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
@@ -317,5 +320,8 @@
     "count": {
         "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
         "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}." 
+    },
+    "url": {
+        "english": "http://{host}:{port}/{path}"
     }
 }
