@@ -2,320 +2,384 @@
     "syntax_error": { 
         "english": "Invalid syntax. Initiate incineration.",
         "spanish": "Sintaxis no válida. Iniciar incineración.",
-        "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu."
+        "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
+        "welsh": "Cystrawen annilys. Cychwyn orfflosgiad"
     },
     "module_load_error": {
         "english": "Failed to load module: {moduleName}",
         "spanish": "No se pudó cargar el módulo: {moduleName}",
-        "na'vi": "Oeru Oel {moduleName}it sung."
+        "na'vi": "Oeru Oel {moduleName}it sung.",
+        "welsh": "Wedi methu a llwytho modiwl: {moduleName}"
     },
     "category_not_found": {
         "english": "Nobody loves {category}",
         "spanish": "Nadie ama a {category}",
-        "na'vi": "{category} yawne ke lu kawturu."
+        "na'vi": "{category} yawne ke lu kawturu.",
+        "welsh": "Does neb yn caru {category}"
     },
     "large_categories": {
         "english": "Largest categories: ",
         "spanish": "Los categorías más grandes: ",
-        "na'vi": "U atsawl: "
+        "na'vi": "U atsawl: ",
+        "welsh": "Categoriau mwyaf: ",
     },
     "empty_category": {
         "english": "That category has no quotes in. Commence incineration.",
         "spanish": "Categoría vacía. Iniciar incineración.",
-        "na'vi": "Tsauru upxare lu. Nga skxawng lu."
+        "na'vi": "Tsauru upxare lu. Nga skxawng lu.",
+        "welsh": "Nid yw'r categori yna efo dyfyniadau. Cychwyn orfflosgiad"
     },
     "no_results": {
         "english": "No results found.",
         "spanish": "No hubo ningún resultado.",
-        "na'vi": "Oel kea humit rìmun"
+        "na'vi": "Oel kea humit rìmun",
+        "welsh": "Dim canlyniadau ar gael"
     },
     "locked_category": {
         "english": "{category} is locked. Commence incineration.",
         "spanish": "{category} está cerrada. Comenzar incineración.",
-        "na'vi": "{category} ke fkeytok set. Nga skxawng lu nafì'u"
+        "na'vi": "{category} ke fkeytok set. Nga skxawng lu nafì'u",
+        "welsh": "Mae {category} wedi cloi. Cychwyn orfflosgiad"
     },
     "no_quotes": {
         "english": "No quotes exist under {category}",
         "spanish": "Ninguna cita existe en {category}",
-        "na'vi": "Kea upxare fkeytok {category}mì"
+        "na'vi": "Kea upxare fkeytok {category}mì",
+        "welsh": "Does dim dyfyniadau gan {category}"
     },
     "last_removed": {
         "english": "Last quote removed from {category}.",
         "spanish": "Última cita quitado de {category}.",
-        "na'vi": "Oel 'upxareti aham 'aku {category}ta"
+        "na'vi": "Oel 'upxareti aham 'aku {category}ta",
+        "welsh": "Dyfyniad olaf wedi ei ddileu o {category}"
     },
     "no_recent_adds": {
         "english": "No quotes were added recently.",
         "spanish": "Ninguna cita fue añadido recientamente.",
-        "na'vi": "Kea upxareti samung nìfkrr"
+        "na'vi": "Kea upxareti samung nìfkrr",
+        "welsh": "Nid oes unrhyw dyfyniadau wedi ei ychwwanegu'n ddiweddar"
     },
     "rmlast_spam": {
         "english": "No spamming that shit. Try again in a few minutes...",
         "spanish": "No me inundes de mierda. Intenta otra vez en unos minutos...",
-        "na'vi": "Nga Tsasngelit ke zene fpivere'. Sweylu nga fmivi ye'rìn..."
+        "na'vi": "Nga Tsasngelit ke zene fpivere'. Sweylu nga fmivi ye'rìn...",
+        "welsh": "Peidiwch a sbamio hwna. Triwch eto mewn ychydyg funudau..."
     },
     "removed_from": {
         "english": "'{quote}' removed from {category}",
         "spanish": "'{quote}' quitado de {category}",
-        "na'vi": "'{quote}'(it/ti) 'ìyaku {category}"
+        "na'vi": "'{quote}'(it/ti) 'ìyaku {category}",
+        "welsh": "'{quote}' wedi ei ddileu o {category}"
     },
     "q_not_exist_under": {
         "english": "'{quote}' doesn't exist under '{category}'.",
         "spanish": "'{quote}' no existe en '{category}'.",
-        "na'vi": "'{quote}' ke fkeytok '{category}'ta."
+        "na'vi": "'{quote}' ke fkeytok '{category}'ta.",
+        "welsh": "Nid yw '{quote}' yn bodoli yn '{category}'"
     },
     "total_quotes": {
         "english": "Total quote count: {count}.",
         "spanish": "Total de citas: {count}.",
-        "na'vi": "'upxareri holpxay: {count}."
+        "na'vi": "'upxareri holpxay: {count}.",
+        "welsh": "Cyfanswm dyfyniadau: {count}."
     },
     "quote_exists": {
         "english": "Quote already in DB. Initiate incineration.",
         "spanish": "Cita ya existe. Iniciar incineración.",
-        "na'vi": "'Upxarel säomumit fìtsengit tok srekrr. Nga skxawng lu."
+        "na'vi": "'Upxarel säomumit fìtsengit tok srekrr. Nga skxawng lu.",
+        "welsh": "Dyfyniad yn y gronfa ddata yn barod. Cychwyn orfflosgiad"
     },
     "quote_saved": {
         "english": "Quote saved in '{category}' ({count}).",
         "spanish": "Cita guardada en '{category}' ({count}).",
-        "na'vi": "Oe zayerok '{category}'mì ({count})."
+        "na'vi": "Oe zayerok '{category}'mì ({count}).",
+        "welsh": "Dyfyniad wedi ei gadw yn '{category}' ({count})."
     },
     "quote_replace": {
         "english": "No replacing arrays, you whore.",
         "spanish": "No sustituites arrays, hijo de puta.",
-        "na'vi": "Ngal fìsäomumit ke tsun rivawn. Nga muntxa sayi suteo hrh."
+        "na'vi": "Ngal fìsäomumit ke tsun rivawn. Nga muntxa sayi suteo hrh.",
+        "welsh": "Peidiwch a newid rhestrau, y cachgi"
     },
     "quote_count": {
         "english": "{category} has {count} quotes.",
         "spanish": "{category} tiene {count} citas.",
-        "na'vi": "{count}a upxare {category}ur lu."
+        "na'vi": "{count}a upxare {category}ur lu.",
+        "welsh": "{count} dyfyniad yn {category}"
     },
     "prune": {
         "english": "Pruning empty quote categories: {categories}",
         "spanish": "Reduciendo categorías vacías: {categories}",
-        "na'vi": "Oel seng amek 'eraku, seng: {categories}"
+        "na'vi": "Oel seng amek 'eraku, seng: {categories}",
+        "welsh": "Tocio categoriau dyfyniadau gwag: {categories}"
     },
     "no_prune": {
         "english": "No empty quote categories. Commence incineration.",
         "spanish": "Ninguna categoría vacía. Comenzar incineracíon.",
-        "na'vi": "Kea seng amek. Nga skxawng lu."
+        "na'vi": "Kea seng amek. Nga skxawng lu.",
+        "welsh": "Dim categoriau dyfyniadau gwag. Cychwyn orfflosgiad"
     },
     "command_ban": {
         "english": "{user} is banned from using this command. Commence incineration.",
         "spanish": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
-        "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu."
+        "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu.",
+        "welsh": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad"
     },
     "correction": {
         "english": "Did you mean: ",
         "spanish": "¿Querías decir: ",
-        "na'vi": "Srake sweylu nga pamrel sivi: "
+        "na'vi": "Srake sweylu nga pamrel sivi: ",
+        "welsh": "A oeddech chi'n feddwl: "
     },
     "gpull": {
         "english": "Git pulled that shit.",
         "spanish": "Hecho git pull en esta mierda.",
-        "na'vi": "Gìtìl fì'uti stamarsìm."
+        "na'vi": "Gìtìl fì'uti stamarsìm.",
+        "welsh": "Wedi tynnu git yr cach na i gyd"
     },
     "reload": {
         "english": "Reloaded that shit.",
         "spanish": "Recargado esta mierda.",
-        "na'vi": "Oel fìuti stìyeftxaw."
+        "na'vi": "Oel fìuti stìyeftxaw.",
+        "welsh": "Ail-lwytho'r cach na"
     },
     "load_module": {
         "english": "Loaded new module: {moduleName}",
         "spanish": "Cargado módulo nuevo: {moduleName}",
-        "na'vi": "Oel {moduleName}it amip stìyeftxaw."
+        "na'vi": "Oel {moduleName}it amip stìyeftxaw.",
+        "welsh": "Wedi llwytho modiwl newydd: {moduleName}"
     },
     "unload_module": {
         "english": "Turned off module: {moduleName}",
         "spanish": "Descargado módulo: {moduleName}",
-        "na'vi": "Oel {moduleName} tswìya'."
+        "na'vi": "Oel {moduleName} tswìya'.",
+        "welsh": "Wedi troi ffwrdd y modiwl: {moduleName}"
     },
     "unload_error": {
         "english": "{moduleName} isn't loaded. Idiot.",
         "spanish": "{moduleName} no está cargado. Idiota.",
-        "na'vi": "Oel {moduleName}it omum. Nga skxawng lu."
+        "na'vi": "Oel {moduleName}it omum. Nga skxawng lu.",
+        "welsh": "Di {moduleName} ddim wedi llwytho. Twpsyn"
     },
     "banned": {
         "english": "{user} banned from {command}",
         "spanish": "{user} está prohibido de usar {command}",
-        "na'vi": "{command}ìri {user} ke tung."
+        "na'vi": "{command}ìri {user} ke tung.",
+        "welsh": "{user} wedi ei gohurio o {command}"
     },
     "unbanned": {
         "english": "{user} unbanned from {command}",
         "spanish": "{user} no está prohibido de user {command}",
-        "na'vi": "{command}ìri {user} tung set."
+        "na'vi": "{command}ìri {user} tung set.",
+        "welsh": "{user} wedi ei dad-wahardd o {command}"
     },
     "unban_error": {
         "english": "{user} wasn't banned from that command, fool.",
         "spanish": "{user} no fue prohibido de esta instrucción, tont@.",
-        "na'vi": "{user} fìtsu'oti tamung srekrr, nga skxawng lu."
+        "na'vi": "{user} fìtsu'oti tamung srekrr, nga skxawng lu.",
+        "welsh": "Nid oedd {user} wedi ei wahardd o'r gyrchymun yna, fŵl"
     },
     "modehate": {
         "english": "Hating on {user}",
         "spanish": "Odiando a {user}",
-        "na'vi": "Oel {user}it vere'kì."
+        "na'vi": "Oel {user}it vere'kì.",
+        "welsh": "Casau ar {user}"
     },
     "unmodehate": {
         "english": "No longer hating on {user}",
         "spanish": "Ni siquera odiando a {user}",
-        "na'vi": "Oel {user}it ke vere'kì."
+        "na'vi": "Oel {user}it ke vere'kì.",
+        "welsh": "Ddim yn casau ar {user} bellach"
     },
     "qlock": {
         "english": "Locked quote category: {category}",
         "spanish": "Cerrado la categoría: {category}",
-        "na'vi": "{category}ìri oel 'upxareti fmoli"
+        "na'vi": "{category}ìri oel 'upxareti fmoli",
+        "welsh": "Categori wedi cloi: {category}"
     },
     "spelling_self": {
         "english": "{correcter} meant: {fix}",
         "spanish": "{correcter} quería decir: {fix}",
-        "na'vi": "Sweylu {correcter} pamrel sivi: {fix}"
+        "na'vi": "Sweylu {correcter} pamrel sivi: {fix}",
+        "welsh": "Oedd {correcter} yn feddwl: {fix}"
     },
     "spelling_other": {
         "english": "{correcter} thinks {candidate} meant: {fix}",
         "spanish": "{correcter} piensa que {candidate} queria decir: {fix}",
-        "na'vi": "{correcter} fpìl futa sweylu {candiate} pamrel sivi: {fix}"
+        "na'vi": "{correcter} fpìl futa sweylu {candiate} pamrel sivi: {fix}",
+        "welsh": "Mae {correcter} yn meddwl bod {candidate} yn feddwl: {fix}"
     },
     "quote_link": {
         "english": "Link to {category}",
         "spanish": "Enlace a {category}",
-        "na'vi": "Fya'o {category}ne"
+        "na'vi": "Fya'o {category}ne",
+        "welsh": "Dolen i {category}"
     },
     "shorten_link": {
         "english": "Shortened link from {user}: ",
         "spanish": "Enlace corto de {user}: ",
-        "na'vi": "Fya'o apup {user}ta: "
+        "na'vi": "Fya'o apup {user}ta: ",
+        "welsh": "Dolen wedi ei fyrhau can {user}: "
     },
     "ignore_usage": {
         "english": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}.",
         "spanish": "{user}: Modo de empleo: ~ignore [módulo]. Módulos que tú puedes ignorar son: {modules}.",
-        "na'vi": "{user}: Sar: ~ignore ['u]. U, nga ke tìng mikyun: {modules}."
+        "na'vi": "{user}: Sar: ~ignore ['u]. U, nga ke tìng mikyun: {modules}.",
+        "welsh": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}."
     },
     "already_ignoring": {
         "english": "{user}: You're already ignoring that module.",
         "spanish": "{user}: Ya ignoras este módulo.",
-        "na'vi": "{user}: 'uri nga ke tìng mikyun srekrr."
+        "na'vi": "{user}: 'uri nga ke tìng mikyun srekrr.",
+        "welsh": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod."
     },
     "ignored": {
         "english": "{user}: Now ignoring {module}.",
         "spanish": "{user}: Estás ignorando {module}.",
-        "na'vi": "{user}: Nga ke terìng mikyun {module}ne set."
+        "na'vi": "{user}: Nga ke terìng mikyun {module}ne set.",
+        "welsh": "{user}: Nawr yn anwybyddu {module}"
     },
     "invalid_ignore": {
         "english": "{user}: That isn't a valid module name.",
         "spanish": "{user}: Ese no es un nombre de un módulo valido.",
-        "na'vi": "{user}: Tsatstxo eyawr ke lu."
+        "na'vi": "{user}: Tsatstxo eyawr ke lu.",
+        "welsh": "{user}: Nid oedd hwna'n modiwl dilys"
     },
     "unignore_usage": {
         "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
         "spanish": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}.",
-        "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}."
+        "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}.",
+        "welsh": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}"
     },
     "invalid_unignore": {
         "english": "{user}: You're not ignoring that module or it doesn't exist.",
         "spanish": "{user}: No ignoras este módulo o no existe.",
-        "na'vi":"{user}: Nga terìng mikyun fu fì'ul fìtsengit ke tok."
+        "na'vi":"{user}: Nga terìng mikyun fu fì'ul fìtsengit ke tok.",
+        "welsh": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli"
     },
     "unignored": {
         "english": "{user}: No longer ignoring {module}.",
         "spanish": "{user}: Ya no ignoras {module}.",
-        "na'vi": "{user}: Nga terìng mikyun {module}ne set"
+        "na'vi": "{user}: Nga terìng mikyun {module}ne set",
+        "welsh": "{user}: Ddim yn anwybyddu {module} bellach"
     },
     "command_typo": {
         "english": "Did you mean '{command}'? Learn to type.",
         "spanish": "¿Querías decir '{command}'? Aprende escribir.",
-        "na'vi": "Sweylu nga pamrel sivi '{command}' srak? Sweylu ngeyä pamrel livu eyawr." 
+        "na'vi": "Sweylu nga pamrel sivi '{command}' srak? Sweylu ngeyä pamrel livu eyawr.",
+        "welsh": "A oeddech chi'n feddwl '{command}'? Dysgwch sut i teipio."
     },
     "user_kicks": {
         "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
         "spanish": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces.",
-        "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan."
+        "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan.",
+        "welsh": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith."
     },
     "kicked_dbot": {
         "english": "Thou shalt not kick {botname}",
         "spanish": "No expulsás {botname}",
-        "na'vi": "Ngal {botname}it ke tsun tsrive'i"
-    }, 
+        "na'vi": "Ngal {botname}it ke tsun tsrive'i",
+        "welsh": "Ni ddylech cicio {botname}"
+    },
     "search_results": {
         "english": "{category} ({needle}): '{quote}' [{matches} results]",
         "spanish" : "{category} ({needle}): '{quote}' [{matches} resultados]",
-        "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]"
+        "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
+        "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
     },
     "join": {
         "english": "Joined {channel}",
         "spanish" : "Entrado en {channel}",
-        "na'vi": "fpxäkìm {channel}(nemfa)"
+        "na'vi": "fpxäkìm {channel}(nemfa)",
+        "welsh": "Wedi ymuno {channel}"
     },
     "part": {
         "english": "Left {channel}",
         "spanish" : "Abandonada {channel}",
-        "na'vi": "Hum {channel}"
+        "na'vi": "Hum {channel}",
+        "welsh": "Wedi gadael {channel}"
     },
     "newpoll_usage": {
         "english": "Usage: ~newpoll name [options=opt1,opt2,opt3] description",
         "spanish" : "Modo de empleo: ~newpoll nombre [options=opción1,opción2,opción3] descripción",
-        "na'vi": "Usage: ~newpoll tstxo [sìftxey=tìfxey1,tìfxey2,fìfxey3] tìsla'tsu"
+        "na'vi": "Usage: ~newpoll tstxo [sìftxey=tìfxey1,tìfxey2,fìfxey3] tìsla'tsu",
+        "welsh": "Defnydd: ~newpoll enw [optiynau=opt1,opt2,op3] disgrifiad"
     },
     "poll_exists": {
         "english": "Poll '{name}' already exists.",
         "spanish" : "Votación '{name}' ya existe.",
-        "na'vi": "sìpawm sna'o '{name}' fkeytok srekrr."
+        "na'vi": "sìpawm sna'o '{name}' fkeytok srekrr.",
+        "welsh": "Mae'r pôl {name} bodoli'n barod"
     },
     "poll_created": {
         "english": "Poll '{name}' created ({description}). Cast thy votations!",
         "spanish" : "Votación '{name}' creado ({description}). ¡Emited sus votas!",
-        "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun"
+        "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun",
+        "welsh": "Creuwyd pôl {name} ({description}). Bwrw eich pledleisiau!"
     },
     "changed_vote": {
         "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
         "spanish" : "{user} cambió su voto en {poll} a '{vote}' ({count}).",
-        "na'vi": "{user} lìyatem ngeyä tìpe'un {poll}mì, ngeyä tìpe'un amip '{vote}'({count}) lu." 
+        "na'vi": "{user} lìyatem ngeyä tìpe'un {poll}mì, ngeyä tìpe'un amip '{vote}'({count}) lu.",
+        "welsh": "Newidiodd {user} eu pleidlais yn {poll} i '{vote}' ({count})."
     },
     "voted": {
         "english": "{user} voted for '{vote}' in {poll} ({count}).",
         "spanish" : "{user} votó para '{vote}' en {poll} ({count}).",
-        "na'vi": "'{vote}'ìri {user} pìye'un {poll}mì ({count})."
+        "na'vi": "'{vote}'ìri {user} pìye'un {poll}mì ({count}).",
+        "welsh": "Pledleisiodd {user} am '{vote}' yn {poll} ({count})."
     },
     "invalid_vote": {
         "english": "Invalid vote: {vote}",
         "spanish" : "Vota inválida: {vote}",
-        "na'vi": "Ngeyä tìpe'un keyawr lu ({vote})."
+        "na'vi": "Ngeyä tìpe'un keyawr lu ({vote}).",
+        "welsh": "Pleidlais annilys: {vote}"
     },
     "poll_unexistent": {
         "english": "Poll '{name}' doesn't exist.",
         "spanish" : "Votación '{name}' no existe.",
-        "na'vi": "sìpawm sna'o '{name}' ke fkeytok."
+        "na'vi": "sìpawm sna'o '{name}' ke fkeytok.",
+        "welsh": "Nid yw pôl '{name}' yn bodoli"
     },
     "option_added": {
         "english": "{user}: '{option}' added to '{name}'.",
         "spanish" : "{user}: '{option}' añadido a '{name}'.",
-        "na'vi": "'{name}'ur {user}ìl '{option}'it sung."
+        "na'vi": "'{name}'ur {user}ìl '{option}'it sung.",
+        "welsh": "{user}: Ychwanegwyd '{option}' i '{name}'"
     },
     "option_exists": {
         "english": "{user}: '{option}' already exists in '{name}'.",
         "spanish" : "{user}: '{option}' ya existe en '{name}'.",
-        "na'vi": "{user}: '{option}' fkeytok srekrr '{name}'mì."
+        "na'vi": "{user}: '{option}' fkeytok srekrr '{name}'mì.",
+        "welsh": "{user}: Mae '{option}' yn bodoli'n barod yn '{name}'."
     },
     "not_poll_owner": {
         "english": "{user}: You don't own the '{name}' poll.",
         "spanish" : "{user}: La votación '{name}' no es tuyo.",
-        "na'vi": "{user}: ngaru '{name}' sìpawm sna'o ke lu." 
+        "na'vi": "{user}: ngaru '{name}' sìpawm sna'o ke lu.",
+        "welsh": "{user}: Nid ydech chi'n berchen y pôl '{name}'."
     },
     "option_removed": {
         "english": "{user}: '{option}' removed from '{name}'",
         "spanish" : "{user}: '{option}' eliminado de '{name}'",
-        "na'vi": "{user}: '{option}'it 'aku '{name}'ta"
+        "na'vi": "{user}: '{option}'it 'aku '{name}'ta",
+        "welsh": "{user}: '{option}' wedi ei ddileu o '{name}'"
     },
     "av_voted": {
         "english": "{user} voted '{vote}' in {poll}.",
         "spanish": "{user} votó '{vote}' en {poll}.",
-        "na'vi": "{user}ìl '{vote}'it pìye'un '{poll}'mì."
+        "na'vi": "{user}ìl '{vote}'it pìye'un '{poll}'mì.",
+        "welsh": "Pledleisiodd {user} am '{vote}' yn {poll}"
     },
     "av_changed_vote": {
         "english": "{user} changed their vote in {poll} to '{vote}'.",
         "spanish" : "{user} cambió su voto en {poll} a '{vote}'.",
-        "na'vi": "{user}ìl lìyatem ngeyä tìpa'unit '{poll}'mì, ngeyä tìpe'un '{vote} lu set." 
+        "na'vi": "{user}ìl lìyatem ngeyä tìpa'unit '{poll}'mì, ngeyä tìpe'un '{vote} lu set.",
+        "welsh": "Newidiodd {user} eu pleidlais yn {poll} i '{vote}'"
     },
     "count": {
         "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
-        "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}." 
+        "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}.",
+        "welsh": "Trefn yr pôl '{poll}' ({description}) yw: {places}"
     }
 }
