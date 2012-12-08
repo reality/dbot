@@ -388,6 +388,6 @@
         "welsh": "Trefn yr pôl '{poll}' ({description}) yw: {places}"
     },
     "url": {
-        "english": "http://{host}:{port}/{path}",
+        "english": "http://{host}:{port}/{path}"
     }
 }
