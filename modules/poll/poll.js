@@ -214,13 +214,7 @@ var poll = function(dbot) {
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
     commands['~count'].regex = [/~count ([^ ]+)/, 2];
-
-    commands['~newpoll'].usage = '~newpoll [pollname] options=[each,poll,option] [Poll Description]';
-    commands['~addoption'].usage = '~addoption [pollname] [newoption]';
-    commands['~rmoption'].usage= '~rmoption [pollname] [optiontoremove]';
-    commands['~vote'].usage= '~vote [pollname] [option]';
-    commands['~pdesc'].usage = '~pdesc [pollname]';
-
+    
     return {
         'name': 'poll',
         'ignorable': true,
