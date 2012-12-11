@@ -1,0 +1,68 @@
+{
+    "join": {
+        "english": "Joined {channel}",
+        "spanish" : "Entrado en {channel}",
+        "na'vi": "fpxäkìm {channel}(nemfa)",
+        "welsh": "Wedi ymuno {channel}"
+    },
+    "part": {
+        "english": "Left {channel}",
+        "spanish" : "Abandonada {channel}",
+        "na'vi": "Hum {channel}",
+        "welsh": "Wedi gadael {channel}"
+    },
+    "gpull": {
+        "english": "Git pulled that shit.",
+        "spanish": "Hecho git pull en esta mierda.",
+        "na'vi": "Gìtìl fì'uti stamarsìm.",
+        "welsh": "Wedi tynnu git yr cach na i gyd"
+    },
+    "reload": {
+        "english": "Reloaded that shit.",
+        "spanish": "Recargado esta mierda.",
+        "na'vi": "Oel fìuti stìyeftxaw.",
+        "welsh": "Ail-lwytho'r cach na"
+    },
+    "load_module": {
+        "english": "Loaded new module: {moduleName}",
+        "spanish": "Cargado módulo nuevo: {moduleName}",
+        "na'vi": "Oel {moduleName}it amip stìyeftxaw.",
+        "welsh": "Wedi llwytho modiwl newydd: {moduleName}"
+    },
+    "unload_module": {
+        "english": "Turned off module: {moduleName}",
+        "spanish": "Descargado módulo: {moduleName}",
+        "na'vi": "Oel {moduleName} tswìya'.",
+        "welsh": "Wedi troi ffwrdd y modiwl: {moduleName}"
+    },
+    "unload_error": {
+        "english": "{moduleName} isn't loaded. Idiot.",
+        "spanish": "{moduleName} no está cargado. Idiota.",
+        "na'vi": "Oel {moduleName}it omum. Nga skxawng lu.",
+        "welsh": "Di {moduleName} ddim wedi llwytho. Twpsyn"
+    },
+    "banned": {
+        "english": "{user} banned from {command}",
+        "spanish": "{user} está prohibido de usar {command}",
+        "na'vi": "{command}ìri {user} ke tung.",
+        "welsh": "{user} wedi ei gohurio o {command}"
+    },
+    "unbanned": {
+        "english": "{user} unbanned from {command}",
+        "spanish": "{user} no está prohibido de user {command}",
+        "na'vi": "{command}ìri {user} tung set.",
+        "welsh": "{user} wedi ei dad-wahardd o {command}"
+    },
+    "unban_error": {
+        "english": "{user} wasn't banned from that command, fool.",
+        "spanish": "{user} no fue prohibido de esta instrucción, tont@.",
+        "na'vi": "{user} fìtsu'oti tamung srekrr, nga skxawng lu.",
+        "welsh": "Nid oedd {user} wedi ei wahardd o'r gyrchymun yna, fŵl"
+    },
+    "qlock": {
+        "english": "Locked quote category: {category}",
+        "spanish": "Cerrado la categoría: {category}",
+        "na'vi": "{category}ìri oel 'upxareti fmoli",
+        "welsh": "Categori wedi cloi: {category}"
+    }
+}
