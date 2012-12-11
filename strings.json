@@ -5,6 +5,12 @@
         "na'vi": "Srake sweylu nga pamrel sivi: ",
         "welsh": "A oeddech chi'n feddwl: "
     },
+    "module_load_error": {
+        "english": "Failed to load module: {moduleName}",
+        "spanish": "No se pudó cargar el módulo: {moduleName}",
+        "na'vi": "Oeru Oel {moduleName}it sung.",
+        "welsh": "Wedi methu a llwytho modiwl: {moduleName}"
+    },
     "url": {
         "english": "http://{host}:{port}/{path}"
     }

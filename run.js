@@ -200,27 +200,35 @@ DBot.prototype.reloadModules = function() {
             }
 
             // Load the module usage data
-            var usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
-            for(key in usage) {
-                if(usage.hasOwnProperty(key)) {
-                    if(this.usage.hasOwnProperty(key)) {
-                        console.log('Usage key clash for ' + key + ' in ' + name);
-                    } else {
-                        this.usage[key] = usage[key];
+            try {
+                var usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
+                for(key in usage) {
+                    if(usage.hasOwnProperty(key)) {
+                        if(this.usage.hasOwnProperty(key)) {
+                            console.log('Usage key clash for ' + key + ' in ' + name);
+                        } else {
+                            this.usage[key] = usage[key];
+                        }
                     }
                 }
+            } catch(err) {
+                // Invalid or no usage info
             }
 
             // Load the module string data
-            var strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
-            for(key in strings) {
-                if(strings.hasOwnProperty(key)) {
-                    if(this.strings.hasOwnProperty(key)) {
-                        console.log('Strings key clash for ' + key + ' in ' + name);
-                    } else {
-                        this.strings[key] = strings[key];
+            try {
+                var strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
+                for(key in strings) {
+                    if(strings.hasOwnProperty(key)) {
+                        if(this.strings.hasOwnProperty(key)) {
+                            console.log('Strings key clash for ' + key + ' in ' + name);
+                        } else {
+                            this.strings[key] = strings[key];
+                        }
                     }
                 }
+            } catch(err) {
+                // Invalid or no string info
             }
 
             this.modules.push(module);
