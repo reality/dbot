@@ -1,0 +1,44 @@
+{
+    "ignore_usage": {
+        "english": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}.",
+        "spanish": "{user}: Modo de empleo: ~ignore [módulo]. Módulos que tú puedes ignorar son: {modules}.",
+        "na'vi": "{user}: Sar: ~ignore ['u]. U, nga ke tìng mikyun: {modules}.",
+        "welsh": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}."
+    },
+    "already_ignoring": {
+        "english": "{user}: You're already ignoring that module.",
+        "spanish": "{user}: Ya ignoras este módulo.",
+        "na'vi": "{user}: 'uri nga ke tìng mikyun srekrr.",
+        "welsh": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod."
+    },
+    "ignored": {
+        "english": "{user}: Now ignoring {module}.",
+        "spanish": "{user}: Estás ignorando {module}.",
+        "na'vi": "{user}: Nga ke terìng mikyun {module}ne set.",
+        "welsh": "{user}: Nawr yn anwybyddu {module}"
+    },
+    "invalid_ignore": {
+        "english": "{user}: That isn't a valid module name.",
+        "spanish": "{user}: Ese no es un nombre de un módulo valido.",
+        "na'vi": "{user}: Tsatstxo eyawr ke lu.",
+        "welsh": "{user}: Nid oedd hwna'n modiwl dilys"
+    },
+    "unignore_usage": {
+        "english": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
+        "spanish": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}.",
+        "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}.",
+        "welsh": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}"
+    },
+    "invalid_unignore": {
+        "english": "{user}: You're not ignoring that module or it doesn't exist.",
+        "spanish": "{user}: No ignoras este módulo o no existe.",
+        "na'vi":"{user}: Nga terìng mikyun fu fì'ul fìtsengit ke tok.",
+        "welsh": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli"
+    },
+    "unignored": {
+        "english": "{user}: No longer ignoring {module}.",
+        "spanish": "{user}: Ya no ignoras {module}.",
+        "na'vi": "{user}: Nga terìng mikyun {module}ne set",
+        "welsh": "{user}: Ddim yn anwybyddu {module} bellach"
+    }
+}
