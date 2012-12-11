@@ -156,7 +156,9 @@ var quotes = function(dbot) {
             } else { // Give total quote count
                 var totalQuoteCount = 0;
                 for(var category in quotes) {
-                    totalQuoteCount += category.length;
+                    if(quotes.hasOwnProperty(category)) {
+                        totalQuoteCount += quotes[category].length;
+                    }
                 }
                 event.reply(dbot.t('total_quotes', {'count': totalQuoteCount}));
             }
@@ -190,7 +192,7 @@ var quotes = function(dbot) {
                     'url': dbot.t('url', {'host': dbot.webHost, 
                     'port': dbot.webPort, 'path': 'quotes/' + key})}));
             } else {
-                event.reply(dbot.t('category_not_found'));
+                event.reply(dbot.t('category_not_found', {'category': key}));
             }
         },
     };
