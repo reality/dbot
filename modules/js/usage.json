@@ -1,4 +1,4 @@
 {
-    '~js': '~js [command]',
-    '~ajs': '~ajs [command]'
+    "~js": "~js [command]",
+    "~ajs": '~ajs [command]"
 }
