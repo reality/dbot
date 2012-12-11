@@ -80,7 +80,8 @@ var admin = function(dbot) {
         'unload': function(event) {
             var moduleName = event.params[1];
             if(dbot.moduleNames.include(moduleName)) {
-                var cacheKey = require.resolve('../modules/' + moduleName);
+                var moduleDir = '../' + moduleName + '/';
+                var cacheKey = require.resolve(moduleDir + moduleName);
                 delete require.cache[cacheKey];
 
                 var moduleIndex = dbot.moduleNames.indexOf(moduleName);
