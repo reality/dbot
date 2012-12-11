@@ -64,5 +64,11 @@
         "spanish": "Cerrado la categoría: {category}",
         "na'vi": "{category}ìri oel 'upxareti fmoli",
         "welsh": "Categori wedi cloi: {category}"
+    },
+    "module_load_error": {
+        "english": "Failed to load module: {moduleName}",
+        "spanish": "No se pudó cargar el módulo: {moduleName}",
+        "na'vi": "Oeru Oel {moduleName}it sung.",
+        "welsh": "Wedi methu a llwytho modiwl: {moduleName}"
     }
 }
