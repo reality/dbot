@@ -130,12 +130,6 @@
         "na'vi": "Fya'o {category}ne - {url}",
         "welsh": "Dolen i {category} - {url}"
     },
-    "shorten_link": {
-        "english": "Shortened link from {user}: ",
-        "spanish": "Enlace corto de {user}: ",
-        "na'vi": "Fya'o apup {user}ta: ",
-        "welsh": "Dolen wedi ei fyrhau can {user}: "
-    },
     "command_typo": {
         "english": "Did you mean '{command}'? Learn to type.",
         "spanish": "¿Querías decir '{command}'? Aprende escribir.",
@@ -148,92 +142,7 @@
         "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
         "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
     },
-    "newpoll_usage": {
-        "english": "Usage: ~newpoll name [options=opt1,opt2,opt3] description",
-        "spanish" : "Modo de empleo: ~newpoll nombre [options=opción1,opción2,opción3] descripción",
-        "na'vi": "Usage: ~newpoll tstxo [sìftxey=tìfxey1,tìfxey2,fìfxey3] tìsla'tsu",
-        "welsh": "Defnydd: ~newpoll enw [optiynau=opt1,opt2,op3] disgrifiad"
-    },
-    "poll_exists": {
-        "english": "Poll '{name}' already exists.",
-        "spanish" : "Votación '{name}' ya existe.",
-        "na'vi": "sìpawm sna'o '{name}' fkeytok srekrr.",
-        "welsh": "Mae'r pôl {name} bodoli'n barod"
-    },
-    "poll_created": {
-        "english": "Poll '{name}' created ({description}). Cast thy votations! - {url}",
-        "spanish" : "Votación '{name}' creado ({description}). ¡Emited sus votas! - {url}",
-        "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun - {url}"
-    },
-    "poll_describe": {
-        "english": "{name}: {description} - {url}"
-    },
-    "changed_vote": {
-        "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
-        "spanish" : "{user} cambió su voto en {poll} a '{vote}' ({count}).",
-        "na'vi": "{user} lìyatem ngeyä tìpe'un {poll}mì, ngeyä tìpe'un amip '{vote}'({count}) lu.",
-        "welsh": "Newidiodd {user} eu pleidlais yn {poll} i '{vote}' ({count})."
-    },
-    "voted": {
-        "english": "{user} voted for '{vote}' in {poll} ({count}).",
-        "spanish" : "{user} votó para '{vote}' en {poll} ({count}).",
-        "na'vi": "'{vote}'ìri {user} pìye'un {poll}mì ({count}).",
-        "welsh": "Pledleisiodd {user} am '{vote}' yn {poll} ({count})."
-    },
-    "invalid_vote": {
-        "english": "Invalid vote: {vote}",
-        "spanish" : "Vota inválida: {vote}",
-        "na'vi": "Ngeyä tìpe'un keyawr lu ({vote}).",
-        "welsh": "Pleidlais annilys: {vote}"
-    },
-    "poll_unexistent": {
-        "english": "Poll '{name}' doesn't exist.",
-        "spanish" : "Votación '{name}' no existe.",
-        "na'vi": "sìpawm sna'o '{name}' ke fkeytok.",
-        "welsh": "Nid yw pôl '{name}' yn bodoli"
-    },
-    "option_added": {
-        "english": "{user}: '{option}' added to '{name}'.",
-        "spanish" : "{user}: '{option}' añadido a '{name}'.",
-        "na'vi": "'{name}'ur {user}ìl '{option}'it sung.",
-        "welsh": "{user}: Ychwanegwyd '{option}' i '{name}'"
-    },
-    "option_exists": {
-        "english": "{user}: '{option}' already exists in '{name}'.",
-        "spanish" : "{user}: '{option}' ya existe en '{name}'.",
-        "na'vi": "{user}: '{option}' fkeytok srekrr '{name}'mì.",
-        "welsh": "{user}: Mae '{option}' yn bodoli'n barod yn '{name}'."
-    },
-    "not_poll_owner": {
-        "english": "{user}: You don't own the '{name}' poll.",
-        "spanish" : "{user}: La votación '{name}' no es tuyo.",
-        "na'vi": "{user}: ngaru '{name}' sìpawm sna'o ke lu.",
-        "welsh": "{user}: Nid ydech chi'n berchen y pôl '{name}'."
-    },
-    "option_removed": {
-        "english": "{user}: '{option}' removed from '{name}'",
-        "spanish" : "{user}: '{option}' eliminado de '{name}'",
-        "na'vi": "{user}: '{option}'it 'aku '{name}'ta",
-        "welsh": "{user}: '{option}' wedi ei ddileu o '{name}'"
-    },
-    "av_voted": {
-        "english": "{user} voted '{vote}' in {poll}.",
-        "spanish": "{user} votó '{vote}' en {poll}.",
-        "na'vi": "{user}ìl '{vote}'it pìye'un '{poll}'mì.",
-        "welsh": "Pledleisiodd {user} am '{vote}' yn {poll}"
-    },
-    "av_changed_vote": {
-        "english": "{user} changed their vote in {poll} to '{vote}'.",
-        "spanish" : "{user} cambió su voto en {poll} a '{vote}'.",
-        "na'vi": "{user}ìl lìyatem ngeyä tìpa'unit '{poll}'mì, ngeyä tìpe'un '{vote} lu set.",
-        "welsh": "Newidiodd {user} eu pleidlais yn {poll} i '{vote}'"
-    },
-    "count": {
-        "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
-        "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}.",
-        "welsh": "Trefn yr pôl '{poll}' ({description}) yw: {places}"
-    },
-    "url": {
+        "url": {
         "english": "http://{host}:{port}/{path}"
     }
 }
