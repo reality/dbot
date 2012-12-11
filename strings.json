@@ -211,9 +211,9 @@
     },
     "quote_link": {
         "english": "Link to {category} - {url}",
-        "spanish": "Enlace a {category}",
-        "na'vi": "Fya'o {category}ne",
-        "welsh": "Dolen i {category}"
+        "spanish": "Enlace a {category} - {url}",
+        "na'vi": "Fya'o {category}ne - {url}",
+        "welsh": "Dolen i {category} - {url}"
     },
     "shorten_link": {
         "english": "Shortened link from {user}: ",
@@ -318,9 +318,6 @@
     },
     "poll_describe": {
         "english": "{name}: {description} - {url}"
-        "spanish" : "Votación '{name}' creado ({description}). ¡Emited sus votas!",
-        "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun",
-        "welsh": "Creuwyd pôl {name} ({description}). Bwrw eich pledleisiau!"
     },
     "changed_vote": {
         "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
