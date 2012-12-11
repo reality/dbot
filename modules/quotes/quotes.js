@@ -193,23 +193,6 @@ var quotes = function(dbot) {
                 event.reply(dbot.t('category_not_found'));
             }
         },
-
-        '~qprune': function(event) {
-            var pruned = []
-            for(key in quotes) {
-                if(quotes.hasOwnProperty(key)) {
-                    if(quotes[key].length == 0) {
-                        delete quotes[key];
-                        pruned.push(key);
-                    }
-                }
-            }
-            if(pruned.length > 0) {
-                event.reply(dbot.t('prune', {'categories': pruned.join(", ")}));
-            } else {
-                event.reply(dbot.t('no_prune'));
-            }
-        }
     };
 
     commands['~'].regex = [/^~([\d\w\s-]*)/, 2];
