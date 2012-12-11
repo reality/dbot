@@ -237,6 +237,7 @@ var quotes = function(dbot) {
         },
 
         'listener': function(event) {
+            // Reality Once listener
             if((dbot.db.ignores.hasOwnProperty(event) && 
                         dbot.db.ignores[event.user].include(name)) == false) {
                 if(event.user == 'reality') {
