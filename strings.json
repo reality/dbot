@@ -384,7 +384,7 @@
     },
     "count": {
         "english": "The running-order of poll '{poll}' ({description}) is: {places}.",
-        "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}." 
+        "na'vi": "Sute tsnì pole'un '{poll}'mì ({description}) lu: {places}.",
         "welsh": "Trefn yr pôl '{poll}' ({description}) yw: {places}"
     },
     "url": {
