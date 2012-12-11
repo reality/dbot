@@ -10,11 +10,17 @@ var DBot = function(timers) {
     var rawDB;
     try {
         var rawDB = fs.readFileSync('db.json', 'utf-8');
-    } catch (e) {
+    } catch(err) {
         this.db = {};  // If no db file, make empty one
     }
-    if(!this.db) {  // If it wasn't empty 
-        this.db = JSON.parse(rawDB);
+
+    try {
+        if(!this.db) {  // If it wasn't empty 
+            this.db = JSON.parse(rawDB);
+        }
+    } catch(err) {
+        console.log('Probably a syntax error in db.json: ' + err);
+        this.db = {};
     }
 
     // Repair any deficiencies in the DB; if this is a new DB, that's everything
@@ -47,9 +53,15 @@ var DBot = function(timers) {
     }
     
     // Load Strings file
-    this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+    try {
+        this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+    } catch(err) {
+        console.log('Probably a syntax error: ' + err);
+        this.strings = {};
+    }
 
     // Initialise run-time resources
+    this.usage = {};
     this.sessionData = {};
     this.timers = timers.create();
 
@@ -101,12 +113,19 @@ DBot.prototype.say = function(server, channel, message) {
 
 // Format given stored string in config language
 DBot.prototype.t = function(string, formatData) {
-    var lang = this.language;
-    if(!this.strings[string].hasOwnProperty(lang)) {
-        lang = "english"; 
-    }
+    var formattedString;
+    if(this.strings.hasOwnProperty(string)) {
+        var lang = this.language;
+        if(!this.strings[string].hasOwnProperty(lang)) {
+            lang = "english"; 
+        }
 
-    return this.strings[string][lang].format(formatData);
+        formattedString = this.strings[string][lang].format(formatData);
+    } else {
+        formattedString = 'String not found. Something has gone screwy. Maybe.';
+    }
+    
+    return formattedString;
 };
 
 /*DBot.prototype.act = function(channel, data) {
@@ -132,6 +151,8 @@ DBot.prototype.reloadModules = function() {
     this.modules = [];
     this.commands = {};
     this.commandMap = {}; // Map of which commands belong to which modules
+    this.strings = {};
+    this.usage = {};
     this.timers.clearTimers();
     this.save();
 
@@ -149,11 +170,13 @@ DBot.prototype.reloadModules = function() {
     this.instance.removeListeners();
 
     this.moduleNames.each(function(name) {
-        var cacheKey = require.resolve('./modules/' + name);
+        var moduleDir = './modules/' + name + '/';
+        var cacheKey = require.resolve(moduleDir + name);
         delete require.cache[cacheKey];
 
         try {
-            var rawModule = require('./modules/' + name);
+            // Load the module itself
+            var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
             this.rawModules.push(rawModule);
 
@@ -165,6 +188,7 @@ DBot.prototype.reloadModules = function() {
                 module.onLoad();
             }
 
+            // Load module commands
             if(module.commands) {
                 var newCommands = module.commands;
                 for(key in newCommands) {
@@ -175,10 +199,34 @@ DBot.prototype.reloadModules = function() {
                 }
             }
 
+            // Load the module usage data
+            var usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
+            for(key in usage) {
+                if(usage.hasOwnProperty(key)) {
+                    if(this.usage.hasOwnProperty(key)) {
+                        console.log('Usage key clash for ' + key + ' in ' + name);
+                    } else {
+                        this.usage[key] = usage[key];
+                    }
+                }
+            }
+
+            // Load the module string data
+            var strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
+            for(key in strings) {
+                if(strings.hasOwnProperty(key)) {
+                    if(this.strings.hasOwnProperty(key)) {
+                        console.log('Strings key clash for ' + key + ' in ' + name);
+                    } else {
+                        this.strings[key] = strings[key];
+                    }
+                }
+            }
+
             this.modules.push(module);
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
-            console.log(err);
+            console.log('MODULE ERROR: ' + name + ' ' + err);
         }
     }.bind(this));
 };
