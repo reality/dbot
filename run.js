@@ -151,10 +151,15 @@ DBot.prototype.reloadModules = function() {
     this.modules = [];
     this.commands = {};
     this.commandMap = {}; // Map of which commands belong to which modules
-    this.strings = {};
     this.usage = {};
     this.timers.clearTimers();
     this.save();
+
+    try {
+        this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+    } catch(err) {
+        this.strings = {};
+    }
 
     // Enforce having command. it can still be reloaded, but dbot _will not_ 
     //  function without it, so not having it should be impossible

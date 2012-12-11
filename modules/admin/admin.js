@@ -53,7 +53,6 @@ var admin = function(dbot) {
         // Reload DB, translations and modules.
         'reload': function(event) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-            dbot.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
             dbot.reloadModules();
             event.reply(dbot.t('reload'));
         },
