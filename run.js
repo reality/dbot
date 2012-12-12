@@ -5,8 +5,18 @@ require('./snippets');
 
 var DBot = function(timers) {
     // Load external files
-    this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
-    this.db = null;
+    try {
+        this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+    } catch(err) {
+        console.log('Config file is screwed up. Attempting to load defaults.');
+        try {
+            this.config = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
+        } catch(err) {
+            console.log('Error loading sample config. Bugger off. Stopping.');
+            process.exit();
+        }
+    }
+
     var rawDB;
     try {
         var rawDB = fs.readFileSync('db.json', 'utf-8');
@@ -19,15 +29,15 @@ var DBot = function(timers) {
             this.db = JSON.parse(rawDB);
         }
     } catch(err) {
-        console.log('Probably a syntax error in db.json: ' + err);
-        this.db = {};
+        console.log('Syntax error in db.json. Stopping: ' + err);
+        process.exit();
     }
 
     // Load Strings file
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
-        console.log('Probably a syntax error: ' + err);
+        console.log('Probably a syntax error in strings.json: ' + err);
         this.strings = {};
     }
 
@@ -37,26 +47,11 @@ var DBot = function(timers) {
     this.timers = timers.create();
 
     // Populate bot properties with config data
-    this.name = this.config.name || 'dbox';
-    this.admin = this.config.admin || [ 'reality' ];
-    this.moduleNames = this.config.modules || [ 'ignore', 'admin', 'command', 'dice', 'js', 'kick', 'puns', 'quotes', 'spelling', 'youare' ];
-    this.language = this.config.language || 'english';
-    this.webHost = this.config.webHost || 'localhost';
-    this.webPort = this.config.webPort || 80;
-
-    // It's the user's responsibility to fill this data structure up properly in
-    // the config file. They can d-d-d-deal with it if they have problems.
-    this.servers = this.config.servers || {
-        'freenode': {
-            'server': 'irc.freenode.net',
-            'port': 6667,
-            'nickserv': 'nickserv',
-            'password': 'lolturtles',
-            'channels': [
-                '#realitest'
-            ]
+    for(var configKey in this.config) {
+        if(this.config.hasOwnProperty(configKey) && this.hasOwnProperty(configKey) === false) {
+            this[configKey] = this.config[configKey];
         }
-    };
+    }
 
     // Create JSBot and connect to each server
     this.instance = jsbot.createJSBot(this.name);
