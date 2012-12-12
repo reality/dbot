@@ -113,7 +113,7 @@ var webInterface = function(dbot) {
         }
     });
     
-    app.listen(dbot.webPort);
+    app.listen(dbot.config.web.webPort);
 
     return { 
         'name': 'web',
