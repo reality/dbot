@@ -1,7 +1,5 @@
 {
     "name": "testressionbot",
-    "webHost": "lolcathost",
-    "webPort": 80,
     "servers": {
         "freenode": {
             "server": "irc.freenode.net",

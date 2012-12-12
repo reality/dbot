@@ -40,7 +40,8 @@ var poll = function(dbot) {
                     }
                     
                     event.reply(dbot.t('poll_created', {'name': name, 'description': description, 
-                        'url': dbot.t('url', {'host': dbot.webHost, 'port': dbot.webPort, 'path': 'polls/' + name})})); 
+                        'url': dbot.t('url', {'host': dbot.config.web.webHost,
+                        'port': dbot.config.web.webPort, 'path': 'polls/' + name})})); 
                 }
             }
         },
@@ -141,7 +142,8 @@ var poll = function(dbot) {
             var name = event.input[1];
             if(polls.hasOwnProperty(name)) {
                 event.reply(dbot.t('poll_describe', {'name': name, 'description': polls[name].description,
-                    'url': dbot.t('url', {'host': dbot.webHost, 'port': dbot.webPort, 'path': 'polls/' + name})}));
+                    'url': dbot.t('url', {'host': dbot.config.web.webHost, 'port':
+                    dbot.config.web.webPort, 'path': 'polls/' + name})}));
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }

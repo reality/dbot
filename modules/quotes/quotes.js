@@ -189,8 +189,8 @@ var quotes = function(dbot) {
             var key = event.params[1].trim().toLowerCase();
             if(quotes.hasOwnProperty(key)) {
                 event.reply(dbot.t('quote_link', {'category': key, 
-                    'url': dbot.t('url', {'host': dbot.webHost, 
-                    'port': dbot.webPort, 'path': 'quotes/' + key})}));
+                    'url': dbot.t('url', {'host': dbot.config.web.webHost, 
+                    'port': dbot.config.web.webPort, 'path': 'quotes/' + key})}));
             } else {
                 event.reply(dbot.t('category_not_found', {'category': key}));
             }
