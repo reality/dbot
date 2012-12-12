@@ -23,35 +23,6 @@ var DBot = function(timers) {
         this.db = {};
     }
 
-    // Repair any deficiencies in the DB; if this is a new DB, that's everything
-    if(!this.db.hasOwnProperty("bans")) {
-        this.db.bans = {};
-    }
-    if(!this.db.bans.hasOwnProperty("*")) {
-        this.db.bans["*"] = [];
-    }
-    if(!this.db.hasOwnProperty("quoteArrs")) {
-        this.db.quoteArrs = {};
-    }
-    if(!this.db.hasOwnProperty("kicks")) {
-        this.db.kicks = {};
-    }
-    if(!this.db.hasOwnProperty("kickers")) {
-        this.db.kickers = {};
-    }
-    if(!this.db.hasOwnProperty("modehate")) {
-        this.db.modehate = [];
-    }
-    if(!this.db.hasOwnProperty("locks")) {
-        this.db.locks = [];
-    }
-    if(!this.db.hasOwnProperty("ignores")) {
-        this.db.ignores = {};
-    }
-    if(!this.db.hasOwnProperty('polls')) {
-        this.db.polls = {};
-    }
-    
     // Load Strings file
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
@@ -234,6 +205,19 @@ DBot.prototype.reloadModules = function() {
                 }
             } catch(err) {
                 // Invalid or no string info
+            }
+
+            // Load the module config data
+            try {
+                var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
+                this.config[name] = config;
+                for(var i=0;i<config.dbKeys;i++) {
+                    if(!this.db.hasOwnProperty(config.dbKeys[i])) {
+                        this.db[config.dbKeys[i]] = {};
+                    }
+                }
+            } catch(err) {
+                // Invalid or no config data
             }
 
             this.modules.push(module);
