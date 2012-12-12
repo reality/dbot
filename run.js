@@ -5,6 +5,7 @@ require('./snippets');
 
 var DBot = function(timers) {
     // Load external files
+    var requiredConfigKeys = [ 'name', 'servers', 'admin', 'moduleNames', 'language' ];
     try {
         this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     } catch(err) {
@@ -16,6 +17,13 @@ var DBot = function(timers) {
             process.exit();
         }
     }
+    requiredConfigKeys.each(function(key) {
+        if(!this.config.hasOwnProperty(key)) {
+            console.log('Error: Please set a value for ' + key + ' in ' +
+                'config.json. Stopping.');
+            process.exit();
+        }
+    }.bind(this));
 
     var rawDB;
     try {
