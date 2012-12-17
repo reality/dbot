@@ -94,10 +94,10 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(event) {
-            if(rmAllowed == true || dbot.admin.include(event.user)) {
+            if(rmAllowed == true || dbot.config.admins.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    if(!dbot.db.locks.include(key) || dbot.admin.include(event.user)) {
+                    if(!dbot.db.locks.include(key) || dbot.config.admins.include(event.user)) {
                         var quote = quotes[key].pop();
                         if(quotes[key].length === 0) {
                             delete quotes[key];
@@ -116,7 +116,7 @@ var quotes = function(dbot) {
         },
 
         '~rm': function(event) {
-            if(rmAllowed == true || dbot.admin.include(event.user)) {
+            if(rmAllowed == true || dbot.config.admins.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 var quote = event.input[2];
 

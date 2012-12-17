@@ -46,10 +46,10 @@ var kick = function(dbot) {
         'commands': commands,
 
         'listener': function(event) {
-           if(event.kickee == dbot.name) {
+           if(event.kickee == dbot.config.name) {
                 dbot.instance.join(event, event.channel);
-                event.reply(dbot.t('kicked_dbot', {'botname': dbot.name}));
-                dbot.db.kicks[dbot.name] += 1;
+                event.reply(dbot.t('kicked_dbot', {'botname': dbot.config.name}));
+                dbot.db.kicks[dbot.config.name] += 1;
             } else {
                 if(!dbot.db.kicks.hasOwnProperty(event.kickee)) {
                     dbot.db.kicks[event.kickee] = 1;
