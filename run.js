@@ -5,7 +5,7 @@ require('./snippets');
 
 var DBot = function(timers) {
     // Load external files
-    var requiredConfigKeys = [ 'name', 'servers', 'admin', 'moduleNames', 'language' ];
+    var requiredConfigKeys = [ 'name', 'servers', 'admins', 'moduleNames', 'language' ];
     try {
         this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     } catch(err) {
@@ -55,19 +55,14 @@ var DBot = function(timers) {
     this.timers = timers.create();
 
     // Populate bot properties with config data
-    for(var configKey in this.config) {
-        if(this.config.hasOwnProperty(configKey) && this.hasOwnProperty(configKey) === false) {
-            this[configKey] = this.config[configKey];
-        }
-    }
-
     // Create JSBot and connect to each server
-    this.instance = jsbot.createJSBot(this.name);
-    for(var name in this.servers) {
-        if(this.servers.hasOwnProperty(name)) {
-            var server = this.servers[name];
-            this.instance.addConnection(name, server.server, server.port, this.admin, function(event) {
-                var server = this.servers[event.server];
+    this.instance = jsbot.createJSBot(this.config.name);
+    for(var name in this.config.servers) {
+        if(this.config.servers.hasOwnProperty(name)) {
+            var server = this.config.servers[name];
+            this.instance.addConnection(name, server.server, server.port,
+                    this.config.admin, function(event) {
+                var server = this.config.servers[event.server];
                 for(var i=0;i<server.channels.length;i++) {
                     this.instance.join(event, server.channels[i]);
                 }
@@ -89,7 +84,7 @@ DBot.prototype.say = function(server, channel, message) {
 DBot.prototype.t = function(string, formatData) {
     var formattedString;
     if(this.strings.hasOwnProperty(string)) {
-        var lang = this.language;
+        var lang = this.config.language;
         if(!this.strings[string].hasOwnProperty(lang)) {
             lang = "english"; 
         }
@@ -135,10 +130,12 @@ DBot.prototype.reloadModules = function() {
         this.strings = {};
     }
 
+    var moduleNames = this.config.moduleNames;
+
     // Enforce having command. it can still be reloaded, but dbot _will not_ 
     //  function without it, so not having it should be impossible
-    if(!this.moduleNames.include("command")) {
-        this.moduleNames.push("command");
+    if(!moduleNames.include("command")) {
+        moduleNames.push("command");
     }
 
     // Reload Javascript snippets
@@ -148,7 +145,7 @@ DBot.prototype.reloadModules = function() {
 
     this.instance.removeListeners();
 
-    this.moduleNames.each(function(name) {
+    moduleNames.each(function(name) {
         var moduleDir = './modules/' + name + '/';
         var cacheKey = require.resolve(moduleDir + name);
         delete require.cache[cacheKey];
