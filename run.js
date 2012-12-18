@@ -150,6 +150,19 @@ DBot.prototype.reloadModules = function() {
         delete require.cache[cacheKey];
 
         try {
+            // Load the module config data
+            try {
+                var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
+                this.config[name] = config;
+                for(var i=0;i<config.dbKeys.length;i++) {
+                    if(!this.db.hasOwnProperty(config.dbKeys[i])) {
+                        this.db[config.dbKeys[i]] = {};
+                    }
+                }
+            } catch(err) {
+                // Invalid or no config data
+            }
+
             // Load the module itself
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
@@ -204,19 +217,6 @@ DBot.prototype.reloadModules = function() {
                 }
             } catch(err) {
                 // Invalid or no string info
-            }
-
-            // Load the module config data
-            try {
-                var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
-                this.config[name] = config;
-                for(var i=0;i<config.dbKeys.length;i++) {
-                    if(!this.db.hasOwnProperty(config.dbKeys[i])) {
-                        this.db[config.dbKeys[i]] = {};
-                    }
-                }
-            } catch(err) {
-                // Invalid or no config data
             }
 
             this.modules.push(module);
