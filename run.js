@@ -122,7 +122,6 @@ DBot.prototype.reloadModules = function() {
     this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
     this.timers.clearTimers();
-    this.save();
 
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
@@ -211,7 +210,7 @@ DBot.prototype.reloadModules = function() {
             try {
                 var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
                 this.config[name] = config;
-                for(var i=0;i<config.dbKeys;i++) {
+                for(var i=0;i<config.dbKeys.length;i++) {
                     if(!this.db.hasOwnProperty(config.dbKeys[i])) {
                         this.db[config.dbKeys[i]] = {};
                     }
@@ -226,6 +225,7 @@ DBot.prototype.reloadModules = function() {
             console.log('MODULE ERROR: ' + name + ' ' + err);
         }
     }.bind(this));
+    this.save();
 };
 
 DBot.prototype.cleanNick = function(key) {
