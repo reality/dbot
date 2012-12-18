@@ -1,0 +1,14 @@
+{
+    "spelling_self": {
+        "english": "{correcter} meant: {fix}",
+        "spanish": "{correcter} quería decir: {fix}",
+        "na'vi": "Sweylu {correcter} pamrel sivi: {fix}",
+        "welsh": "Oedd {correcter} yn feddwl: {fix}"
+    },
+    "spelling_other": {
+        "english": "{correcter} thinks {candidate} meant: {fix}",
+        "spanish": "{correcter} piensa que {candidate} queria decir: {fix}",
+        "na'vi": "{correcter} fpìl futa sweylu {candiate} pamrel sivi: {fix}",
+        "welsh": "Mae {correcter} yn meddwl bod {candidate} yn feddwl: {fix}"
+    }
+}
