@@ -5,83 +5,64 @@ require('./snippets');
 
 var DBot = function(timers) {
     // Load external files
-    this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
-    this.db = null;
+    var requiredConfigKeys = [ 'name', 'servers', 'admins', 'moduleNames', 'language' ];
+    try {
+        this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+    } catch(err) {
+        console.log('Config file is screwed up. Attempting to load defaults.');
+        try {
+            this.config = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
+        } catch(err) {
+            console.log('Error loading sample config. Bugger off. Stopping.');
+            process.exit();
+        }
+    }
+    requiredConfigKeys.each(function(key) {
+        if(!this.config.hasOwnProperty(key)) {
+            console.log('Error: Please set a value for ' + key + ' in ' +
+                'config.json. Stopping.');
+            process.exit();
+        }
+    }.bind(this));
+
     var rawDB;
     try {
         var rawDB = fs.readFileSync('db.json', 'utf-8');
-    } catch (e) {
+    } catch(err) {
         this.db = {};  // If no db file, make empty one
     }
-    if(!this.db) {  // If it wasn't empty 
-        this.db = JSON.parse(rawDB);
+
+    try {
+        if(!this.db) {  // If it wasn't empty 
+            this.db = JSON.parse(rawDB);
+        }
+    } catch(err) {
+        console.log('Syntax error in db.json. Stopping: ' + err);
+        process.exit();
     }
 
-    // Repair any deficiencies in the DB; if this is a new DB, that's everything
-    if(!this.db.hasOwnProperty("bans")) {
-        this.db.bans = {};
-    }
-    if(!this.db.bans.hasOwnProperty("*")) {
-        this.db.bans["*"] = [];
-    }
-    if(!this.db.hasOwnProperty("quoteArrs")) {
-        this.db.quoteArrs = {};
-    }
-    if(!this.db.hasOwnProperty("kicks")) {
-        this.db.kicks = {};
-    }
-    if(!this.db.hasOwnProperty("kickers")) {
-        this.db.kickers = {};
-    }
-    if(!this.db.hasOwnProperty("modehate")) {
-        this.db.modehate = [];
-    }
-    if(!this.db.hasOwnProperty("locks")) {
-        this.db.locks = [];
-    }
-    if(!this.db.hasOwnProperty("ignores")) {
-        this.db.ignores = {};
-    }
-    if(!this.db.hasOwnProperty('polls')) {
-        this.db.polls = {};
-    }
-    
     // Load Strings file
-    this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+    try {
+        this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+    } catch(err) {
+        console.log('Probably a syntax error in strings.json: ' + err);
+        this.strings = {};
+    }
 
     // Initialise run-time resources
+    this.usage = {};
     this.sessionData = {};
     this.timers = timers.create();
 
     // Populate bot properties with config data
-    this.name = this.config.name || 'dbox';
-    this.admin = this.config.admin || [ 'reality' ];
-    this.moduleNames = this.config.modules || [ 'ignore', 'admin', 'command', 'dice', 'js', 'kick', 'puns', 'quotes', 'spelling', 'youare' ];
-    this.language = this.config.language || 'english';
-    this.webHost = this.config.webHost || 'localhost';
-    this.webPort = this.config.webPort || 80;
-
-    // It's the user's responsibility to fill this data structure up properly in
-    // the config file. They can d-d-d-deal with it if they have problems.
-    this.servers = this.config.servers || {
-        'freenode': {
-            'server': 'irc.freenode.net',
-            'port': 6667,
-            'nickserv': 'nickserv',
-            'password': 'lolturtles',
-            'channels': [
-                '#realitest'
-            ]
-        }
-    };
-
     // Create JSBot and connect to each server
-    this.instance = jsbot.createJSBot(this.name);
-    for(var name in this.servers) {
-        if(this.servers.hasOwnProperty(name)) {
-            var server = this.servers[name];
-            this.instance.addConnection(name, server.server, server.port, this.admin, function(event) {
-                var server = this.servers[event.server];
+    this.instance = jsbot.createJSBot(this.config.name);
+    for(var name in this.config.servers) {
+        if(this.config.servers.hasOwnProperty(name)) {
+            var server = this.config.servers[name];
+            this.instance.addConnection(name, server.server, server.port,
+                    this.config.admin, function(event) {
+                var server = this.config.servers[event.server];
                 for(var i=0;i<server.channels.length;i++) {
                     this.instance.join(event, server.channels[i]);
                 }
@@ -101,12 +82,19 @@ DBot.prototype.say = function(server, channel, message) {
 
 // Format given stored string in config language
 DBot.prototype.t = function(string, formatData) {
-    var lang = this.language;
-    if(!this.strings[string].hasOwnProperty(lang)) {
-        lang = "english"; 
-    }
+    var formattedString;
+    if(this.strings.hasOwnProperty(string)) {
+        var lang = this.config.language;
+        if(!this.strings[string].hasOwnProperty(lang)) {
+            lang = "english"; 
+        }
 
-    return this.strings[string][lang].format(formatData);
+        formattedString = this.strings[string][lang].format(formatData);
+    } else {
+        formattedString = 'String not found. Something has gone screwy. Maybe.';
+    }
+    
+    return formattedString;
 };
 
 /*DBot.prototype.act = function(channel, data) {
@@ -132,13 +120,21 @@ DBot.prototype.reloadModules = function() {
     this.modules = [];
     this.commands = {};
     this.commandMap = {}; // Map of which commands belong to which modules
+    this.usage = {};
     this.timers.clearTimers();
-    this.save();
+
+    try {
+        this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
+    } catch(err) {
+        this.strings = {};
+    }
+
+    var moduleNames = this.config.moduleNames;
 
     // Enforce having command. it can still be reloaded, but dbot _will not_ 
     //  function without it, so not having it should be impossible
-    if(!this.moduleNames.include("command")) {
-        this.moduleNames.push("command");
+    if(!moduleNames.include("command")) {
+        moduleNames.push("command");
     }
 
     // Reload Javascript snippets
@@ -148,12 +144,14 @@ DBot.prototype.reloadModules = function() {
 
     this.instance.removeListeners();
 
-    this.moduleNames.each(function(name) {
-        var cacheKey = require.resolve('./modules/' + name);
+    moduleNames.each(function(name) {
+        var moduleDir = './modules/' + name + '/';
+        var cacheKey = require.resolve(moduleDir + name);
         delete require.cache[cacheKey];
 
         try {
-            var rawModule = require('./modules/' + name);
+            // Load the module itself
+            var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
             this.rawModules.push(rawModule);
 
@@ -165,6 +163,7 @@ DBot.prototype.reloadModules = function() {
                 module.onLoad();
             }
 
+            // Load module commands
             if(module.commands) {
                 var newCommands = module.commands;
                 for(key in newCommands) {
@@ -175,12 +174,58 @@ DBot.prototype.reloadModules = function() {
                 }
             }
 
+            // Load the module usage data
+            try {
+                var usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
+                for(key in usage) {
+                    if(usage.hasOwnProperty(key)) {
+                        if(this.usage.hasOwnProperty(key)) {
+                            console.log('Usage key clash for ' + key + ' in ' + name);
+                        } else {
+                            this.usage[key] = usage[key];
+                        }
+                    }
+                }
+            } catch(err) {
+                // Invalid or no usage info
+            }
+
+            // Load the module string data
+            try {
+                var strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
+                for(key in strings) {
+                    if(strings.hasOwnProperty(key)) {
+                        if(this.strings.hasOwnProperty(key)) {
+                            console.log('Strings key clash for ' + key + ' in ' + name);
+                        } else {
+                            this.strings[key] = strings[key];
+                        }
+                    }
+                }
+            } catch(err) {
+                // Invalid or no string info
+            }
+
+            // Load the module config data
+            try {
+                var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
+                this.config[name] = config;
+                for(var i=0;i<config.dbKeys.length;i++) {
+                    if(!this.db.hasOwnProperty(config.dbKeys[i])) {
+                        this.db[config.dbKeys[i]] = {};
+                    }
+                }
+            } catch(err) {
+                // Invalid or no config data
+            }
+
             this.modules.push(module);
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
-            console.log(err);
+            console.log('MODULE ERROR: ' + name + ' ' + err);
         }
     }.bind(this));
+    this.save();
 };
 
 DBot.prototype.cleanNick = function(key) {

@@ -22,7 +22,7 @@ var js = function(dbot) {
 
         // Run JS code un-sandboxed, with access to DBot memory (admin-only).
         '~ajs': function(event) {
-            if(dbot.admin.include(event.user) ) {
+            if(dbot.config.admins.include(event.user) ) {
                 var ret = eval(event.input[1]);
                 if(ret !== undefined) {
                     event.reply(ret);
@@ -32,8 +32,6 @@ var js = function(dbot) {
     };
     commands['~js'].regex = [/^~js (.*)/, 2];
     commands['~ajs'].regex = [/^~ajs (.*)/, 2];
-    commands['~js'].usage = '~js [command]';
-    commands['~ajs'].usage = '~ajs [command]';
 
     return {
         'name': 'js',

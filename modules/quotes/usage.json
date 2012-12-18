@@ -1,0 +1,7 @@
+{
+    "~q": "~q [category]",
+    "~qsearch": "~qsearch [category]=[search]",
+    "~rm": "~rm [category]=[quote to delete]",
+    "~rmlast": "~rmlast [category]",
+    "~qadd": "~qadd [category]=[content]"
+}

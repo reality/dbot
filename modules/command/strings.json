@@ -1,0 +1,14 @@
+{
+    "command_ban": {
+        "english": "{user} is banned from using this command. Commence incineration.",
+        "spanish": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
+        "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu.",
+        "welsh": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad"
+    },
+    "syntax_error": { 
+        "english": "Invalid syntax. Initiate incineration.",
+        "spanish": "Sintaxis no válida. Iniciar incineración.",
+        "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
+        "welsh": "Cystrawen annilys. Cychwyn orfflosgiad"
+    }
+}

@@ -1,7 +1,5 @@
 {
     "name": "testressionbot",
-    "webHost": "lolcathost",
-    "webPort": 80,
     "servers": {
         "freenode": {
             "server": "irc.freenode.net",
@@ -13,5 +11,7 @@
             ]
         }
     },
-    "admin": [ "batman" ]
+    "admins": [ "batman" ],
+    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "puns", "quotes", "spelling", "youare" ],
+    "language": "english"
 }

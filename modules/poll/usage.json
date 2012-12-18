@@ -1,0 +1,7 @@
+{
+    "~newpoll": "~newpoll [pollname] options=[each,poll,option] [Poll Description]",
+    "~addoption": "~addoption [pollname] [newoption]",
+    "~rmoption": "~rmoption [pollname] [optiontoremove]",
+    "~vote": "~vote [pollname] [option]",
+    "~pdesc": "~pdesc [pollname]"
+}

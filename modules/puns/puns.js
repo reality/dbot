@@ -8,7 +8,7 @@ var puns = function(dbot) {
 
         'listener': function(event) {
             event.user = dbot.cleanNick(event.user);
-            if(dbot.moduleNames.include('quotes') &&
+            if(dbot.config.moduleNames.include('quotes') &&
                     dbot.db.quoteArrs.hasOwnProperty(event.user)) {
                 event.message = '~q ' + event.user;
                 event.action = 'PRIVMSG';
