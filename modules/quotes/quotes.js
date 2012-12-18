@@ -94,10 +94,10 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(event) {
-            if(rmAllowed == true || dbot.admin.include(event.user)) {
+            if(rmAllowed == true || dbot.config.admins.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    if(!dbot.db.locks.include(key) || dbot.admin.include(event.user)) {
+                    if(!dbot.db.locks.include(key) || dbot.config.admins.include(event.user)) {
                         var quote = quotes[key].pop();
                         if(quotes[key].length === 0) {
                             delete quotes[key];
@@ -116,7 +116,7 @@ var quotes = function(dbot) {
         },
 
         '~rm': function(event) {
-            if(rmAllowed == true || dbot.admin.include(event.user)) {
+            if(rmAllowed == true || dbot.config.admins.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 var quote = event.input[2];
 
@@ -156,7 +156,9 @@ var quotes = function(dbot) {
             } else { // Give total quote count
                 var totalQuoteCount = 0;
                 for(var category in quotes) {
-                    totalQuoteCount += category.length;
+                    if(quotes.hasOwnProperty(category)) {
+                        totalQuoteCount += quotes[category].length;
+                    }
                 }
                 event.reply(dbot.t('total_quotes', {'count': totalQuoteCount}));
             }
@@ -187,29 +189,12 @@ var quotes = function(dbot) {
             var key = event.params[1].trim().toLowerCase();
             if(quotes.hasOwnProperty(key)) {
                 event.reply(dbot.t('quote_link', {'category': key, 
-                    'url': dbot.t('url', {'host': dbot.webHost, 
-                    'port': dbot.webPort, 'path': 'quotes/' + key})}));
+                    'url': dbot.t('url', {'host': dbot.config.web.webHost, 
+                    'port': dbot.config.web.webPort, 'path': 'quotes/' + key})}));
             } else {
-                event.reply(dbot.t('category_not_found'));
+                event.reply(dbot.t('category_not_found', {'category': key}));
             }
         },
-
-        '~qprune': function(event) {
-            var pruned = []
-            for(key in quotes) {
-                if(quotes.hasOwnProperty(key)) {
-                    if(quotes[key].length == 0) {
-                        delete quotes[key];
-                        pruned.push(key);
-                    }
-                }
-            }
-            if(pruned.length > 0) {
-                event.reply(dbot.t('prune', {'categories': pruned.join(", ")}));
-            } else {
-                event.reply(dbot.t('no_prune'));
-            }
-        }
     };
 
     commands['~'].regex = [/^~([\d\w\s-]*)/, 2];
@@ -218,12 +203,6 @@ var quotes = function(dbot) {
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
-
-    commands['~q'].usage = '~q [category]';
-    commands['~qsearch'].usage = '~qsearch [category]=[search]';
-    commands['~rm'].usage = '~rm [category]=[quote to delete]';
-    commands['~rmlast'].usage = '~rmlast [category]'
-    commands['~qadd'].usage = '~qadd [category]=[content]';
 
     return {
         'name': 'quotes',
@@ -237,6 +216,7 @@ var quotes = function(dbot) {
         },
 
         'listener': function(event) {
+            // Reality Once listener
             if((dbot.db.ignores.hasOwnProperty(event) && 
                         dbot.db.ignores[event.user].include(name)) == false) {
                 if(event.user == 'reality') {

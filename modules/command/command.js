@@ -56,10 +56,9 @@ var command = function(dbot) {
         'commands': {
             '~usage': function(event) {
                 var commandName = event.params[1];
-                console.log(commandName);
-                if(dbot.commands.hasOwnProperty(commandName)) {
+                if(dbot.usage.hasOwnProperty(commandName)) {
                     event.reply('Usage for ' + commandName + ': ' +
-                        dbot.commands[commandName].usage); 
+                        dbot.usage[commandName]); 
                 } else {
                     event.reply('No usage information for ' + commandName);
                 }
@@ -84,8 +83,8 @@ var command = function(dbot) {
                         dbot.save();
                     } else {
                         if(commandName !== '~') {
-                            if(dbot.commands[commandName].hasOwnProperty('usage')){
-                                event.reply('Usage: ' + dbot.commands[commandName].usage);
+                            if(dbot.usage.hasOwnProperty(commandName)){
+                                event.reply('Usage: ' + dbot.usage[commandName]);
                             } else {
                                 event.reply(dbot.t('syntax_error'));
                             }

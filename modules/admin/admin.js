@@ -53,7 +53,6 @@ var admin = function(dbot) {
         // Reload DB, translations and modules.
         'reload': function(event) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
-            dbot.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
             dbot.reloadModules();
             event.reply(dbot.t('reload'));
         },
@@ -71,20 +70,22 @@ var admin = function(dbot) {
         // Load new module 
         'load': function(event) {
             var moduleName = event.params[1];
-            dbot.moduleNames.push(moduleName);
+            dbot.config.moduleNames.push(moduleName);
             dbot.reloadModules();
             event.reply(dbot.t('load_module', {'moduleName': moduleName}));
         },
 
         // Unload a loaded module
         'unload': function(event) {
+            var moduleNames = dbot.config.moduleNames;
             var moduleName = event.params[1];
-            if(dbot.moduleNames.include(moduleName)) {
-                var cacheKey = require.resolve('../modules/' + moduleName);
+            if(moduleNames.include(moduleName)) {
+                var moduleDir = '../' + moduleName + '/';
+                var cacheKey = require.resolve(moduleDir + moduleName);
                 delete require.cache[cacheKey];
 
-                var moduleIndex = dbot.moduleNames.indexOf(moduleName);
-                dbot.moduleNames.splice(moduleIndex, 1);
+                var moduleIndex = moduleNames.indexOf(moduleName);
+                moduleNames.splice(moduleIndex, 1);
                 dbot.reloadModules();
 
                 event.reply(dbot.t('unload_module', {'moduleName': moduleName}));
@@ -134,7 +135,7 @@ var admin = function(dbot) {
          */
         'listener': function(event) {
             var commandName = event.params[0];
-            if(commands.hasOwnProperty(commandName) && dbot.admin.include(event.user)) {
+            if(commands.hasOwnProperty(commandName) && dbot.config.admins.include(event.user)) {
                 commands[commandName](event);
                 dbot.save();
             }

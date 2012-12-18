@@ -40,7 +40,8 @@ var poll = function(dbot) {
                     }
                     
                     event.reply(dbot.t('poll_created', {'name': name, 'description': description, 
-                        'url': dbot.t('url', {'host': dbot.webHost, 'port': dbot.webPort, 'path': 'polls/' + name})})); 
+                        'url': dbot.t('url', {'host': dbot.config.web.webHost,
+                        'port': dbot.config.web.webPort, 'path': 'polls/' + name})})); 
                 }
             }
         },
@@ -141,7 +142,8 @@ var poll = function(dbot) {
             var name = event.input[1];
             if(polls.hasOwnProperty(name)) {
                 event.reply(dbot.t('poll_describe', {'name': name, 'description': polls[name].description,
-                    'url': dbot.t('url', {'host': dbot.webHost, 'port': dbot.webPort, 'path': 'polls/' + name})}));
+                    'url': dbot.t('url', {'host': dbot.config.web.webHost, 'port':
+                    dbot.config.web.webPort, 'path': 'polls/' + name})}));
             } else {
                 event.reply(dbot.t('poll_unexistent', {'name': name}));
             }
@@ -214,13 +216,7 @@ var poll = function(dbot) {
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
     commands['~count'].regex = [/~count ([^ ]+)/, 2];
-
-    commands['~newpoll'].usage = '~newpoll [pollname] options=[each,poll,option] [Poll Description]';
-    commands['~addoption'].usage = '~addoption [pollname] [newoption]';
-    commands['~rmoption'].usage= '~rmoption [pollname] [optiontoremove]';
-    commands['~vote'].usage= '~vote [pollname] [option]';
-    commands['~pdesc'].usage = '~pdesc [pollname]';
-
+    
     return {
         'name': 'poll',
         'ignorable': true,
