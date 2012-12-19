@@ -1,3 +1,4 @@
 {
-    "dbKeys": [ "quoteArrs" ]
+    "dbKeys": [ "quoteArrs" ],
+    "rmLimit": 10
 }

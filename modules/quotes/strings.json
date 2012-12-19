@@ -106,5 +106,20 @@
         "spanish" : "{category} ({needle}): '{quote}' [{matches} resultados]",
         "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
         "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
+    },
+    "quote_cache_auto_remove": {
+        "english": "There are {count} quotes in the removal cache, which will be automatically cleared."
+    },
+    "quote_cache_manual_remove": {
+        "english": "There are {count} quotes in the removal cache, which must be manually cleared."
+    },
+    "quote_cache_cleared": {
+        "english": "{count} quotes cleared from the removal cache."
+    },
+    "quote_cache_reinstated": {
+        "english": "{count} quotes reinstated from the removal cache."
+    },
+    "rm_cache_limit": {
+        "english": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny."
     }
 }

@@ -3,6 +3,9 @@ var quotes = function(dbot) {
     var quotes = dbot.db.quoteArrs;
     var addStack = [];
     var rmAllowed = true;
+    dbot.sessionData.rmCache = [];
+    var rmCache = dbot.sessionData.rmCache;
+    var rmTimer;
 
     // Retrieve a random quote from a given category, interpolating any quote
     // references (~~QUOTE CATEGORY~~) within it
@@ -32,11 +35,68 @@ var quotes = function(dbot) {
         return quoteString;
     };
 
+    var resetRemoveTimer = function(event, key, quote) {
+        rmAllowed = false;
+        dbot.timers.addOnceTimer(5000, function() {
+            rmAllowed = true;
+        });
+
+        rmCache.push({'key': key, 'quote': quote});
+        dbot.timers.clearTimeout(rmTimer);
+        if(rmCache.length < dbot.config.quotes.rmLimit) {
+            rmTimer = dbot.timers.addOnceTimer(600000, function() {
+                rmCache.length = 0; // lol what
+            });
+        } else {
+            for(var i=0;i<dbot.config.admins.length;i++) {
+                dbot.say(event.server, dbot.config.admins[i], 
+                    dbot.t('rm_cache_limit'));
+            }
+        }
+    };
+
     var commands = {
         // Alternative syntax to ~q
         '~': function(event) {
             commands['~q'](event);
         },
+
+        '~rmstatus': function(event) {
+            var rmCacheCount = rmCache.length;
+            if(rmCacheCount < dbot.config.quotes.rmLimit) {
+                event.reply(dbot.t('quote_cache_auto_remove', 
+                    { 'count': rmCacheCount }));
+            } else {
+                event.reply(dbot.t('quote_cache_manual_remove', 
+                    { 'count': rmCacheCount }));
+            }
+        },
+
+        '~rmconfirm': function(event) {
+            if(dbot.config.admins.include(event.user)) {
+                var rmCacheCount = rmCache.length;
+                rmCache.length = 0;
+                event.reply(dbot.t('quote_cache_cleared', 
+                    { 'count': rmCacheCount }));
+            }
+        },
+
+        '~rmdeny': function(event) {
+            if(dbot.config.admins.include(event.user)) {
+                var rmCacheCount = rmCache.length;
+                for(var i=0;i<rmCacheCount;i++) {
+                    if(!quotes.hasOwnProperty(rmCache[i].key)) {
+                        quotes[rmCache[i].key] = [];
+                    }
+                    quotes[rmCache[i].key].push(rmCache[i].quote);
+                }
+                rmCache.length = 0;
+
+                event.reply(dbot.t('quote_cache_reinstated', 
+                    { 'count': rmCacheCount }));
+            }
+        },
+
 
         // Retrieve quote from a category in the database.
         '~q': function(event) { 
@@ -102,7 +162,8 @@ var quotes = function(dbot) {
                         if(quotes[key].length === 0) {
                             delete quotes[key];
                         }
-                        rmAllowed = false;
+                        resetRemoveTimer(event, key, quote);
+
                         event.reply(dbot.t('removed_from', {'quote': quote, 'category': key}));
                     } else {
                         event.reply(dbot.t('locked_category', {'category': q[1]}));
@@ -124,11 +185,14 @@ var quotes = function(dbot) {
                     if(!dbot.db.locks.include(key)) {
                         var category = quotes[key];
                         var index = category.indexOf(quote);
+                        var quote = category[index];
                         if(index !== -1) {
                             category.splice(index, 1);
                             if(category.length === 0) {
                                 delete quotes[key];
                             }
+                            resetRemoveTimer(event, key, quote);
+
                             event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
                         } else {
                             event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
@@ -208,12 +272,6 @@ var quotes = function(dbot) {
         'name': 'quotes',
         'ignorable': true,
         'commands': commands,
-
-        'onLoad': function() {
-            dbot.timers.addTimer(1000 * 60 * 3, function() {
-                rmAllowed = true;
-            });
-        },
 
         'listener': function(event) {
             // Reality Once listener

@@ -4,11 +4,15 @@ var timers = function() {
     
     return {
         'addTimer': function(interval, callback) { // Because who puts the callback first. Really.
-            timers.push(setInterval(callback, interval)); 
+            var timer = setInterval(callback, interval);
+            timers.push(timer); 
+            return timer;
         },
         
         'addOnceTimer': function(delay, callback) { // Because who seriously puts the callback first here too?
-            timeouts.push(setTimeout(callback, delay));
+            var timeout = setTimeout(callback, delay);
+            timeouts.push(timeout);
+            return timeout;
         },
 
         'clearTimers': function() {
@@ -18,6 +22,14 @@ var timers = function() {
             for(var i;i<timeouts.length;i++) {
                 clearTimeout(timeouts[i]);
             }
+        },
+
+        'clearTimer': function(id) {
+            clearTimer(id);
+        }, 
+
+        'clearTimeout': function(id) {
+            clearTimeout(id);
         }
     };
 };
