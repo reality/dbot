@@ -185,7 +185,6 @@ var quotes = function(dbot) {
                     if(!dbot.db.locks.include(key)) {
                         var category = quotes[key];
                         var index = category.indexOf(quote);
-                        var quote = category[index];
                         if(index !== -1) {
                             category.splice(index, 1);
                             if(category.length === 0) {
