@@ -28,10 +28,14 @@ var js = function(dbot) {
                     event.reply(ret);
                 }
             }
+        },
+        'jesus': function (event) {
+            event.reply(event.user + ": s/(.)(.)(.)(..)/\4\2 \1\3/")
         }
     };
     commands['~js'].regex = [/^~js (.*)/, 2];
     commands['~ajs'].regex = [/^~ajs (.*)/, 2];
+    commands['jesus'].regex = [/^jesus$/, 2];
 
     return {
         'name': 'js',
