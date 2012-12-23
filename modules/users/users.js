@@ -4,23 +4,18 @@
  */
 var users = function(dbot) {
     var knownUsers = dbot.db.knownUsers;
-    var getChanUsers = function(event) {
-       if(!knownUsers.hasOwnProperty(event.server)) {
+    var getServerUsers = function(event) {
+        if(!knownUsers.hasOwnProperty(event.server)) {
             knownUsers[event.server] = {};
         }
-        var serverUsers = knownUsers[event.server];    
-
-        if(!serverUsers.hasOwnProperty(event.channel.name)) {
-            serverUsers[event.channel.name] = []; 
-        }
-        return serverUsers[event.channel.name];
+        return knownUsers[event.server];    
     };
 
     dbot.instance.addListener('366', 'users', function(event) {
-        var chanUsers = getChanUsers(event);
+        var knownUsers = getServerUsers(event);
         for(var nick in event.channel.nicks) {
-            if(!chanUsers.include(nick) && event.channel.nicks.hasOwnProperty(nick)) {
-                chanUsers.push(nick);
+            if(!knownUsers.hasOwnProperty(nick) && event.channel.nicks.hasOwnProperty(nick)) {
+                knownUsers[nick] = {};
             }
         }
     });
@@ -30,9 +25,9 @@ var users = function(dbot) {
         'ignorable': false,
             
         'listener': function(event) {
-            var chanusers = getChanUsers(event); 
-            if(!chanUsers.include(event.user)) {
-                chanUsers.push(event.user);
+            var knownUsers = getServerUsers(event); 
+            if(!knownUsers.hasOwnProperty(event.user)) {
+                knownUsers[event.user] = {};
             }
         },
         'on': 'JOIN',
