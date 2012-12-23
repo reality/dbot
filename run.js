@@ -169,7 +169,14 @@ DBot.prototype.reloadModules = function() {
             this.rawModules.push(rawModule);
 
             if(module.listener) {
-                this.instance.addListener(module.on, module.name, module.listener);
+                var listenOn = module.on;
+                if(!(listenOn instanceof Array)) {
+                    listenOn = [listenOn];
+                }
+
+                listenOn.each(function(on) {
+                    this.instance.addListener(on, module.name, module.listener);
+                }.bind(this));
             }
 
             if(module.onLoad) {
