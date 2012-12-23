@@ -253,3 +253,13 @@ RegExp.prototype.url_regex = function() {
     );
     return reg;
 }
+
+Number.prototype.numberFormat = function(dec_places){
+    //TODO Possibly abstract this to some sort of localisation module in future?
+    var dec_point = '.';
+    var sep = ',';
+
+    var parts = this.toFixed(dec_places).toString().split(dec_point);
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+    return parts.join(dec_point);
+}
