@@ -35,7 +35,17 @@ var users = function(dbot) {
                 chanUsers.push(event.user);
             }
         },
-        'on': 'JOIN'
+        'on': 'JOIN',
+        
+        'onLoad': function() {
+            // Trigger updateNickLists to stat current users in channel
+            var connections = dbot.instance.connections;
+            for(var conn in connections) {
+                if(connections.hasOwnProperty(conn)) {
+                    connections[conn].updateNickLists();
+                }
+            }
+        }
     };
 };
 
