@@ -79,7 +79,15 @@ var command = function(dbot) {
             } else {
                 if(!isIgnoring(event.user, commandName)) {
                     if(applyRegex(commandName, event)) {
-                        dbot.commands[commandName](event);
+                        try {
+                            dbot.commands[commandName](event);
+                        } catch(err) {
+                            if(dbot.config.debugMode == true) {
+                                event.reply('- Error in ' + commandName + ':');
+                                event.reply('- Message: ' + err);
+                                event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
+                            }
+                        }
                         dbot.save();
                     } else {
                         if(commandName !== '~') {
