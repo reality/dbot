@@ -267,10 +267,34 @@ var quotes = function(dbot) {
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
 
+    var pages = {
+        // Lists quotes in a category
+        '/quotes/:key': function(req, res) {
+            var key = req.params.key.toLowerCase();
+            if(dbot.db.quoteArrs.hasOwnProperty(key)) {
+                res.render('quotes', { 'name': dbot.config.name, 'quotes': dbot.db.quoteArrs[key], locals: { 'url_regex': RegExp.prototype.url_regex() } });
+            } else {
+                res.render('error', { 'name': dbot.config.name, 'message': 'No quotes under that key.' });
+            }
+        },
+
+        // Show quote list.
+        '/quotes': function(req, res) {
+            res.render('quotelist', { 'name': dbot.config.name, 'quotelist': Object.keys(dbot.db.quoteArrs) });
+        },
+
+        // Load random quote category page
+        '/rq': function(req, res) {
+            var rCategory = Object.keys(dbot.db.quoteArrs).random();
+            res.render('quotes', { 'name': dbot.config.name, 'quotes': dbot.db.quoteArrs[rCategory], locals: { 'url_regex': RegExp.prototype.url_regex() } });
+        },
+    };
+
     return {
         'name': 'quotes',
         'ignorable': true,
         'commands': commands,
+        'pages': pages,
 
         'listener': function(event) {
             // Reality Once listener
