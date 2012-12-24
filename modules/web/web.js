@@ -2,9 +2,8 @@ var express = require('express');
 
 var webInterface = function(dbot) {
     var pub = 'public';
-    var app = express.createServer();
+    var app = express();
 
-    app.use(express.compiler({ src: pub, enable: ['sass'] }));
     app.use(express.static(pub));
     app.set('view engine', 'jade');
 
