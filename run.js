@@ -229,7 +229,12 @@ DBot.prototype.reloadModules = function() {
             this.modules.push(module);
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
-            console.log('MODULE ERROR: ' + name + ' ' + err);
+            if(this.config.debugMode) {
+                console.log('MODULE ERROR (' + name + '): ' + err.stack );
+            }
+            else {
+                console.log('MODULE ERROR (' + name + '): ' + err );
+            }
         }
     }.bind(this));
     this.save();
