@@ -41,6 +41,18 @@ var link = function(dbot) {
             var urlMatches = event.message.match(urlRegex);
             if(urlMatches !== null) {
                 links[event.channel.name] = urlMatches[0];
+
+                if(dbot.config.link.autoTitle == true) {
+                    request(urlMatches[0], function (error, response, body) {
+                        if(!error && response.statusCode == 200) {
+                            body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
+                            var title = body.valMatch(/<title>(.*)<\/title>/, 2);
+                            if(title) {
+                                event.reply(title[1]);
+                            }
+                        }
+                    });
+                }
             }
         },
         'on': 'PRIVMSG'
