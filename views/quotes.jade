@@ -1,26 +1,29 @@
-div#backlink 
-    a(href='/quotes/') &laquo; Quote list
-ul#quotelist
-    -var hasYouTubeVids=false
-    -each quote in quotes
-        -if(quote.match(locals.url_regex))
-            li.quote 
-                -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
-                    a(href=quote)
-                        img(src=quote)
-                -else if(quote.match(/youtube.com\/watch/))
-                    -hasYouTubeVids = true
-                    span(class='ytplaceholder')
-                        =quote
-                -else
-                    a(href=quote)
-                        =quote
-        -else if(quote.match(/~~([^~]+)~~/))
-            -var res = quote.match(/~~([^~]+)~~/)
-            -if(res != null)
-                li.quote
-                    a(href="/quotes/#{res[1]}") #{quote}
-        -else 
-            li.quote #{quote}
-    -if(hasYouTubeVids)
-        script(src='/ytembed.js')
+extends layout
+
+block content
+    div#backlink 
+        a(href='/quotes/') &laquo; Quote list
+    ul#quotelist
+        -var hasYouTubeVids=false
+        -each quote in quotes
+            -if(quote.match(locals.url_regex))
+                li.quote 
+                    -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
+                        a(href=quote)
+                            img(src=quote)
+                    -else if(quote.match(/youtube.com\/watch/))
+                        -hasYouTubeVids = true
+                        span(class='ytplaceholder')
+                            =quote
+                    -else
+                        a(href=quote)
+                            =quote
+            -else if(quote.match(/~~([^~]+)~~/))
+                -var res = quote.match(/~~([^~]+)~~/)
+                -if(res != null)
+                    li.quote
+                        a(href="/quotes/#{res[1]}") #{quote}
+            -else 
+                li.quote #{quote}
+        -if(hasYouTubeVids)
+            script(src='/ytembed.js')
