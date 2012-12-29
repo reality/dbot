@@ -18,52 +18,15 @@ Requirements:
   handles the IRC protocol.
 - Various modules have their own requirements also.
 
-### JSBot
+### External Modules
 
-JSBot can be imported by running the following commands in the cloned repository:
+JSBot and externally developed modules can be imported by running the following 
+commands in the cloned repository:
 	
 	git submodule init
 	git submodule update
 
 ## Modules:
-
-### Command
-
-This handles the command execution logic for DBot.
-
-1. Does the input match a command key in *dbot.commands* ?
-2. Is there a quote category which matches the first part of the input
-   (*~category*)?
-3. Is there a command name similar to to the first part of the input (*~name*)
-   in *dbot.commands*?
-
-This is the only module which is force loaded, even if it's not in the
-configuration.
-
-### Quotes
-
-This is the original reason that DBot was created, stores and displays quotes.
-
-Commands:
-
-- _~q category_ - Display a random quote from a given category.
-- _~qadd category=newquote_ - Add a new quote to the database.
-- _~qstats_ - Show a list of the biggest quote categories.
-- _~qsearch category needle_ - Search for a quote in a given category.
-- _~rmlast [category]_ - Remove the last quote added to a given category, or the
-  last quote added.
-- _~rm category quote_ - Remove a given quote from the given category.
-- _~qcount category_ - Show the number of quotes stored in the given category.
-- _~rq_ - Show a random quote from a random category.
-- _~d_ - Show a quote from the category which matches the bot's name.
-- _~link category_ - Create a link to the page on the web interface which displays the
-  given category's quotes.
-- _~qprune_ - Delete empty quote categories.
-
-Unfortunately, this module is fairly highly coupled with certain other areas of
-the program. I am working on this, but note, for example, that one can still
-access quotes with the *~category* syntax even if the quotes module isn't
-loaded.
 
 ### Admin
 
