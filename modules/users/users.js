@@ -21,21 +21,55 @@ var users = function(dbot) {
         }
     });
 
+    var commands = {
+        '~alias': function(event) {
+            var knownUsers = getServerUsers(event);
+            var alias = event.params[1].trim();
+            if(knownUsers.aliases.hasOwnProperty(alias)) {
+                event.reply(alias + ' is an alias of ' + knownUsers.aliases[alias]);
+            } else {
+                event.reply(alias + ' is not known as an alias to me.');
+            }
+        },
+
+        '~setaliasparent': function(event) {
+            if(dbot.config.admins.include(event.user)) {
+                var knownUsers = getServerUsers(event);
+                var newParent = event.params[1];
+
+                if(knownUsers.aliases.hasOwnProperty(newParent)) {
+                    var newAlias = knownUsers.aliases[newParent]; 
+
+                    // Replace users entry with new primary user
+                    var usersIndex = knownUsers.users.indexOf(newAlias);
+                    knownUsers.users[usersIndex] = newParent;
+
+                    // Remove alias for new parent & add alias for new alias
+                    delete knownUsers.aliases[newParent];
+                    knownUsers.aliases[newAlias] = newParent;
+
+                    // Update aliases to point to new primary user
+                    for(var alias in knownUsers.aliases) {
+                        if(knownUsers.aliases.hasOwnProperty(alias)) {
+                            if(knownUsers.aliases[alias] === newAlias) {
+                                knownUsers.aliases[alias] = newParent;
+                            }
+                        }
+                    }
+
+                    event.reply(newParent + ' is now the parent user, and ' +
+                        newAlias + ' is an alias.');
+                } else {
+                    event.reply('Given new parent does not currently exist as an alias.');
+                }
+            }
+        }
+    };
+
     return {
         'name': 'users',
         'ignorable': false,
-
-        'commands': {
-            '~alias': function(event) {
-                var knownUsers = getServerUsers(event);
-                var alias = event.params[1].trim();
-                if(knownUsers.aliases.hasOwnProperty(alias)) {
-                    event.reply(alias + ' is an alias of ' + knownUsers.aliases[alias]);
-                } else {
-                    event.reply(alias + ' is not known as an alias to me.');
-                }
-            }
-        },
+        'commands': commands,
             
         'listener': function(event) {
             var knownUsers = getServerUsers(event); 
