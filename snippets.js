@@ -263,3 +263,8 @@ Number.prototype.numberFormat = function(dec_places){
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, sep);
     return parts.join(dec_point);
 }
+
+// http://simonwillison.net/2006/Jan/20/escape/#p-6
+String.prototype.escape = function() {
+    return this.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
