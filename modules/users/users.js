@@ -45,7 +45,9 @@ var users = function(dbot) {
                 }
             } else if(event.action == 'NICK') {
                 var newNick = event.params.substr(1);
-                knownUsers.aliases[newNick] = event.user;
+                if(!knownUsers.users.include(newNick)) {
+                    knownUsers.aliases[newNick] = event.user;
+                }
             }
         },
         'on': ['JOIN', 'NICK'],
