@@ -26,9 +26,10 @@ var users = function(dbot) {
             var knownUsers = getServerUsers(event);
             var alias = event.params[1].trim();
             if(knownUsers.aliases.hasOwnProperty(alias)) {
-                event.reply(alias + ' is an alias of ' + knownUsers.aliases[alias]);
+                event.reply(dbot.t('alias', { 'alias': alias, 
+                    'user': knownUsers.aliases[alias] }));
             } else {
-                event.reply(alias + ' is not known as an alias to me.');
+                event.reply(dbot.t('unknown_alias', { 'alias': alias }));
             }
         },
 
@@ -57,10 +58,10 @@ var users = function(dbot) {
                         }
                     }
 
-                    event.reply(newParent + ' is now the parent user, and ' +
-                        newAlias + ' is an alias.');
+                    event.reply(dbot.t('aliasparentset', { 'newParent': newParent, 
+                        'newAlias': newAlias }));
                 } else {
-                    event.reply('Given new parent does not currently exist as an alias.');
+                    event.reply(dbot.t('unknown_alias', { 'alias': newParent}));
                 }
             }
         }

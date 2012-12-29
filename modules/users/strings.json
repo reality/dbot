@@ -1,0 +1,11 @@
+{
+    "alias": {
+        "english": "{alias} is an alias of {user}"
+    }, 
+    "unknown_alias": {
+        "english": "{alias} does not currently exist as an alias."
+    }, 
+    "aliasparentset": {
+        "english": "{newParent} is now the parent user, and {newAlias} is an alias"
+    }
+}
