@@ -21,18 +21,21 @@ var report = function(dbot) {
                     }
 
                     for(var i=0;i<ops.length;i++) {
-                        dbot.say(event.server, ops[i], 
-                            'Attention: ' + event.user + ' has reported ' +
-                            nick + ' in ' + channelName + '. The reason ' +
-                            'given was: "' + reason + '."');
+                        dbot.say(event.server, ops[i], dbot.t('report', {
+                            'reporter': event.user,
+                            'reported': nick,
+                            'channel': channelName,
+                            'reason': reason
+                        }));
                     }
 
-                    event.reply('Thank you, ' + nick + ' has been reported the channel administrators.');
+                    event.reply(dbot.t('reported', { 'reported': nick }));
                 } else {
-                    event.reply('User is not in that channel.');
+                    event.reply(dbot.t('user_not_found', { 'reported': nick,
+                        'channel': channelName }));
                 }
             } else {
-                event.reply('I am not in that channel.');
+                event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
             }
         }
 
