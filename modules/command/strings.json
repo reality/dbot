@@ -10,5 +10,8 @@
         "spanish": "Sintaxis no válida. Iniciar incineración.",
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
         "welsh": "Cystrawen annilys. Cychwyn orfflosgiad"
+    },
+    "no_usage_info": {
+        "No usage information found for {command}."
     }
 }
