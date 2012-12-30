@@ -157,17 +157,13 @@ var quotes = function(dbot) {
             if(rmAllowed == true || dbot.config.admins.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    if(!dbot.db.locks.include(key) || dbot.config.admins.include(event.user)) {
-                        var quote = quotes[key].pop();
-                        if(quotes[key].length === 0) {
-                            delete quotes[key];
-                        }
-                        resetRemoveTimer(event, key, quote);
-
-                        event.reply(dbot.t('removed_from', {'quote': quote, 'category': key}));
-                    } else {
-                        event.reply(dbot.t('locked_category', {'category': q[1]}));
+                    var quote = quotes[key].pop();
+                    if(quotes[key].length === 0) {
+                        delete quotes[key];
                     }
+                    resetRemoveTimer(event, key, quote);
+
+                    event.reply(dbot.t('removed_from', {'quote': quote, 'category': key}));
                 } else {
                     event.reply(dbot.t('no_quotes', {'category': q[1]}));
                 }
@@ -182,22 +178,18 @@ var quotes = function(dbot) {
                 var quote = event.input[2];
 
                 if(quotes.hasOwnProperty(key)) {
-                    if(!dbot.db.locks.include(key)) {
-                        var category = quotes[key];
-                        var index = category.indexOf(quote);
-                        if(index !== -1) {
-                            category.splice(index, 1);
-                            if(category.length === 0) {
-                                delete quotes[key];
-                            }
-                            resetRemoveTimer(event, key, quote);
-
-                            event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
-                        } else {
-                            event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
+                    var category = quotes[key];
+                    var index = category.indexOf(quote);
+                    if(index !== -1) {
+                        category.splice(index, 1);
+                        if(category.length === 0) {
+                            delete quotes[key];
                         }
+                        resetRemoveTimer(event, key, quote);
+
+                        event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
                     } else {
-                        event.reply(dbot.t('locked_category', {'category': key}));
+                        event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
                     }
                 } else {
                     event.reply(dbot.t('category_not_found', {'category': key}));

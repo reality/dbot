@@ -116,13 +116,6 @@ var admin = function(dbot) {
             } else {
                 event.reply(dbot.t('unban_error', {'user': username}));
             }
-        },
-
-        // Lock quote category so quotes can't be removed
-        'lock': function(event) {
-            var category = event.params[1];
-            dbot.db.locks.push(category);
-            event.reply(dbot.t('qlock', {'category': category}));
         }
     };
 
