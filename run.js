@@ -226,6 +226,9 @@ DBot.prototype.reloadModules = function() {
                 // Invalid or no string info
             }
 
+            module.toString = function() {
+                return this.name;
+            }
             this.modules[module.name] = module;
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));

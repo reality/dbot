@@ -7,11 +7,9 @@
 var ignore = function(dbot) {
     var commands = {
         '~ignore': function(event) {
-            var ignorableModules = [];
-            
-            dbot.modules.each(function(module) {
+            var ignorableModules = dbot.modules.filter(function(module) {
                 if(module.ignorable != null && module.ignorable == true) {
-                    ignorableModules.push(module.name);
+                    return true;
                 }
             });
             var module = event.params[1];
