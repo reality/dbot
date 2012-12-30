@@ -57,10 +57,34 @@ var command = function(dbot) {
             '~usage': function(event) {
                 var commandName = event.params[1];
                 if(dbot.usage.hasOwnProperty(commandName)) {
-                    event.reply('Usage for ' + commandName + ': ' +
-                        dbot.usage[commandName]); 
+                    event.reply(dbot.t('usage', {
+                        'command': commandName,
+                        'usage': dbot.usage[commandName]
+                    }));
                 } else {
-                    event.reply('No usage information for ' + commandName);
+                    event.reply(dbot.t('no_usage_info', { 
+                        'command': commandName 
+                    }));
+                }
+            },
+
+            '~help': function(event) {
+                var moduleName = event.params[1];
+                if(!dbot.modules.hasOwnProperty(moduleName)) {
+                    var moduleName = dbot.commandMap[moduleName]; 
+                }
+
+                if(moduleName && dbot.config[moduleName].hasOwnProperty('help')) {
+                    var help = dbot.config[modulename].help;
+                    event.reply(dbot.t('help_link', {
+                        'module': moduleName,
+                        'link': help
+                    }));
+                } else {
+                    if(!moduleName) {
+                        moduleName = event.params[1];
+                    }
+                    event.reply(dbot.t('no_help', { 'module': moduleName }))
                 }
             }
         },

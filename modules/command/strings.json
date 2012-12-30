@@ -11,7 +11,16 @@
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
         "welsh": "Cystrawen annilys. Cychwyn orfflosgiad"
     },
+    "usage": {
+        "english": "Usage for {command}: {usage}."
+    },
     "no_usage_info": {
-        "No usage information found for {command}."
+        "english": "No usage information found for {command}."
+    },
+    "help_link": {
+        "english": "Help for {module}: {link}."
+    },
+    "no_help": {
+        "english": "No help found for {module}."
     }
 }
