@@ -82,8 +82,12 @@ var users = function(dbot) {
                 }
             } else if(event.action == 'NICK') {
                 var newNick = event.params.substr(1);
-                if(!knownUsers.users.include(newNick)) {
-                    knownUsers.aliases[newNick] = event.user;
+                if(knownUsers.aliases.hasOwnProperty(event.user)) {
+                    knownUsers.aliases[newNick] = knownUsers.aliases[event.user];
+                } else {
+                    if(!knownUsers.users.include(newNick)) {
+                        knownUsers.aliases[newNick] = event.user;
+                    }
                 }
             }
         },
