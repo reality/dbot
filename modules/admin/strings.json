@@ -64,5 +64,11 @@
         "spanish": "Cerrado la categoría: {category}",
         "na'vi": "{category}ìri oel 'upxareti fmoli",
         "welsh": "Categori wedi cloi: {category}"
+    },
+    "already_in_channel": {
+        "english": "I'm already in {channel}"
+    },
+    "not_in_channel": {
+        "english": "I'm not in {channel}"
     }
 }

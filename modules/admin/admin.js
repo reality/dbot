@@ -13,7 +13,7 @@ var admin = function(dbot) {
         'join': function(event) {
             var channel = event.params[1];
             if(event.allChannels.hasOwnProperty(channel)) {
-                event.reply("I'm already in that channel.");
+                event.reply(dbot.t('already_in_channel', {'channel': channel}));
             } else {
                 dbot.instance.join(event, channel); 
                 event.reply(dbot.t('join', {'channel': channel}));
@@ -24,7 +24,7 @@ var admin = function(dbot) {
         'part': function(event) {
             var channel = event.params[1];
             if(!event.allChannels.hasOwnProperty(channel)) {
-                event.reply("I'm not in that channel.");
+                event.reply(dbot.t('not_in_channel', {'channel': channel}));
             } else {
                 event.instance.part(event, channel); 
                 event.reply(dbot.t('part', {'channel': channel}));
@@ -57,7 +57,7 @@ var admin = function(dbot) {
             event.reply(dbot.t('reload'));
         },
 
-        // Say something in a channel (TODO probably doesn't work.)
+        // Say something in a channel
         'say': function(event) {
             var channel = event.params[1];
             if(event.params[1] === "@") {
