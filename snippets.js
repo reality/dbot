@@ -204,7 +204,15 @@ Object.prototype.filter = function(fun) {
         }
     }
     return filtered;
-}
+};
+
+Object.prototype.each = function(fun) {
+    for(var key in this) {
+        if(this.hasOwnProperty(key)) {
+            fun(this[key]);
+        }
+    }
+};
 
 /*** Integer ***/
 

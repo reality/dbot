@@ -117,7 +117,7 @@ DBot.prototype.reloadModules = function() {
     }
 
     this.rawModules = [];
-    this.modules = [];
+    this.modules = {};
     this.commands = {};
     this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
@@ -226,7 +226,7 @@ DBot.prototype.reloadModules = function() {
                 // Invalid or no string info
             }
 
-            this.modules.push(module);
+            this.modules[module.name] = module;
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
             if(this.config.debugMode) {
