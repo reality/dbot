@@ -25,7 +25,7 @@ var link = function(dbot) {
                     if(title) {
                         event.reply(title[1]);
                     } else {
-                        event.reply('no title found');
+                        event.reply(dbot.t('title_not_found'));
                     }
                 }
             });
