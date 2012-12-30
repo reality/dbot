@@ -265,38 +265,43 @@ var quotes = function(dbot) {
         'commands': commands,
 
         'listener': function(event) {
-            // Reality Once listener
-            if((dbot.db.ignores.hasOwnProperty(event) && 
-                        dbot.db.ignores[event.user].include(name)) == false) {
-                if(event.user == 'reality') {
-                    var once = event.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
-                } else {
-                    var once = event.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
-                }
-
-                if(once) {
-                    if((dbot.db.bans.hasOwnProperty('~qadd') &&
-                    dbot.db.bans['~qadd'].include(event.user)) ||
-                    dbot.db.bans['*'].include(event.user)) {
-                        event.reply(dbot.t('command_ban', {'user': event.user})); 
+            if(event.action == 'PRIVMSG') {
+                if((dbot.db.ignores.hasOwnProperty(event) && 
+                            dbot.db.ignores[event.user].include(name)) == false) {
+                    if(event.user == 'reality') {
+                        var once = event.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
                     } else {
-                        if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
-                            dbot.db.quoteArrs['realityonce'] = [];
-                        }
-                        if(dbot.db.quoteArrs['realityonce'].include('reality ' + once[1] + '.')) {
-                            event.reply(event.user + ': reality has already done that once.');
+                        var once = event.message.valMatch(/^reality ([\d\w\s,'-]* once)/, 2);
+                    }
+
+                    if(once) {
+                        if((dbot.db.bans.hasOwnProperty('~qadd') &&
+                        dbot.db.bans['~qadd'].include(event.user)) ||
+                        dbot.db.bans['*'].include(event.user)) {
+                            event.reply(dbot.t('command_ban', {'user': event.user})); 
                         } else {
-                            dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
-                            addStack.push('realityonce');
-                            rmAllowed = true;
-                            event.reply('\'reality ' + once[1] + '.\' saved.');
+                            if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
+                                dbot.db.quoteArrs['realityonce'] = [];
+                            }
+                            if(dbot.db.quoteArrs['realityonce'].include('reality ' + once[1] + '.')) {
+                                event.reply(event.user + ': reality has already done that once.');
+                            } else {
+                                dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
+                                addStack.push('realityonce');
+                                rmAllowed = true;
+                                event.reply('\'reality ' + once[1] + '.\' saved.');
+                            }
                         }
                     }
                 }
+            } else if(event.action == 'JOIN') {
+                event.message = '~q ' + event.user;
+                event.action = 'PRIVMSG';
+                event.params = event.message.split(' ');
+                dbot.instance.emit(event);
             }
         },
-
-        'on': 'PRIVMSG'
+        'on': ['PRIVMSG', 'JOIN']
     };
 };
 
