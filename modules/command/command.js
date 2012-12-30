@@ -75,7 +75,7 @@ var command = function(dbot) {
                 }
 
                 if(moduleName && dbot.config[moduleName].hasOwnProperty('help')) {
-                    var help = dbot.config[modulename].help;
+                    var help = dbot.config[moduleName].help;
                     event.reply(dbot.t('help_link', {
                         'module': moduleName,
                         'link': help

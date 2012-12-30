@@ -18,7 +18,7 @@
         "english": "No usage information found for {command}."
     },
     "help_link": {
-        "english": "Help for {module}: {link}."
+        "english": "Help for {module}: {link}"
     },
     "no_help": {
         "english": "No help found for {module}."

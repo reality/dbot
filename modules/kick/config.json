@@ -1,3 +1,4 @@
 {
-    "dbKeys": [ "kicks", "kickers" ]
+    "dbKeys": [ "kicks", "kickers" ],
+    "help": "http://github.com/reality/depressionbot/blob/master/modules/kick/README.md"
 }
