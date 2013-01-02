@@ -1,6 +1,3 @@
 [submodule "jsbot"]
 	path = jsbot
 	url = git://github.com/reality/jsbot.git
-[submodule "modules/stats"]
-	path = modules/stats
-	url = git://github.com/SamStudio8/stats.git
