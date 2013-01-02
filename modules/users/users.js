@@ -11,6 +11,17 @@ var users = function(dbot) {
         return knownUsers[event.server];    
     };
 
+    var updateAliases = function(event, oldUser, newUser) {
+        var knownUsers = getServerUsers(event);
+        for(var alias in knownUsers.aliases) {
+            if(knownUsers.aliases.hasOwnProperty(alias)) {
+                if(knownUsers.aliases[alias] === oldUser) {
+                    knownUsers.aliases[alias] = newUser;
+                }
+            }
+        }
+    }
+
     dbot.instance.addListener('366', 'users', function(event) {
         var knownUsers = getServerUsers(event);
         for(var nick in event.channel.nicks) {
@@ -56,13 +67,7 @@ var users = function(dbot) {
                     knownUsers.aliases[newAlias] = newParent;
 
                     // Update aliases to point to new primary user
-                    for(var alias in knownUsers.aliases) {
-                        if(knownUsers.aliases.hasOwnProperty(alias)) {
-                            if(knownUsers.aliases[alias] === newAlias) {
-                                knownUsers.aliases[alias] = newParent;
-                            }
-                        }
-                    }
+                    updateAliases(event, newAlias, newParent);
 
                     event.reply(dbot.t('aliasparentset', { 'newParent': newParent, 
                         'newAlias': newAlias }));
@@ -72,6 +77,27 @@ var users = function(dbot) {
                     event.reply(dbot.t('unknown_alias', { 'alias': newParent}));
                 }
             }
+        },
+
+        '~mergeusers': function(event) {
+            if(dbot.config.admins.include(event.user)) {
+                var knownUsers = getServerUsers(event);
+                var primaryUser = event.params[1];
+                var secondaryUser = event.params[2];
+
+                if(knownUsers.users.include(primaryUser) && knownUsers.users.include(secondaryUser)) {
+                    knownUsers.users.splice(knownUsers.users.indexOf(secondaryUser), 1);  
+                    knownUsers.aliases[secondaryUser] = primaryUser;
+                    updateAliases(event, secondaryUser, primaryUser);
+
+                    event.reply(dbot.t('merged_users', { 
+                        'old_user': secondaryUser,
+                        'new_user': primaryUser
+                    }));
+                } else {
+                    event.reply(dbot.t('unprimary_error'));
+                }
+           } 
         }
     };
 
