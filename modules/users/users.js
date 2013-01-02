@@ -25,7 +25,13 @@ var users = function(dbot) {
         '~alias': function(event) {
             var knownUsers = getServerUsers(event);
             var alias = event.params[1].trim();
-            if(knownUsers.aliases.hasOwnProperty(alias)) {
+            if(knownUsers.users.include(alias)) {
+                var aliasCount = 0;
+                knownUsers.aliases.each(function(primaryUser) {
+                    if(primaryUser == alias) aliasCount += 1;
+                }.bind(this));
+                event.reply(dbot.t('primary', { 'user': alias, 'count': aliasCount })); 
+            } else if(knownUsers.aliases.hasOwnProperty(alias)) {
                 event.reply(dbot.t('alias', { 'alias': alias, 
                     'user': knownUsers.aliases[alias] }));
             } else {
