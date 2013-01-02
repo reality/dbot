@@ -60,7 +60,8 @@ var users = function(dbot) {
 
                     // Replace users entry with new primary user
                     var usersIndex = knownUsers.users.indexOf(newAlias);
-                    knownUsers.users[usersIndex] = newParent;
+                    knownUsers.splice(usersIndex, 1);
+                    knownUsers.users.push(newParent);
 
                     // Remove alias for new parent & add alias for new alias
                     delete knownUsers.aliases[newParent];
