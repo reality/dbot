@@ -55,6 +55,26 @@ var quotes = function(dbot) {
         }
     };
 
+    var api = {
+        'getQuote': function(category) {
+            var key = category.trim().toLowerCase();
+            var altKey;
+            if(key.split(' ').length > 0) {
+                altKey = key.replace(/ /g, '_');
+            }
+
+            if(key.charAt(0) !== '_') { // lol
+                if(quotes.hasOwnProperty(key)) {
+                    return interpolatedQuote(key);
+                } else if(quotes.hasOwnProperty(altKey)) {
+                    return interpolatedQuote(altKey);
+                } else {
+                    return false;
+                }
+            } 
+        }
+    };
+
     var commands = {
         // Alternative syntax to ~q
         '~': function(event) {
@@ -101,19 +121,11 @@ var quotes = function(dbot) {
         // Retrieve quote from a category in the database.
         '~q': function(event) { 
             var key = event.input[1].trim().toLowerCase();
-            var altKey;
-            if(key.split(' ').length > 0) {
-                altKey = key.replace(/ /g, '_');
-            }
-
-            if(key.charAt(0) !== '_') { // lol
-                if(quotes.hasOwnProperty(key)) {
-                    event.reply(key + ': ' + interpolatedQuote(key));
-                } else if(quotes.hasOwnProperty(altKey)) {
-                    event.reply(altKey + ': ' + interpolatedQuote(altKey));
-                } else {
-                    event.reply(dbot.t('category_not_found', {'category': key}));
-                }
+            var quote = api.getQuote(event.input[1]);
+            if(quote) {
+                event.reply(key + ': ' + quote);
+            } else {
+                event.reply(dbot.t('category_not_found', {'category': key}));
             }
         },
 
@@ -263,6 +275,7 @@ var quotes = function(dbot) {
         'name': 'quotes',
         'ignorable': true,
         'commands': commands,
+        'api': api,
 
         'listener': function(event) {
             if(event.action == 'PRIVMSG') {
@@ -279,10 +292,10 @@ var quotes = function(dbot) {
                     dbot.instance.emit(event);
                }
             } else if(event.action == 'JOIN') {
-                event.message = '~q ' + event.user;
-                event.action = 'PRIVMSG';
-                event.params = event.message.split(' ');
-                dbot.instance.emit(event);
+                var userQuote = api.getQuote(event.user)
+                if(userQuote) {
+                    event.reply(event.user + ': ' + api.getQuote(event.user));
+                }
             }
         },
         'on': ['PRIVMSG', 'JOIN']
