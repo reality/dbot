@@ -119,6 +119,7 @@ DBot.prototype.reloadModules = function() {
     this.rawModules = [];
     this.modules = {};
     this.commands = {};
+    this.api = {};
     this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
     this.timers.clearTimers();
@@ -192,6 +193,11 @@ DBot.prototype.reloadModules = function() {
                         this.commandMap[key] = name;
                     }
                 }
+            }
+
+            // Load module API
+            if(module.api) {
+                this.api[module.name] = module.api;
             }
 
             // Load the module usage data

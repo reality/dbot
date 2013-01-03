@@ -4,15 +4,15 @@
  */
 var users = function(dbot) {
     var knownUsers = dbot.db.knownUsers;
-    var getServerUsers = function(event) {
-        if(!knownUsers.hasOwnProperty(event.server)) {
-            knownUsers[event.server] = { 'users': [], 'aliases': {} };
+    var getServerUsers = function(server) {
+        if(!knownUsers.hasOwnProperty(server)) {
+            knownUsers[server] = { 'users': [], 'aliases': {} };
         }
-        return knownUsers[event.server];    
+        return knownUsers[server];    
     };
 
     var updateAliases = function(event, oldUser, newUser) {
-        var knownUsers = getServerUsers(event);
+        var knownUsers = getServerUsers(event.server);
         for(var alias in knownUsers.aliases) {
             if(knownUsers.aliases.hasOwnProperty(alias)) {
                 if(knownUsers.aliases[alias] === oldUser) {
@@ -23,7 +23,7 @@ var users = function(dbot) {
     }
 
     dbot.instance.addListener('366', 'users', function(event) {
-        var knownUsers = getServerUsers(event);
+        var knownUsers = getServerUsers(event.server);
         for(var nick in event.channel.nicks) {
             if(!knownUsers.users.include(nick) && !knownUsers.aliases.hasOwnProperty(nick) &&
                     event.channel.nicks.hasOwnProperty(nick)) {
@@ -32,9 +32,21 @@ var users = function(dbot) {
         }
     });
 
+    var api = {
+        'resolveUser': function(server, nick) {
+            var knownUsers = getServerUsers(server); 
+            var user = nick;
+            if(!knownUsers.users.include(nick) && knownUsers.aliases.hasOwnProperty(nick)) {
+                user = knownUsers.aliases[nick];
+            }
+
+            return user;
+        }
+    };
+
     var commands = {
         '~alias': function(event) {
-            var knownUsers = getServerUsers(event);
+            var knownUsers = getServerUsers(event.server);
             var alias = event.params[1].trim();
             if(knownUsers.users.include(alias)) {
                 var aliasCount = 0;
@@ -52,7 +64,7 @@ var users = function(dbot) {
 
         '~setaliasparent': function(event) {
             if(dbot.config.admins.include(event.user)) {
-                var knownUsers = getServerUsers(event);
+                var knownUsers = getServerUsers(event.server);
                 var newParent = event.params[1];
 
                 if(knownUsers.aliases.hasOwnProperty(newParent)) {
@@ -82,7 +94,7 @@ var users = function(dbot) {
 
         '~mergeusers': function(event) {
             if(dbot.config.admins.include(event.user)) {
-                var knownUsers = getServerUsers(event);
+                var knownUsers = getServerUsers(event.server);
                 var primaryUser = event.params[1];
                 var secondaryUser = event.params[2];
 
@@ -106,9 +118,10 @@ var users = function(dbot) {
         'name': 'users',
         'ignorable': false,
         'commands': commands,
+        'api': api,
             
         'listener': function(event) {
-            var knownUsers = getServerUsers(event); 
+            var knownUsers = getServerUsers(event.server); 
             if(event.action == 'JOIN') {
                 if(!knownUsers.users.include(event.user)) {
                     knownUsers.users.push(event.user);
