@@ -216,11 +216,37 @@ var poll = function(dbot) {
     commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
     commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
     commands['~count'].regex = [/~count ([^ ]+)/, 2];
+
+    var pages = {
+        // Shows the results of a poll
+        '/polls/:key': function(req, res) {
+            var key = req.params.key.toLowerCase();
+            if(dbot.db.polls.hasOwnProperty(key) && dbot.db.polls[key].hasOwnProperty('description')) {
+                // tally the votes
+                var totalVotes = 0;
+                for( var v in dbot.db.polls[key].votes ) {
+                    var N = Number(dbot.db.polls[key].votes[v]);
+                    if( !isNaN(N) ) {
+                        totalVotes += N;
+                    }
+                }
+                res.render('polls', { 'name': dbot.config.name, 'description': dbot.db.polls[key].description, 'votees': Object.keys(dbot.db.polls[key].votees), 'options': dbot.db.polls[key].votes, locals: { 'totalVotes': totalVotes, 'url_regex': RegExp.prototype.url_regex() } });
+            } else {
+                res.render('error', { 'name': dbot.config.name, 'message': 'No polls under that key.' });
+            }
+        },
+
+        // Lists all of the polls
+        '/polls': function(req, res) {
+            res.render('polllist', { 'name': dbot.config.name, 'polllist': Object.keys(dbot.db.polls) });
+        },
+    };
     
     return {
         'name': 'poll',
         'ignorable': true,
-        'commands': commands
+        'commands': commands,
+        'pages': pages
     };
 };
 
