@@ -44,9 +44,11 @@ var admin = function(dbot) {
 
         // Do a git pull and reload
         'greload': function(event) {
-            var child = exec("git pull", function (error, stdout, stderr) {
-                event.reply(dbot.t('gpull'));
-                commands.reload(event);
+            exec("git pull", function (error, stdout, stderr) {
+                exec("git submodule update", function (error, stdout, stderr) {
+                    event.reply(dbot.t('gpull'));
+                    commands.reload(event);
+                }.bind(this));
             }.bind(this));
         },
 
