@@ -55,6 +55,26 @@ var quotes = function(dbot) {
         }
     };
 
+    var api = {
+        'getQuote': function(category) {
+            var key = category.trim().toLowerCase();
+            var altKey;
+            if(key.split(' ').length > 0) {
+                altKey = key.replace(/ /g, '_');
+            }
+
+            if(key.charAt(0) !== '_') { // lol
+                if(quotes.hasOwnProperty(key)) {
+                    return interpolatedQuote(key);
+                } else if(quotes.hasOwnProperty(altKey)) {
+                    return interpolatedQuote(altKey);
+                } else {
+                    return false;
+                }
+            } 
+        }
+    };
+
     var commands = {
         // Alternative syntax to ~q
         '~': function(event) {
@@ -101,19 +121,11 @@ var quotes = function(dbot) {
         // Retrieve quote from a category in the database.
         '~q': function(event) { 
             var key = event.input[1].trim().toLowerCase();
-            var altKey;
-            if(key.split(' ').length > 0) {
-                altKey = key.replace(/ /g, '_');
-            }
-
-            if(key.charAt(0) !== '_') { // lol
-                if(quotes.hasOwnProperty(key)) {
-                    event.reply(key + ': ' + interpolatedQuote(key));
-                } else if(quotes.hasOwnProperty(altKey)) {
-                    event.reply(altKey + ': ' + interpolatedQuote(altKey));
-                } else {
-                    event.reply(dbot.t('category_not_found', {'category': key}));
-                }
+            var quote = api.getQuote(event.input[1]);
+            if(quote) {
+                event.reply(key + ': ' + quote);
+            } else {
+                event.reply(dbot.t('category_not_found', {'category': key}));
             }
         },
 
@@ -157,17 +169,13 @@ var quotes = function(dbot) {
             if(rmAllowed == true || dbot.config.admins.include(event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(quotes.hasOwnProperty(key)) {
-                    if(!dbot.db.locks.include(key) || dbot.config.admins.include(event.user)) {
-                        var quote = quotes[key].pop();
-                        if(quotes[key].length === 0) {
-                            delete quotes[key];
-                        }
-                        resetRemoveTimer(event, key, quote);
-
-                        event.reply(dbot.t('removed_from', {'quote': quote, 'category': key}));
-                    } else {
-                        event.reply(dbot.t('locked_category', {'category': q[1]}));
+                    var quote = quotes[key].pop();
+                    if(quotes[key].length === 0) {
+                        delete quotes[key];
                     }
+                    resetRemoveTimer(event, key, quote);
+
+                    event.reply(dbot.t('removed_from', {'quote': quote, 'category': key}));
                 } else {
                     event.reply(dbot.t('no_quotes', {'category': q[1]}));
                 }
@@ -182,22 +190,18 @@ var quotes = function(dbot) {
                 var quote = event.input[2];
 
                 if(quotes.hasOwnProperty(key)) {
-                    if(!dbot.db.locks.include(key)) {
-                        var category = quotes[key];
-                        var index = category.indexOf(quote);
-                        if(index !== -1) {
-                            category.splice(index, 1);
-                            if(category.length === 0) {
-                                delete quotes[key];
-                            }
-                            resetRemoveTimer(event, key, quote);
-
-                            event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
-                        } else {
-                            event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
+                    var category = quotes[key];
+                    var index = category.indexOf(quote);
+                    if(index !== -1) {
+                        category.splice(index, 1);
+                        if(category.length === 0) {
+                            delete quotes[key];
                         }
+                        resetRemoveTimer(event, key, quote);
+
+                        event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
                     } else {
-                        event.reply(dbot.t('locked_category', {'category': key}));
+                        event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
                     }
                 } else {
                     event.reply(dbot.t('category_not_found', {'category': key}));
@@ -295,11 +299,10 @@ var quotes = function(dbot) {
         'ignorable': true,
         'commands': commands,
         'pages': pages,
+        'api': api,
 
         'listener': function(event) {
-            // Reality Once listener
-            if((dbot.db.ignores.hasOwnProperty(event) && 
-                        dbot.db.ignores[event.user].include(name)) == false) {
+            if(event.action == 'PRIVMSG') {
                 if(event.user == 'reality') {
                     var once = event.message.valMatch(/^I ([\d\w\s,'-]* once)/, 2);
                 } else {
@@ -307,28 +310,19 @@ var quotes = function(dbot) {
                 }
 
                 if(once) {
-                    if((dbot.db.bans.hasOwnProperty('~qadd') &&
-                    dbot.db.bans['~qadd'].include(event.user)) ||
-                    dbot.db.bans['*'].include(event.user)) {
-                        event.reply(dbot.t('command_ban', {'user': event.user})); 
-                    } else {
-                        if(!dbot.db.quoteArrs.hasOwnProperty('realityonce')) {
-                            dbot.db.quoteArrs['realityonce'] = [];
-                        }
-                        if(dbot.db.quoteArrs['realityonce'].include('reality ' + once[1] + '.')) {
-                            event.reply(event.user + ': reality has already done that once.');
-                        } else {
-                            dbot.db.quoteArrs['realityonce'].push('reality ' + once[1] + '.');
-                            addStack.push('realityonce');
-                            rmAllowed = true;
-                            event.reply('\'reality ' + once[1] + '.\' saved.');
-                        }
-                    }
+                    event.message = '~qadd realityonce=reality ' + once[1];
+                    event.action = 'PRIVMSG';
+                    event.params = event.message.split(' ');
+                    dbot.instance.emit(event);
+               }
+            } else if(event.action == 'JOIN') {
+                var userQuote = api.getQuote(event.user)
+                if(userQuote) {
+                    event.reply(event.user + ': ' + api.getQuote(event.user));
                 }
             }
         },
-
-        'on': 'PRIVMSG'
+        'on': ['PRIVMSG', 'JOIN']
     };
 };
 

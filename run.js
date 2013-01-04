@@ -117,9 +117,10 @@ DBot.prototype.reloadModules = function() {
     }
 
     this.rawModules = [];
-    this.modules = [];
     this.pages = {};
+    this.modules = {};
     this.commands = {};
+    this.api = {};
     this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
     this.timers.clearTimers();
@@ -209,6 +210,11 @@ DBot.prototype.reloadModules = function() {
                 }
             }
 
+            // Load module API
+            if(module.api) {
+                this.api[module.name] = module.api;
+            }
+
             // Load the module usage data
             try {
                 var usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
@@ -241,7 +247,10 @@ DBot.prototype.reloadModules = function() {
                 // Invalid or no string info
             }
 
-            this.modules.push(module);
+            module.toString = function() {
+                return this.name;
+            }
+            this.modules[module.name] = module;
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
             if(this.config.debugMode) {

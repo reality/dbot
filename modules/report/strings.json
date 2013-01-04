@@ -1,0 +1,14 @@
+{
+    "report": {
+        "english": "Attention: {reporter} has reported {reported} in {channel}. The reason given was: \"{reason}.\""
+    },
+    "reported": {
+        "english": "Thank you, {reported} has been reported to the channel administrators."
+    },
+    "user_not_found": {
+        "english": "{reported} does not appear to be in {channel}."
+    },
+    "not_in_channel": {
+        "english": "I am not present in {channel}."
+    }
+}

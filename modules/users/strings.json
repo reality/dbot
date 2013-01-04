@@ -1,0 +1,20 @@
+{
+    "alias": {
+        "english": "{alias} is an alias of {user}"
+    }, 
+    "primary": {
+        "english": "{user} is a primary user with {count} aliases."
+    },
+    "unknown_alias": {
+        "english": "{alias} does not currently exist as an alias or known user."
+    }, 
+    "aliasparentset": {
+        "english": "{newParent} is now the parent user, and {newAlias} is an alias."
+    },
+    "unprimary_error": {
+        "english": "One of those users isn't currently recorded as a primary user."
+    },
+    "merged_users": {
+        "english": "{old_user} and their aliases have been merged into {new_user}."
+    }
+}
