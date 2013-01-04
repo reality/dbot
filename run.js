@@ -117,6 +117,7 @@ DBot.prototype.reloadModules = function() {
     }
 
     this.rawModules = [];
+    this.pages = {};
     this.modules = {};
     this.commands = {};
     this.api = {};
@@ -169,6 +170,8 @@ DBot.prototype.reloadModules = function() {
             var module = rawModule.fetch(this);
             this.rawModules.push(rawModule);
 
+            module.name = name;
+
             if(module.listener) {
                 var listenOn = module.on;
                 if(!(listenOn instanceof Array)) {
@@ -191,6 +194,18 @@ DBot.prototype.reloadModules = function() {
                     if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
                         this.commands[key] = newCommands[key];
                         this.commandMap[key] = name;
+                    }
+                }
+            }
+
+            // Load module web bits
+            if(module.pages) {
+                var newpages = module.pages;
+                for(var key in newpages)
+                {
+                    if(newpages.hasOwnProperty(key) && Object.prototype.isFunction(newpages[key])) {
+                        this.pages[key] = newpages[key];
+                        this.pages[key].module = module;
                     }
                 }
             }
@@ -246,8 +261,17 @@ DBot.prototype.reloadModules = function() {
             }
         }
     }.bind(this));
+    this.reloadPages();
     this.save();
 };
+
+DBot.prototype.reloadPages = function() {
+    for( var m in this.modules ) {
+        if( Object.prototype.isFunction(this.modules[m].reloadPages)) {
+            this.modules[m].reloadPages(this.pages);
+        }
+    }
+}
 
 DBot.prototype.cleanNick = function(key) {
     key = key.toLowerCase();
