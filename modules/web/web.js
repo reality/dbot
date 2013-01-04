@@ -3,7 +3,7 @@ var express = require('express'),
 
 var webInterface = function(dbot) {
     var pub = 'public';
-    var app = express.createServer();
+    var app = express();
 
     app.use(express.static(pub));
     app.set('view engine', 'jade');
