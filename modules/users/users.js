@@ -40,6 +40,7 @@ var users = function(dbot) {
                 user = knownUsers.aliases[nick];
             }
 
+            if(useLowercase) user = user.toLowerCase();
             return user;
         }
     };
