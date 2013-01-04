@@ -85,7 +85,7 @@ var users = function(dbot) {
                     event.reply(dbot.t('aliasparentset', { 'newParent': newParent, 
                         'newAlias': newAlias }));
 
-                    dbot.modules.stats.fixStats(event.server, newAlias); // :'(
+                    dbot.api.stats.fixStats(event.server, newAlias);
                 } else {
                     event.reply(dbot.t('unknown_alias', { 'alias': newParent}));
                 }
@@ -107,6 +107,8 @@ var users = function(dbot) {
                         'old_user': secondaryUser,
                         'new_user': primaryUser
                     }));
+                    
+                    dbot.api.stats.fixStats(event.server, secondaryUser);
                 } else {
                     event.reply(dbot.t('unprimary_error'));
                 }
