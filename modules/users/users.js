@@ -33,7 +33,7 @@ var users = function(dbot) {
     });
 
     var api = {
-        'resolveUser': function(server, nick) {
+        'resolveUser': function(server, nick, useLowercase) {
             var knownUsers = getServerUsers(server); 
             var user = nick;
             if(!knownUsers.users.include(nick) && knownUsers.aliases.hasOwnProperty(nick)) {
