@@ -11,9 +11,8 @@ var webInterface = function(dbot) {
     app.get('/', function(req, res) {
         res.render('index', { 'name': dbot.config.name });
     });
-
     
-    app.listen(dbot.config.web.webPort);
+    var server = app.listen(dbot.config.web.webPort);
 
     var reloadPages = function(pages) {
         for(var p in pages) {
@@ -40,7 +39,7 @@ var webInterface = function(dbot) {
         'reloadPages': reloadPages,
 
         'onDestroy': function() {
-            app.close();
+            server.close();
         }
     };
 };
