@@ -48,13 +48,12 @@ var admin = function(dbot) {
                 exec("git submodule update", function (error, stdout, stderr) {
                     event.reply(dbot.t('gpull'));
                     commands.reload(event);
+                    event.message = 'version';
+                    event.action = 'PRIVMSG';                                       
+                    event.params = event.message.split(' ');                        
+                    dbot.instance.emit(event);  
                 }.bind(this));
             }.bind(this));
-
-            event.message = 'version';
-            event.action = 'PRIVMSG';                                       
-            event.params = event.message.split(' ');                        
-            dbot.instance.emit(event);  
         },
 
         // Display commit information for part of dbot
