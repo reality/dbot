@@ -1,3 +1,4 @@
 {
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/command/README.md"
+    "help": "http://github.com/reality/depressionbot/blob/master/modules/command/README.md",
+    "dbKeys": [ "ignores" ]
 }
