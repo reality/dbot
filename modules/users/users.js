@@ -6,7 +6,7 @@ var users = function(dbot) {
     var knownUsers = dbot.db.knownUsers;
     var getServerUsers = function(server) {
         if(!knownUsers.hasOwnProperty(server)) {
-            knownUsers[server] = { 'users': [], 'aliases': {} };
+            knownUsers[server] = { 'users': [], 'aliases': {}, 'channelUsers': {} };
         }
         return knownUsers[server];    
     };
@@ -22,14 +22,34 @@ var users = function(dbot) {
         }
     }
 
+    var updateChannels = function(event, oldUser, newUser) {
+        var channelUsers = getServerUsers(event.server).channelUsers;
+        channelUsers.each(function(channel) {
+            if(channel.include(oldUser)) {
+                channel.splice(channel.indexOf(oldUser), 1);
+                channel.push(newUser);
+            }
+        }.bind(this));
+    }
+
     dbot.instance.addListener('366', 'users', function(event) {
         var knownUsers = getServerUsers(event.server);
-        for(var nick in event.channel.nicks) {
-            if(!knownUsers.users.include(nick) && !knownUsers.aliases.hasOwnProperty(nick) &&
-                    event.channel.nicks.hasOwnProperty(nick)) {
+        if(!knownUsers.channelUsers.hasOwnProperty(event.channel.name)) {
+            knownUsers.channelUsers[event.channel.name] = [];
+        }
+        var channelUsers = knownUsers.channelUsers[event.channel.name];
+
+        event.channel.nicks.each(function(nick) {
+            nick = nick.name;
+            if(api.isKnownUser(event.server, nick)) {
+                nick = api.resolveUser(nick);
+            } else {
                 knownUsers.users.push(nick);
             }
-        }
+            if(!channelUsers.include(nick)) {
+                channelUsers.push(nick);
+            }
+        }.bind(this));
     });
 
     var pages = {
@@ -101,6 +121,11 @@ var users = function(dbot) {
 
             if(useLowercase) user = user.toLowerCase();
             return user;
+        },
+
+        'isKnownUser': function(server, nick) {
+            var knownUsers = getServerUsers(server); 
+            return (knownUsers.users.include(nick) || knownUsers.aliases.hasOwnProperty(nick));
         }
     };
 
@@ -135,6 +160,9 @@ var users = function(dbot) {
                     knownUsers.users.splice(usersIndex, 1);
                     knownUsers.users.push(newParent);
 
+                    // Replace channels entries with new primary user
+                    updateChannels(event, newAlias, newParent);
+
                     // Remove alias for new parent & add alias for new alias
                     delete knownUsers.aliases[newParent];
                     knownUsers.aliases[newAlias] = newParent;
@@ -162,6 +190,7 @@ var users = function(dbot) {
                     knownUsers.users.splice(knownUsers.users.indexOf(secondaryUser), 1);  
                     knownUsers.aliases[secondaryUser] = primaryUser;
                     updateAliases(event, secondaryUser, primaryUser);
+                    updateChannels(event, secondaryUser, primaryUser);
 
                     event.reply(dbot.t('merged_users', { 
                         'old_user': secondaryUser,
@@ -185,9 +214,21 @@ var users = function(dbot) {
             
         'listener': function(event) {
             var knownUsers = getServerUsers(event.server); 
+            var nick = event.user;
+
             if(event.action == 'JOIN') {
-                if(!knownUsers.users.include(event.user)) {
-                    knownUsers.users.push(event.user);
+                if(!knownUsers.channelUsers.hasOwnProperty(event.channel.name)) {
+                    knownUsers.channelUsers[event.channel.name] = [];
+                }
+                var channelUsers = knownUsers.channelUsers[event.channel.name];
+
+                if(api.isKnownUser(event.server, nick)) {
+                    nick = api.resolveUser(nick);
+                } else {
+                    knownUsers.users.push(nick);
+                }
+                if(!channelUsers.include(nick)) {
+                    channelUsers.push(nick);
                 }
             } else if(event.action == 'NICK') {
                 var newNick = event.params.substr(1);
