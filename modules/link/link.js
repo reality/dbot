@@ -14,8 +14,6 @@ var link = function(dbot) {
                 var title = body.valMatch(/<title>(.*)<\/title>/, 2);
                 if(title) {
                     event.reply(title[1]);
-                } else {
-                    event.reply(dbot.t('title_not_found'));
                 }
             }
         });
