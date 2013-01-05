@@ -50,6 +50,34 @@ var admin = function(dbot) {
                     commands.reload(event);
                 }.bind(this));
             }.bind(this));
+
+            event.message = 'version';
+            event.action = 'PRIVMSG';                                       
+            event.params = event.message.split(' ');                        
+            dbot.instance.emit(event);  
+        },
+
+        // Display commit information for part of dbot
+        'version': function(event){
+            var cmd = "git log --pretty=format:'%h (%s): %ar' -n 1 -- ";
+            if(event.params[1]){
+                var input = event.params[1].trim();
+                if(dbot.modules.hasOwnProperty(input.split("/")[0])){
+                    cmd += "modules/"+input;
+                }
+                else{
+                    cmd += input;
+                }
+            }
+
+            exec(cmd, function(error, stdout, stderr){
+                if(stdout.length > 0){
+                    event.reply(stdout);
+                }
+                else{
+                    event.reply("No version information or queried module not loaded");
+                }
+            }.bind(this));
         },
 
         // Reload DB, translations and modules.
