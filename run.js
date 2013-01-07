@@ -152,6 +152,14 @@ DBot.prototype.reloadModules = function() {
         delete require.cache[cacheKey];
 
         try {
+            var webKey = require.resolve(moduleDir + 'web');
+        } catch(err) {
+        }
+        if(webKey) {
+            delete require.cache[webKey];
+        }
+
+        try {
             // Load the module config data
             try {
                 var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
