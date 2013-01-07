@@ -48,7 +48,34 @@ var admin = function(dbot) {
                 exec("git submodule update", function (error, stdout, stderr) {
                     event.reply(dbot.t('gpull'));
                     commands.reload(event);
+                    event.message = 'version';
+                    event.action = 'PRIVMSG';                                       
+                    event.params = event.message.split(' ');                        
+                    dbot.instance.emit(event);  
                 }.bind(this));
+            }.bind(this));
+        },
+
+        // Display commit information for part of dbot
+        'version': function(event){
+            var cmd = "git log --pretty=format:'%h (%s): %ar' -n 1 -- ";
+            if(event.params[1]){
+                var input = event.params[1].trim();
+                if(dbot.modules.hasOwnProperty(input.split("/")[0])){
+                    cmd += "modules/"+input;
+                }
+                else{
+                    cmd += input;
+                }
+            }
+
+            exec(cmd, function(error, stdout, stderr){
+                if(stdout.length > 0){
+                    event.reply(stdout);
+                }
+                else{
+                    event.reply("No version information or queried module not loaded");
+                }
             }.bind(this));
         },
 
