@@ -38,13 +38,14 @@ var users = function(dbot) {
         var knownUsers = getServerUsers(event.server);
         if(!knownUsers.channelUsers.hasOwnProperty(event.channel.name)) {
             knownUsers.channelUsers[event.channel.name] = [];
+            event.reply('creating new chanusers')
         }
         var channelUsers = knownUsers.channelUsers[event.channel.name];
 
         event.channel.nicks.each(function(nick) {
             nick = nick.name;
             if(api.isKnownUser(event.server, nick)) {
-                nick = api.resolveUser(nick);
+                nick = api.resolveUser(event.server, nick);
             } else {
                 knownUsers.users.push(nick);
             }
@@ -167,7 +168,7 @@ var users = function(dbot) {
                 var channelUsers = knownUsers.channelUsers[event.channel.name];
 
                 if(api.isKnownUser(event.server, nick)) {
-                    nick = api.resolveUser(nick);
+                    nick = api.resolveUser(event.server, nick);
                 } else {
                     knownUsers.users.push(nick);
                 }

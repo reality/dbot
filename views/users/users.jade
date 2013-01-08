@@ -1,10 +1,14 @@
 extends ../layout
 
 block content
-    h3 Users currently in #{channel} on #{connection}
+    h3 Users of #{channel} on #{connection}
     div#backlink 
         a(href='/channels/'+connection) &laquo; Channel List
     ul#quotelist
       -each nick in nicks
-        a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
-          li.quotes #{nick}
+        if nicks.hasOwnProperty(nick.name)
+          a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
+            if nick.online
+              li.quotes #{nick.name} (Online) 
+            else
+              li.quotes #{nick.name} (Offline) 

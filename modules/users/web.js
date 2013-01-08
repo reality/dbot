@@ -22,9 +22,24 @@ var pages = function(dbot) {
 
             if(connections.hasOwnProperty(connection) && 
                 connections[connection].channels.hasOwnProperty(channel)) {
-                var nicks = Object.keys(connections[connection].channels[channel].nicks);
+
+                var nicks = dbot.db.knownUsers[connection].channelUsers[channel];
+                var channelUsers = {};
+                for(var i=0;i<nicks.length;i++) {
+                    channelUsers[nicks[i]] = { 'name': nicks[i], 'online': false }; 
+                    console.log(nicks[i]);
+                }
+
+                var channelOnline = dbot.instance.connections[connection].channels[channel].nicks;
+                channelOnline.each(function(nick) {
+                    var nick = dbot.api.users.resolveUser(connection, nick); 
+                    if(channelUsers.hasOwnProperty(nick)) {
+                        channelUsers[nick].online = true;
+                    }
+                }.bind(this));
+
                 res.render('users', { 'name': dbot.config.name, 'connection': connection,
-                    'channel': channel, 'nicks': nicks });
+                    'channel': channel, 'nicks': channelUsers });
             } else {
                 res.render_core('error', { 'name': dbot.config.name, 'message': 'No such connection or channel.' });
             }
