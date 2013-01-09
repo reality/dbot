@@ -37,15 +37,17 @@ var pages = function(dbot) {
 
                 var onlineNicks = connections[connection].channels[channel].nicks;
                 onlineNicks.each(function(nick) {
+                    var nick = nick.name;
                     var user = dbot.api.users.resolveUser(connection, nick); 
                     if(onlineNicks.hasOwnProperty(nick)) {
                         usersData[user].online = true;
                     }
-                    /*usersData[nick].active = dbot.api.stats.isActive({
+                    console.log(user);
+                    usersData[user].active = dbot.api.stats.isActive({
                         'server': connection,
-                        'user': nick,
+                        'user': user,
                         'channel': channel
-                    });*/
+                    });
                 }.bind(this));
 
                 res.render('users', { 'name': dbot.config.name, 'connection': connection,
