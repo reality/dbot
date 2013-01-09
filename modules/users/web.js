@@ -37,9 +37,9 @@ var pages = function(dbot) {
 
                 var onlineNicks = connections[connection].channels[channel].nicks;
                 onlineNicks.each(function(nick) {
-                    var nick = dbot.api.users.resolveUser(connection, nick); 
+                    var user = dbot.api.users.resolveUser(connection, nick); 
                     if(onlineNicks.hasOwnProperty(nick)) {
-                        usersData[nick].online = true;
+                        usersData[user].online = true;
                     }
                     /*usersData[nick].active = dbot.api.stats.isActive({
                         'server': connection,
