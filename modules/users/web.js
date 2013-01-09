@@ -65,16 +65,21 @@ var pages = function(dbot) {
                 var quoteCount = dbot.db.quoteArrs[user].length;
             }
 
-            if(!dbot.db.kicks.hasOwnProperty(req.params.user)) {
-                var kicks = '0';
-            } else {
-                var kicks = dbot.db.kicks[req.params.user];
-            }
+            if(dbot.config.moduleNames.include('kick')) {
+                if(!dbot.db.kicks.hasOwnProperty(req.params.user)) {
+                    var kicks = '0';
+                } else {
+                    var kicks = dbot.db.kicks[req.params.user];
+                }
 
-            if(!dbot.db.kickers.hasOwnProperty(req.params.user)) {
-                var kicked = '0';
+                if(!dbot.db.kickers.hasOwnProperty(req.params.user)) {
+                    var kicked = '0';
+                } else {
+                    var kicked = dbot.db.kickers[req.params.user];
+                }
             } else {
-                var kicked = dbot.db.kickers[req.params.user];
+                var kicks = 'N/A';
+                var kicked = 'N/A';
             }
 
             res.render('user', { 'name': dbot.config.name, 'user': req.params.user,

@@ -7,7 +7,7 @@ block content
     ul#quotelist
       -each nick in nicks
         if nicks.hasOwnProperty(nick.name)
-          a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
+          a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.name)
             if nick.online
               if nick.active
                 li.quotes #{nick.name} (Online, Active) 
