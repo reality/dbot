@@ -9,6 +9,9 @@ block content
         if nicks.hasOwnProperty(nick.name)
           a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
             if nick.online
-              li.quotes #{nick.name} (Online) 
+              if nick.active
+                li.quotes #{nick.name} (Online, Active) 
+              else
+                li.quotes #{nick.name} (Online, Inactive)
             else
               li.quotes #{nick.name} (Offline) 

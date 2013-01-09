@@ -38,7 +38,6 @@ var users = function(dbot) {
         var knownUsers = getServerUsers(event.server);
         if(!knownUsers.channelUsers.hasOwnProperty(event.channel.name)) {
             knownUsers.channelUsers[event.channel.name] = [];
-            event.reply('creating new chanusers')
         }
         var channelUsers = knownUsers.channelUsers[event.channel.name];
 
