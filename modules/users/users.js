@@ -10,6 +10,9 @@ var users = function(dbot) {
         if(!knownUsers.hasOwnProperty(server)) {
             knownUsers[server] = { 'users': [], 'aliases': {}, 'channelUsers': {} };
         }
+        if(!knownUsers[server].hasOwnProperty('channelUsers')) {
+            knownUsers[server].channelUsers = {};
+        }
         return knownUsers[server];    
     };
 
