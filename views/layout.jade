@@ -2,12 +2,17 @@
 html(lang='en')
   head 
     meta(charset='utf-8')
+    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Source+Sans+Pro")
+    link(rel="stylesheet", type="text/css", href="/bootstrap/css/bootstrap.min.css")
     link(rel='stylesheet', type='text/css', href='/styles.css')
     title #{name} web interface
   body
-    div#page
-        div#title 
-            a(href='/') #{name} web interface
-        div#main
-            block content
+    div.container
+        div#page
+            div#title 
+                a(href='/') #{name} web interface
+            div#main
+                block content
+    script(type="text/javascript", src="/bootstrap/js/bootstrap.min.js")
     script(type="text/javascript", src="/script.js")
+

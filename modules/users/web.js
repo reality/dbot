@@ -25,33 +25,44 @@ var pages = function(dbot) {
             if(connections.hasOwnProperty(connection) && 
                 connections[connection].channels.hasOwnProperty(channel)) {
 
+                var userData = { "active": [], "inactive": [], "offline": []};
                 var channelUsers = dbot.db.knownUsers[connection].channelUsers[channel];
-                var usersData = {};
-                for(var i=0;i<channelUsers.length;i++) {
-                    usersData[channelUsers[i]] = { 
-                        'name': channelUsers[i], 
-                        'online': false, 
-                        'active': false 
-                    }; 
-                }
 
                 var onlineNicks = connections[connection].channels[channel].nicks;
-                onlineNicks.each(function(nick) {
-                    var nick = nick.name;
-                    var user = dbot.api.users.resolveUser(connection, nick); 
-                    if(onlineNicks.hasOwnProperty(nick)) {
-                        usersData[user].online = true;
+                for(var i=0;i<channelUsers.length;i++) {
+                    if(channelUsers[i] == dbot.config.name){
+                        continue;
                     }
-                    console.log(user);
-                    usersData[user].active = dbot.api.stats.isActive({
-                        'server': connection,
-                        'user': user,
-                        'channel': channel
-                    });
-                }.bind(this));
+                    if(onlineNicks.hasOwnProperty(channelUsers[i])){
+                        var user = dbot.api.users.resolveUser(connection, channelUsers[i]);
+                        if(dbot.api.stats.isActive({'server': connection,
+                                                    'user': user,
+                                                    'channel': channel
+                        })){
+                            userData.active.push(channelUsers[i]);
+                        }
+                        else{
+                            userData.inactive.push(channelUsers[i]);
+                        }
+                    }
+                    else{
+                        userData.offline.push(channelUsers[i]);
+                    }
+                }
+
+                var userSort = function(a, b){
+                    var x = a.toLowerCase();
+                    var y = b.toLowerCase();
+                    if(x > y) return 1;
+                    if(x < y) return -1;
+                    return 0;
+                }
+                userData.active.sort(userSort);
+                userData.inactive.sort(userSort);
+                userData.offline.sort(userSort);
 
                 res.render('users', { 'name': dbot.config.name, 'connection': connection,
-                    'channel': channel, 'nicks': usersData });
+                    'channel': channel, 'nicks': userData });
             } else {
                 res.render_core('error', { 'name': dbot.config.name, 'message': 'No such connection or channel.' });
             }
