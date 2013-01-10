@@ -4,3 +4,6 @@
 [submodule "modules/stats"]
 	path = modules/stats
 	url = git://github.com/SamStudio8/stats.git
+[submodule "public/bootstrap"]
+	path = public/bootstrap
+	url = git://github.com/twitter/bootstrap.git
