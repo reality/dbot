@@ -1,10 +1,10 @@
 var request = require('request');
 
 var dent = function(dbot) {
-    var username = dbot.config.dent.username;
-    var password = dbot.config.dent.password;
     var commands = {
         '~dent': function(event) {
+            var username = dbot.config.dent.username;
+            var password = dbot.config.dent.password;
             var auth = "Basic " + 
                 new Buffer(username + ":" + password).toString("base64");
             request.post({
@@ -16,6 +16,7 @@ var dent = function(dbot) {
             },
             function(error, response, body) {
                 event.reply('Status posted (probably).');
+                console.log(body);
             });
         }
     };
