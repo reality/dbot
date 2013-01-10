@@ -4,14 +4,29 @@ block content
     h3 Users of #{channel} on #{connection}
     div#backlink 
         a(href='/channels/'+connection) &laquo; Channel List
-    ul#quotelist
-      -each nick in nicks
-        if nicks.hasOwnProperty(nick.name)
-          a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.name)
-            if nick.online
-              if nick.active
-                li.quotes #{nick.name} (Online, Active) 
-              else
-                li.quotes #{nick.name} (Online, Inactive)
-            else
-              li.quotes #{nick.name} (Offline) 
+    div#row
+        table.table.table-striped
+            thead
+                tr: th Users
+            tbody
+              -each nick in nicks.active
+                tr
+                  td
+                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
+                        #{nick}
+                      span 
+                      span.label.label-success Active
+              -each nick in nicks.inactive
+                tr
+                  td
+                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
+                        #{nick}
+                      span   
+                      span.label.label-important Inactive 
+              -each nick in nicks.offline
+                tr
+                  td
+                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
+                        #{nick}
+                      span   
+                      span.label Offline
