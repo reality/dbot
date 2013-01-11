@@ -33,26 +33,27 @@ var pages = function(dbot) {
                     if(channelUsers[i] == dbot.config.name){
                         continue;
                     }
+
+                    var user = dbot.api.stats.getUserStats(connection, channelUsers[i], channel);
                     if(onlineNicks.hasOwnProperty(channelUsers[i])){
-                        var user = dbot.api.users.resolveUser(connection, channelUsers[i]);
                         if(dbot.api.stats.isActive({'server': connection,
-                                                    'user': user,
+                                                    'user': channelUsers[i],
                                                     'channel': channel
                         })){
-                            userData.active.push(channelUsers[i]);
+                            userData.active.push(user);
                         }
                         else{
-                            userData.inactive.push(channelUsers[i]);
+                            userData.inactive.push(user);
                         }
                     }
                     else{
-                        userData.offline.push(channelUsers[i]);
+                        userData.offline.push(user);
                     }
                 }
 
                 var userSort = function(a, b){
-                    var x = a.toLowerCase();
-                    var y = b.toLowerCase();
+                    var x = a.display.toLowerCase();
+                    var y = b.display.toLowerCase();
                     if(x > y) return 1;
                     if(x < y) return -1;
                     return 0;

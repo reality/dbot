@@ -7,26 +7,62 @@ block content
     div#row
         table.table.table-striped
             thead
-                tr: th Users
+                tr
+                  th Users
+                  th Lines
+                  th Words
+                  th Lincent
+                  th Verbosity
+                  th Mentions
             tbody
               -each nick in nicks.active
                 tr
                   td
-                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
-                        #{nick}
+                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
+                        #{nick.display}
                       span 
                       span.label.label-success Active
+                  td
+                      #{nick.total_lines}
+                  td
+                      #{nick.total_words}
+                  td
+                      #{nick.lincent}
+                  td
+                      #{nick.wpl}
+                  td
+                      #{nick.in_mentions}
               -each nick in nicks.inactive
                 tr
                   td
-                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
-                        #{nick}
+                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
+                        #{nick.display}
                       span   
                       span.label.label-important Inactive 
+                  td
+                      #{nick.total_lines}
+                  td
+                      #{nick.total_words}
+                  td
+                      #{nick.lincent}
+                  td
+                      #{nick.wpl}
+                  td
+                      #{nick.in_mentions}
               -each nick in nicks.offline
                 tr
                   td
-                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick)
-                        #{nick}
+                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
+                        #{nick.display}
                       span   
                       span.label Offline
+                  td
+                      #{nick.total_lines}
+                  td
+                      #{nick.total_words}
+                  td
+                      #{nick.lincent}
+                  td
+                      #{nick.wpl}
+                  td
+                      #{nick.in_mentions}
