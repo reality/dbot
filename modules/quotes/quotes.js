@@ -9,7 +9,7 @@ var quotes = function(dbot) {
 
     // Retrieve a random quote from a given category, interpolating any quote
     // references (~~QUOTE CATEGORY~~) within it
-    var interpolatedQuote = function(key, quoteTree) {
+    var interpolatedQuote = function(event, key, quoteTree) {
         if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
             return ''; 
         } else if(quoteTree === undefined) { 
@@ -24,10 +24,14 @@ var quotes = function(dbot) {
 
         while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
             var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
-            if (quotes.hasOwnProperty(cleanRef)) {
+            if(cleanRef === '-nicks-') {
+                var randomNick = Object.keys(event.channel.nicks).random();
+                quoteString = quoteString.replace("~~" + cleanRef + "~~", randomNick);
+                quoteTree.pop();
+            } else if(quotes.hasOwnProperty(cleanRef)) {
                 quoteTree.push(key);
                 quoteString = quoteString.replace("~~" + cleanRef + "~~", 
-                        interpolatedQuote(cleanRef, quoteTree.slice()));
+                        interpolatedQuote(event, cleanRef, quoteTree.slice()));
                 quoteTree.pop();
             }
         }
@@ -56,7 +60,7 @@ var quotes = function(dbot) {
     };
 
     var api = {
-        'getQuote': function(category) {
+        'getQuote': function(event, category) {
             var key = category.trim().toLowerCase();
             var altKey;
             if(key.split(' ').length > 0) {
@@ -65,9 +69,9 @@ var quotes = function(dbot) {
 
             if(key.charAt(0) !== '_') { // lol
                 if(quotes.hasOwnProperty(key)) {
-                    return interpolatedQuote(key);
+                    return interpolatedQuote(event, key);
                 } else if(quotes.hasOwnProperty(altKey)) {
-                    return interpolatedQuote(altKey);
+                    return interpolatedQuote(event, altKey);
                 } else {
                     return false;
                 }
@@ -117,7 +121,7 @@ var quotes = function(dbot) {
         // Retrieve quote from a category in the database.
         '~q': function(event) { 
             var key = event.input[1].trim().toLowerCase();
-            var quote = api.getQuote(event.input[1]);
+            var quote = api.getQuote(event, event.input[1]);
             if(quote) {
                 event.reply(key + ': ' + quote);
             } else {
@@ -245,7 +249,7 @@ var quotes = function(dbot) {
 
         '~rq': function(event) {
             var rQuote = Object.keys(quotes).random();
-            event.reply(rQuote + ': ' + interpolatedQuote(rQuote));
+            event.reply(rQuote + ': ' + interpolatedQuote(event, rQuote));
         },
         
         '~link': function(event) {
@@ -315,9 +319,9 @@ var quotes = function(dbot) {
                     dbot.instance.emit(event);
                }
             } else if(event.action == 'JOIN') {
-                var userQuote = api.getQuote(event.user)
+                var userQuote = api.getQuote(event, event.user)
                 if(userQuote) {
-                    event.reply(event.user + ': ' + api.getQuote(event.user));
+                    event.reply(event.user + ': ' + api.getQuote(event, event.user));
                 }
             }
         },
