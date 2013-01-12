@@ -3,16 +3,17 @@
  * Description: Set of commands which only one who is a DepressionBot
  * administrator can run - as such, it has its own command execution listener.
  */
-var fs = require('fs');
-var sys = require('sys')
-var exec = require('child_process').exec;
+var fs = require('fs'),
+    _ = require('underscore')._,
+    sys = require('sys'),
+    exec = require('child_process').exec;
 
 var admin = function(dbot) {
     var commands = {
         // Join a channel
         'join': function(event) {
             var channel = event.params[1];
-            if(event.allChannels.hasOwnProperty(channel)) {
+            if(_.has(event.allChannels, channel)) {
                 event.reply(dbot.t('already_in_channel', {'channel': channel}));
             } else {
                 dbot.instance.join(event, channel); 
@@ -23,7 +24,7 @@ var admin = function(dbot) {
         // Leave a channel
         'part': function(event) {
             var channel = event.params[1];
-            if(!event.allChannels.hasOwnProperty(channel)) {
+            if(!_.has(event.allChannels, channel)) {
                 event.reply(dbot.t('not_in_channel', {'channel': channel}));
             } else {
                 event.instance.part(event, channel); 
@@ -36,7 +37,7 @@ var admin = function(dbot) {
             var channel = event.params[1];
 
             // If given channel isn't valid just op in current one.
-            if(!event.allChannels.hasOwnProperty(channel)) {
+            if(!_.has(event.allChannels, channel)) {
                 channel = event.channel.name;
             }
             dbot.instance.mode(event, channel, ' +o ' + event.user);
@@ -61,7 +62,7 @@ var admin = function(dbot) {
             var cmd = "git log --pretty=format:'%h (%s): %ar' -n 1 -- ";
             if(event.params[1]){
                 var input = event.params[1].trim();
-                if(dbot.modules.hasOwnProperty(input.split("/")[0])){
+                if(_.has(dbot.modules, input.split("/")[0])){
                     cmd += "modules/"+input;
                 }
                 else{
@@ -99,7 +100,7 @@ var admin = function(dbot) {
         // Load new module 
         'load': function(event) {
             var moduleName = event.params[1];
-            if(!dbot.config.moduleNames.include(moduleName)) {
+            if(!_.include(dbot.config.moduleNames, moduleName)) {
                 dbot.config.moduleNames.push(moduleName);
                 dbot.reloadModules();
                 event.reply(dbot.t('load_module', {'moduleName': moduleName}));
@@ -116,13 +117,15 @@ var admin = function(dbot) {
         'unload': function(event) {
             var moduleNames = dbot.config.moduleNames;
             var moduleName = event.params[1];
-            if(moduleNames.include(moduleName)) {
+            if(_.include(moduleNames, moduleName)) {
                 var moduleDir = '../' + moduleName + '/';
                 var cacheKey = require.resolve(moduleDir + moduleName);
                 delete require.cache[cacheKey];
 
-                var moduleIndex = moduleNames.indexOf(moduleName);
-                moduleNames.splice(moduleIndex, 1);
+                dbot.config.moduleNames = _.reject(moduleNames, function(module) {
+                    return module == moduleName; 
+                }, this); 
+
                 dbot.reloadModules();
 
                 event.reply(dbot.t('unload_module', {'moduleName': moduleName}));
@@ -136,7 +139,7 @@ var admin = function(dbot) {
             var username = event.params[1];
             var command = event.params[2];
 
-            if(!dbot.db.bans.hasOwnProperty(command)) {
+            if(!_.has(dbot.db.bans, command)) {
                 dbot.db.bans[command] = [ ];
             }
             dbot.db.bans[command].push(username);
@@ -147,8 +150,10 @@ var admin = function(dbot) {
         'unban': function(event) {
             var username = event.params[1];
             var command = event.params[2];
-            if(dbot.db.bans.hasOwnProperty(command) && dbot.db.bans[command].include(username)) {
-                dbot.db.bans[command].splice(dbot.db.bans[command].indexOf(username), 1);
+            if(_.has(dbot.db.bans, command) && _.include(dbot.db.bans[command], username)) {
+                _.reject(dbot.db.bans[command], function(bans) {
+                    return bans == username;
+                }, this);
                 event.reply(dbot.t('unbanned', {'user': username, 'command': command}));
             } else {
                 event.reply(dbot.t('unban_error', {'user': username}));
