@@ -164,16 +164,18 @@ DBot.prototype.reloadModules = function() {
             // Load the module config data
             var config = {};
             try {
-                var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
-                this.config[name] = config;
-                for(var i=0;i<config.dbKeys.length;i++) {
-                    if(!this.db.hasOwnProperty(config.dbKeys[i])) {
-                        this.db[config.dbKeys[i]] = {};
-                    }
-                }
+                config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
+                
             } catch(err) {
                 // Invalid or no config data
             }
+
+            this.config[name] = config;
+            _.each(config.dbKeys, function(dbKey) {
+                if(!_.has(this.db, dbKey( {
+                    this.db[dbKey] = {};
+                }
+            }, this);
 
             // Load the module itself
             var rawModule = require(moduleDir + name);
@@ -183,14 +185,13 @@ DBot.prototype.reloadModules = function() {
             module.name = name;
 
             if(module.listener) {
-                var listenOn = module.on;
-                if(!(listenOn instanceof Array)) {
-                    listenOn = [listenOn];
+                if(!_.isArray(module.on)) {
+                    module.on = [ module.on ];
                 }
 
-                listenOn.each(function(on) {
+                _.each(module.on, function(on) {
                     this.instance.addListener(on, module.name, module.listener);
-                }.bind(this));
+                }, this);
             }
 
             if(module.onLoad) {
@@ -199,36 +200,21 @@ DBot.prototype.reloadModules = function() {
 
             // Load module commands
             if(module.commands) {
-                var newCommands = module.commands;
-                for(key in newCommands) {
-                    if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
-                        this.commands[key] = newCommands[key];
-                        this.commandMap[key] = name;
+                _.extend(this.commands, module.commands);
+                _.each(module.commands, function(command, commandName) {
+                    command.module = name;
+                    if(_.has(config, 'commands') && _.has(config.commands, commandName)) {
+                        _.extend(command, config.commands[commandName]);
                     }
-                }
-            }
-
-            // Load module commands with properties specified in config
-            if(module.commands && config.commands) {
-                for(key in config.commands) {
-                    if(newCommands.hasOwnProperty(key)) {
-                        for(var prop in config.commands[key]) {
-                            newCommands[key][prop] = config.commands[key][prop];
-                        }
-                    }
-                }
+                }, this);
             }
 
             // Load module web bits
             if(module.pages) {
-                var newpages = module.pages;
-                for(var key in newpages)
-                {
-                    if(newpages.hasOwnProperty(key) && Object.prototype.isFunction(newpages[key])) {
-                        this.pages[key] = newpages[key];
-                        this.pages[key].module = module;
-                    }
-                }
+                _.extend(this.pages, module.pages);
+                _.each(module.pages, function(page) {
+                    page.module = name; 
+                }, this);
             }
 
             // Load module API
@@ -237,51 +223,39 @@ DBot.prototype.reloadModules = function() {
             }
 
             // Load the module usage data
+            var usage = {};
             try {
-                var usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
-                for(key in usage) {
-                    if(usage.hasOwnProperty(key)) {
-                        if(this.usage.hasOwnProperty(key)) {
-                            console.log('Usage key clash for ' + key + ' in ' + name);
-                        } else {
-                            this.usage[key] = usage[key];
-                        }
-                    }
-                }
+                usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
             } catch(err) {
                 // Invalid or no usage info
             }
+            _.extend(this.usage, usage);
 
             // Load the module string data
+            var strings = {};
             try {
-                var strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
-                for(key in strings) {
-                    if(strings.hasOwnProperty(key)) {
-                        if(this.strings.hasOwnProperty(key)) {
-                            console.log('Strings key clash for ' + key + ' in ' + name);
-                        } else {
-                            this.strings[key] = strings[key];
-                        }
-                    }
-                }
+                strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
             } catch(err) {
                 // Invalid or no string info
             }
+            _.extend(this.strings, strings);
 
+            // Provide toString for module name
             module.toString = function() {
                 return this.name;
             }
+
             this.modules[module.name] = module;
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
             if(this.config.debugMode) {
                 console.log('MODULE ERROR (' + name + '): ' + err.stack );
-            }
-            else {
+            } else {
                 console.log('MODULE ERROR (' + name + '): ' + err );
             }
         }
     }.bind(this));
+
     this.reloadPages();
     this.save();
 };
