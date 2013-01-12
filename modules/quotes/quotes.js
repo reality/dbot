@@ -93,28 +93,24 @@ var quotes = function(dbot) {
         },
 
         '~rmconfirm': function(event) {
-            if(dbot.config.admins.include(event.user)) {
-                var rmCacheCount = rmCache.length;
-                rmCache.length = 0;
-                event.reply(dbot.t('quote_cache_cleared', 
-                    { 'count': rmCacheCount }));
-            }
+            var rmCacheCount = rmCache.length;
+            rmCache.length = 0;
+            event.reply(dbot.t('quote_cache_cleared', 
+                { 'count': rmCacheCount }));
         },
 
         '~rmdeny': function(event) {
-            if(dbot.config.admins.include(event.user)) {
-                var rmCacheCount = rmCache.length;
-                for(var i=0;i<rmCacheCount;i++) {
-                    if(!quotes.hasOwnProperty(rmCache[i].key)) {
-                        quotes[rmCache[i].key] = [];
-                    }
-                    quotes[rmCache[i].key].push(rmCache[i].quote);
+            var rmCacheCount = rmCache.length;
+            for(var i=0;i<rmCacheCount;i++) {
+                if(!quotes.hasOwnProperty(rmCache[i].key)) {
+                    quotes[rmCache[i].key] = [];
                 }
-                rmCache.length = 0;
-
-                event.reply(dbot.t('quote_cache_reinstated', 
-                    { 'count': rmCacheCount }));
+                quotes[rmCache[i].key].push(rmCache[i].quote);
             }
+            rmCache.length = 0;
+
+            event.reply(dbot.t('quote_cache_reinstated', 
+                { 'count': rmCacheCount }));
         },
 
 
@@ -270,6 +266,9 @@ var quotes = function(dbot) {
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+
+    commands['~rmconfirm'].access = 'moderator';
+    commands['~rmdeny'].access = 'moderator';
 
     var pages = {
         // Lists quotes in a category

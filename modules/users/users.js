@@ -95,62 +95,61 @@ var users = function(dbot) {
         },
 
         '~setaliasparent': function(event) {
-            if(dbot.config.admins.include(event.user)) {
-                var knownUsers = getServerUsers(event.server);
-                var newParent = event.params[1];
+            var knownUsers = getServerUsers(event.server);
+            var newParent = event.params[1];
 
-                if(knownUsers.aliases.hasOwnProperty(newParent)) {
-                    var newAlias = knownUsers.aliases[newParent]; 
+            if(knownUsers.aliases.hasOwnProperty(newParent)) {
+                var newAlias = knownUsers.aliases[newParent]; 
 
-                    // Replace users entry with new primary user
-                    var usersIndex = knownUsers.users.indexOf(newAlias);
-                    knownUsers.users.splice(usersIndex, 1);
-                    knownUsers.users.push(newParent);
+                // Replace users entry with new primary user
+                var usersIndex = knownUsers.users.indexOf(newAlias);
+                knownUsers.users.splice(usersIndex, 1);
+                knownUsers.users.push(newParent);
 
-                    // Replace channels entries with new primary user
-                    updateChannels(event, newAlias, newParent);
+                // Replace channels entries with new primary user
+                updateChannels(event, newAlias, newParent);
 
-                    // Remove alias for new parent & add alias for new alias
-                    delete knownUsers.aliases[newParent];
-                    knownUsers.aliases[newAlias] = newParent;
+                // Remove alias for new parent & add alias for new alias
+                delete knownUsers.aliases[newParent];
+                knownUsers.aliases[newAlias] = newParent;
 
-                    // Update aliases to point to new primary user
-                    updateAliases(event, newAlias, newParent);
+                // Update aliases to point to new primary user
+                updateAliases(event, newAlias, newParent);
 
-                    event.reply(dbot.t('aliasparentset', { 'newParent': newParent, 
-                        'newAlias': newAlias }));
+                event.reply(dbot.t('aliasparentset', { 'newParent': newParent, 
+                    'newAlias': newAlias }));
 
-                    dbot.api.stats.fixStats(event.server, newAlias);
-                } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': newParent}));
-                }
+                dbot.api.stats.fixStats(event.server, newAlias);
+            } else {
+                event.reply(dbot.t('unknown_alias', { 'alias': newParent}));
             }
         },
 
         '~mergeusers': function(event) {
-            if(dbot.config.admins.include(event.user)) {
-                var knownUsers = getServerUsers(event.server);
-                var primaryUser = event.params[1];
-                var secondaryUser = event.params[2];
+            var knownUsers = getServerUsers(event.server);
+            var primaryUser = event.params[1];
+            var secondaryUser = event.params[2];
 
-                if(knownUsers.users.include(primaryUser) && knownUsers.users.include(secondaryUser)) {
-                    knownUsers.users.splice(knownUsers.users.indexOf(secondaryUser), 1);  
-                    knownUsers.aliases[secondaryUser] = primaryUser;
-                    updateAliases(event, secondaryUser, primaryUser);
-                    updateChannels(event, secondaryUser, primaryUser);
+            if(knownUsers.users.include(primaryUser) && knownUsers.users.include(secondaryUser)) {
+                knownUsers.users.splice(knownUsers.users.indexOf(secondaryUser), 1);  
+                knownUsers.aliases[secondaryUser] = primaryUser;
+                updateAliases(event, secondaryUser, primaryUser);
+                updateChannels(event, secondaryUser, primaryUser);
 
-                    event.reply(dbot.t('merged_users', { 
-                        'old_user': secondaryUser,
-                        'new_user': primaryUser
-                    }));
-                    
-                    dbot.api.stats.fixStats(event.server, secondaryUser);
-                } else {
-                    event.reply(dbot.t('unprimary_error'));
-                }
-           } 
-        }
+                event.reply(dbot.t('merged_users', { 
+                    'old_user': secondaryUser,
+                    'new_user': primaryUser
+                }));
+                
+                dbot.api.stats.fixStats(event.server, secondaryUser);
+            } else {
+                event.reply(dbot.t('unprimary_error'));
+            }
+        } 
     };
+
+    commands['~setaliasparent'].access = 'moderator';
+    commands['~mergeusers'].access = 'moderator';
 
     return {
         'name': 'users',
