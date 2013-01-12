@@ -124,7 +124,9 @@ var command = function(dbot) {
             if(isBanned(event.user, commandName)) {
                 event.reply(dbot.t('command_ban', {'user': event.user})); 
             } else {
-                if(!isIgnoring(event.user, commandName) && hasAccess(event.user, commandName)) {
+                if(!isIgnoring(event.user, commandName) && 
+                        hasAccess(event.user, commandName) &&
+                        dbot.commands[commandName].disabled !== true) {
                     if(applyRegex(commandName, event)) {
                         try {
                             dbot.commands[commandName](event);

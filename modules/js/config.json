@@ -1,3 +1,8 @@
 {
+    "commands": {
+        "~js": {
+            "disabled": true
+        }
+    },
     "help": "http://github.com/reality/depressionbot/blob/master/modules/js/README.md"
 }
