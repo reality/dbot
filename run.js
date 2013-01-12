@@ -1,6 +1,7 @@
-var fs = require('fs');
-var timers = require('./timer');
-var jsbot = require('./jsbot/jsbot');
+var fs = require('fs'),
+    _ = require('underscore')._,
+    timers = require('./timer'),
+    jsbot = require('./jsbot/jsbot');
 require('./snippets');
 
 var DBot = function(timers) {
@@ -17,13 +18,13 @@ var DBot = function(timers) {
             process.exit();
         }
     }
-    requiredConfigKeys.each(function(key) {
-        if(!this.config.hasOwnProperty(key)) {
+    _.each(requiredConfigKeys, function(key) {
+        if(!_.has(this.config, key)) {
             console.log('Error: Please set a value for ' + key + ' in ' +
                 'config.json. Stopping.');
             process.exit();
         }
-    }.bind(this));
+    }, this);
 
     var rawDB;
     try {
@@ -58,7 +59,7 @@ var DBot = function(timers) {
     // Create JSBot and connect to each server
     this.instance = jsbot.createJSBot(this.config.name);
     for(var name in this.config.servers) {
-        if(this.config.servers.hasOwnProperty(name)) {
+        if(_.has(this.config.servers, name)) {
             var server = this.config.servers[name];
             this.instance.addConnection(name, server.server, server.port,
                     this.config.admin, function(event) {
