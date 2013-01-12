@@ -55,18 +55,15 @@ var DBot = function(timers) {
     // Populate bot properties with config data
     // Create JSBot and connect to each server
     this.instance = jsbot.createJSBot(this.config.name);
-    for(var name in this.config.servers) {
-        if(_.has(this.config.servers, name)) {
-            var server = this.config.servers[name];
-            this.instance.addConnection(name, server.server, server.port,
-                    this.config.admin, function(event) {
-                var server = this.config.servers[event.server];
-                for(var i=0;i<server.channels.length;i++) {
-                    this.instance.join(event, server.channels[i]);
-                }
-            }.bind(this), server.nickserv, server.password);
-        }
-    }
+    _.each(this.config.servers, function(server, name) {
+         this.instance.addConnection(name, server.server, server.port,
+                this.config.admin, function(event) {
+            var server = this.config.servers[event.server];
+            for(var i=0;i<server.channels.length;i++) {
+                this.instance.join(event, server.channels[i]);
+            }
+        }.bind(this), server.nickserv, server.password);        
+    }, this);
 
     // Load the modules and connect to the server
     this.reloadModules();
