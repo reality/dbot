@@ -81,9 +81,9 @@ DBot.prototype.say = function(server, channel, message) {
 // Format given stored string in config language
 DBot.prototype.t = function(string, formatData) {
     var formattedString;
-    if(this.strings.hasOwnProperty(string)) {
+    if(_.has(this.strings, string)) {
         var lang = this.config.language;
-        if(!this.strings[string].hasOwnProperty(lang)) {
+        if(!_.has(this.strings[string], lang)) {
             lang = "english"; 
         }
 
@@ -257,18 +257,20 @@ DBot.prototype.reloadModules = function() {
     this.save();
 };
 
+// I honestly don't know what the fuck this is meant to do. Why is it getting a
+// reference to all the pages?
 DBot.prototype.reloadPages = function() {
-    for( var m in this.modules ) {
-        if( Object.prototype.isFunction(this.modules[m].reloadPages)) {
-            this.modules[m].reloadPages(this.pages);
+    _.each(this.modules, function(module) {
+        if(_.isFunction(module.reloadPages)) {
+            module.reloadPages(this.pages);
         }
-    }
+    }, this);
 }
 
 DBot.prototype.cleanNick = function(key) {
     key = key.toLowerCase();
     while(key.endsWith("_")) {
-        if(this.db.quoteArrs.hasOwnProperty(key)) {
+        if(_.has(this.db.quoteArrs, key)) {
             return key;
         }
         key = key.substring(0, key.length-1);

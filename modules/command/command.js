@@ -4,14 +4,15 @@
  * command and then runs that command, given the user isn't banned from or
  * ignoring that command.
  */
+var _ = require('underscore')._;
 var command = function(dbot) {
     /**
      * Is user banned from using command?
      */
     var isBanned = function(user, command) {
         var banned = false;
-        if(dbot.db.bans.hasOwnProperty(command)) {
-            if(dbot.db.bans[command].include(user) || dbot.db.bans['*'].include(user)) {
+        if(_.has(dbot.db.bans, command)) {
+            if(_.include(dbot.db.bans[command], user) || _.include(dbot.db.bans['*'], user)) {
                 banned = true;
             }
         }
@@ -26,12 +27,12 @@ var command = function(dbot) {
         var accessNeeded = dbot.commands[command].access;
 
         if(accessNeeded == 'admin') {
-            if(!dbot.config.admins.include(user)) {
+            if(!_.include(dbot.config.admins, user)) {
                 access = false;
             }
         } else if(accessNeeded == 'moderator') {
-            if(!dbot.config.moderators.include(user) &&
-                    !dbot.config.admins.include(user)) {
+            if(!_.include(dbot.config.moderators, user) && 
+                    !_.include(dbot.config.admins, user)) {
                 access = false;
             }
         }
@@ -43,9 +44,9 @@ var command = function(dbot) {
      * Is user ignoring command?
      */
     var isIgnoring = function(user, command) {
-        var module = dbot.commandMap[command];
+        var module = dbot.commands[command].module;
         var ignoring = false;
-        if(dbot.db.ignores.hasOwnProperty(user) && dbot.db.ignores[user].include(module)) {
+        if(_.has(dbot.db.ignores, user) && _.include(dbot.db.ignores[user], module)) {
             ignoring = true;
         }
         return ignoring;
@@ -57,7 +58,7 @@ var command = function(dbot) {
      */
     var applyRegex = function(commandName, event) {
         var applies = false;
-        if(dbot.commands[commandName].hasOwnProperty('regex')) {
+        if(_.has(dbot.commands[commandName], 'regex')) {
             var cRegex = dbot.commands[commandName].regex;
             var q = event.message.valMatch(cRegex[0], cRegex[1]);
             if(q) {
@@ -77,7 +78,7 @@ var command = function(dbot) {
         'commands': {
             '~usage': function(event) {
                 var commandName = event.params[1];
-                if(dbot.usage.hasOwnProperty(commandName)) {
+                if(_.has(dbot.usage, commandName)) {
                     event.reply(dbot.t('usage', {
                         'command': commandName,
                         'usage': dbot.usage[commandName]
@@ -91,11 +92,11 @@ var command = function(dbot) {
 
             '~help': function(event) {
                 var moduleName = event.params[1];
-                if(!dbot.modules.hasOwnProperty(moduleName)) {
-                    var moduleName = dbot.commandMap[moduleName]; 
+                if(!_.has(dbot.modules, moduleName)) {
+                    var moduleName = dbot.commands[moduleName].module; 
                 }
 
-                if(moduleName && dbot.config[moduleName].hasOwnProperty('help')) {
+                if(moduleName && _.has(dbot.config[moduleName], 'help')) {
                     var help = dbot.config[moduleName].help;
                     event.reply(dbot.t('help_link', {
                         'module': moduleName,
@@ -115,7 +116,7 @@ var command = function(dbot) {
          */
         'listener': function(event) {
             var commandName = event.params[0];
-            if(!dbot.commands.hasOwnProperty(commandName)) {
+            if(!_.has(dbot.commands, commandName)) {
                 commandName = '~';
             }
 
@@ -138,7 +139,7 @@ var command = function(dbot) {
                         dbot.save();
                     } else {
                         if(commandName !== '~') {
-                            if(dbot.usage.hasOwnProperty(commandName)){
+                            if(_.has(dbot.usage, commandName)) {
                                 event.reply('Usage: ' + dbot.usage[commandName]);
                             } else {
                                 event.reply(dbot.t('syntax_error'));
