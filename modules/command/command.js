@@ -19,6 +19,29 @@ var command = function(dbot) {
     };
 
     /**
+     * Does the user have the correct access level to use the command?
+     */
+    var hasAccess = function(user, command) {
+        var access = true;
+        var accessNeeded = dbot.commands[command].access;
+
+        if(accessNeeded == 'admin') {
+            if(!dbot.config.admins.include(user)) {
+                access = false;
+            }
+        } else if(accessNeeded == 'moderator') {
+            if(!dbot.config.moderators.include(user) &&
+                    !dbot.config.admins.include(user)) {
+                access = false;
+            }
+        }
+        console.log(accessNeeded);
+        console.log(user);
+
+        return access;
+    };
+
+    /**
      * Is user ignoring command?
      */
     var isIgnoring = function(user, command) {
@@ -101,7 +124,7 @@ var command = function(dbot) {
             if(isBanned(event.user, commandName)) {
                 event.reply(dbot.t('command_ban', {'user': event.user})); 
             } else {
-                if(!isIgnoring(event.user, commandName)) {
+                if(!isIgnoring(event.user, commandName) && hasAccess(event.user, commandName)) {
                     if(applyRegex(commandName, event)) {
                         try {
                             dbot.commands[commandName](event);

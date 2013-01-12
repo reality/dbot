@@ -148,21 +148,21 @@ var admin = function(dbot) {
         }
     };
 
+    commands['greload'].access = 'admin';
+    commands['reload'].access = 'admin';
+    commands['unload'].access = 'admin';
+    commands['load'].access = 'admin';
+    commands['join'].access = 'moderator';
+    commands['part'].access = 'moderator';
+    commands['opme'].access = 'moderator';
+    commands['say'].access = 'moderator';
+    commands['ban'].access = 'moderator';
+    commands['unban'].access = 'moderator';
+
     return {
         'name': 'admin',
         'ignorable': false,
-
-        /**
-         * Run the appropriate admin command given the input (and user).
-         */
-        'listener': function(event) {
-            var commandName = event.params[0];
-            if(commands.hasOwnProperty(commandName) && dbot.config.admins.include(event.user)) {
-                commands[commandName](event);
-                dbot.save();
-            }
-        },
-        'on': 'PRIVMSG'
+        'commands': commands
     };
 };
 

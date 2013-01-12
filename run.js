@@ -5,7 +5,7 @@ require('./snippets');
 
 var DBot = function(timers) {
     // Load external files
-    var requiredConfigKeys = [ 'name', 'servers', 'admins', 'moduleNames', 'language', 'debugMode' ];
+    var requiredConfigKeys = [ 'name', 'servers', 'admins', 'moderators', 'moduleNames', 'language', 'debugMode' ];
     try {
         this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     } catch(err) {
