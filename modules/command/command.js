@@ -35,8 +35,6 @@ var command = function(dbot) {
                 access = false;
             }
         }
-        console.log(accessNeeded);
-        console.log(user);
 
         return access;
     };
