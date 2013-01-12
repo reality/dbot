@@ -161,6 +161,7 @@ DBot.prototype.reloadModules = function() {
 
         try {
             // Load the module config data
+            var config = {};
             try {
                 var config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
                 this.config[name] = config;
@@ -202,6 +203,17 @@ DBot.prototype.reloadModules = function() {
                     if(newCommands.hasOwnProperty(key) && Object.prototype.isFunction(newCommands[key])) {
                         this.commands[key] = newCommands[key];
                         this.commandMap[key] = name;
+                    }
+                }
+            }
+
+            // Load module commands with properties specified in config
+            if(module.commands && config.commands) {
+                for(key in config.commands) {
+                    if(newCommands.hasOwnProperty(key)) {
+                        for(var prop in config.commands[key]) {
+                            newCommands[key][prop] = config.commands[key][prop];
+                        }
                     }
                 }
             }
