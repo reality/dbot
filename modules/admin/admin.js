@@ -99,9 +99,17 @@ var admin = function(dbot) {
         // Load new module 
         'load': function(event) {
             var moduleName = event.params[1];
-            dbot.config.moduleNames.push(moduleName);
-            dbot.reloadModules();
-            event.reply(dbot.t('load_module', {'moduleName': moduleName}));
+            if(!dbot.config.moduleNames.include(moduleName)) {
+                dbot.config.moduleNames.push(moduleName);
+                dbot.reloadModules();
+                event.reply(dbot.t('load_module', {'moduleName': moduleName}));
+            } else {
+                if(moduleName == 'web') {
+                    event.reply(dbot.t('already_loaded_web'));
+                } else {
+                    event.reply(dbot.t('already_loaded', {'moduleName': moduleName}));
+                }
+            }
         },
 
         // Unload a loaded module
