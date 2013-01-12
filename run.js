@@ -5,26 +5,23 @@ var fs = require('fs'),
 require('./snippets');
 
 var DBot = function(timers) {
-    // Load external files
-    var requiredConfigKeys = [ 'name', 'servers', 'admins', 'moderators', 'moduleNames', 'language', 'debugMode' ];
+    // Load config
     try {
         this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
     } catch(err) {
-        console.log('Config file is screwed up. Attempting to load defaults.');
-        try {
-            this.config = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
-        } catch(err) {
-            console.log('Error loading sample config. Bugger off. Stopping.');
-            process.exit();
-        }
+        console.log('Config file is invalid. Stopping');
+        process.exit();
     }
-    _.each(requiredConfigKeys, function(key) {
-        if(!_.has(this.config, key)) {
-            console.log('Error: Please set a value for ' + key + ' in ' +
-                'config.json. Stopping.');
-            process.exit();
-        }
-    }, this);
+
+    try {
+        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
+    } catch(err) {
+        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
+        process.exit();
+    }
+
+    // Load missing config directives from sample file
+    _.defaults(this.config, defaultConfig);
 
     var rawDB;
     try {
@@ -172,7 +169,7 @@ DBot.prototype.reloadModules = function() {
 
             this.config[name] = config;
             _.each(config.dbKeys, function(dbKey) {
-                if(!_.has(this.db, dbKey( {
+                if(!_.has(this.db, dbKey)) {
                     this.db[dbKey] = {};
                 }
             }, this);
