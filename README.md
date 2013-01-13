@@ -15,7 +15,8 @@ Requirements:
 
 - Node JS
 - [JSBot](http://github.com/reality/JSBot "JSBot"), a Javascript library which
-  handles the IRC protocol.
+  handles the IRC protocol
+- Underscore JS library
 - Various modules have their own requirements also.
 
 ### External Modules
