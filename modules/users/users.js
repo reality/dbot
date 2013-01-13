@@ -70,6 +70,20 @@ var users = function(dbot) {
         'isKnownUser': function(server, nick) {
             var knownUsers = getServerUsers(server); 
             return (_.include(knownUsers.users, nick) || _.has(knownUsers.aliases, nick));
+        },
+
+        'isPrimaryUser': function(server, nick) {
+            return _.include(knownUsers.users, nick);
+        }
+
+        'getAliases': function(server, nick) {
+            var knownUsers = getServerUsers(server);
+            return _.chain(knownUsers.aliases)
+                .keys()
+                .filter(function(user) {
+                    return knownUsers.aliases[user] == nick;
+                }, this)
+                .value();
         }
     };
 
