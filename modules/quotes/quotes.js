@@ -1,22 +1,24 @@
+var _ = require('underscore')._;
+
 var quotes = function(dbot) {
-    var name = 'quotes';
-    var quotes = dbot.db.quoteArrs;
-    var addStack = [];
-    var rmAllowed = true;
+    var quotes = dbot.db.quoteArrs,
+        addStack = [],
+        rmAllowed = true,
+        rmCache = dbot.sessionData.rmCache,
+        rmTimer;
     dbot.sessionData.rmCache = [];
-    var rmCache = dbot.sessionData.rmCache;
-    var rmTimer;
 
     // Retrieve a random quote from a given category, interpolating any quote
     // references (~~QUOTE CATEGORY~~) within it
     var interpolatedQuote = function(event, key, quoteTree) {
-        if(quoteTree !== undefined && quoteTree.indexOf(key) != -1) { 
+        if(!_.isUndefined(quoteTree) && quoteTree.indexOf(key) != -1) { 
             return ''; 
-        } else if(quoteTree === undefined) { 
+        } else if(_.isUndefined(quoteTree)) { 
             quoteTree = [];
         }
 
-        var quoteString = quotes[key].random();
+        var index = _.random(0, quotes[key].length - 1);
+        var quoteString = quotes[key][index];
 
         // Parse quote interpolations
         var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
@@ -25,10 +27,10 @@ var quotes = function(dbot) {
         while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
             var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
             if(cleanRef === '-nicks-') {
-                var randomNick = Object.keys(event.channel.nicks).random();
+                var randomNick = _.keys(event.channel.nicks)[_.random(0, _.size(event.channel.nicks) -1)];
                 quoteString = quoteString.replace("~~" + cleanRef + "~~", randomNick);
                 quoteTree.pop();
-            } else if(quotes.hasOwnProperty(cleanRef)) {
+            } else if(_.has(quotes, cleanRef)) {
                 quoteTree.push(key);
                 quoteString = quoteString.replace("~~" + cleanRef + "~~", 
                         interpolatedQuote(event, cleanRef, quoteTree.slice()));
@@ -45,17 +47,20 @@ var quotes = function(dbot) {
             rmAllowed = true;
         });
 
-        rmCache.push({'key': key, 'quote': quote});
+        rmCache.push({
+            'key': key, 
+            'quote': quote
+        });
         dbot.timers.clearTimeout(rmTimer);
+
         if(rmCache.length < dbot.config.quotes.rmLimit) {
             rmTimer = dbot.timers.addOnceTimer(600000, function() {
                 rmCache.length = 0; // lol what
             });
         } else {
-            for(var i=0;i<dbot.config.admins.length;i++) {
-                dbot.say(event.server, dbot.config.admins[i], 
-                    dbot.t('rm_cache_limit'));
-            }
+            _.each(dbot.config.admins, function(admin) {
+                dbot.say(event.server, admin, dbot.t('rm_cache_limit'));
+            });
         }
     };
 
@@ -68,9 +73,9 @@ var quotes = function(dbot) {
             }
 
             if(key.charAt(0) !== '_') { // lol
-                if(quotes.hasOwnProperty(key)) {
+                if(_.has(quotes, key)) {
                     return interpolatedQuote(event, key);
-                } else if(quotes.hasOwnProperty(altKey)) {
+                } else if(_.has(quotes, altKey)) {
                     return interpolatedQuote(event, altKey);
                 } else {
                     return false;
@@ -106,7 +111,7 @@ var quotes = function(dbot) {
         '~rmdeny': function(event) {
             var rmCacheCount = rmCache.length;
             for(var i=0;i<rmCacheCount;i++) {
-                if(!quotes.hasOwnProperty(rmCache[i].key)) {
+                if(!_.has(quotes, rmCache[i].key)) {
                     quotes[rmCache[i].key] = [];
                 }
                 quotes[rmCache[i].key].push(rmCache[i].quote);
@@ -131,12 +136,16 @@ var quotes = function(dbot) {
 
         // Shows a list of the biggest categories
         '~qstats': function(event) {
-            var qSizes = Object.prototype.sort(quotes, function(key, obj) { return obj[key].length });
-            qSizes = qSizes.slice(qSizes.length - 10).reverse();
+            var qSizes = _.chain(quotes)
+                .pairs()
+                .sortBy(function(category) { return category[1].length })
+                .reverse()
+                .first(10)
+                .value();
 
             var qString = dbot.t('large_categories');
             for(var i=0;i<qSizes.length;i++) {
-                qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
+                qString += qSizes[i][0] + " (" + qSizes[i][1].length + "), ";
             }
 
             event.reply(qString.slice(0, -2));
@@ -146,19 +155,20 @@ var quotes = function(dbot) {
         '~qsearch': function(event) {
             var haystack = event.input[1].trim().toLowerCase();
             var needle = event.input[2];
-            if(quotes.hasOwnProperty(haystack)) {
-                var matches = [];
-                quotes[haystack].each(function(quote) {
-                    if(quote.indexOf(needle) != -1) {
-                        matches.push(quote);
-                    }
-                }.bind(this));
+            if(_.has(quotes, haystack)) {
+                var matches = _.filter(quotes[haystack], function(quote) {
+                    return _.indexOf(quote, needle) != -1;
+                }, this);
 
                 if(matches.length == 0) {
                     event.reply(dbot.t('no_results'));
                 } else {
-                    event.reply(dbot.t('search_results', {'category': haystack, 'needle': needle,
-                        'quote': matches.random(), 'matches': matches.length}));
+                    event.reply(dbot.t('search_results', {
+                        'category': haystack, 
+                        'needle': needle,
+                        'quote': matches.random(), 
+                        'matches': matches.length
+                    }));
                 }
             } else {
                 event.reply(dbot.t('empty_category'));
@@ -166,16 +176,19 @@ var quotes = function(dbot) {
         },
 
         '~rmlast': function(event) {
-            if(rmAllowed == true || dbot.config.admins.include(event.user)) {
+            if(rmAllowed == true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase();
-                if(quotes.hasOwnProperty(key)) {
+                if(_.has(quotes, key)) {
                     var quote = quotes[key].pop();
                     if(quotes[key].length === 0) {
                         delete quotes[key];
                     }
                     resetRemoveTimer(event, key, quote);
 
-                    event.reply(dbot.t('removed_from', {'quote': quote, 'category': key}));
+                    event.reply(dbot.t('removed_from', {
+                        'quote': quote, 
+                        'category': key
+                    }));
                 } else {
                     event.reply(dbot.t('no_quotes', {'category': q[1]}));
                 }
@@ -185,11 +198,11 @@ var quotes = function(dbot) {
         },
 
         '~rm': function(event) {
-            if(rmAllowed == true || dbot.config.admins.include(event.user)) {
+            if(rmAllowed == true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 var quote = event.input[2];
 
-                if(quotes.hasOwnProperty(key)) {
+                if(_.has(quotes, key)) {
                     var category = quotes[key];
                     var index = category.indexOf(quote);
                     if(index !== -1) {
@@ -215,51 +228,59 @@ var quotes = function(dbot) {
             var input = event.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
             if(input) { // Give quote count for named category
                 var key = input[1].trim().toLowerCase();
-                if(quotes.hasOwnProperty(key)) {
-                    event.reply(dbot.t('quote_count', {'category': key, 'count': quotes[key].length}));
+                if(_.has(quotes, key)) {
+                    event.reply(dbot.t('quote_count', {
+                        'category': key, 
+                        'count': quotes[key].length
+                    }));
                 } else {
-                    event.reply(dbot.t('no_quotes', {'category': key}));
+                    event.reply(dbot.t('no_quotes', { 'category': key }));
                 }
             } else { // Give total quote count
-                var totalQuoteCount = 0;
-                for(var category in quotes) {
-                    if(quotes.hasOwnProperty(category)) {
-                        totalQuoteCount += quotes[category].length;
-                    }
-                }
-                event.reply(dbot.t('total_quotes', {'count': totalQuoteCount}));
+                var totalQuoteCount = _.reduce(quotes, function(memo, category) {
+                    return memo + category.length;
+                }, 0);
+                event.reply(dbot.t('total_quotes', { 'count': totalQuoteCount }));
             }
         },
 
         '~qadd': function(event) {
             var key = event.input[1].toLowerCase();
             var text = event.input[2];
-            if(!Object.isArray(quotes[key])) {
+            if(!_.isArray(quotes[key])) {
                 quotes[key] = [];
             } 
 
-            if(quotes[key].include(text)) {
+            if(_.include(quotes[key], text)) {
                 event.reply(dbot.t('quote_exists'));
             } else {
                 quotes[key].push(text);
                 rmAllowed = true;
-                event.reply(dbot.t('quote_saved', {'category': key, 'count': quotes[key].length}));
+                event.reply(dbot.t('quote_saved', {
+                    'category': key, 
+                    'count': quotes[key].length
+                }));
             }
         },
 
         '~rq': function(event) {
-            var rQuote = Object.keys(quotes).random();
-            event.reply(rQuote + ': ' + interpolatedQuote(event, rQuote));
+            var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
+            event.reply(category + ': ' + interpolatedQuote(event, category));
         },
         
         '~link': function(event) {
             var key = event.params[1].trim().toLowerCase();
-            if(quotes.hasOwnProperty(key)) {
-                event.reply(dbot.t('quote_link', {'category': key, 
-                    'url': dbot.t('url', {'host': dbot.config.web.webHost, 
-                    'port': dbot.config.web.webPort, 'path': 'quotes/' + key})}));
+            if(_.has(quotes, key)) {
+                event.reply(dbot.t('quote_link', {
+                    'category': key, 
+                    'url': dbot.t('url', {
+                        'host': dbot.config.web.webHost, 
+                        'port': dbot.config.web.webPort, 
+                        'path': 'quotes/' + key
+                    })
+                }));
             } else {
-                event.reply(dbot.t('category_not_found', {'category': key}));
+                event.reply(dbot.t('category_not_found', { 'category': key }));
             }
         },
     };
@@ -278,7 +299,7 @@ var quotes = function(dbot) {
         // Lists quotes in a category
         '/quotes/:key': function(req, res) {
             var key = req.params.key.toLowerCase();
-            if(dbot.db.quoteArrs.hasOwnProperty(key)) {
+            if(_.has(dbot.db.quoteArrs, key)) {
                 res.render('quotes', { 'name': dbot.config.name, 'quotes': dbot.db.quoteArrs[key], locals: { 'url_regex': RegExp.prototype.url_regex() } });
             } else {
                 res.render('error', { 'name': dbot.config.name, 'message': 'No quotes under that key.' });

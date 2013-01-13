@@ -3,7 +3,9 @@
  * Description: Stores recent channel links, with commands to retrieve
  * information about links.
  */
-var request = require('request');
+var request = require('request'),
+    _ = require('underscore')._;
+
 var link = function(dbot) {
     var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     var links = {}; 
@@ -22,7 +24,7 @@ var link = function(dbot) {
     var commands = {
         '~title': function(event) {
             var link = links[event.channel.name];
-            if(event.params[1] !== undefined) {
+            if(_.isUndefined(event.params[1])) {
                 var urlMatches = event.params[1].match(urlRegex);
                 if(urlMatches !== null) {
                     link = urlMatches[0];

@@ -16,7 +16,6 @@ var dent = function(dbot) {
             },
             function(error, response, body) {
                 event.reply('Status posted (probably).');
-                console.log(body);
             });
         }
     };
