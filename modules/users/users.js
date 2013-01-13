@@ -135,7 +135,7 @@ var users = function(dbot) {
             var secondaryUser = event.params[2];
 
             if(_.include(knownUsers.users, primaryUser) && _.include(knownUsers.users, secondaryUser)) {
-                knownUsers.users.splice(knownUsers.users.indexOf(secondaryUser), 1);  
+                knownUsers.users = _.without(knownUsers.users, secondaryUser);
                 knownUsers.aliases[secondaryUser] = primaryUser;
                 updateAliases(event, secondaryUser, primaryUser);
                 updateChannels(event, secondaryUser, primaryUser);
