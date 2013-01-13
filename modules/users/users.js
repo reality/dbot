@@ -74,7 +74,7 @@ var users = function(dbot) {
 
         'isPrimaryUser': function(server, nick) {
             return _.include(knownUsers.users, nick);
-        }
+        },
 
         'getAliases': function(server, nick) {
             var knownUsers = getServerUsers(server);
