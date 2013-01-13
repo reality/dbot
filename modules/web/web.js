@@ -1,4 +1,5 @@
 var express = require('express'),
+    _ = require('underscore')._,
     fs = require('fs');
 
 var webInterface = function(dbot) {
@@ -16,7 +17,7 @@ var webInterface = function(dbot) {
 
     var reloadPages = function(pages) {
         for(var p in pages) {
-            if( pages.hasOwnProperty(p) ) {
+            if(_.has(pages, p)) {
                 var func = pages[p];
                 var mod = func.module;
                 app.get(p, (function(req, resp) {
