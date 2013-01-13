@@ -207,7 +207,7 @@ DBot.prototype.reloadModules = function() {
             if(module.pages) {
                 _.extend(this.pages, module.pages);
                 _.each(module.pages, function(page) {
-                    page.module = name; 
+                    page.module = module; 
                 }, this);
             }
 
