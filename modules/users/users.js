@@ -2,15 +2,16 @@
  * Name: Users
  * Description: Track known users
  */
-var web = require('./web');
+var web = require('./web'),
+    _ = require('underscore')._;
 
 var users = function(dbot) {
     var knownUsers = dbot.db.knownUsers;
     var getServerUsers = function(server) {
-        if(!knownUsers.hasOwnProperty(server)) {
+        if(!_.has(knownUsers, server)) {
             knownUsers[server] = { 'users': [], 'aliases': {}, 'channelUsers': {} };
         }
-        if(!knownUsers[server].hasOwnProperty('channelUsers')) {
+        if(!_.has(knownUsers[server], 'channelUsers')) {
             knownUsers[server].channelUsers = {};
         }
         return knownUsers[server];    
@@ -18,43 +19,39 @@ var users = function(dbot) {
 
     var updateAliases = function(event, oldUser, newUser) {
         var knownUsers = getServerUsers(event.server);
-        for(var alias in knownUsers.aliases) {
-            if(knownUsers.aliases.hasOwnProperty(alias)) {
-                if(knownUsers.aliases[alias] === oldUser) {
-                    knownUsers.aliases[alias] = newUser;
-                }
+        _.each(knownUsers.aliases, function(user, alias) {
+            if(user == oldUser) {
+                knownUsers.aliases[alias] = newUser;
             }
-        }
-    }
+        }, this);
+    };
 
     var updateChannels = function(event, oldUser, newUser) {
         var channelUsers = getServerUsers(event.server).channelUsers;
-        channelUsers.each(function(channel) {
-            if(channel.include(oldUser)) {
-                channel.splice(channel.indexOf(oldUser), 1);
-                channel.push(newUser);
-            }
-        }.bind(this));
-    }
+        channelUsers = _.each(channelUsers, function(channel, channelName) {
+            channelUsers[channelName] = _.without(channel, oldUser);
+            channelUsers[channelName].push(newUser);
+        }, this);
+    };
 
     dbot.instance.addListener('366', 'users', function(event) {
         var knownUsers = getServerUsers(event.server);
-        if(!knownUsers.channelUsers.hasOwnProperty(event.channel.name)) {
+        if(!_.has(knownUsers.channelUsers, event.channel.name)) {
             knownUsers.channelUsers[event.channel.name] = [];
         }
         var channelUsers = knownUsers.channelUsers[event.channel.name];
 
-        event.channel.nicks.each(function(nick) {
+        _.each(event.channel.nicks, function(nick) {
             nick = nick.name;
             if(api.isKnownUser(event.server, nick)) {
                 nick = api.resolveUser(event.server, nick);
             } else {
                 knownUsers.users.push(nick);
             }
-            if(!channelUsers.include(nick)) {
+            if(!_.include(channelUsers, nick)) {
                 channelUsers.push(nick);
             }
-        }.bind(this));
+        }, this);
     });
 
 
@@ -62,7 +59,7 @@ var users = function(dbot) {
         'resolveUser': function(server, nick, useLowercase) {
             var knownUsers = getServerUsers(server); 
             var user = nick;
-            if(!knownUsers.users.include(nick) && knownUsers.aliases.hasOwnProperty(nick)) {
+            if(!_.include(knownUsers.users, nick) && _.has(knownUsers.aliases, nick)) {
                 user = knownUsers.aliases[nick];
             }
 
@@ -72,23 +69,29 @@ var users = function(dbot) {
 
         'isKnownUser': function(server, nick) {
             var knownUsers = getServerUsers(server); 
-            return (knownUsers.users.include(nick) || knownUsers.aliases.hasOwnProperty(nick));
+            return (_.include(knownUsers.users, nick) || _.has(knownUsers.aliases, nick));
         }
     };
 
     var commands = {
         '~alias': function(event) {
-            var knownUsers = getServerUsers(event.server);
-            var alias = event.params[1].trim();
-            if(knownUsers.users.include(alias)) {
-                var aliasCount = 0;
-                knownUsers.aliases.each(function(primaryUser) {
-                    if(primaryUser == alias) aliasCount += 1;
-                }.bind(this));
-                event.reply(dbot.t('primary', { 'user': alias, 'count': aliasCount })); 
-            } else if(knownUsers.aliases.hasOwnProperty(alias)) {
-                event.reply(dbot.t('alias', { 'alias': alias, 
-                    'user': knownUsers.aliases[alias] }));
+            var knownUsers = getServerUsers(event.server),
+                alias = event.params[1].trim();
+
+            if(_.include(knownUsers.users, alias)) {
+                var aliasCount = _.reduce(knownUsers.aliases, function(memo, user) {
+                    if(user == alias) return memo += 1; 
+                }, 0, this);
+
+                event.reply(dbot.t('primary', { 
+                    'user': alias, 
+                    'count': aliasCount 
+                })); 
+            } else if(_.has(knownUsers.aliases, alias)) {
+                event.reply(dbot.t('alias', { 
+                    'alias': alias, 
+                    'user': knownUsers.aliases[alias] 
+                }));
             } else {
                 event.reply(dbot.t('unknown_alias', { 'alias': alias }));
             }
@@ -98,12 +101,11 @@ var users = function(dbot) {
             var knownUsers = getServerUsers(event.server);
             var newParent = event.params[1];
 
-            if(knownUsers.aliases.hasOwnProperty(newParent)) {
+            if(_.has(knownUsers.aliases, newParent)) {
                 var newAlias = knownUsers.aliases[newParent]; 
 
-                // Replace users entry with new primary user
-                var usersIndex = knownUsers.users.indexOf(newAlias);
-                knownUsers.users.splice(usersIndex, 1);
+                // Replace user entry
+                knownUsers.users = _.without(knownUsers.users, newAlias);
                 knownUsers.users.push(newParent);
 
                 // Replace channels entries with new primary user
@@ -116,12 +118,14 @@ var users = function(dbot) {
                 // Update aliases to point to new primary user
                 updateAliases(event, newAlias, newParent);
 
-                event.reply(dbot.t('aliasparentset', { 'newParent': newParent, 
-                    'newAlias': newAlias }));
+                event.reply(dbot.t('aliasparentset', { 
+                    'newParent': newParent, 
+                    'newAlias': newAlias 
+                }));
 
                 dbot.api.stats.fixStats(event.server, newAlias);
             } else {
-                event.reply(dbot.t('unknown_alias', { 'alias': newParent}));
+                event.reply(dbot.t('unknown_alias', { 'alias': newParent }));
             }
         },
 
@@ -130,7 +134,7 @@ var users = function(dbot) {
             var primaryUser = event.params[1];
             var secondaryUser = event.params[2];
 
-            if(knownUsers.users.include(primaryUser) && knownUsers.users.include(secondaryUser)) {
+            if(_.include(knownUsers.users, primaryUser) && _.include(knownUsers.users, secondaryUser)) {
                 knownUsers.users.splice(knownUsers.users.indexOf(secondaryUser), 1);  
                 knownUsers.aliases[secondaryUser] = primaryUser;
                 updateAliases(event, secondaryUser, primaryUser);
@@ -163,7 +167,7 @@ var users = function(dbot) {
             var nick = event.user;
 
             if(event.action == 'JOIN') {
-                if(!knownUsers.channelUsers.hasOwnProperty(event.channel.name)) {
+                if(!_.has(knownUsers.channelUsers, event.channel.name)) {
                     knownUsers.channelUsers[event.channel.name] = [];
                 }
                 var channelUsers = knownUsers.channelUsers[event.channel.name];
@@ -173,15 +177,15 @@ var users = function(dbot) {
                 } else {
                     knownUsers.users.push(nick);
                 }
-                if(!channelUsers.include(nick)) {
+                if(!_.include(channelUsers, nick)) {
                     channelUsers.push(nick);
                 }
             } else if(event.action == 'NICK') {
                 var newNick = event.params.substr(1);
-                if(knownUsers.aliases.hasOwnProperty(event.user)) {
+                if(_.has(knownUsers.aliases, event.user)) {
                     knownUsers.aliases[newNick] = knownUsers.aliases[event.user];
                 } else {
-                    if(!knownUsers.users.include(newNick)) {
+                    if(!_.include(knownUsers.users, newNick)) {
                         knownUsers.aliases[newNick] = event.user;
                     }
                 }
@@ -192,11 +196,9 @@ var users = function(dbot) {
         'onLoad': function() {
             // Trigger updateNickLists to stat current users in channel
             var connections = dbot.instance.connections;
-            for(var conn in connections) {
-                if(connections.hasOwnProperty(conn)) {
-                    connections[conn].updateNickLists();
-                }
-            }
+            _.each(connections, function(connection) {
+                connection.updateNickLists(); 
+            });
         }
     };
 };

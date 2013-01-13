@@ -121,11 +121,7 @@ var admin = function(dbot) {
                 var moduleDir = '../' + moduleName + '/';
                 var cacheKey = require.resolve(moduleDir + moduleName);
                 delete require.cache[cacheKey];
-
-                dbot.config.moduleNames = _.reject(moduleNames, function(module) {
-                    return module == moduleName; 
-                }, this); 
-
+                dbot.config.moduleNames = _.without(dbot.config.moduleNames, moduleName);
                 dbot.reloadModules();
 
                 event.reply(dbot.t('unload_module', {'moduleName': moduleName}));
