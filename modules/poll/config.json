@@ -1,3 +1,4 @@
 {
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/poll/README.md"
+    "help": "http://github.com/reality/depressionbot/blob/master/modules/poll/README.md",
+    "dbKeys": [ "polls" ]
 }

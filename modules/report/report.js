@@ -1,3 +1,5 @@
+var _ = require('underscore')._;
+
 var report = function(dbot) {
     var commands = {
         '~report': function(event) {
@@ -5,29 +7,21 @@ var report = function(dbot) {
             var nick = event.input[2];
             var reason = event.input[3];
 
-            if(event.allChannels.hasOwnProperty(channelName)) {
+            if(_.has(event.allChannels, channelName)) {
                 var channel = event.allChannels[channelName];
-                if(channel.nicks.hasOwnProperty(nick)) {
-                    var ops = [];
-                    for(var possibOps in channel.nicks) {
-                        if(channel.nicks[possibOps].op == true) {
-                            ops.push(possibOps);
-                        }
-                    }
+                if(_.has(channel.nicks, nick)) {
+                    var ops = _.filter(channel.nicks, function(user) {
+                        return user.op; 
+                    });
 
-                    // Does the channel have an admin channel?
-                    if(event.allChannels.hasOwnProperty('#' + channelName)) {
-                        ops.push('#' + channelName);
-                    }
-
-                    for(var i=0;i<ops.length;i++) {
-                        dbot.say(event.server, ops[i], dbot.t('report', {
+                    _.each(ops, function(user) {
+                        dbot.say(event.server, user.name, dbot.t('report', {
                             'reporter': event.user,
                             'reported': nick,
                             'channel': channelName,
                             'reason': reason
                         }));
-                    }
+                    }, this);
 
                     event.reply(dbot.t('reported', { 'reported': nick }));
                 } else {
