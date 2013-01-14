@@ -178,17 +178,24 @@ DBot.prototype.reloadModules = function() {
 
             // Load the module with any addition objects we can find...
             _.each([ 'commands', 'pages', 'api' ], function(property) {
+                var propertyObj = {};
                 try {
                     var propertyKey = require.resolve(moduleDir + property);
                     if(propertyKey) delete require.cache[propertyKey];
-                    var propertyObj = require(moduleDir + property).fetch(this);
+                    propertyObj = require(moduleDir + property).fetch(this);
                 } catch(err) {
-                    console.log(err.stack);
-                    return; 
+                    //console.log(err.stack);
                 } 
 
                 if(!_.has(module, property)) module[property] = {};
                 _.extend(module[property], propertyObj);
+                _.each(module[property], function(item, itemName) {
+                    item.module = name; 
+                    if(_.has(config, property) && _.has(config[property], itemName)) {
+                        _.extend(item, config[property][itemName]);
+                    }
+                }, this);
+                _.extend(this[property], module[property]);
             }, this);
 
             if(module.listener) {
@@ -203,30 +210,6 @@ DBot.prototype.reloadModules = function() {
 
             if(module.onLoad) {
                 module.onLoad();
-            }
-
-            // Load module commands
-            if(module.commands) {
-                _.extend(this.commands, module.commands);
-                _.each(module.commands, function(command, commandName) {
-                    command.module = name;
-                    if(_.has(config, 'commands') && _.has(config.commands, commandName)) {
-                        _.extend(command, config.commands[commandName]);
-                    }
-                }, this);
-            }
-
-            // Load module web bits
-            if(module.pages) {
-                _.extend(this.pages, module.pages);
-                _.each(module.pages, function(page) {
-                    page.module = module; 
-                }, this);
-            }
-
-            // Load module API
-            if(module.api) {
-                this.api[module.name] = module.api;
             }
 
             // Load the module usage data
