@@ -181,7 +181,7 @@ DBot.prototype.reloadModules = function() {
                 try {
                     var propertyKey = require.resolve(moduleDir + property);
                     if(propertyKey) delete require.cache[propertyKey];
-                    var propertyObj = require(moduleDir + property).fetch;
+                    var propertyObj = require(moduleDir + property).fetch(this);
                 } catch(err) {
                     console.log(err.stack);
                     return; 
