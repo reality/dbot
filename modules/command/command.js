@@ -16,9 +16,13 @@ var command = function(dbot) {
     this.listener = function(event) {
         var commandName = event.params[0];
         if(!_.has(dbot.commands, commandName)) {
-            commandName = '~';
-        }
-
+            if(_.has(dbot.modules, 'quotes')) {
+                commandName = '~';
+            } else {
+                return;
+            }
+        } 
+        
         if(this.api.isBanned(event.user, commandName)) {
             event.reply(dbot.t('command_ban', {'user': event.user})); 
         } else {
