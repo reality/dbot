@@ -1,28 +1,40 @@
 var request = require('request');
+    _ = require('underscore')._;
 
 var dent = function(dbot) {
-    var commands = {
-        '~dent': function(event) {
-            var username = dbot.config.dent.username;
-            var password = dbot.config.dent.password;
-            var auth = "Basic " + 
+    var api = {
+        'post': function(content) {
+            var username = dbot.config.dent.username,
+                password = dbot.config.dent.password,
+                info,
+                auth = "Basic " + 
                 new Buffer(username + ":" + password).toString("base64");
+
             request.post({
                 'url': 'http://identi.ca/api/statuses/update.json?status=' +
-                    event.input[1], 
+                    content, 
                 'headers': {
                     'Authorization': auth
                 }
             },
             function(error, response, body) {
-                event.reply('Status posted (probably).');
-            });
+                console.log(body);
+            }.bind(this));
+        }
+    };
+
+    var commands = {
+        '~dent': function(event) {
+            api.post(event.input[1]);
+            event.reply('Dent posted (probably).');
         }
     };
     commands['~dent'].regex = [/^~dent (.+)$/, 2];
 
     return {
-        'commands': commands
+        'name': 'dent',
+        'commands': commands,
+        'api': api
     };
 };
 

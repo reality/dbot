@@ -260,6 +260,11 @@ var quotes = function(dbot) {
                     'category': key, 
                     'count': quotes[key].length
                 }));
+
+                // TODO hook
+                if(_.has(dbot.api, 'dent')) {
+                    dbot.api.dent.post(key + ': ' + text);
+                }
             }
         },
 
