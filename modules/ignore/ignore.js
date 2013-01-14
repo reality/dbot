@@ -72,22 +72,20 @@ var ignore = function(dbot) {
         }
     };
 
-    return {
-        'name': 'ignore',
-        'ignorable': false, 
-        'commands': commands,
+    this.name = 'ignore';
+    this.ignorable = false;
+    this.commands = commands;
 
-        'onLoad': function() {
-            dbot.instance.clearIgnores();
-            _.each(dbot.db.ignores, function(ignores, user) {
-                _.each(ignores, function(ignore) {
-                        dbot.instance.ignoreTag(user, ignore);
-                }, this);
+    this.onLoad = function() {
+        dbot.instance.clearIgnores();
+        _.each(dbot.db.ignores, function(ignores, user) {
+            _.each(ignores, function(ignore) {
+                    dbot.instance.ignoreTag(user, ignore);
             }, this);
-        }
+        }, this);
     };
 };
 
 exports.fetch = function(dbot) {
-    return ignore(dbot);
+    return new ignore(dbot);
 };
