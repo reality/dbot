@@ -50,40 +50,38 @@ var kick = function(dbot) {
         }
     };
 
-    return {
-        'name': 'kick',
-        'ignorable': false,
-        'commands': commands,
-
-        'listener': function(event) {
-           if(event.kickee == dbot.config.name) {
-                dbot.instance.join(event, event.channel);
-                event.reply(dbot.t('kicked_dbot', { 'botname': dbot.config.name }));
-                dbot.db.kicks[dbot.config.name] += 1;
+    this.name = 'kick';
+    this.ignorable = false;
+    this.commands = commands;
+    
+    this.listener = function(event) {
+       if(event.kickee == dbot.config.name) {
+            dbot.instance.join(event, event.channel);
+            event.reply(dbot.t('kicked_dbot', { 'botname': dbot.config.name }));
+            dbot.db.kicks[dbot.config.name] += 1;
+        } else {
+            if(!_.has(dbot.db.kicks, event.kickee)) {
+                dbot.db.kicks[event.kickee] = 1;
             } else {
-                if(!_.has(dbot.db.kicks, event.kickee)) {
-                    dbot.db.kicks[event.kickee] = 1;
-                } else {
-                    dbot.db.kicks[event.kickee] += 1;
-                }
-
-                if(!_.has(dbot.db.kickers, event.user)) {
-                    dbot.db.kickers[event.user] = 1; 
-                } else {
-                    dbot.db.kickers[event.user] += 1;
-                }
-
-                event.reply(event.kickee + '-- (' + dbot.t('user_kicks', {
-                    'user': event.kickee, 
-                    'kicks': dbot.db.kicks[event.kickee], 
-                    'kicked': dbot.db.kickers[event.kickee]
-                }) + ')');
+                dbot.db.kicks[event.kickee] += 1;
             }
-        },
-        on: 'KICK'
+
+            if(!_.has(dbot.db.kickers, event.user)) {
+                dbot.db.kickers[event.user] = 1; 
+            } else {
+                dbot.db.kickers[event.user] += 1;
+            }
+
+            event.reply(event.kickee + '-- (' + dbot.t('user_kicks', {
+                'user': event.kickee, 
+                'kicks': dbot.db.kicks[event.kickee], 
+                'kicked': dbot.db.kickers[event.kickee]
+            }) + ')');
+        }
     };
+    this.on = 'KICK';
 };
 
 exports.fetch = function(dbot) {
-    return kick(dbot);
+    return new kick(dbot);
 };
