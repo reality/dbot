@@ -187,12 +187,8 @@ DBot.prototype.reloadModules = function() {
                     return; 
                 } 
 
-                module[property] = {};
-                _.each(propertyObj, function(item, name) {
-                    if(_.isFunction(item)) {
-                        module[property][name] = item.bind(module);
-                    }
-                }, this); 
+                if(!_.has(module, property)) module[property] = {};
+                _.extend(module[property], propertyObj);
             }, this);
 
             if(module.listener) {

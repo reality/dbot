@@ -31,7 +31,8 @@ var command = function(dbot) {
                     dbot.commands[commandName].disabled !== true) {
                 if(this.api.applyRegex(commandName, event)) {
                     try {
-                        dbot.commands[commandName](event);
+                        var command = dbot.commands[commandName];
+                        command.apply(dbot.modules[command.module], [event]);
                     } catch(err) {
                         if(dbot.config.debugMode == true) {
                             event.reply('- Error in ' + commandName + ':');

@@ -2,7 +2,10 @@ var request = require('request');
     _ = require('underscore')._;
 
 var dent = function(dbot) {
-    var api = {
+    this.name = 'dent';
+    this.dbot = dbot;
+
+    this.api = {
         'post': function(content) {
             var username = dbot.config.dent.username,
                 password = dbot.config.dent.password,
@@ -23,21 +26,15 @@ var dent = function(dbot) {
         }
     };
 
-    var commands = {
+    this.commands = {
         '~dent': function(event) {
-            api.post(event.input[1]);
+            this.api.post(event.input[1]);
             event.reply('Dent posted (probably).');
         }
     };
-    commands['~dent'].regex = [/^~dent (.+)$/, 2];
-
-    return {
-        'name': 'dent',
-        'commands': commands,
-        'api': api
-    };
+    this.commands['~dent'].regex = [/^~dent (.+)$/, 2];
 };
 
 exports.fetch = function(dbot) {
-    return dent(dbot);
+    return new dent(dbot);
 };
