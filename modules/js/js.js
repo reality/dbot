@@ -8,12 +8,11 @@ var vm = require('vm');
 var sbox = require('sandbox');
 
 var js = function(dbot) {
-    var s = new sbox();
-
     var commands = {
         // Run JS code sandboxed, return result to channel.
         '~js': function(event) {
             try {
+                var s = new sbox();
                 s.run(event.input[1], function(output) {
                     event.reply(output.result);
                 }.bind(this));
@@ -30,16 +29,13 @@ var js = function(dbot) {
     };
     commands['~js'].regex = [/^~js (.*)/, 2];
     commands['~ajs'].regex = [/^~ajs (.*)/, 2];
-
     commands['~ajs'].access = 'admin';
 
-    return {
-        'name': 'js',
-        'ignorable': true,
-        'commands': commands
-    };
+    this.name = 'js';
+    this.ignorable = true;
+    this.commands = commands;
 };
 
 exports.fetch = function(dbot) {
-    return js(dbot);
+    return new js(dbot);
 };
