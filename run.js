@@ -158,8 +158,7 @@ DBot.prototype.reloadModules = function() {
             // Load the module config data
             var config = {};
             try {
-                config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'))
-                
+                config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'));
             } catch(err) {
                 // Invalid or no config data
             }
@@ -174,9 +173,27 @@ DBot.prototype.reloadModules = function() {
             // Load the module itself
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
+            module.name = name;
             this.rawModules.push(rawModule);
 
-            module.name = name;
+            // Load the module with any addition objects we can find...
+            _.each([ 'commands', 'pages', 'api' ], function(property) {
+                try {
+                    var propertyKey = require.resolve(moduleDir + property);
+                    if(propertyKey) delete require.cache[propertyKey];
+                    var propertyObj = require(moduleDir + property).fetch;
+                } catch(err) {
+                    console.log(err.stack);
+                    return; 
+                } 
+
+                module[property] = {};
+                _.each(propertyObj, function(item, name) {
+                    if(_.isFunction(item)) {
+                        module[property][name] = item.bind(module);
+                    }
+                }, this); 
+            }, this);
 
             if(module.listener) {
                 if(!_.isArray(module.on)) {
