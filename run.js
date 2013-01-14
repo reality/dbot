@@ -197,7 +197,12 @@ DBot.prototype.reloadModules = function() {
                     module[property][itemName] = _.bind(item, module);
                     _.extend(module[property][itemName], item);
                 }, this);
-                _.extend(this[property], module[property]);
+
+                if(property == 'api') {
+                    this[property][name] = module[property];
+                } else {
+                    _.extend(this[property], module[property]);
+                }
             }, this);
 
             // Load the module listener
