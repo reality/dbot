@@ -176,7 +176,7 @@ DBot.prototype.reloadModules = function() {
             module.name = name;
             this.rawModules.push(rawModule);
 
-            // Load the module with any addition objects we can find...
+            // Load the module data
             _.each([ 'commands', 'pages', 'api' ], function(property) {
                 var propertyObj = {};
                 try {
@@ -184,7 +184,7 @@ DBot.prototype.reloadModules = function() {
                     if(propertyKey) delete require.cache[propertyKey];
                     propertyObj = require(moduleDir + property).fetch(this);
                 } catch(err) {
-                    //console.log(err.stack);
+                    console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
                 } 
 
                 if(!_.has(module, property)) module[property] = {};
@@ -198,41 +198,32 @@ DBot.prototype.reloadModules = function() {
                 _.extend(this[property], module[property]);
             }, this);
 
+            // Load the module listener
             if(module.listener) {
                 if(!_.isArray(module.on)) {
                     module.on = [ module.on ];
                 }
-
                 _.each(module.on, function(on) {
                     this.instance.addListener(on, module.name, module.listener);
                 }, this);
             }
 
-            if(module.onLoad) {
-                module.onLoad();
-            }
-
-            // Load the module usage data
-            var usage = {};
-            try {
-                usage = JSON.parse(fs.readFileSync(moduleDir + 'usage.json', 'utf-8'));
-            } catch(err) {
-                // Invalid or no usage info
-            }
-            _.extend(this.usage, usage);
-
-            // Load the module string data
-            var strings = {};
-            try {
-                strings = JSON.parse(fs.readFileSync(moduleDir + 'strings.json', 'utf-8'));
-            } catch(err) {
-                // Invalid or no string info
-            }
-            _.extend(this.strings, strings);
+            // Load string data for the module
+            _.each([ 'usage', 'strings' ], function(property) {
+                var propertyData = {};
+                try {
+                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
+                } catch(err) {};
+                _.extend(this[property], propertyData);
+            }, this);
 
             // Provide toString for module name
             module.toString = function() {
                 return this.name;
+            }
+
+            if(module.onLoad) {
+                module.onLoad();
             }
 
             this.modules[module.name] = module;
