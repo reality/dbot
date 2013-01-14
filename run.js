@@ -194,6 +194,7 @@ DBot.prototype.reloadModules = function() {
                     if(_.has(config, property) && _.has(config[property], itemName)) {
                         _.extend(item, config[property][itemName]);
                     }
+                    module[property][itemName] = item.bind(module);
                 }, this);
                 _.extend(this[property], module[property]);
             }, this);
