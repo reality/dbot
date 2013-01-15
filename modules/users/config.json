@@ -1,4 +1,5 @@
 {
     "ignorable": false,
-    "dbKeys": [ "knownUsers" ]
+    "dbKeys": [ "knownUsers" ],
+    "help": "https://github.com/reality/depressionbot/blob/master/modules/users/README.md"
 }
