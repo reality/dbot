@@ -4,11 +4,18 @@ Handles the command execution logic for DBot.
 
 ### Description
 
-1. Does the input match a command key in *dbot.commands* ?
-2. Is there a quote category which matches the first part of the input
-   (*~category*)?
-3. Is there a command name similar to to the first part of the input (*~name*)
-   in *dbot.commands*?
+Command flow:
+
+1. Does the input match a command key in the loaded commands?
+    * If command not found and quotes is loaded, attempt to print quote of given
+      command name
+2. Is the user banned from running the given command?
+3. Is the user ignoring the command?
+3. Does the use have the access level to run the command?
+4. Is the command set as disabled?
+4. Apply regex to the command, pass into event object.
+    * If regex does not apply, show usage info.
+5. Run the command.
 
 This is the only module which is force loaded, even if it's not specified in
 the configuration file.
