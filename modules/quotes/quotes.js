@@ -60,7 +60,7 @@ var quotes = function(dbot) {
             if(this.rmCache.length < dbot.config.quotes.rmLimit) {
                 this.rmTimer = dbot.timers.addOnceTimer(600000, function() {
                     this.rmCache.length = 0; // lol what
-                });
+                }.bind(this));
             } else {
                 _.each(dbot.config.admins, function(admin) {
                     dbot.say(event.server, admin, dbot.t('rm_cache_limit'));
