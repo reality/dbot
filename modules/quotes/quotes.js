@@ -4,12 +4,12 @@ var quotes = function(dbot) {
     this.name = 'quotes';
     this.ignorable = true;
 
+    dbot.sessionData.rmCache = [];
     this.quotes = dbot.db.quoteArrs,
     this.addStack = [],
     this.rmAllowed = true,
     this.rmCache = dbot.sessionData.rmCache,
     this.rmTimer;
-    dbot.sessionData.rmCache = [];
 
     this.internalAPI = {
         // Retrieve a random quote from a given category, interpolating any quote
