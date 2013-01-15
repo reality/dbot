@@ -23,15 +23,15 @@ block content
                       span 
                       span.label.label-success Active
                   td
-                      #{nick.total_lines}
+                      #{nick.fields.lines.data}
                   td
-                      #{nick.total_words}
+                      #{nick.fields.words.data}
                   td
-                      #{nick.lincent}
+                      #{nick.fields.lincent.data}
                   td
-                      #{nick.wpl}
+                      #{nick.fields.wpl.data}
                   td
-                      #{nick.in_mentions}
+                      #{nick.fields.in_mentions.data}
               -each nick in nicks.inactive
                 tr
                   td
@@ -40,15 +40,15 @@ block content
                       span   
                       span.label.label-important Inactive 
                   td
-                      #{nick.total_lines}
+                      #{nick.fields.lines.data}
                   td
-                      #{nick.total_words}
+                      #{nick.fields.words.data}
                   td
-                      #{nick.lincent}
+                      #{nick.fields.lincent.data}
                   td
-                      #{nick.wpl}
+                      #{nick.fields.wpl.data}
                   td
-                      #{nick.in_mentions}
+                      #{nick.fields.in_mentions.data}
               -each nick in nicks.offline
                 tr
                   td
@@ -57,12 +57,12 @@ block content
                       span   
                       span.label Offline
                   td
-                      #{nick.total_lines}
+                      #{nick.fields.lines.data}
                   td
-                      #{nick.total_words}
+                      #{nick.fields.words.data}
                   td
-                      #{nick.lincent}
+                      #{nick.fields.lincent.data}
                   td
-                      #{nick.wpl}
+                      #{nick.fields.wpl.data}
                   td
-                      #{nick.in_mentions}
+                      #{nick.fields.in_mentions.data}

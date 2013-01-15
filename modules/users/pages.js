@@ -1,4 +1,5 @@
 var pages = function(dbot) {
+    var _ = require('underscore')._;
     var connections = dbot.instance.connections;
 
     return {
@@ -26,30 +27,25 @@ var pages = function(dbot) {
                 connections[connection].channels.hasOwnProperty(channel)) {
 
                 var userData = { "active": [], "inactive": [], "offline": []};
-                var channelUsers = dbot.db.knownUsers[connection].channelUsers[channel];
-
-                var onlineNicks = connections[connection].channels[channel].nicks;
-                for(var i=0;i<channelUsers.length;i++) {
-                    if(channelUsers[i] == dbot.config.name){
-                        continue;
-                    }
-
-                    var user = dbot.api.stats.getUserStats(connection, channelUsers[i], channel);
-                    if(onlineNicks.hasOwnProperty(channelUsers[i])){
-                        if(dbot.api.stats.isActive({'server': connection,
-                                                    'user': channelUsers[i],
-                                                    'channel': channel
-                        })){
-                            userData.active.push(user);
+                
+                var reply = dbot.api.stats.getChanUsersStats(connection, channel, [
+                        "lines", "words", "lincent", "wpl", "in_mentions"
+                ]);
+                _.each(reply.users, function(user, userName){
+                    if(userName != dbot.config.name){
+                        if(user.online){
+                            if(user.active){
+                                userData.active.push(user);
+                            }
+                            else{
+                                userData.inactive.push(user);
+                            }
                         }
                         else{
-                            userData.inactive.push(user);
+                            userData.offline.push(user);
                         }
                     }
-                    else{
-                        userData.offline.push(user);
-                    }
-                }
+                });
 
                 var userSort = function(a, b){
                     var x = a.display.toLowerCase();
