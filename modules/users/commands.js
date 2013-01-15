@@ -51,10 +51,14 @@ var commands = function(dbot) {
                     'newAlias': newAlias 
                 }));
 
-                dbot.api.stats.fixStats(event.server, newAlias);
+                return {
+                    'server': event.server,
+                    'alias': newAlias
+                };
             } else {
                 event.reply(dbot.t('unknown_alias', { 'alias': newParent }));
             }
+            return false;
         },
 
         '~mergeusers': function(event) {
@@ -73,10 +77,14 @@ var commands = function(dbot) {
                     'new_user': primaryUser
                 }));
                 
-                dbot.api.stats.fixStats(event.server, secondaryUser);
+                return {
+                    'server': event.server,
+                    'alias': newAlias
+                };
             } else {
                 event.reply(dbot.t('unprimary_error'));
             }
+            return false;
         } 
     };
 
