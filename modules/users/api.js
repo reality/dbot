@@ -14,14 +14,14 @@ var api = function(dbot) {
                 // this is retarded
                 user = user.toLowerCase();
                 var resolvedUser = _.find(knownUsers.users, function(nick) {
-                    var toMatch = new RegExp("/"+user+"/i").compile();
-                    return nick.match(toMatch); 
+                    var toMatch = new RegExp(user, "i");
+                    return nick.match(toMatch) !== null; 
                 }, this);
 
                 if(!resolvedUser) {
                     resolvedUser = _.find(knownUsers.aliases, function(nick, alias) {
-                        var toMatch = new RegExp("/"+user+"/i").compile();
-                        return alias.match(toMatch);
+                        var toMatch = new RegExp(user, "i");
+                        return alias.match(toMatch) !== null;
                     }, this);
                     user = knownUsers.aliases[resolvedUser];
                 } else {
