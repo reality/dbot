@@ -103,6 +103,6 @@ var pages = function(dbot) {
     };
 };
 
-exports.getPages = function(dbot) {
+exports.fetch = function(dbot) {
     return pages(dbot);
 };

@@ -244,19 +244,10 @@ DBot.prototype.reloadModules = function() {
         }
     }.bind(this));
 
-    this.reloadPages();
+    if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
+
     this.save();
 };
-
-// I honestly don't know what the fuck this is meant to do. Why is it getting a
-// reference to all the pages?
-DBot.prototype.reloadPages = function() {
-    _.each(this.modules, function(module) {
-        if(_.isFunction(module.reloadPages)) {
-            module.reloadPages(this.pages);
-        }
-    }, this);
-}
 
 DBot.prototype.cleanNick = function(key) {
     key = key.toLowerCase();

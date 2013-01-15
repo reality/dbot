@@ -3,6 +3,13 @@ var express = require('express'),
     fs = require('fs');
 
 var webInterface = function(dbot) {
+    this.name = 'web';
+    this.ignorable = false;
+
+    this.onDestroy = function() {
+        server.close();
+    }
+
     var pub = 'public';
     var app = express();
 
@@ -15,7 +22,8 @@ var webInterface = function(dbot) {
     
     var server = app.listen(dbot.config.web.webPort);
 
-    var reloadPages = function(pages) {
+    this.reloadPages = function() {
+        var pages = dbot.pages;
         for(var p in pages) {
             if(_.has(pages, p)) {
                 var func = pages[p];
@@ -25,26 +33,16 @@ var webInterface = function(dbot) {
                     var shim = Object.create(resp);
                     shim.render = (function(view, one, two) {
                         // Render with express.js
-                        resp.render(this.module.name + '/' + view, one, two);
+                        resp.render(this.module + '/' + view, one, two);
                     }).bind(this);
                     shim.render_core = resp.render;
                     this.call(this.module, req, shim);
                 }).bind(func));
             }
         }
-    };
-
-    return { 
-        'name': 'web',
-        'ignorable': false,
-        'reloadPages': reloadPages,
-
-        'onDestroy': function() {
-            server.close();
-        }
-    };
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {
-    return webInterface(dbot);
+    return new webInterface(dbot);
 };
