@@ -93,13 +93,11 @@ var dice = function(dbot) {
         }
     };
 
-    return {
-        'name': 'dice',
-        'commands': commands,
-        'ignorable': true
-    };
+    this.name = 'dice';
+    this.commands = commands;
+    this.ignorable = true;
 }
 
 exports.fetch = function(dbot) {
-    return dice(dbot);
+    return new dice(dbot);
 };
