@@ -49,9 +49,6 @@ var kick = function(dbot) {
             event.reply(orderedKickLeague(dbot.db.kickers, 'Kickers'));
         }
     };
-
-    this.name = 'kick';
-    this.ignorable = false;
     this.commands = commands;
     
     this.listener = function(event) {

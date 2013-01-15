@@ -7,8 +7,6 @@ var fs = require('fs'),
     _ = require('underscore')._;
 
 var admin = function(dbot) {
-    this.name = 'admin';
-    this.ignorable = false;
 };
 
 exports.fetch = function(dbot) {

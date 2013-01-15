@@ -2,7 +2,6 @@ var request = require('request');
     _ = require('underscore')._;
 
 var dent = function(dbot) {
-    this.name = 'dent';
     this.dbot = dbot;
 
     this.api = {

@@ -11,8 +11,8 @@ var ignore = function(dbot) {
         '~ignore': function(event) {
             var module = event.params[1];
             var ignorableModules = _.chain(dbot.modules)
-                .filter(function(module) {
-                    return module.ignorable !== null && module.ignorable === true;
+                .filter(function(module, name) {
+                    return dbot.config[module].ignorable === true;
                 })
                 .pluck('name')
                 .value();
@@ -71,9 +71,6 @@ var ignore = function(dbot) {
             }
         }
     };
-
-    this.name = 'ignore';
-    this.ignorable = false;
     this.commands = commands;
 
     this.onLoad = function() {

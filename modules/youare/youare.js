@@ -1,7 +1,4 @@
 var youAre = function(dbot) {
-    this.name = 'youare';
-    this.ignorable = false;
-
     this.listener = function(event) {
         var key = event.message.valMatch(/(\bis\b|\bare\b)\s+([\w\s\d]*?)(\s+)?(,|\.|\band\b|$)/, 5);
 

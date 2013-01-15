@@ -33,9 +33,6 @@ var link = function(dbot) {
             this.fetchTitle(event, link);
         }
     };
-
-    this.name = 'link';
-    this.ignorable = true;
     this.commands = commands;
 
     this.listener = function(event) {

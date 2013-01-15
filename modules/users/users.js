@@ -33,10 +33,6 @@ var users = function(dbot) {
             channelUsers[channelName].push(newUser);
         }, this);
     };
-
-       
-    this.name = 'users';
-    this.ignorable = false;
         
     this.listener = function(event) {
         var knownUsers = this.getServerUsers(event.server); 

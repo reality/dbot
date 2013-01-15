@@ -1,4 +1,5 @@
 {
     "username": "youruserhere",
-    "password": "yourpasswordhere"
+    "password": "yourpasswordhere",
+    "ignorable": true
 }

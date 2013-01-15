@@ -6,8 +6,6 @@
  */
 var _ = require('underscore')._;
 var command = function(dbot) {
-    this.name = 'command';
-    this.ignorable = false;
     this.dbot = dbot;
     
     /**

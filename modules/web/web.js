@@ -3,13 +3,6 @@ var express = require('express'),
     fs = require('fs');
 
 var webInterface = function(dbot) {
-    this.name = 'web';
-    this.ignorable = false;
-
-    this.onDestroy = function() {
-        server.close();
-    }
-
     var pub = 'public';
     var app = express();
 
@@ -41,6 +34,10 @@ var webInterface = function(dbot) {
             }
         }
     }.bind(this);
+
+    this.onDestroy = function() {
+        server.close();
+    }
 };
 
 exports.fetch = function(dbot) {

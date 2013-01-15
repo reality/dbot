@@ -92,10 +92,7 @@ var dice = function(dbot) {
             }
         }
     };
-
-    this.name = 'dice';
     this.commands = commands;
-    this.ignorable = true;
 }
 
 exports.fetch = function(dbot) {

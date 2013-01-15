@@ -74,9 +74,6 @@ var distance = function(s1, s2) {
 };
 
 var spelling = function(dbot) {
-    this.name = 'spelling';
-    this.ignorable = true;
-
     this.last = {};
     this.internalAPI = {};
     this.internalAPI.correct = function (event, correction, candidate, output_callback) {

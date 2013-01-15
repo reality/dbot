@@ -32,17 +32,11 @@ var report = function(dbot) {
                 event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
             }
         }
-
     };
     commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
-
-    return {
-        'name': 'report',
-        'ignorable': true,
-        'commands': commands
-    };
+    this.commands = commands;
 };
 
 exports.fetch = function(dbot) {
-    return report(dbot);
+    return new report(dbot);
 };

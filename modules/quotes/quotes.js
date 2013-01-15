@@ -1,9 +1,6 @@
 var _ = require('underscore')._;
 
 var quotes = function(dbot) {
-    this.name = 'quotes';
-    this.ignorable = true;
-
     dbot.sessionData.rmCache = [];
     this.quotes = dbot.db.quoteArrs,
     this.addStack = [],
