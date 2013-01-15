@@ -20,13 +20,13 @@ var api = function(dbot) {
 
                 if(!resolvedUser) {
                     resolvedUser = _.find(knownUsers.aliases, function(nick, alias) {
+                        console.log(alias + ' -> ' + nick);
                         var toMatch = new RegExp(user, "i");
-                        return alias.match(toMatch) !== null;
+                        if(alias.match(toMatch) !== null) return nick;
                     }, this);
-                    user = knownUsers.aliases[resolvedUser];
-                } else {
-                    user = resolvedUser;
                 }
+
+                user = resolvedUser;
             }
 
             return user;
