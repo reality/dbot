@@ -58,8 +58,10 @@ var pages = function(dbot) {
                 userData.inactive.sort(userSort);
                 userData.offline.sort(userSort);
 
+                var userDataSorted = (userData.active.concat(userData.inactive)).concat(userData.offline);
+
                 res.render('users', { 'name': dbot.config.name, 'connection': connection,
-                    'channel': channel, 'nicks': userData });
+                    'channel': channel, 'nicks': userDataSorted });
             } else {
                 res.render_core('error', { 'name': dbot.config.name, 'message': 'No such connection or channel.' });
             }
