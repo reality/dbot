@@ -55,6 +55,11 @@ and permanently delete them.
 Re-instate the quotes that are currently in the removal cache back into the main
 quote database.
 
+### API
+
+#### getQuote(event, category)
+Returns a random quote from the given category.
+
 ### Removal Spam Protection
 
 When quotes are removed using either the ~rm or ~rmlast commands, the quotes are
