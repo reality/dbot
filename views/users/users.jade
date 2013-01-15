@@ -15,47 +15,19 @@ block content
                   th Verbosity
                   th Mentions
             tbody
-              -each nick in nicks.active
+              -each nick in nicks
                 tr
                   td
                       a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
                         #{nick.display}
                       span 
-                      span.label.label-success Active
-                  td
-                      #{nick.fields.lines.data}
-                  td
-                      #{nick.fields.words.data}
-                  td
-                      #{nick.fields.lincent.data}
-                  td
-                      #{nick.fields.wpl.data}
-                  td
-                      #{nick.fields.in_mentions.data}
-              -each nick in nicks.inactive
-                tr
-                  td
-                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
-                        #{nick.display}
-                      span   
-                      span.label.label-important Inactive 
-                  td
-                      #{nick.fields.lines.data}
-                  td
-                      #{nick.fields.words.data}
-                  td
-                      #{nick.fields.lincent.data}
-                  td
-                      #{nick.fields.wpl.data}
-                  td
-                      #{nick.fields.in_mentions.data}
-              -each nick in nicks.offline
-                tr
-                  td
-                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
-                        #{nick.display}
-                      span   
-                      span.label Offline
+                      if nick.online
+                        if nick.active
+                          span.label.label-success Active
+                        else
+                          span.label.label-important Inactive 
+                      else
+                        span.label Offline
                   td
                       #{nick.fields.lines.data}
                   td
