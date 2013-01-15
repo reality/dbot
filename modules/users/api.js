@@ -24,6 +24,8 @@ var api = function(dbot) {
                         return alias.match(toMatch);
                     }, this);
                     user = knownUsers.aliases[resolvedUser];
+                } else {
+                    user = resolvedUser;
                 }
             }
 
@@ -54,11 +56,6 @@ var api = function(dbot) {
             var user = this.api.resolveUser(server, user, useLowerCase);
             var possiNicks = [user].concat(this.api.getAliases(server, user));
             var onlineNicks = dbot.instance.connections[server].channels[channel].nicks;
-            if(useLowerCase) {
-                possiNicks = _.map(possiNicks, function(nick) {
-                    return nick.toLowerCase(); 
-                });   
-            }
 
             return _.any(onlineNicks, function(nick) {
                 nick = nick.name;
