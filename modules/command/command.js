@@ -33,7 +33,7 @@ var command = function(dbot) {
                         var results = command.apply(dbot.modules[command.module], [event]);
                         if(_.has(command, 'hooks') && results !== false) {
                             _.each(command['hooks'], function(hook) {
-                                hook.apply(hook.module, results); 
+                                hook.apply(hook.module, _.values(results)); 
                             }, this);
                         }
                     } catch(err) {
