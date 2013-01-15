@@ -62,6 +62,16 @@ var api = function(dbot) {
                 applies = true;
             }
             return applies;
+        },
+
+        'addHook': function(command, callback) {
+            console.log('adding hook');
+            if(_.has(dbot.commands, command)) {
+                if(!_.has(dbot.commands[command], 'hooks')) {
+                    dbot.commands[command].hooks = [];
+                }
+                dbot.commands[command].hooks.push(callback);
+            }
         }
     };
 };

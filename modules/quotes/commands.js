@@ -187,11 +187,9 @@ var commands = function(dbot) {
                     'count': quotes[key].length
                 }));
 
-                // TODO hook
-                if(_.has(dbot.api, 'dent')) {
-                    dbot.api.dent.post(key + ': ' + text);
-                }
+                return { 'key': key, 'text': text };
             }
+            return false;
         },
 
         '~rq': function(event) {

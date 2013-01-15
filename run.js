@@ -229,10 +229,6 @@ DBot.prototype.reloadModules = function() {
                 return this.name;
             }
 
-            if(module.onLoad) {
-                module.onLoad();
-            }
-
             this.modules[module.name] = module;
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
@@ -245,6 +241,12 @@ DBot.prototype.reloadModules = function() {
     }.bind(this));
 
     if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
+    
+    _.each(this.modules, function(module, name) {
+        if(module.onLoad) {
+            module.onLoad();
+        }
+    }, this);
 
     this.save();
 };

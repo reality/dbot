@@ -30,7 +30,12 @@ var command = function(dbot) {
                 if(this.api.applyRegex(commandName, event)) {
                     try {
                         var command = dbot.commands[commandName];
-                        command.apply(dbot.modules[command.module], [event]);
+                        var results = command.apply(dbot.modules[command.module], [event]);
+                        if(_.has(command, 'hooks') && results !== false) {
+                            _.each(command['hooks'], function(hook) {
+                                hook.apply(hook.module, results); 
+                            }, this);
+                        }
                     } catch(err) {
                         if(dbot.config.debugMode == true) {
                             event.reply('- Error in ' + commandName + ':');
