@@ -74,9 +74,13 @@ var distance = function(s1, s2) {
 };
 
 var spelling = function(dbot) {
-    var last = {};
-    var correct = function (event, correction, candidate, output_callback) {
-        var rawCandidates = allGroupings(last[event.channel.name][candidate].split(' '));
+    this.name = 'spelling';
+    this.ignorable = true;
+
+    this.last = {};
+    this.internalAPI = {};
+    this.internalAPI.correct = function (event, correction, candidate, output_callback) {
+        var rawCandidates = allGroupings(this.last[event.channel.name][candidate].split(' '));
 
         var candidates = [];
         for(var i=0;i<rawCandidates.length;i++) {
@@ -95,11 +99,11 @@ var spelling = function(dbot) {
 
         if(winnerDistance < Math.ceil(winner.length * 1.33)) {
             if(winner !== correction) {
-                var fix = last[event.channel.name][candidate].replace(winner, correction);
+                var fix = this.last[event.channel.name][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
                 }
-                last[event.channel.name][candidate] = fix;
+                this.last[event.channel.name][candidate] = fix;
                 var output = {
                     'fix': fix,
                     'correcter': event.user,
@@ -108,36 +112,31 @@ var spelling = function(dbot) {
                 output_callback(output);
             }
         }
-    }
-    
-    return {
-        'name': 'spelling',
-        'ignorable': true,
+    }.bind(this); 
 
-        'listener': function(event) {
-            var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
-            var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
-            if(q) {
-                correct(event, q[1] || q[2], event.user, function (e) {
-                    event.reply(dbot.t('spelling_self', e));
-                });
-            } else if(otherQ) {
-                correct(event, otherQ[2] || otherQ[3], otherQ[1], function (e) {
-                    event.reply(dbot.t('spelling_other', e));
-                });
+    this.listener = function(event) {
+        var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
+        var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
+        if(q) {
+            this.internalAPI.correct(event, q[1] || q[2], event.user, function (e) {
+                event.reply(dbot.t('spelling_self', e));
+            });
+        } else if(otherQ) {
+            this.internalAPI.correct(event, otherQ[2] || otherQ[3], otherQ[1], function (e) {
+                event.reply(dbot.t('spelling_other', e));
+            });
+        } else {
+             if(_.has(this.last, event.channel.name)) {
+               this.last[event.channel.name][event.user] = event.message; 
             } else {
-                 if(_.has(last, event.channel.name)) {
-                   last[event.channel.name][event.user] = event.message; 
-                } else {
-                    last[event.channel.name] = { };
-                    last[event.channel.name][event.user] = event.message;
-                }
+                this.last[event.channel.name] = { };
+                this.last[event.channel.name][event.user] = event.message;
             }
-        },
-        'on': 'PRIVMSG'
-    }
+        }
+    }.bind(this);
+    this.on = 'PRIVMSG';
 } 
 
 exports.fetch = function(dbot) {
-    return spelling(dbot);
+    return new spelling(dbot);
 };
