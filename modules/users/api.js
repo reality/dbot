@@ -25,9 +25,10 @@ var api = function(dbot) {
                     }, this);
                     if(!_.isUndefined(resolvedUser)) user = resolvedUser;
                 }
-
+                else{
+                    user = resolvedUser;
+                }
             }
-
             return user;
         },
 
