@@ -24,9 +24,9 @@ var api = function(dbot) {
                         var toMatch = new RegExp(user, "i");
                         if(alias.match(toMatch) !== null) return nick;
                     }, this);
+                    if(!_.isUndefined(resolvedUser)) user = resolvedUser;
                 }
 
-                user = resolvedUser;
             }
 
             return user;
