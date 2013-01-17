@@ -79,7 +79,8 @@ var commands = function(dbot) {
                 
                 return {
                     'server': event.server,
-                    'alias': newAlias
+                    'primary': primaryUser,
+                    'secondary': secondaryUser
                 };
             } else {
                 event.reply(dbot.t('unprimary_error'));
