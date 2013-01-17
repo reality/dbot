@@ -1,6 +1,10 @@
 var _ = require('underscore')._;
 
 var api = function(dbot) {
+    var escapeRegexen = function(str) {
+        return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+    };
+
     var api = {
         'resolveUser': function(server, nick, useLowerCase) {
             var knownUsers = this.getServerUsers(server); 
@@ -13,14 +17,14 @@ var api = function(dbot) {
             } else {
                 // this is retarded
                 user = user.toLowerCase();
+                var toMatch = new RegExp(escapeRegexen(user), "i");
+
                 var resolvedUser = _.find(knownUsers.users, function(nick) {
-                    var toMatch = new RegExp(user, "i");
                     return nick.match(toMatch) !== null; 
                 }, this);
 
                 if(!resolvedUser) {
                     resolvedUser = _.find(knownUsers.aliases, function(nick, alias) {
-                        var toMatch = new RegExp(user, "i");
                         if(alias.match(toMatch) !== null) return nick;
                     }, this);
                     if(!_.isUndefined(resolvedUser)) user = resolvedUser;
