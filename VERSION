@@ -1,3 +1,4 @@
-depressionbot version 0.2-dev (respite)
+depressionbot version 0.2 (rescore)
 
+_.each(dbot.modules, function(module) { "RESCORE EVERYTHING" });
 "He called his bot depressionbot, and that's when he was happy."
