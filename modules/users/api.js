@@ -17,7 +17,7 @@ var api = function(dbot) {
             } else {
                 // this is retarded
                 user = user.toLowerCase();
-                var toMatch = new RegExp(escapeRegexen(user), "i");
+                var toMatch = new RegExp("^" + escapeRegexen(user) + "$", "i");
 
                 var resolvedUser = _.find(knownUsers.users, function(nick) {
                     return nick.match(toMatch) !== null; 
