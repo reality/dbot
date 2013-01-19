@@ -4,8 +4,8 @@ var commands = function(dbot) {
     var polls = dbot.db.polls;
     var commands = {
         '~newpoll': function(event) {
-            var name = event.input[1],
-                options = event.input[2].split(','),
+            var name = event.input[1].toLowerCase(),
+                options = event.input[2].toLowerCase().split(','),
                 description = event.input[3];
             
             if(_.has(polls, name)) {
@@ -34,8 +34,8 @@ var commands = function(dbot) {
         },
 
         '~addoption': function(event) {
-            var name = event.input[1],
-                option = event.input[2];
+            var name = event.input[1].toLowerCase(),
+                option = event.input[2].toLowerCase();
             
             if(_.has(polls, name)) {
                 if(polls[name].owner === event.user) {
@@ -65,8 +65,8 @@ var commands = function(dbot) {
         },
 
         '~rmoption': function(event) {
-            var name = event.input[1],
-                option = event.input[2];
+            var name = event.input[1].toLowerCase(),
+                option = event.input[2].toLowerCase();
             
             if(_.has(polls, name)) {
                 if(polls[name].owner === event.user) {
@@ -89,8 +89,8 @@ var commands = function(dbot) {
         },
 
         '~vote': function(event) {
-            var name = event.input[1],
-                vote = event.input[2];
+            var name = event.input[1].toLowerCase(),
+                vote = event.input[2].toLowerCase();
 
             if(_.has(polls, name)) {
                 if(_.has(polls[name].votes, vote)) {
@@ -125,7 +125,7 @@ var commands = function(dbot) {
         },
 
         '~pdesc': function(event) {
-            var name = event.input[1];
+            var name = event.input[1].toLowerCase();
 
             if(_.has(polls, name)) {
                 event.reply(dbot.t('poll_describe', {
@@ -143,7 +143,7 @@ var commands = function(dbot) {
         },
         
         '~count': function(event) {
-            var name = event.input[1];
+            var name = event.input[1].toLowerCase();
             
             if(_.has(polls, name)) {
                 var order;
