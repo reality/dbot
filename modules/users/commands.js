@@ -92,7 +92,6 @@ var commands = function(dbot) {
                 
                 return {
                     'server': event.server,
-                    'primary': primaryUser,
                     'secondary': secondaryUser
                 };
             } else {
