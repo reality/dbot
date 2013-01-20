@@ -149,6 +149,46 @@ var commands = function(dbot) {
             } else {
                 event.reply(dbot.t('unban_error', {'user': username}));
             }
+        },
+
+        /*** Config options ***/
+
+        'setconfig': function(event) {
+            var configKey = event.params[1];
+            var newOption = event.params[2];
+
+            configKey = configKey.split('.');
+            defaultConfigPath = dbot.config;
+            userConfigPath = dbot.db.config;
+            for(var i=0;i<configKey.length-1;i++) {
+                if(_.has(defaultConfigPath, configKey[i])) {
+                    if(!_.has(userConfigPath, configKey[i])) {
+                        userConfigPath[configKey[i]] = {};
+                    }
+                    userConfigPath = userConfigPath[configKey[i]];
+                    defaultConfigPath = defaultConfigPath[configKey[i]];
+                } else {
+                    event.reply("Config path doesn't exist.");
+                    return;
+                }
+            }
+            
+            var configItem = _.last(configKey);
+            var currentOption = defaultConfigPath[configItem];
+            if(_.has(userConfigPath, configItem)) {
+                currentOption = userConfigPath[configItem];
+            }
+
+            // Convert to boolean type if config item boolean
+            if(_.isBoolean(currentOption)) {
+                newOption = (newOption == "true");
+            }
+
+            // TODO: Same for numbers and that I assume
+            
+            event.reply(event.params[1] + ": " + currentOption + " -> " + newOption);
+            userConfigPath[configItem] = newOption;
+            dbot.reloadModules();
         }
     };
 

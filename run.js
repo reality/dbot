@@ -162,7 +162,7 @@ DBot.prototype.reloadModules = function() {
             var config = {};
             
             if(_.has(this.db.config, name)) {
-                config = this.db.config; 
+                config = this.db.config[name]; 
             }
 
             try {
