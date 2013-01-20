@@ -4,6 +4,29 @@ var fs = require('fs'),
     exec = require('child_process').exec;
 
 var commands = function(dbot) {
+    var getCurrentConfigPath = function(configKey) {
+        var configKey = configKey.split('.');
+
+        defaultConfigPath = dbot.config;
+        userConfigPath = dbot.db.config;
+        for(var i=0;i<configKey.length-1;i++) {
+            if(_.has(defaultConfigPath, configKey[i])) {
+                if(!_.has(userConfigPath, configKey[i])) {
+                    userConfigPath[configKey[i]] = {};
+                }
+                userConfigPath = userConfigPath[configKey[i]];
+                defaultConfigPath = defaultConfigPath[configKey[i]];
+            } else {
+                return false;
+            }
+        }
+
+        return { 
+            'user': userConfigPath,
+            'default': defaultConfigPath
+        };
+   };
+
     var commands = {
         // Join a channel
         'join': function(event) {
@@ -154,29 +177,19 @@ var commands = function(dbot) {
         /*** Config options ***/
 
         'setconfig': function(event) {
-            var configKey = event.params[1];
+            var configPathString = event.params[1];
+            var configKey = _.last(configPathString.split('.'));
             var newOption = event.params[2];
 
-            configKey = configKey.split('.');
-            defaultConfigPath = dbot.config;
-            userConfigPath = dbot.db.config;
-            for(var i=0;i<configKey.length-1;i++) {
-                if(_.has(defaultConfigPath, configKey[i])) {
-                    if(!_.has(userConfigPath, configKey[i])) {
-                        userConfigPath[configKey[i]] = {};
-                    }
-                    userConfigPath = userConfigPath[configKey[i]];
-                    defaultConfigPath = defaultConfigPath[configKey[i]];
-                } else {
-                    event.reply("Config path doesn't exist.");
-                    return;
-                }
-            }
-            
-            var configItem = _.last(configKey);
-            var currentOption = defaultConfigPath[configItem];
-            if(_.has(userConfigPath, configItem)) {
-                currentOption = userConfigPath[configItem];
+            var configPath = getCurrentConfigPath(configPathString);
+            var currentOption;
+            if(_.has(configPath['user'], configKey)) {
+                currentOption = configPath['user'][configKey];
+            } else if(_.has(configPath['default'], configKey)) {
+                currentOption = configPath['default'][configKey];
+            } else {
+                event.reply("Config key doesn't exist bro");
+                return;
             }
 
             // Convert to boolean type if config item boolean
@@ -184,10 +197,14 @@ var commands = function(dbot) {
                 newOption = (newOption == "true");
             }
 
+            if(_.isArray(currentOption)) {
+                event.reply("Config option is an array. Try 'pushconfig'.");
+            }
+
             // TODO: Same for numbers and that I assume
             
-            event.reply(event.params[1] + ": " + currentOption + " -> " + newOption);
-            userConfigPath[configItem] = newOption;
+            event.reply(configPathString + ": " + currentOption + " -> " + newOption);
+            userConfigPath[configKey] = newOption;
             dbot.reloadModules();
         }
     };
@@ -196,6 +213,7 @@ var commands = function(dbot) {
     commands['reload'].access = 'admin';
     commands['unload'].access = 'admin';
     commands['load'].access = 'admin';
+    commands['setconfig'].access = 'admin';
     commands['join'].access = 'moderator';
     commands['part'].access = 'moderator';
     commands['opme'].access = 'moderator';
