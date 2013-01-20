@@ -7,11 +7,20 @@ var commands = function(dbot) {
                 alias = event.params[1].trim();
 
             if(_.include(knownUsers.users, alias)) {
-                var aliasCount = this.api.getAliases(event.server, alias).length;
+                var aliases = this.api.getAliases(event.server, alias);
+                var aliasCount = aliases.length;
+
+                var aliases = _.first(aliases, 10);
+                var including = 'including: ';
+                for(var i=0;i<aliases.length;i++) {
+                    including += alises[i] + ', ';
+                }
+                including = including.slice(0, -2) + '.';
+
                 event.reply(dbot.t('primary', { 
                     'user': alias, 
                     'count': aliasCount 
-                })); 
+                }) + including); 
             } else if(_.has(knownUsers.aliases, alias)) {
                 event.reply(dbot.t('alias', { 
                     'alias': alias, 
