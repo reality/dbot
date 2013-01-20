@@ -5,9 +5,10 @@ block content
 
     script
         $(document).ready(function(){
-            // Allowing forcing data such as lincent and wpl to sort as numeric
+            // Allowing forcing of string stats data to sort as numeric
             jQuery.extend( jQuery.fn.dataTableExt.oSort, {
                 "forcenum-pre": function ( a ) {
+                    a = a.replace("\,", "");
                     return parseFloat( a );
                 },
              
@@ -22,7 +23,7 @@ block content
 
             $('.data').dataTable({
               "aoColumnDefs": [
-                { "sType": "forcenum", "aTargets": [ 3, 4 ] }
+                { "sType": "forcenum", "aTargets": [ 1, 2, 3, 4, 5 ] }
               ],
               "bPaginate": false,
               "bLengthChange": false,
