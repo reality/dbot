@@ -7,10 +7,7 @@ var commands = function(dbot) {
                 alias = event.params[1].trim();
 
             if(_.include(knownUsers.users, alias)) {
-                var aliasCount = _.reduce(knownUsers.aliases, function(memo, user) {
-                    if(user == alias) return memo += 1; 
-                }, 0, this);
-
+                var aliasCount = this.api.getAliases(event.server, alias).length;
                 event.reply(dbot.t('primary', { 
                     'user': alias, 
                     'count': aliasCount 
