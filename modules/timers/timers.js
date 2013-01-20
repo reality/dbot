@@ -10,14 +10,14 @@ var timers = function(dbot) {
     this.runningIntervals = [];
 
     this.api = {
-        'addTimer': function(callback, timeout, firstDate) {
+        'addTimer': function(timeout, callback, firstDate) {
             var now = new Date().getTime();
             if(firstDate) {
                 console.log('Setting first timer to run at ' + firstDate);
                 firstTimeout = firstDate.getTime() - now; 
                 setTimeout(function(callback) {
                     console.log('Running first timer at ' + new Date().toUTCString()); 
-                    this.runningIntervals.push(this.api.addTimer(callback, timeout));
+                    this.runningIntervals.push(this.api.addTimer(timeout, callback));
                     callback();
                 }.bind(this), firstTimeout);
             } else {
