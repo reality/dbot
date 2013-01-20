@@ -49,6 +49,7 @@ var users = function(dbot) {
             } else {
                 knownUsers.users.push(nick);
             }
+
             if(!_.include(channelUsers, nick)) {
                 channelUsers.push(nick);
             }

@@ -9,7 +9,8 @@ var report = function(dbot) {
 
             if(_.has(event.allChannels, channelName)) {
                 var channel = event.allChannels[channelName];
-                if(_.has(channel.nicks, nick)) {
+                if(dbot.api.users.isChannelUser(event.server, nick, channelName, true)) {
+                    var nick = dbot.api.users.resolveUser(event.server, nick, true);
                     var ops = _.filter(channel.nicks, function(user) {
                         return user.op; 
                     });

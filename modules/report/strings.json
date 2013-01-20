@@ -6,7 +6,7 @@
         "english": "Thank you, {reported} has been reported to the channel administrators."
     },
     "user_not_found": {
-        "english": "{reported} does not appear to be in {channel}."
+        "english": "{reported} isn't a known user in {channel}."
     },
     "not_in_channel": {
         "english": "I am not present in {channel}."

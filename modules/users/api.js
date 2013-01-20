@@ -65,6 +65,16 @@ var api = function(dbot) {
                 nick = nick.name;
                 return _.include(possiNicks, nick); 
             }, this);
+        },
+
+        'isChannelUser': function(server, user, channel, useLowerCase) {
+            var knownUsers = this.getServerUsers(server);
+            var user = this.api.resolveUser(server, user, useLowerCase); 
+
+            if(!_.has(knownUsers.channelUsers, channel)) {
+                return false;
+            } 
+            return _.include(knownUsers.channelUsers[channel], user);
         }
     };
 
