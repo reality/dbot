@@ -206,6 +206,27 @@ var commands = function(dbot) {
             event.reply(configPathString + ": " + currentOption + " -> " + newOption);
             userConfigPath[configKey] = newOption;
             dbot.reloadModules();
+        },
+
+        'showconfig': function(event) {
+            var configPathString = event.params[1];
+            var configKey = _.last(configPathString.split('.'));
+            var configPath = getCurrentConfigPath(configPathString);
+
+            if(!_.has(configPath['default'], configKey)) {
+                event.reply("Config path doesn't exist");
+                return
+            }
+
+            if(_.isObject(configPath['default'][configKey])) {
+                event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath['default'][configKey]));
+            } else {
+                var currentOption = configPath['default'][configKey];
+                if(_.has(configPath['user'][configKey])) {
+                    currentOption = configPath['user'][configKey];
+                }
+                event.reply(configPathString + ': ' + currentOption);
+            }
         }
     };
 
@@ -214,6 +235,7 @@ var commands = function(dbot) {
     commands['unload'].access = 'admin';
     commands['load'].access = 'admin';
     commands['setconfig'].access = 'admin';
+    commands['showconfig'].access = 'moderator';
     commands['join'].access = 'moderator';
     commands['part'].access = 'moderator';
     commands['opme'].access = 'moderator';
