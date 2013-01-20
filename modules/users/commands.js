@@ -13,7 +13,7 @@ var commands = function(dbot) {
                 var aliases = _.first(aliases, 10);
                 var including = 'including: ';
                 for(var i=0;i<aliases.length;i++) {
-                    including += alises[i] + ', ';
+                    including += aliases[i] + ', ';
                 }
                 including = including.slice(0, -2) + '.';
 
