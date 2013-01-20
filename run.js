@@ -34,6 +34,9 @@ var DBot = function(timers) {
         if(!this.db) {  // If it wasn't empty 
             this.db = JSON.parse(rawDB);
         }
+        if(!_.has(this.db, 'config')) {
+            this.db.config = {};
+        }
     } catch(err) {
         console.log('Syntax error in db.json. Stopping: ' + err);
         process.exit();
@@ -157,18 +160,27 @@ DBot.prototype.reloadModules = function() {
         try {
             // Load the module config data
             var config = {};
+            
+            if(_.has(this.db.config, name)) {
+                config = this.db.config; 
+            }
+
             try {
-                config = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'));
+                var defaultConfig = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'));
+                config = _.defaults(config, defaultConfig);
             } catch(err) {
                 // Invalid or no config data
             }
 
+            // Load module config
             this.config[name] = config;
             _.each(config.dbKeys, function(dbKey) {
                 if(!_.has(this.db, dbKey)) {
                     this.db[dbKey] = {};
                 }
             }, this);
+
+            // Override module config with any stored in the DB
 
             // Load the module itself
             var rawModule = require(moduleDir + name);
