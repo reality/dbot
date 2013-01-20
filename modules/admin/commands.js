@@ -5,21 +5,23 @@ var fs = require('fs'),
 
 var commands = function(dbot) {
     var getCurrentConfigPath = function(configKey) {
-        var configKey = configKey.split('.');
+        var defaultConfigPath = dbot.config;
+        var userConfigPath = dbot.db.config;
 
-        defaultConfigPath = dbot.config;
-        userConfigPath = dbot.db.config;
-        for(var i=0;i<configKey.length-1;i++) {
-            if(_.has(defaultConfigPath, configKey[i])) {
-                if(!_.has(userConfigPath, configKey[i])) {
-                    userConfigPath[configKey[i]] = {};
+        if(configKey) {
+            var configKey = configKey.split('.');
+            for(var i=0;i<configKey.length-1;i++) {
+                if(_.has(defaultConfigPath, configKey[i])) {
+                    if(!_.has(userConfigPath, configKey[i])) {
+                        userConfigPath[configKey[i]] = {};
+                    }
+                    userConfigPath = userConfigPath[configKey[i]];
+                    defaultConfigPath = defaultConfigPath[configKey[i]];
+                } else {
+                    return false;
                 }
-                userConfigPath = userConfigPath[configKey[i]];
-                defaultConfigPath = defaultConfigPath[configKey[i]];
-            } else {
-                return false;
             }
-        }
+        } 
 
         return { 
             'user': userConfigPath,
@@ -210,22 +212,27 @@ var commands = function(dbot) {
 
         'showconfig': function(event) {
             var configPathString = event.params[1];
-            var configKey = _.last(configPathString.split('.'));
             var configPath = getCurrentConfigPath(configPathString);
+            
+            if(configPathString) {
+                var configKey = _.last(configPathString.split('.'));
 
-            if(!_.has(configPath['default'], configKey)) {
-                event.reply("Config path doesn't exist");
-                return
-            }
-
-            if(_.isObject(configPath['default'][configKey])) {
-                event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath['default'][configKey]));
-            } else {
-                var currentOption = configPath['default'][configKey];
-                if(_.has(configPath['user'][configKey])) {
-                    currentOption = configPath['user'][configKey];
+                if(!_.has(configPath['default'], configKey)) {
+                    event.reply("Config path doesn't exist");
+                    return;
                 }
-                event.reply(configPathString + ': ' + currentOption);
+
+                if(_.isObject(configPath['default'][configKey])) {
+                    event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath['default'][configKey]));
+                } else {
+                    var currentOption = configPath['default'][configKey];
+                    if(_.has(configPath['user'], configKey)) {
+                        currentOption = configPath['user'][configKey];
+                    }
+                    event.reply(configKey + ': ' + currentOption);
+                }
+            } else {
+                event.reply('Config keys in root: ' + Object.keys(configPath['default']));
             }
         }
     };
