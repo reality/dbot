@@ -30,10 +30,10 @@ var timers = function(dbot) {
     };
 
     this.onDestroy = function() { 
-        for(var i=0;i<this.runningTimeouts;i++ {
+        for(var i=0;i<this.runningTimeouts;i++) {
             clearTimeout(this.runningTimeouts[i]); 
         }
-        for(i=0;i<this.runningIntervals;i++ {
+        for(i=0;i<this.runningIntervals;i++) {
             clearTimer(this.runningIntervals[i]); 
         }
     }.bind(this);
