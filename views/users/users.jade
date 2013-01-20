@@ -1,11 +1,44 @@
 extends ../layout
 
 block content
+    script(type="text/javascript", src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js")
+
+    script
+        $(document).ready(function(){
+            // Allowing forcing data such as lincent and wpl to sort as numeric
+            jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+                "forcenum-pre": function ( a ) {
+                    return parseFloat( a );
+                },
+             
+                "forcenum-asc": function ( a, b ) {
+                    return a - b;
+                },
+             
+                "forcenum-desc": function ( a, b ) {
+                    return b - a;
+                }
+            } );
+
+            $('.data').dataTable({
+              "aoColumnDefs": [
+                { "sType": "forcenum", "aTargets": [ 3, 4 ] }
+              ],
+              "bPaginate": false,
+              "bLengthChange": false,
+              "oLanguage": {
+                "sInfo":  "_TOTAL_ users",
+                "sInfoEmpty":  "No users :(",
+                "sInfoFiltered": "filtered (_MAX_ total)"
+              },
+            });
+        });
+
     h3 Users of #{channel} on #{connection}
     div#backlink 
         a(href='/channels/'+connection) &laquo; Channel List
     div#row
-        table.table.table-striped
+        table.table.table-hover.data
             thead
                 tr
                   th Users
