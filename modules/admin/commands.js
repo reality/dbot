@@ -206,7 +206,7 @@ var commands = function(dbot) {
             // TODO: Same for numbers and that I assume
             
             event.reply(configPathString + ": " + currentOption + " -> " + newOption);
-            userConfigPath[configKey] = newOption;
+            configPath['user'][configKey] = newOption;
             dbot.reloadModules();
         },
 
