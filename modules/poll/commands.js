@@ -14,7 +14,7 @@ var commands = function(dbot) {
                 polls[name] = {
                     'name': name,
                     'description': description,
-                    'owner': event.user,
+                    'owner': dbot.api.users.resolveUser(event.server, event.user),
                     'votes': {},
                     'votees': {}
                 };
@@ -35,10 +35,11 @@ var commands = function(dbot) {
 
         '~addoption': function(event) {
             var name = event.input[1].toLowerCase(),
-                option = event.input[2].toLowerCase();
+                option = event.input[2].toLowerCase(),
+                user = dbot.api.users.resolveUser(event.server, event.user);
             
             if(_.has(polls, name)) {
-                if(polls[name].owner === event.user) {
+                if(polls[name].owner === user) {
                     if(!_.has(polls[name].votes, option)) {
                         polls[name]['votes'][option] = 0;
                         event.reply(dbot.t('option_added', {
@@ -66,10 +67,11 @@ var commands = function(dbot) {
 
         '~rmoption': function(event) {
             var name = event.input[1].toLowerCase(),
-                option = event.input[2].toLowerCase();
+                option = event.input[2].toLowerCase(),
+                user = dbot.api.users.resolveUser(event.server, event.user);
             
             if(_.has(polls, name)) {
-                if(polls[name].owner === event.user) {
+                if(polls[name].owner === user) {
                     if(_.has(polls[name].votes, option)) {
                         delete polls[name]['votes'][option];
                         event.reply(dbot.t('option_removed', {
@@ -90,15 +92,16 @@ var commands = function(dbot) {
 
         '~vote': function(event) {
             var name = event.input[1].toLowerCase(),
-                vote = event.input[2].toLowerCase();
+                vote = event.input[2].toLowerCase(),
+                user = dbot.api.users.resolveUser(event.server, event.user);
 
             if(_.has(polls, name)) {
                 if(_.has(polls[name].votes, vote)) {
-                    if(_.has(polls[name].votees, event.user)) {
+                    if(_.has(polls[name].votees, user)) {
                         var oldVote = polls[name].votees[event.user];
                         polls[name].votes[oldVote]--;
                         polls[name].votes[vote]++;
-                        polls[name].votees[event.user] = vote;
+                        polls[name].votees[user] = vote;
 
                         event.reply(dbot.t('changed_vote', {
                             'vote': vote, 
@@ -108,7 +111,7 @@ var commands = function(dbot) {
                         }));
                     } else {
                         polls[name].votes[vote]++;
-                        polls[name].votees[event.user] = vote;
+                        polls[name].votees[user] = vote;
                         event.reply(dbot.t('voted', {
                             'vote': vote, 
                             'poll': name,
