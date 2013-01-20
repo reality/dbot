@@ -54,12 +54,8 @@ var users = function(dbot) {
             }
         } else if(event.action == 'NICK') {
             var newNick = event.params.substr(1);
-            if(_.has(knownUsers.aliases, event.user)) {
-                knownUsers.aliases[newNick] = knownUsers.aliases[event.user];
-            } else {
-                if(!_.include(knownUsers.users, newNick)) {
-                    knownUsers.aliases[newNick] = event.user;
-                }
+            if(!this.api.isKnownUser(newNick)) {
+                knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
             }
         }
     }.bind(this);
