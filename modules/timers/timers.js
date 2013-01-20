@@ -6,30 +6,36 @@ var _ = require('underscore')._;
 
 var timers = function(dbot) {
     this.timers = dbot.db.timers;
-    this.runningTimers = [];
+    this.runningTimeouts = [];
+    this.runningIntervals = [];
 
     this.api = {
         'addTimer': function(callback, timeout, firstDate) {
             var now = new Date().getTime();
             if(firstDate) {
                 console.log('Setting first timer to run at ' + firstDate);
-                timeout = firstDate.getTime() - now; 
+                firstTimeout = firstDate.getTime() - now; 
                 setTimeout(function(callback) {
                     console.log('Running first timer at ' + new Date().toUTCString()); 
+                    this.runningIntervals.push(this.api.addTimer(callback, timeout));
                     callback();
-                    this.api.addTimer(callback, timeout);
-                }.bind(this), timeout);
+                }.bind(this), firstTimeout);
             } else {
-                setInterval(function(callback) {
+                this.runningIntervals.push(setInterval(function(callback) {
                     console.log('Running subsequent timer at ' + new Date().toUTCString()); 
                     callback();
-                }.bind(this), timeout);
+                }.bind(this), timeout));
             }
         }
     };
 
-    this.onLoad = function() { 
-        // TODO: Persist timers
+    this.onDestroy = function() { 
+        for(var i=0;i<this.runningTimeouts;i++ {
+            clearTimeout(this.runningTimeouts[i]); 
+        }
+        for(i=0;i<this.runningIntervals;i++ {
+            clearTimer(this.runningIntervals[i]); 
+        }
     }.bind(this);
 };
 
