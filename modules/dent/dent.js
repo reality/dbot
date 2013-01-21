@@ -34,12 +34,10 @@ var dent = function(dbot) {
     this.commands['~dent'].regex = [/^~dent (.+)$/, 2];
 
     this.onLoad = function() {
-        dbot.api.command.addHook('~qadd', function(key, text) {
-            this.api.post(key + ': ' + text); 
-        }.bind(this));
-
-        if(_.has(dbot.modules, 'quotes')) {
-
+        if(dbot.config.dent.dentQuotes === true) {
+            dbot.api.command.addHook('~qadd', function(key, text) {
+                this.api.post(key + ': ' + text); 
+            }.bind(this));
         }
     }.bind(this);
 };
