@@ -23,7 +23,9 @@ block content
 
             $('.data').dataTable({
               "aoColumnDefs": [
-                { "sType": "forcenum", "aTargets": [ 1, 2, 3, 4, 5 ] }
+                { "aDataSort": [ 1, 0 ], "asSorting": [ "asc" ], "aTargets": [ 0 ] },
+                { "bVisible": false, "aTargets": [ 1 ] },
+                { "sType": "forcenum", "aTargets": [ 2, 3, 4, 5, 6 ] }
               ],
               "bPaginate": false,
               "bLengthChange": false,
@@ -32,7 +34,6 @@ block content
                 "sInfoEmpty":  "No users",
                 "sInfoFiltered": "filtered (_MAX_ total)"
               },
-              "aaSorting": [], // Disable initial sort
             });
         });
 
@@ -44,6 +45,7 @@ block content
             thead
                 tr
                   th Users
+                  th 
                   th Lines
                   th Words
                   th Lincent
@@ -63,6 +65,14 @@ block content
                           span.label.label-important Inactive 
                       else
                         span.label Offline
+                  td
+                      if nick.online
+                        if nick.active
+                          -1
+                        else
+                          0
+                      else
+                        1
                   td
                       #{nick.fields.lines.data}
                   td
