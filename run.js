@@ -178,15 +178,28 @@ DBot.prototype.reloadModules = function() {
                 // Invalid or no config data
             }
 
-            // Load module config
+            // Shit out if dependencies not met
+            if(_.has(config, 'dependencies')) {
+                var unmetDependencies = _.reduce(config.dependencies, function(memo, dependency) {
+                    if(!_.include(moduleNames, dependency)) {
+                        memo.push(dependency); 
+                    }
+                    return memo;
+                }, [], this);
+
+                if(unmetDependencies.length != 0) {
+                    throw new Error("Dependencies not met: " + unmetDependencies);
+                    return;
+                }
+            }
+
+            // Generate missing DB keys
             this.config[name] = config;
             _.each(config.dbKeys, function(dbKey) {
                 if(!_.has(this.db, dbKey)) {
                     this.db[dbKey] = {};
                 }
             }, this);
-
-            // Override module config with any stored in the DB
 
             // Load the module itself
             var rawModule = require(moduleDir + name);
