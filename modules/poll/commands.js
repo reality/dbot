@@ -98,7 +98,7 @@ var commands = function(dbot) {
             if(_.has(polls, name)) {
                 if(_.has(polls[name].votes, vote)) {
                     if(_.has(polls[name].votees, user)) {
-                        var oldVote = polls[name].votees[event.user];
+                        var oldVote = polls[name].votees[user];
                         polls[name].votes[oldVote]--;
                         polls[name].votes[vote]++;
                         polls[name].votees[user] = vote;
@@ -131,6 +131,13 @@ var commands = function(dbot) {
             var name = event.input[1].toLowerCase();
 
             if(_.has(polls, name)) {
+                var options = _.keys(polls[name].votes);
+                var optionString = " Choices: ";
+                for(var i=0;i<options.length;i++) {
+                    optionString += options[i] + ', ';
+                }
+                optionString = optionString.slice(0, -2) + '.';
+
                 event.reply(dbot.t('poll_describe', {
                     'name': name, 
                     'description': polls[name].description,
@@ -139,7 +146,7 @@ var commands = function(dbot) {
                         'port': dbot.config.web.webPort, 
                         'path': 'polls/' + name
                     })
-                }));
+                }) + optionString);
             } else {
                 event.reply(dbot.t('poll_unexistent', { 'name': name }));
             }
