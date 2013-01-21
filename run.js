@@ -5,24 +5,8 @@ var fs = require('fs'),
 require('./snippets');
 
 var DBot = function(timers) {
-    // Load config
-    try {
-        this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
-    } catch(err) {
-        console.log('Config file is invalid. Stopping');
-        process.exit();
-    }
-
-    try {
-        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
-    } catch(err) {
-        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
-        process.exit();
-    }
-
-    // Load missing config directives from sample file
-    _.defaults(this.config, defaultConfig);
-
+    
+    // Load DB
     var rawDB;
     try {
         var rawDB = fs.readFileSync('db.json', 'utf-8');
@@ -41,6 +25,25 @@ var DBot = function(timers) {
         console.log('Syntax error in db.json. Stopping: ' + err);
         process.exit();
     }
+
+    // Load config
+    this.config = this.db.config;
+    try {
+        _.defaults(this.config, JSON.parse(fs.readFileSync('config.json', 'utf-8')));
+    } catch(err) {
+        console.log('Config file is invalid. Stopping');
+        process.exit();
+    }
+
+    try {
+        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
+    } catch(err) {
+        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
+        process.exit();
+    }
+
+    // Load missing config directives from sample file
+    _.defaults(this.config, defaultConfig);
 
     // Load Strings file
     try {
@@ -122,6 +125,9 @@ DBot.prototype.reloadModules = function() {
     this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
     this.timers.clearTimers();
+    
+    // Load config changes
+    _.extend(this.config, this.db.config);
 
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
