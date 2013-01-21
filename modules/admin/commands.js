@@ -4,6 +4,8 @@ var fs = require('fs'),
     exec = require('child_process').exec;
 
 var commands = function(dbot) {
+    var noChangeConfig = [ 'servers', 'name', 'moduleNames' ];
+
     var getCurrentConfigPath = function(configKey) {
         var defaultConfigPath = dbot.config;
         var userConfigPath = dbot.db.config;
@@ -183,31 +185,35 @@ var commands = function(dbot) {
             var configKey = _.last(configPathString.split('.'));
             var newOption = event.params[2];
 
-            var configPath = getCurrentConfigPath(configPathString);
-            var currentOption;
-            if(_.has(configPath['user'], configKey)) {
-                currentOption = configPath['user'][configKey];
-            } else if(_.has(configPath['default'], configKey)) {
-                currentOption = configPath['default'][configKey];
+            if(!_.include(noChangeConfig, configKey)) {
+                var configPath = getCurrentConfigPath(configPathString);
+                var currentOption;
+                if(_.has(configPath['user'], configKey)) {
+                    currentOption = configPath['user'][configKey];
+                } else if(_.has(configPath['default'], configKey)) {
+                    currentOption = configPath['default'][configKey];
+                } else {
+                    event.reply("Config key doesn't exist bro");
+                    return;
+                }
+
+                // Convert to boolean type if config item boolean
+                if(_.isBoolean(currentOption)) {
+                    newOption = (newOption == "true");
+                }
+
+                if(_.isArray(currentOption)) {
+                    event.reply("Config option is an array. Try 'pushconfig'.");
+                }
+
+                // TODO: Same for numbers and that I assume
+                
+                event.reply(configPathString + ": " + currentOption + " -> " + newOption);
+                configPath['user'][configKey] = newOption;
+                dbot.reloadModules();
             } else {
-                event.reply("Config key doesn't exist bro");
-                return;
+                event.reply("This config option cannot be altered while the bot is running.");
             }
-
-            // Convert to boolean type if config item boolean
-            if(_.isBoolean(currentOption)) {
-                newOption = (newOption == "true");
-            }
-
-            if(_.isArray(currentOption)) {
-                event.reply("Config option is an array. Try 'pushconfig'.");
-            }
-
-            // TODO: Same for numbers and that I assume
-            
-            event.reply(configPathString + ": " + currentOption + " -> " + newOption);
-            configPath['user'][configKey] = newOption;
-            dbot.reloadModules();
         },
 
         'showconfig': function(event) {
