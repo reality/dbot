@@ -27,7 +27,7 @@ var DBot = function(timers) {
     }
 
     // Load config
-    this.config = this.db.config;
+    this.config = _.clone(this.db.config);
     try {
         _.defaults(this.config, JSON.parse(fs.readFileSync('config.json', 'utf-8')));
     } catch(err) {
