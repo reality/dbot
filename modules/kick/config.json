@@ -1,5 +1,6 @@
 {
     "dbKeys": [ "kicks", "kickers" ],
+    "dependencies": [ "command" ],
     "help": "http://github.com/reality/depressionbot/blob/master/modules/kick/README.md",
     "ignorable": true
 }

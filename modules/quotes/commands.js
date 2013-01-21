@@ -103,7 +103,7 @@ var commands = function(dbot) {
                 var key = event.input[1].trim().toLowerCase();
                 if(_.has(quotes, key)) {
                     var quote = quotes[key].pop();
-                    if(quotes[key].length === 0) {
+                    if(quotes[key].length == 0) {
                         delete quotes[key];
                     }
                     this.internalAPI.resetRemoveTimer(event, key, quote);

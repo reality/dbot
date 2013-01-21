@@ -1,5 +1,6 @@
 {
     "dbKeys": [ "quoteArrs" ],
+    "dependencies": [ "command" ]
     "rmLimit": 10,
     "ignorable": true,
     "help": "http://github.com/reality/depressionbot/blob/master/modules/quotes/README.md"

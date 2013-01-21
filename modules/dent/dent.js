@@ -34,7 +34,7 @@ var dent = function(dbot) {
     this.commands['~dent'].regex = [/^~dent (.+)$/, 2];
 
     this.onLoad = function() {
-        if(dbot.config.dent.dentQuotes === true) {
+        if(dbot.config.dent.dentQuotes === true && _.has(dbot.modules, 'quotes')) {
             dbot.api.command.addHook('~qadd', function(key, text) {
                 this.api.post(key + ': ' + text); 
             }.bind(this));

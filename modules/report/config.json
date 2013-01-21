@@ -1,4 +1,5 @@
 {
     "ignorable": true,
+    "dependencies": [ "command", "users" ],
     "help": "http://github.com/reality/depressionbot/blob/master/modules/report/README.md"
 }
