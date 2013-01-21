@@ -3,9 +3,10 @@ var _ = require('underscore')._;
 var regex = function(dbot) {
     this.last = {};
     this.listener = function(event) {
-        var q = event.message.valMatch(/^([\d\w\s]*)?:? ?s\/(.+)\/(.+)\/$/, 4);
+        var q = event.message.valMatch(/^([\d\w\s]*)?:? ?s\/(.+)\/(.+)\/([ig]*)?$/, 5);
         if(q) {
-            var toMatch = new RegExp(q[2]),
+            var flags = q[4],
+                toMatch = new RegExp(q[2], flags),
                 replaceWith = q[3],
                 last,
                 replacement;
