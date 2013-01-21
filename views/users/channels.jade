@@ -6,5 +6,5 @@ block content
         a(href='/connections') &laquo; Connection List
     ul#quotelist
       -each channel in channels
-        a(href='/users/'+connection+'/'+channel.substr(1,channel.length))
+        a(href='/users/'+connection+'/'+encodeURIComponent(channel))
           li.quotes #{channel}

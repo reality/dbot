@@ -20,7 +20,7 @@ var pages = function(dbot) {
 
         '/users/:connection/:channel': function(req, res) {
             var connection = req.params.connection;
-            var channel = '#' + req.params.channel;
+            var channel = _.unescape(req.params.channel);
             var connections = dbot.instance.connections;
 
             if(connections.hasOwnProperty(connection) && 
