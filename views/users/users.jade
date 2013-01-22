@@ -25,7 +25,9 @@ block content
               "aoColumnDefs": [
                 { "aDataSort": [ 1, 0 ], "asSorting": [ "asc" ], "aTargets": [ 0 ] },
                 { "bVisible": false, "aTargets": [ 1 ] },
-                { "sType": "forcenum", "aTargets": [ 2, 3, 4, 5, 6 ] }
+                { "sType": "forcenum",
+                  "asSorting": [ "desc", "asc" ],
+                  "aTargets": [ 2, 3, 4, 5, 6 ] }
               ],
               "bPaginate": false,
               "bLengthChange": false,
@@ -55,7 +57,7 @@ block content
               -each nick in nicks
                 tr
                   td
-                      a(href='/user/'+connection+'/'+channel.substr(1,channel.length)+'/'+nick.primary)
+                      a(href='/profile/'+connection+'/'+nick.primary)
                         #{nick.display}
                       span 
                       if nick.online
