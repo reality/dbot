@@ -12,18 +12,7 @@ var webInterface = function(dbot) {
     app.get('/', function(req, res) {
         res.render('index', { 'name': dbot.config.name });
     });
-
-    console.log(Object.keys(app));
-
-    app.configure(function(){
-        app.use(function(err, req, res, next) {
-            console.log('Web encountered an error: ' + err);
-         });
-    });
-    app.on('error', function(err) {
-        console.log('Web encountered an error: ' + err);
-    });
-    
+   
     var server = app.listen(dbot.config.web.webPort);
 
     this.reloadPages = function() {
