@@ -3,7 +3,7 @@ var _ = require('underscore')._;
 var regex = function(dbot) {
     this.last = {};
     this.listener = function(event) {
-        var q = event.message.valMatch(/^([\d\w\s]*)?:? ?s\/(.+)\/(.+)\/([ig]*)?$/, 5);
+        var q = event.message.valMatch(/^([\d\w\s]*)?:? ?s\/(.+)\/(.+)?\/([ig]*)?$/, 5);
         if(q) {
             var flags = q[4],
                 toMatch = new RegExp(q[2], flags),
