@@ -40,6 +40,10 @@ var api = function(dbot) {
             return dbot.db.knownUsers[server].users;
         },
 
+        'getAllUsers': function() {
+            return _.pluck(dbot.db.knownUsers, 'users');
+        },
+
         'isKnownUser': function(server, nick) {
             var knownUsers = this.getServerUsers(server); 
             return (_.include(knownUsers.users, nick) || _.has(knownUsers.aliases, nick));
