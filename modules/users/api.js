@@ -36,6 +36,10 @@ var api = function(dbot) {
             return user;
         },
 
+        'getServerUsers': function(server) {
+            return dbot.db.knownUsers[server].users;
+        },
+
         'isKnownUser': function(server, nick) {
             var knownUsers = this.getServerUsers(server); 
             return (_.include(knownUsers.users, nick) || _.has(knownUsers.aliases, nick));

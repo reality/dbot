@@ -9,13 +9,14 @@ var _ = require('underscore')._;
 var ignore = function(dbot) {
     var commands = {
         '~ignore': function(event) {
-            var module = event.params[1];
-            var ignorableModules = _.chain(dbot.modules)
-                .filter(function(module, name) {
-                    return dbot.config[module].ignorable === true;
-                })
-                .pluck('name')
-                .value();
+            var user = dbot.api.users.resolveUser(event.server, event.user),
+                module = event.params[1],
+                ignorableModules = _.chain(dbot.modules)
+                    .filter(function(module, name) {
+                        return dbot.config[module].ignorable === true;
+                    })
+                    .pluck('name')
+                    .value();
 
             if(_.isUndefined(module)) {
                 event.reply(dbot.t('ignore_usage', {
@@ -24,13 +25,13 @@ var ignore = function(dbot) {
                 }));
             } else {
                 if(_.include(ignorableModules, module)) {
-                    if(_.has(dbot.db.ignores, event.user) && _.include(dbot.db.ignores[event.user], module)) {
+                    if(_.has(dbot.db.ignores, user) && _.include(dbot.db.ignores[user], module)) {
                         event.reply(dbot.t('already_ignoring', { 'user': event.user }));
                     } else {
                         if(_.has(dbot.db.ignores, module)) {
-                            dbot.db.ignores[event.user].push(module);
+                            dbot.db.ignores[user].push(module);
                         } else {
-                            dbot.db.ignores[event.user] = [module];
+                            dbot.db.ignores[user] = [module];
                         }
 
                         dbot.instance.ignoreTag(event.user, module);
@@ -46,11 +47,13 @@ var ignore = function(dbot) {
         }, 
 
         '~unignore': function(event) {
-            var ignoredModules = [];
+            var user = dbot.api.users.resolveUser(event.server, event.user),
+                module = event.params[1],
+                ignoredModules = [];
+
             if(_.has(dbot.db.ignores, event.user)) {
-                ignoredModules = dbot.db.ignores[event.user];
+                ignoredModules = dbot.db.ignores[user];
             }
-            var module = event.params[1];
 
             if(_.isUndefined(module)) {
                 event.reply(dbot.t('unignore_usage', {
@@ -59,8 +62,8 @@ var ignore = function(dbot) {
                 }));
             } else {
                 if(_.include(ignoredModules, module)) {
-                    dbot.db.ignores[event.user].splice(dbot.db.ignores[event.user].indexOf(module), 1);
-                    dbot.instance.removeIgnore(event.user, module)
+                    dbot.db.ignores[user].splice(dbot.db.ignores[user].indexOf(module), 1);
+                    dbot.instance.removeIgnore(user, module)
                     event.reply(dbot.t('unignored', { 
                         'user': event.user, 
                         'module': module
