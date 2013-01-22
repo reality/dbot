@@ -41,7 +41,9 @@ var api = function(dbot) {
         },
 
         'getAllUsers': function() {
-            return _.pluck(dbot.db.knownUsers, 'users');
+            return _.reduce(dbot.db.knownUsers, function(memo, function(server, name) {
+                memo[name] = server.users;
+            }, {}, this);
         },
 
         'isKnownUser': function(server, nick) {
