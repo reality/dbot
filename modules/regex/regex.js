@@ -10,6 +10,8 @@ var regex = function(dbot) {
                 replaceWith = q[3],
                 last,
                 replacement;
+                
+            if(!replaceWith) replaceWith = "";
 
             if(q[1] != null) {
                 var user = q[1];
