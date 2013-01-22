@@ -43,6 +43,7 @@ var api = function(dbot) {
         'getAllUsers': function() {
             return _.reduce(dbot.db.knownUsers, function(memo, server, name) {
                 memo[name] = server.users;
+                return memo;
             }, {}, this);
         },
 
