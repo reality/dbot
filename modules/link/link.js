@@ -10,7 +10,7 @@ var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     this.links = {}; 
     this.fetchTitle = function(event, link) {
-        request(link, function (error, response, body) {
+        request(link, function(error, response, body) {
             if(!error && response.statusCode == 200) {
                 body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
                 var title = body.valMatch(/<title>(.*)<\/title>/, 2);
@@ -31,6 +31,18 @@ var link = function(dbot) {
                 }
             }
             this.fetchTitle(event, link);
+        },
+
+        '~ud': function(event) {
+            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + event.params[1];
+            request(reqUrl, function(error, response, body) {
+                var result = JSON.parse(body);
+                if(_.has(result, 'result_type') && result.result_type != 'no_results') {
+                    event.reply(event.params[1] + ': ' + result.list[0].definition);
+                } else {
+                    event.reply(event.user + ': No definition found.');
+                }
+            });
         }
     };
     this.commands = commands;
