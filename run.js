@@ -201,6 +201,8 @@ DBot.prototype.reloadModules = function() {
                 }
             }, this);
 
+            module.config = this.config[name];
+
             // Load the module itself
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
