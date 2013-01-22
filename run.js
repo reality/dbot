@@ -201,13 +201,13 @@ DBot.prototype.reloadModules = function() {
                 }
             }, this);
 
-            module.config = this.config[name];
-
             // Load the module itself
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
             module.name = name;
             this.rawModules.push(rawModule);
+
+            module.config = this.config[name];
 
             // Load the module data
             _.each([ 'commands', 'pages', 'api' ], function(property) {
