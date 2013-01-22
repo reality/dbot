@@ -104,7 +104,7 @@ DBot.prototype.t = function(string, formatData) {
 
 // Save the database file
 DBot.prototype.save = function() {
-    fs.writeFile('db.json', JSON.stringify(this.db, null, '    '));
+    fs.writeFileSync('db.json', JSON.stringify(this.db, null, '    '));
 };
 
 // Hot-reload module files.
