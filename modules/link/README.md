@@ -19,3 +19,5 @@ they are posted in the channel.
 If called with a link, the bot will attempt to find and return the title of that
 page. If called without a link, the bot will attempt the same on the last link
 which was posted in the current channel.
+#### ~ud [headword]
+Returns the first [Urban Dictionary](http://www.urbandictionary.com) definition for the headword provided.
