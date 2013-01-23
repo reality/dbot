@@ -14,6 +14,41 @@ var api = function(dbot) {
             this.profiles[server][primary] = {};
             _.defaults(this.profiles[server][primary], this.config.schema);
         },
+
+        /**
+         * Given a server and "new" alias, resolve this alias to the user's 
+         * new primary name and move profile data pertaining to the alias to 
+         * the new primary name.
+         */
+        'renameProfile': function(server, alias){
+            if(!_.has(this.profiles, server)) return;
+            var profiles = dbot.db.profiles[server];
+
+            if(_.has(profiles, alias)){
+                var primary = dbot.api.users.resolveUser(server, alias, true).toLowerCase();
+                alias = alias.trim().toLowerCase();
+
+                profiles[primary] = profiles[alias];
+                delete profiles[alias];
+            }
+        },
+
+        /**
+         * Given a server and a primary username which has been converted to a
+         * secondary alias find and remove the profile for the alias.
+         */
+        'mergeProfile': function(server, mergeFromPrimary){
+            if(!_.has(this.profiles, server)) return;
+            var profiles = dbot.db.profiles[server];
+
+            mergeFromPrimary = mergeFromPrimary.toLowerCase();
+            var mergeToPrimary = dbot.api.users.resolveUser(server, mergeFromPrimary, true).toLowerCase();
+            if(!_.has(profiles, mergeToPrimary)
+                    || !_.has(profiles, mergeFromPrimary)) return;
+
+            // Remove the profile of the alias
+            delete profiles[mergeFromPrimary];
+        },
     }
 };
 
