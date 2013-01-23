@@ -21,6 +21,7 @@ block content
                 }
             } );
 
+            $('.tip').tooltip();
             $('.data').dataTable({
               "aoColumnDefs": [
                 { "aDataSort": [ 1, 0 ], "asSorting": [ "asc" ], "aTargets": [ 0 ] },
@@ -61,15 +62,15 @@ block content
                         #{nick.display}
                       span 
                       if nick.online
-                        if nick.active
-                          span.label.label-success Active
+                        if nick.active.active
+                          span.label.label-success.tip(data-original-title="#{nick.active.ago}", data-placement="right") Active
                         else
-                          span.label.label-important Inactive 
+                          span.label.label-important.tip(data-original-title="#{nick.active.ago}", data-placement="right") Inactive 
                       else
-                        span.label Offline
+                        span.label.tip(data-original-title="#{nick.active.ago}", data-placement="right") Offline
                   td
                       if nick.online
-                        if nick.active
+                        if nick.active.active
                           -1
                         else
                           0
