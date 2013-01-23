@@ -57,6 +57,7 @@ var users = function(dbot) {
             var newNick = event.params.substr(1);
             if(!this.api.isKnownUser(newNick)) {
                 knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
+                if(_.has(dbot.modules, 'stats')) dbot.api.stats.renameStats(event.server, newNick);
             }
         }
     }.bind(this);
