@@ -1,7 +1,7 @@
 var _ = require('underscore')._;
 
 var commands = function(dbot){
-    return {
+    var cmds = {
 
         "~test_getprop": function(event){
             if(event.params[1]){
@@ -16,9 +16,9 @@ var commands = function(dbot){
         },
 
         "~test_setprop": function(event){
-            if(event.params[1] && event.params[2]){
-                if(_.has(this.config.schema.profile, event.params[1])){
-                    dbot.db.profiles[event.server][event.user.toLowerCase()].profile[event.params[1]] = event.params[2];
+            if(event.input[1] && event.input[2]){
+                if(_.has(this.config.schema.profile, event.input[1])){
+                    dbot.db.profiles[event.server][event.user.toLowerCase()].profile[event.input[1]] = event.input[2];
                     event.reply("Property set, maybe?");
                 }
                 else{
@@ -26,7 +26,10 @@ var commands = function(dbot){
                 }
             }
         }
-    }
+    };
+    cmds['~test_setprop'].regex = [/~test_setprop ([^ ]+) (.+)/, 3];
+
+    return cmds;
 };
 
 exports.fetch = function(dbot){
