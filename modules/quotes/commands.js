@@ -1,6 +1,7 @@
 var _ = require('underscore')._;
 
 var commands = function(dbot) {
+    var quotes = dbot.db.quoteArrs;
     var commands = {
         // Alternative syntax to ~q
         '~': function(event) {
@@ -26,7 +27,6 @@ var commands = function(dbot) {
         },
 
         '~rmdeny': function(event) {
-            var quotes = this.quotes;
             var rmCache = this.rmCache;
             var rmCacheCount = rmCache.length;
             for(var i=0;i<rmCacheCount;i++) {
@@ -55,7 +55,6 @@ var commands = function(dbot) {
 
         // Shows a list of the biggest categories
         '~qstats': function(event) {
-            var quotes = this.quotes;
             var qSizes = _.chain(quotes)
                 .pairs()
                 .sortBy(function(category) { return category[1].length })
@@ -74,7 +73,6 @@ var commands = function(dbot) {
         // Search a given category for some text.
         // TODO fix
         '~qsearch': function(event) {
-            var quotes = this.quotes;
             var haystack = event.input[1].trim().toLowerCase();
             var needle = event.input[2];
             if(_.has(quotes, haystack)) {
@@ -98,7 +96,6 @@ var commands = function(dbot) {
         },
 
         '~rmlast': function(event) {
-            var quotes = this.quotes;
             if(this.rmAllowed == true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(_.has(quotes, key)) {
@@ -122,7 +119,6 @@ var commands = function(dbot) {
 
         '~rm': function(event) {
             if(this.rmAllowed == true || _.include(dbot.config.admins, event.user)) {
-                var quotes = this.quotes;
                 var key = event.input[1].trim().toLowerCase();
                 var quote = event.input[2];
 
@@ -150,7 +146,6 @@ var commands = function(dbot) {
 
         '~qcount': function(event) {
             var input = event.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
-            var quotes = this.quotes;
             if(input) { // Give quote count for named category
                 var key = input[1].trim().toLowerCase();
                 if(_.has(quotes, key)) {
@@ -170,7 +165,6 @@ var commands = function(dbot) {
         },
 
         '~qadd': function(event) {
-            var quotes = this.quotes;
             var key = event.input[1].toLowerCase();
             var text = event.input[2];
             if(!_.isArray(quotes[key])) {
@@ -193,14 +187,13 @@ var commands = function(dbot) {
         },
 
         '~rq': function(event) {
-            var quotes = this.quotes;
             var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
             event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event, category));
         },
         
         '~link': function(event) {
             var key = event.params[1].trim().toLowerCase();
-            if(_.has(this.quotes, key)) {
+            if(_.has(quotes, key)) {
                 event.reply(dbot.t('quote_link', {
                     'category': key, 
                     'url': dbot.t('url', {
