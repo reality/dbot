@@ -113,7 +113,7 @@ var spelling = function(dbot) {
 
     this.listener = function(event) {
         var q = event.message.valMatch(/^(?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 3);
-        var otherQ = event.message.valMatch(/^([\d\w\s]*): (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
+        var otherQ = event.message.valMatch(/^([\d\w\s]*)[:|,] (?:\*\*?([\d\w\s']*)|([\d\w\s']*)\*\*?)$/, 4);
         if(q) {
             this.internalAPI.correct(event, q[1] || q[2], event.user, function (e) {
                 event.reply(dbot.t('spelling_self', e));
