@@ -5,7 +5,6 @@ var fs = require('fs'),
 require('./snippets');
 
 var DBot = function(timers) {
-    
     // Load DB
     var rawDB;
     try {
@@ -55,6 +54,7 @@ var DBot = function(timers) {
 
     // Initialise run-time resources
     this.usage = {};
+    this.status = {};
     this.sessionData = {};
     this.timers = timers.create();
 
@@ -119,6 +119,7 @@ DBot.prototype.reloadModules = function() {
 
     this.rawModules = [];
     this.pages = {};
+    this.status = {};
     this.modules = {};
     this.commands = {};
     this.api = {};
@@ -151,6 +152,7 @@ DBot.prototype.reloadModules = function() {
     this.instance.removeListeners();
 
     moduleNames.each(function(name) {
+        this.status[name] = true;
         var moduleDir = './modules/' + name + '/';
         var cacheKey = require.resolve(moduleDir + name);
         delete require.cache[cacheKey];
@@ -172,7 +174,13 @@ DBot.prototype.reloadModules = function() {
             }
 
             try {
-                var defaultConfig = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'));
+                var defaultConfig = fs.readFileSync(moduleDir + 'config.json', 'utf-8');
+                try {
+                    defaultConfig = JSON.parse(defaultConfig);
+                } catch(err) { // syntax error
+                    this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
+                    return;
+                }
                 config = _.defaults(config, defaultConfig);
             } catch(err) {
                 // Invalid or no config data
@@ -188,7 +196,7 @@ DBot.prototype.reloadModules = function() {
                 }, [], this);
 
                 if(unmetDependencies.length != 0) {
-                    throw new Error("Dependencies not met: " + unmetDependencies);
+                    this.status[name] = 'Dependencies not met: ' + unmetDependencies;
                     return;
                 }
             }
@@ -265,6 +273,7 @@ DBot.prototype.reloadModules = function() {
             this.modules[module.name] = module;
         } catch(err) {
             console.log(this.t('module_load_error', {'moduleName': name}));
+            this.status[name] = err + ' - ' + err.stack.split('\n')[1].trim();
             if(this.config.debugMode) {
                 console.log('MODULE ERROR (' + name + '): ' + err.stack );
             } else {

@@ -102,6 +102,21 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
+
+        'status': function(event) {
+            var moduleName = event.params[1];
+            if(_.has(dbot.status, moduleName)) {
+                var status = dbot.status[moduleName];
+                if(status === true) {
+                    event.reply(moduleName + ' status: Shit looks good.');
+                } else {
+                    event.reply(moduleName + ' status: Failed to load: ' + status); 
+                }
+            } else {
+                event.reply('Either that module wasn\'t on the roster or shit is totally fucked.');
+            }
+        },
+
         // Reload DB, translations and modules.
         'reload': function(event) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
@@ -125,7 +140,11 @@ var commands = function(dbot) {
             if(!_.include(dbot.config.moduleNames, moduleName)) {
                 dbot.config.moduleNames.push(moduleName);
                 dbot.reloadModules();
-                event.reply(dbot.t('load_module', {'moduleName': moduleName}));
+                if(dbot.status[moduleName] === true) {
+                    event.reply(dbot.t('load_module', {'moduleName': moduleName}));
+                } else {
+                    event.reply('Failed to load ' + moduleName + '. See \'status ' + moduleName + '\'.');
+                }
             } else {
                 if(moduleName == 'web') {
                     event.reply(dbot.t('already_loaded_web'));
