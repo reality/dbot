@@ -21,6 +21,7 @@ block content
                 }
             } );
 
+            $('.tip').tooltip();
             $('.data').dataTable({
               "aoColumnDefs": [
                 { "sType": "forcenum",
@@ -61,12 +62,12 @@ block content
                             #{key}
                           span 
                           if chan.online
-                            if chan.active
-                              span.label.label-success Active
+                            if chan.active.active
+                              span.label.label-success.tip(data-original-title="#{chan.active.ago}", data-placement="right") Active
                             else
-                              span.label.label-important Inactive 
+                              span.label.label-important.tip(data-original-title="#{chan.active.ago}", data-placement="right") Inactive
                           else
-                            span.label Offline
+                            span.label.tip(data-original-title="#{chan.active.ago}", data-placement="right") Offline
                       td
                           #{chan.fields.lines.data}
                       td
