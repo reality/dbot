@@ -31,7 +31,6 @@ p {
 }
 
 div#page {
-	width: 90%;
 	margin: 0 auto 0 auto;
 }
 
@@ -55,9 +54,8 @@ div#title a {
 }
 
 div#main {
-	position: relative;
-    padding: 15px 5px;
-    margin: 0px; 
+    position: relative;
+    padding: 10px 5px;
     font-size: 21px;
     text-align:center;
     background: #FFF;
@@ -183,3 +181,15 @@ li.option-votes {
 
 .sorting_asc_disabled { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_asc_disabled.png') no-repeat center right; }
 .sorting_desc_disabled { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_desc_disabled.png') no-repeat center right; }
+
+/**
+ * Bootstrap Overrides
+ */
+.profile_page-header{
+  margin: 5px 0 10px 0;
+}
+
+.profile_row{
+  text-align: left;
+  margin-bottom: 10px;
+}

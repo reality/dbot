@@ -17,7 +17,13 @@ var commands = function(dbot){
 
         "~test_setprop": function(event){
             if(event.params[1] && event.params[2]){
-                dbot.db.profiles[event.server][event.user.toLowerCase()].profile[event.params[1]] = event.params[2];
+                if(_.has(this.config.schema.profile, event.params[1])){
+                    dbot.db.profiles[event.server][event.user.toLowerCase()].profile[event.params[1]] = event.params[2];
+                    event.reply("Property set, maybe?");
+                }
+                else{
+                    event.reply("Invalid property. Go home.");
+                }
             }
         }
     }
