@@ -14,11 +14,11 @@ var command = function(dbot) {
     this.listener = function(event) {
         var commandName = event.params[0];
         if(!_.has(dbot.commands, commandName)) {
-            if(_.has(dbot.modules, 'quotes')) {
+            /*if(_.has(dbot.modules, 'quotes')) {
                 commandName = '~';
-            } else {
+            } else {*/
                 return;
-            }
+            //}
         } 
         
         if(this.api.isBanned(event.user, commandName)) {
