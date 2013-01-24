@@ -23,7 +23,7 @@ var pages = function(dbot) {
             });
         },
 
-        '/grid/:connection': function(req, res) {
+        '/profile/:connection': function(req, res) {
             var connection = req.params.connection;
             var profiles = dbot.db.profiles[connection];
 
