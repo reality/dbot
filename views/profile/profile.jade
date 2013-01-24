@@ -43,7 +43,10 @@ block content
         h1 
           #{primary}
         small
-          "#{profile.tagline}"
+          if(profile.tagline)
+            "#{profile.tagline}"
+    div#backlink 
+        a(href='/profile/'+connection) &laquo; Profiles
    
     div.row.profile_row#profile_data
       div.span3
@@ -92,6 +95,3 @@ block content
                           #{chan.fields.wpl.data}
                       td
                           #{chan.fields.in_mentions.data}
-      ul.pager
-        li.previous
-          a(href='/profile/'+connection) &larr; Back to #{connection}.
