@@ -26,8 +26,15 @@ var pages = function(dbot) {
             if(connections.hasOwnProperty(connection) && 
                 connections[connection].channels.hasOwnProperty(channel)) {
 
+                var chanData = dbot.api.stats.getChanStats(connection, channel, ["freq"]);
+                var chanFreq = [];
+                for(var i=0; i <= 6; i++){
+                    for(var j=0; j <= 23; j++){
+                        chanFreq.push(chanData.fields.freq.raw[i][j]);
+                    }
+                }
+
                 var userData = { "active": [], "inactive": [], "offline": []};
-                
                 var reply = dbot.api.stats.getChanUsersStats(connection, channel, [
                         "lines", "words", "lincent", "wpl", "in_mentions"
                 ]);
@@ -60,8 +67,14 @@ var pages = function(dbot) {
 
                 var userDataSorted = (userData.active.concat(userData.inactive)).concat(userData.offline);
 
-                res.render('users', { 'name': dbot.config.name, 'connection': connection,
-                    'channel': channel, 'nicks': userDataSorted });
+                res.render('users', { 
+                    'name': dbot.config.name,
+                    'connection': connection,
+                    'channel': channel,
+                    'userStats': userDataSorted,
+                    'chanFreq': chanFreq,
+                    'chanFreqLen': chanFreq.length });
+
             } else {
                 res.render_core('error', { 'name': dbot.config.name, 'message': 'No such connection or channel.' });
             }

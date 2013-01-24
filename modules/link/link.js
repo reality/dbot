@@ -34,17 +34,19 @@ var link = function(dbot) {
         },
 
         '~ud': function(event) {
-            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + event.params[1];
+	    var query = event.input[1];
+            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + encodeURI(query); 
             request(reqUrl, function(error, response, body) {
                 var result = JSON.parse(body);
                 if(_.has(result, 'result_type') && result.result_type != 'no_results') {
-                    event.reply(event.params[1] + ': ' + result.list[0].definition);
+                    event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
                 } else {
                     event.reply(event.user + ': No definition found.');
                 }
             });
         }
     };
+    commands['~ud'].regex = [/~ud (.+)/, 2];
     this.commands = commands;
 
     this.listener = function(event) {

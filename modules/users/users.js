@@ -48,6 +48,7 @@ var users = function(dbot) {
                 nick = this.api.resolveUser(event.server, nick);
             } else {
                 knownUsers.users.push(nick);
+                dbot.api.emit('new_user', [ event.server, nick ]);
             }
 
             if(!_.include(channelUsers, nick)) {
@@ -57,7 +58,7 @@ var users = function(dbot) {
             var newNick = event.params.substr(1);
             if(!this.api.isKnownUser(newNick)) {
                 knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
-                if(_.has(dbot.modules, 'stats')) dbot.api.stats.renameStats(event.server, newNick);
+                dbot.api.event.emit('nick_change', [ event.server, newNick ]);
             }
         }
     }.bind(this);
@@ -78,6 +79,7 @@ var users = function(dbot) {
                     nick = this.api.resolveUser(event.server, nick);
                 } else {
                     knownUsers.users.push(nick);
+                    dbot.api.emit('new_user', [ event.server, nick ]);
                 }
                 if(!_.include(channelUsers, nick)) {
                     channelUsers.push(nick);

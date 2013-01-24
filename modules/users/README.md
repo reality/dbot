@@ -46,3 +46,11 @@ Return a list of aliases for a given primary user.
 
 #### isOnline(server, user, channel, useLowerCase)
 Return whether a user is online in a given channel on the given server.
+
+### Events
+
+#### nick_changed(server, newNick)
+This is executed when a new alias is added for a user.
+
+#### new_user(server, nick)
+This is executed when a new primary user is added to the known users DB.

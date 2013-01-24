@@ -5,32 +5,36 @@ var fs = require('fs'),
 require('./snippets');
 
 var DBot = function(timers) {
-    // Load DB
-    var rawDB;
-    try {
-        var rawDB = fs.readFileSync('db.json', 'utf-8');
-    } catch(err) {
-        this.db = {};  // If no db file, make empty one
+    
+    /*** Load the DB ***/
+
+    if(fs.existsSync('db.json')) {
+        try {
+            this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+        } catch(err) {
+            console.log('Error loading db.json. Stopping: ' + err);
+            process.exit();
+        }
+    } else {
+        this.db = {};
     }
 
-    try {
-        if(!this.db) {  // If it wasn't empty 
-            this.db = JSON.parse(rawDB);
-        }
-        if(!_.has(this.db, 'config')) {
-            this.db.config = {};
-        }
-    } catch(err) {
-        console.log('Syntax error in db.json. Stopping: ' + err);
+    if(!_.has(this.db, 'config')) {
+        this.db.config = {};
+    }
+
+    /*** Load the Config ***/
+
+    if(!fs.existsSync('config.json')) {
+        console.log('Error: config.json file does not exist. Stopping');
         process.exit();
     }
-
-    // Load config
+    
     this.config = _.clone(this.db.config);
     try {
         _.defaults(this.config, JSON.parse(fs.readFileSync('config.json', 'utf-8')));
     } catch(err) {
-        console.log('Config file is invalid. Stopping');
+        console.log('Config file is invalid. Stopping: ' + err);
         process.exit();
     }
 
@@ -44,7 +48,8 @@ var DBot = function(timers) {
     // Load missing config directives from sample file
     _.defaults(this.config, defaultConfig);
 
-    // Load Strings file
+    /*** Load main strings ***/
+
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -220,13 +225,17 @@ DBot.prototype.reloadModules = function() {
             // Load the module data
             _.each([ 'commands', 'pages', 'api' ], function(property) {
                 var propertyObj = {};
-                try {
-                    var propertyKey = require.resolve(moduleDir + property);
-                    if(propertyKey) delete require.cache[propertyKey];
-                    propertyObj = require(moduleDir + property).fetch(this);
-                } catch(err) {
-                    console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
-                } 
+
+                if(fs.existsSync(moduleDir + property + '.js')) {
+                    try {
+                        var propertyKey = require.resolve(moduleDir + property);
+                        if(propertyKey) delete require.cache[propertyKey];
+                        propertyObj = require(moduleDir + property).fetch(this);
+                    } catch(err) {
+                        this.status[name] = 'Error loading ' + propertyKey + ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
+                        console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
+                    } 
+                }
 
                 if(!_.has(module, property)) module[property] = {};
                 _.extend(module[property], propertyObj);
@@ -286,7 +295,11 @@ DBot.prototype.reloadModules = function() {
     
     _.each(this.modules, function(module, name) {
         if(module.onLoad) {
-            module.onLoad();
+            try {
+                module.onLoad();
+            } catch(err) {
+                this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
+            }
         }
     }, this);
 
