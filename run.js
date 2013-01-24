@@ -6,23 +6,19 @@ require('./snippets');
 
 var DBot = function(timers) {
     // Load DB
-    var rawDB;
-    try {
-        var rawDB = fs.readFileSync('db.json', 'utf-8');
-    } catch(err) {
-        this.db = {};  // If no db file, make empty one
+    if(fs.existsSync('db.json')) {
+        try {
+            this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
+        } catch(err) {
+            console.log('Error loading db.json. Stopping: ' + err);
+            process.exit();
+        }
+    } else {
+        this.db = {};
     }
 
-    try {
-        if(!this.db) {  // If it wasn't empty 
-            this.db = JSON.parse(rawDB);
-        }
-        if(!_.has(this.db, 'config')) {
-            this.db.config = {};
-        }
-    } catch(err) {
-        console.log('Syntax error in db.json. Stopping: ' + err);
-        process.exit();
+    if(!_.has(this.db, 'config')) {
+        this.db.config = {};
     }
 
     // Load config
