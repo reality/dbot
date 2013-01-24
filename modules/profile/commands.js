@@ -1,9 +1,9 @@
 var _ = require('underscore')._;
 
 var commands = function(dbot){
-    var cmds = {
+    var commands = {
 
-        "~test_getprop": function(event){
+        "~getprop": function(event){
             if(event.params[1]){
                 var res = dbot.db.profiles[event.server][event.user.toLowerCase()].profile[event.params[1]];
                 if(res){
@@ -15,7 +15,7 @@ var commands = function(dbot){
             }
         },
 
-        "~test_setprop": function(event){
+        "~setprop": function(event){
             if(event.input[1] && event.input[2]){
                 if(_.has(this.config.schema.profile, event.input[1])){
                     dbot.db.profiles[event.server][event.user.toLowerCase()].profile[event.input[1]] = event.input[2];
@@ -27,9 +27,9 @@ var commands = function(dbot){
             }
         }
     };
-    cmds['~test_setprop'].regex = [/~test_setprop ([^ ]+) (.+)/, 3];
+    commands['~setprop'].regex = [/~setprop ([^ ]+) (.+)/, 3];
 
-    return cmds;
+    return commands;
 };
 
 exports.fetch = function(dbot){
