@@ -53,7 +53,7 @@ block content
         if profile.avatar
           img.profile_avatar.img-polaroid(src="#{profile.avatar}")
         else
-          img.profile_avatar(src="http://placehold.it/270x180&text=Hello,%20World")
+          img.profile_avatar.img-polaroid(src="http://placehold.it/270x180&text=Hello,%20World")
       div.span9
         h4 Bio
         p #{profile.bio}
