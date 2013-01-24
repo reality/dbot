@@ -39,7 +39,7 @@ var link = function(dbot) {
             request(reqUrl, function(error, response, body) {
                 var result = JSON.parse(body);
                 if(_.has(result, 'result_type') && result.result_type != 'no_results') {
-                    event.reply(query + ': ' + result.list[0].definition.split('\n')[0];
+                    event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
                 } else {
                     event.reply(event.user + ': No definition found.');
                 }
