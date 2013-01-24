@@ -205,6 +205,7 @@ span.nicks {
   left: 0px;
   top: 10px;
   width: 100%;
+  word-wrap: break-word;
 }
 div.imgwrap {
   background-color: #000;
