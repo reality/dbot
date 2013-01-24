@@ -51,7 +51,7 @@ block content
     div.row.profile_row#profile_data
       div.span3
         if profile.avatar
-          img.profile_avatar(src="#{profile.avatar}")
+          img.profile_avatar.img-polaroid(src="#{profile.avatar}")
         else
           img.profile_avatar(src="http://placehold.it/270x180&text=Hello,%20World")
       div.span9
