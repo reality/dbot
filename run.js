@@ -5,7 +5,9 @@ var fs = require('fs'),
 require('./snippets');
 
 var DBot = function(timers) {
-    // Load DB
+    
+    /*** Load the DB ***/
+
     if(fs.existsSync('db.json')) {
         try {
             this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
@@ -21,12 +23,18 @@ var DBot = function(timers) {
         this.db.config = {};
     }
 
-    // Load config
+    /*** Load the Config ***/
+
+    if(!fs.existsSync('config.json')) {
+        console.log('Error: config.json file does not exist. Stopping');
+        process.exit();
+    }
+    
     this.config = _.clone(this.db.config);
     try {
         _.defaults(this.config, JSON.parse(fs.readFileSync('config.json', 'utf-8')));
     } catch(err) {
-        console.log('Config file is invalid. Stopping');
+        console.log('Config file is invalid. Stopping: ' + err);
         process.exit();
     }
 
@@ -40,7 +48,8 @@ var DBot = function(timers) {
     // Load missing config directives from sample file
     _.defaults(this.config, defaultConfig);
 
-    // Load Strings file
+    /*** Load main strings ***/
+
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -216,13 +225,16 @@ DBot.prototype.reloadModules = function() {
             // Load the module data
             _.each([ 'commands', 'pages', 'api' ], function(property) {
                 var propertyObj = {};
-                try {
-                    var propertyKey = require.resolve(moduleDir + property);
-                    if(propertyKey) delete require.cache[propertyKey];
-                    propertyObj = require(moduleDir + property).fetch(this);
-                } catch(err) {
-                    console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
-                } 
+
+                if(fs.existsSync(moduleDir + property + '.js')) {
+                    try {
+                        var propertyKey = require.resolve(moduleDir + property);
+                        if(propertyKey) delete require.cache[propertyKey];
+                        propertyObj = require(moduleDir + property).fetch(this);
+                    } catch(err) {
+                        console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
+                    } 
+                }
 
                 if(!_.has(module, property)) module[property] = {};
                 _.extend(module[property], propertyObj);
