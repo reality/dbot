@@ -216,7 +216,7 @@ div.imgwrap > img {
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
 }
- 
+
 .thumbnail:hover > div.imgwrap > img {
   opacity: 0.5;
 }

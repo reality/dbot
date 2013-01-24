@@ -3,11 +3,12 @@ extends ../layout
 block content
   script(src='http://masonry.desandro.com/jquery.masonry.min.js')
   script
-    var $container = $('.thumbnails');
-    $container.imagesLoaded(function(){
-      $container.masonry({
-        itemSelector : '.item',
-        columnWidth : 240
+    $(function() {
+      var $container = $('.thumbnails');
+      $container.imagesLoaded(function(){
+        $container.masonry({
+          itemSelector : '.thumbnails > li',
+        });
       });
     });
   div.page-header.profile_page-header
