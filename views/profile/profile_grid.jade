@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  div.page-header.profile_page-header
+    h1 
+      #{connection}
+  ul.thumbnails
+    each profile, key in profiles
+      if profile.hasOwnProperty('profile') && profile.profile.avatar
+        li.span2
+          a.thumbnail(href='/profile/'+connection+'/'+encodeURIComponent(key))
+            div.imgwrap
+              img(src="#{profile.profile.avatar}", alt="#{key}'s photo")
+              span.nicks #{profile.profile.primary}
