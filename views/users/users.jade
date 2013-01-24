@@ -2,9 +2,50 @@ extends ../layout
 
 block content
     script(type="text/javascript", src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js")
+    style
+      .chart rect {
+        fill: steelblue;
+      }
+      .chart rect:hover {
+          fill: #000;
+      }
 
     script
         $(document).ready(function(){
+            // d3.js Graph
+            var w = 5.595;
+            var h = 120;
+
+            var x = d3.scale.linear()
+                .domain([0,1])
+                .range([0,w]);
+
+            var y = d3.scale.linear()
+                .domain([0,100])
+                .rangeRound([0,h]);
+
+            var chart = d3.select($("#chanFreqChart")[0]).append("svg")
+                .attr("class", "chart")
+                .attr("width", w * #{chanFreqLen} - 1)
+                .attr("height", h);
+
+            chart.selectAll("rect")
+                .data([#{chanFreq}])
+              .enter().append("rect")
+                .attr("x", function(d, i) { return x(i) - .5; })
+                .attr("y", function(d) { return h - y(d) - .5; })
+                .attr("width", w)
+                .attr("height", function(d) { return y(d); })
+                .attr("title", function(d){ return y(d); });
+
+            chart.append("line")
+              .attr("x1", 0)
+              .attr("x2", w * #{chanFreqLen})
+              .attr("y1", h - .5)
+              .attr("y2", h - .5)
+              .style("stroke", "#000");
+
+
             // Allowing forcing of string stats data to sort as numeric
             jQuery.extend( jQuery.fn.dataTableExt.oSort, {
                 "forcenum-pre": function ( a ) {
@@ -22,6 +63,8 @@ block content
             } );
 
             $('.tip').tooltip();
+            $('rect').tooltip({
+            });
             $('.data').dataTable({
               "aoColumnDefs": [
                 { "aDataSort": [ 1, 0 ], "asSorting": [ "asc" ], "aTargets": [ 0 ] },
@@ -40,9 +83,16 @@ block content
             });
         });
 
-    h3 Users of #{channel} on #{connection}
+    div.page-header.profile_page-header
+      h1
+        #{channel}
+      small
+        #{connection}
     div#backlink 
         a(href='/channels/'+connection) &laquo; Channel List
+    div#row
+      div.barchart#chanFreqChart
+      hr
     div#row
         table.table.table-hover.data
             thead
@@ -55,7 +105,7 @@ block content
                   th Verbosity
                   th Mentions
             tbody
-              -each nick in nicks
+              -each nick in userStats
                 tr
                   td
                       a(href='/profile/'+connection+'/'+nick.primary)
