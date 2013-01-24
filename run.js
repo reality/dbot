@@ -232,6 +232,7 @@ DBot.prototype.reloadModules = function() {
                         if(propertyKey) delete require.cache[propertyKey];
                         propertyObj = require(moduleDir + property).fetch(this);
                     } catch(err) {
+                        this.status[name] = 'Error loading ' + propertyKey + ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
                         console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
                     } 
                 }
