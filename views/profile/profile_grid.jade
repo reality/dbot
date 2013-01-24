@@ -1,51 +1,13 @@
 extends ../layout
 
 block content
-    script(type="text/javascript", src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js")
-
-    script
-        $(document).ready(function(){
-            // Allowing forcing of string stats data to sort as numeric
-            jQuery.extend( jQuery.fn.dataTableExt.oSort, {
-                "forcenum-pre": function ( a ) {
-                    a = a.replace("\,", "");
-                    return parseFloat( a );
-                },
-             
-                "forcenum-asc": function ( a, b ) {
-                    return a - b;
-                },
-             
-                "forcenum-desc": function ( a, b ) {
-                    return b - a;
-                }
-            } );
-
-            $('.tip').tooltip();
-            $('.data').dataTable({
-              "aoColumnDefs": [
-                { "sType": "forcenum",
-                  "asSorting": [ "desc", "asc" ],
-                  "aTargets": [ 1, 2, 3, 4, 5 ] }
-              ],
-              "bPaginate": false,
-              "bFilter": false,
-              "bLengthChange": false,
-              "oLanguage": {
-                "sInfo":  "",
-                "sInfoEmpty":  "",
-                "sInfoFiltered": ""
-              },
-            });
-        });
-
-    div.page-header.profile_page-header
-        h1 
-          #{connection}
-      div.span9
-          each profile, key in profiles
-            if profile.hasOwnProperty('profile') && profile.profile.avatar
-              div.span2  
-                a(href='/profile/'+connection+'/'+encodeURIComponent(key)) 
-                  h3= profile.profile.primary
-                  img.profile_avatar(src="#{profile.profile.avatar}")
+  div.page-header.profile_page-header
+    h1 
+      #{connection}
+  div.span9
+    each profile, key in profiles
+      if profile.hasOwnProperty('profile') && profile.profile.avatar
+        div.span2  
+          a(href='/profile/'+connection+'/'+encodeURIComponent(key)) 
+            h3= profile.profile.primary
+            img.profile_avatar(src="#{profile.profile.avatar}")
