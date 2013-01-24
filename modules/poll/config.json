@@ -1,6 +1,6 @@
 {
     "help": "http://github.com/reality/depressionbot/blob/master/modules/poll/README.md",
     "dbKeys": [ "polls" ],
-    "ignorable true,
+    "ignorable": true,
     "dependencies": [ "users", "command" ]
 }
