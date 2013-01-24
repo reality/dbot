@@ -48,6 +48,7 @@ var users = function(dbot) {
                 nick = this.api.resolveUser(event.server, nick);
             } else {
                 knownUsers.users.push(nick);
+                dbot.api.emit('new_user', [ event.server, nick ]);
             }
 
             if(!_.include(channelUsers, nick)) {
@@ -78,6 +79,7 @@ var users = function(dbot) {
                     nick = this.api.resolveUser(event.server, nick);
                 } else {
                     knownUsers.users.push(nick);
+                    dbot.api.emit('new_user', [ event.server, nick ]);
                 }
                 if(!_.include(channelUsers, nick)) {
                     channelUsers.push(nick);
