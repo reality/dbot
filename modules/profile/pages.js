@@ -21,6 +21,17 @@ var pages = function(dbot) {
                 'profile': profile,
                 'stats': stats.channels,
             });
+        },
+
+        '/profile/:connection': function(req, res) {
+            var connection = req.params.connection;
+            var profiles = dbot.db.profiles[connection];
+
+            res.render('profile_grid', {
+                'name': dbot.config.name,
+                'connection': connection,
+                'profiles': profiles,
+            });
         }
     }
 };

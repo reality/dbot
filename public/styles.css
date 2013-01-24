@@ -193,3 +193,34 @@ li.option-votes {
   text-align: left;
   margin-bottom: 10px;
 }
+
+/**
+ * spaceinvader's thumbnails
+ */
+span.nicks {
+  display: none;
+  color: #fff;
+  text-decoration: none;
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 100%;
+}
+div.imgwrap {
+  background-color: #000;
+  position: relative;
+}
+div.imgwrap > img {
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+ 
+.thumbnail:hover > div.imgwrap > img {
+  opacity: 0.5;
+}
+
+.thumbnail:hover > div.imgwrap > span.nicks {
+  display: inline;
+}
