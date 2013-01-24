@@ -70,6 +70,8 @@ var api = function(dbot) {
         'isOnline': function(server, user, channel, useLowerCase) {
             var user = this.api.resolveUser(server, user, useLowerCase);
             var possiNicks = [user].concat(this.api.getAliases(server, user));
+
+            if(!_.has(dbot.instance.connections[server].channels[channel], nicks)) return false;
             var onlineNicks = dbot.instance.connections[server].channels[channel].nicks;
 
             return _.any(onlineNicks, function(nick) {
