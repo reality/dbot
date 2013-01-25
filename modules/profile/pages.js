@@ -31,7 +31,7 @@ var pages = function(dbot) {
 
             // TODO: Clean up
             _.each(profiles, function(profile) {
-                if(_.has(dbot.db.quoteArrs, profile.profile.primary)) {
+                if(_.has(dbot.db.quoteArrs, profile.profile.primary) && !profile.profile.avatar) {
                     var category = dbot.db.quoteArrs[profile.profile.primary];
                     var avatar = _.find(category, function(quote) {
                         return quote.match(/(\.jpg|\.png|\.jpeg)$/i);
