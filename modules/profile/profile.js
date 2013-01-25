@@ -19,6 +19,7 @@ var profile = function(dbot) {
             _.each(server, function(userName){
                 var primary = userName;
                 userName = userName.toLowerCase();
+                // TODO why isn't this calling the profile create API function
                 if(!_.has(dbot.db.profiles[serverName], userName)){
                     dbot.db.profiles[serverName][userName] = {
                         "profile": {},

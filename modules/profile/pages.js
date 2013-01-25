@@ -14,8 +14,6 @@ var pages = function(dbot) {
                     "lines", "words", "lincent", "wpl", "in_mentions"]
             );
 
-            
-
             res.render('profile', {
                 'name': dbot.config.name,
                 'connection': connection,
