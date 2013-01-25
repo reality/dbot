@@ -16,5 +16,6 @@
         "preferences": {
             "timezone": null
         }
-    }
+    },
+    "dependencies": [ "quotes", "command" ]
 }

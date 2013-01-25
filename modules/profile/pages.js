@@ -14,6 +14,8 @@ var pages = function(dbot) {
                     "lines", "words", "lincent", "wpl", "in_mentions"]
             );
 
+            
+
             res.render('profile', {
                 'name': dbot.config.name,
                 'connection': connection,
@@ -26,6 +28,17 @@ var pages = function(dbot) {
         '/profile/:connection': function(req, res) {
             var connection = req.params.connection;
             var profiles = dbot.db.profiles[connection];
+
+            // TODO: Clean up
+            _.each(profiles, function(profile) {
+                if(_.has(dbot.db.quoteArrs, profile.profile.primary)) {
+                    var category = dbot.db.quoteArrs[profile.profile.primary];
+                    var avatar = _.find(category, function(quote) {
+                        return quote.match(/(\.jpg|\.png|\.jpeg)$/i);
+                    });
+                    if(avatar) profile.profile.avatar = avatar;
+                }
+            });
 
             res.render('profile_grid', {
                 'name': dbot.config.name,
