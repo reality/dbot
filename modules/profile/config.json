@@ -17,5 +17,5 @@
             "timezone": null
         }
     },
-    "dependencies": [ "quotes", "command" ]
+    "dependencies": [ "quotes", "users", "command" ]
 }

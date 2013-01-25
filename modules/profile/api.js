@@ -11,8 +11,8 @@ var api = function(dbot) {
             if(!_.has(this.profiles, server)){
                 this.profiles[server] = {};
             }
-            this.profiles[server][primary] = {};
-            _.defaults(this.profiles[server][primary], this.config.schema);
+            this.profiles[server][primary.toLowerCase()] = {};
+            _.defaults(this.profiles[server][primary.toLowerCase()], this.config.schema);
         },
 
         /**
