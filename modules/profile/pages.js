@@ -38,9 +38,24 @@ var pages = function(dbot) {
                 }
             });
 
+            var nicks = [];
+            for (var p in profiles) {
+              if (profiles.hasOwnProperty(p) && profiles[p].profile.avatar) {
+                nicks.push(p);
+              }
+            }
+            nicks.sort(function(a, b) {
+              var x = profiles[a].profile.primary.toLowerCase();
+              var y = profiles[b].profile.primary.toLowerCase();
+              if(x > y) return 1;
+              if(x < y) return -1;
+              return 0;
+            });
+
             res.render('profile_grid', {
                 'name': dbot.config.name,
                 'connection': connection,
+                'nicks': nicks,
                 'profiles': profiles,
             });
         }
