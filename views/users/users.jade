@@ -13,6 +13,7 @@ block content
     script
         $(document).ready(function(){
             // d3.js Graph
+            var xlab = 30;
             var w = 5.595;
             var h = 120;
 
@@ -27,7 +28,7 @@ block content
             var chart = d3.select($("#chanFreqChart")[0]).append("svg")
                 .attr("class", "chart")
                 .attr("width", w * #{chanFreqLen} - 1)
-                .attr("height", h);
+                .attr("height", h + xlab);
 
             chart.selectAll("rect")
                 .data([#{chanFreq}])
@@ -44,6 +45,26 @@ block content
               .attr("y1", h - .5)
               .attr("y2", h - .5)
               .style("stroke", "#000");
+
+            chart.selectAll("text.times")
+              .data(["0", "6", "12", "18","0", "6", "12", "18","0", "6", "12", "18","0", "6", "12", "18" ,"0", "6", "12", "18" ,"0", "6", "12", "18" ,"0", "6", "12", "18"])
+              .enter().append("text")
+              .attr("x", function(d, i){ return ((i * w * 6)+(w/2)); })
+              .attr("y", h + 10)
+              .attr("text-anchor", "middle")
+              .attr('class', 'name')
+              .attr("font-size", 10)
+              .text(String);
+
+            chart.selectAll("text.days")
+              .data(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+              .enter().append("text")
+              .attr("x", function(d, i){ return ((i+0.5) * w * 24); })
+              .attr("y", h + 25)
+              .attr("text-anchor", "middle")
+              .attr('class', 'name')
+              .attr("font-size", 12)
+              .text(String);
 
 
             // Allowing forcing of string stats data to sort as numeric
