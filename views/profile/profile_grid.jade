@@ -18,10 +18,9 @@ block content
       a(href='../connections') &laquo; Connections
 
   ul.thumbnails
-    each profile, key in profiles
-      if profile.hasOwnProperty('profile') && profile.profile.avatar
-        li.span2
-          a.thumbnail(href='/profile/'+connection+'/'+encodeURIComponent(key))
-            div.imgwrap
-              img(src="#{profile.profile.avatar}", alt="#{key}'s photo")
-              span.nicks #{profile.profile.primary}
+    each nick in nicks
+      li.span2
+        a.thumbnail(href='/profile/'+connection+'/'+encodeURIComponent(nick))
+          div.imgwrap
+            img(src="#{profiles[nick].profile.avatar}", alt="#{profiles[nick].profile.primary}'s photo")
+            span.nicks #{profiles[nick].profile.primary}
