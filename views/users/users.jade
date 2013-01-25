@@ -36,7 +36,7 @@ block content
                 .attr("y", function(d) { return h - y(d) - .5; })
                 .attr("width", w)
                 .attr("height", function(d) { return y(d); })
-                .attr("title", function(d){ return y(d); });
+                .attr("title", function(d){ return d; });
 
             chart.append("line")
               .attr("x1", 0)
