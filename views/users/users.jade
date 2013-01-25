@@ -21,7 +21,7 @@ block content
                 .range([0,w]);
 
             var y = d3.scale.linear()
-                .domain([0,100])
+                .domain([0,d3.max([#{chanFreq}])])
                 .rangeRound([0,h]);
 
             var chart = d3.select($("#chanFreqChart")[0]).append("svg")
