@@ -36,12 +36,12 @@ block content
                 .attr("height", h + xlab);
 
             chart.selectAll(".yTicks")
-                .data(y.ticks(4).slice(0,5))
+                .data(y.ticks(5).slice(1,5))
                 .enter().append("svg:line")
                 .attr("class", "yTicks")
-                .attr("y1", function(d) { return y(d); })
+                .attr("y1", function(d) { return -1 * y(d) + h; })
                 .attr("x1", 0)
-                .attr("y2", function(d) { return y(d); })
+                .attr("y2", function(d) { return -1 * y(d) + h; })
                 .attr("x2", w * #{chanFreqLen})
 
             chart.selectAll("rect")
