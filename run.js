@@ -157,7 +157,6 @@ DBot.prototype.reloadModules = function() {
     this.instance.removeListeners();
 
     moduleNames.each(function(name) {
-        this.status[name] = true;
         var moduleDir = './modules/' + name + '/';
         var cacheKey = require.resolve(moduleDir + name);
         delete require.cache[cacheKey];
@@ -169,6 +168,8 @@ DBot.prototype.reloadModules = function() {
         if(webKey) {
             delete require.cache[webKey];
         }
+
+        this.status[name] = true;
 
         try {
             // Load the module config data
@@ -191,19 +192,14 @@ DBot.prototype.reloadModules = function() {
                 // Invalid or no config data
             }
 
-            // Shit out if dependencies not met
+            // Don't shit out if dependencies not met
             if(_.has(config, 'dependencies')) {
-                var unmetDependencies = _.reduce(config.dependencies, function(memo, dependency) {
+                _.each(config.dependencies, function(dependency) {
                     if(!_.include(moduleNames, dependency)) {
-                        memo.push(dependency); 
+                        console.log('Warning: Automatically loading ' + dependency);
+                        moduleNames.push(dependency);
                     }
-                    return memo;
-                }, [], this);
-
-                if(unmetDependencies.length != 0) {
-                    this.status[name] = 'Dependencies not met: ' + unmetDependencies;
-                    return;
-                }
+                }, this);
             }
 
             // Generate missing DB keys
