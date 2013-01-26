@@ -11,7 +11,7 @@ var quotes = function(dbot) {
     this.internalAPI = {
         // Retrieve a random quote from a given category, interpolating any quote
         // references (~~QUOTE CATEGORY~~) within it
-        'interpolatedQuote': function(event, key, quoteTree) {
+        'interpolatedQuote': function(server, channel, key, quoteTree) {
             if(!_.isUndefined(quoteTree) && quoteTree.indexOf(key) != -1) { 
                 return ''; 
             } else if(_.isUndefined(quoteTree)) { 
@@ -28,13 +28,13 @@ var quotes = function(dbot) {
             while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
                 var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
                 if(cleanRef === '-nicks-') {
-                    var randomNick = _.keys(event.channel.nicks)[_.random(0, _.size(event.channel.nicks) -1)];
+                    var randomNick = dbot.api.users.getRandomChannelUser(server, channel);
                     quoteString = quoteString.replace("~~" + cleanRef + "~~", randomNick);
                     quoteTree.pop();
                 } else if(_.has(this.quotes, cleanRef)) {
                     quoteTree.push(key);
                     quoteString = quoteString.replace("~~" + cleanRef + "~~", 
-                            interpolatedQuote(event, cleanRef, quoteTree.slice()));
+                            this.internalAPI.interpolatedQuote(server, channel, cleanRef, quoteTree.slice()));
                     quoteTree.pop();
                 }
             }
@@ -76,9 +76,9 @@ var quotes = function(dbot) {
 
             if(key.charAt(0) !== '_') { // lol
                 if(_.has(this.quotes, key)) {
-                    return this.internalAPI.interpolatedQuote(event, key);
+                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, key);
                 } else if(_.has(this.quotes, altKey)) {
-                    return this.internalAPI.interpolatedQuote(event, altKey);
+                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, altKey);
                 } else {
                     return false;
                 }
