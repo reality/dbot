@@ -28,10 +28,16 @@ var pages = function(dbot) {
 
                 var chanData = dbot.api.stats.getChanStats(connection, channel, ["freq"]);
                 var chanFreq = [];
-                for(var i=0; i <= 6; i++){
-                    for(var j=0; j <= 23; j++){
-                        chanFreq.push(chanData.fields.freq.raw[i][j]);
+
+                if(chanData){
+                    for(var i=0; i <= 6; i++){
+                        for(var j=0; j <= 23; j++){
+                            chanFreq.push(chanData.fields.freq.raw[i][j]);
+                        }
                     }
+                }
+                else{
+                    for (var i = 0; i < 168; i++) chanFreq[i] = 0;
                 }
 
                 var userData = { "active": [], "inactive": [], "offline": []};
