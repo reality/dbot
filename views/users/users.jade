@@ -17,10 +17,12 @@ block content
     script
         $(document).ready(function(){
             // d3.js Graph
-            var xlab = 30;
+            var ticks = 25;
+            var timelabels = 30;
             var chartw = 940;
-            var w = 5.595;
-            var h = 120;
+            var toppad = 10;
+            var w = (chartw - (ticks * 2)) / 168;
+            var h = 130;
 
             var x = d3.scale.linear()
                 .domain([0,1])
@@ -28,45 +30,55 @@ block content
 
             var y = d3.scale.linear()
                 .domain([0,d3.max([#{chanFreq}])])
-                .rangeRound([0,h]);
+                .rangeRound([0,h-toppad]);
 
             var chart = d3.select($("#chanFreqChart")[0]).append("svg")
                 .attr("class", "chart")
-                .attr("width", w * #{chanFreqLen} - 1)
-                .attr("height", h + xlab);
+                .attr("width", chartw)
+                .attr("height", h + timelabels);
 
             chart.selectAll(".yTicks")
-                .data(y.ticks(5).slice(1,5))
+                .data(y.ticks(5).slice(1))
                 .enter().append("svg:line")
                 .attr("class", "yTicks")
                 .attr("y1", function(d) { return -1 * y(d) + h; })
                 .attr("x1", 0)
                 .attr("y2", function(d) { return -1 * y(d) + h; })
-                .attr("x2", w * #{chanFreqLen})
+                .attr("x2", chartw)
 
             chart.selectAll("rect")
                 .data([#{chanFreq}])
               .enter().append("rect")
-                .attr("x", function(d, i) { return x(i) - .5; })
+                .attr("x", function(d, i) { return x(i) - .5 + ticks; })
                 .attr("y", function(d) { return h - y(d) - .5; })
                 .attr("width", w)
                 .attr("height", function(d) { return y(d); })
                 .attr("title", function(d){ return d; });
 
-            chart.selectAll(".rule")
+            chart.selectAll(".l_rule")
+              .data(y.ticks(5).slice(1))
+              .enter().append("text")
+              .attr("class", "rule")
+              .attr("y", function(d) { return -1 * y(d) + h; })
+              .attr("x", 0)
+              .attr("text-anchor", "right")
+              .attr("font-size", 10)
+              .attr("dy", 3)
+              .text(String);
+            chart.selectAll(".r_rule")
               .data(y.ticks(5).slice(1,5))
               .enter().append("text")
               .attr("class", "rule")
               .attr("y", function(d) { return -1 * y(d) + h; })
-              .attr("x", (chartw / 2)+(w/2))
-              .attr("text-anchor", "middle")
+              .attr("x", chartw)
+              .attr("text-anchor", "end")
               .attr("font-size", 10)
               .attr("dy", 3)
               .text(String);
 
             chart.append("line")
-              .attr("x1", 0)
-              .attr("x2", w * #{chanFreqLen})
+              .attr("x1", 0 + ticks)
+              .attr("x2", chartw - ticks)
               .attr("y1", h - .5)
               .attr("y2", h - .5)
               .style("stroke", "#000");
@@ -74,7 +86,7 @@ block content
             chart.selectAll("text.times")
               .data(["0", "6", "12", "18","0", "6", "12", "18","0", "6", "12", "18","0", "6", "12", "18" ,"0", "6", "12", "18" ,"0", "6", "12", "18" ,"0", "6", "12", "18"])
               .enter().append("text")
-              .attr("x", function(d, i){ return ((i * w * 6)+(w/2)); })
+              .attr("x", function(d, i){ return ((i * w * 6)+(w/2)) + ticks; })
               .attr("y", h + 10)
               .attr("text-anchor", "middle")
               .attr('class', 'name')
@@ -84,7 +96,7 @@ block content
             chart.selectAll("text.days")
               .data(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
               .enter().append("text")
-              .attr("x", function(d, i){ return ((i+0.5) * w * 24); })
+              .attr("x", function(d, i){ return ((i+0.5) * w * 24) + ticks; })
               .attr("y", h + 25)
               .attr("text-anchor", "middle")
               .attr('class', 'name')
