@@ -9,11 +9,16 @@ block content
       .chart rect:hover {
           fill: #000;
       }
+      .yTicks {
+        stroke: #aaa;
+        stroke-width: 0.5;
+      }
 
     script
         $(document).ready(function(){
             // d3.js Graph
             var xlab = 30;
+            var chartw = 940;
             var w = 5.595;
             var h = 120;
 
@@ -30,6 +35,15 @@ block content
                 .attr("width", w * #{chanFreqLen} - 1)
                 .attr("height", h + xlab);
 
+            chart.selectAll(".yTicks")
+                .data(y.ticks(4).slice(0,5))
+                .enter().append("svg:line")
+                .attr("class", "yTicks")
+                .attr("y1", function(d) { return y(d); })
+                .attr("x1", 0)
+                .attr("y2", function(d) { return y(d); })
+                .attr("x2", w * #{chanFreqLen})
+
             chart.selectAll("rect")
                 .data([#{chanFreq}])
               .enter().append("rect")
@@ -38,6 +52,17 @@ block content
                 .attr("width", w)
                 .attr("height", function(d) { return y(d); })
                 .attr("title", function(d){ return d; });
+
+            chart.selectAll(".rule")
+              .data(y.ticks(5).slice(1,5))
+              .enter().append("text")
+              .attr("class", "rule")
+              .attr("y", function(d) { return -1 * y(d) + h; })
+              .attr("x", (chartw / 2)+(w/2))
+              .attr("text-anchor", "middle")
+              .attr("font-size", 10)
+              .attr("dy", 3)
+              .text(String);
 
             chart.append("line")
               .attr("x1", 0)
