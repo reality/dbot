@@ -66,7 +66,7 @@ block content
               .attr("dy", 3)
               .text(String);
             chart.selectAll(".r_rule")
-              .data(y.ticks(5).slice(1,5))
+              .data(y.ticks(5).slice(1))
               .enter().append("text")
               .attr("class", "rule")
               .attr("y", function(d) { return -1 * y(d) + h; })
