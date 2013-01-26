@@ -36,6 +36,15 @@ var api = function(dbot) {
             return user;
         },
 
+        'getRandomChannelUser': function(server, channel) {
+            var channelUsers = this.getServerUsers(server).channelUsers[channel];
+            if(!_.isUndefined(channelUsers)) {
+                return channelUsers[_.random(0, channelUsers.length - 1)];
+            } else {
+                return false;
+            }
+        },
+
         'getServerUsers': function(server) {
             return dbot.db.knownUsers[server].users;
         },
