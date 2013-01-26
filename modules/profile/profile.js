@@ -33,6 +33,10 @@ var profile = function(dbot) {
             });
         });
         dbot.save();
+        
+        // Add API Hooks
+        dbot.api.command.addHook('~setaliasparent', this.api.renameProfile);
+        dbot.api.command.addHook('~mergeusers', this.api.mergeProfile);
     };
 };
 

@@ -71,27 +71,28 @@ block content
                   th Verbosity
                   th Mentions
             tbody
-              for chan, key in stats
-                if stats.hasOwnProperty(key)
-                    tr
-                      td
-                          a(href='/users/'+connection+'/'+encodeURIComponent(key))
-                            #{key}
-                          span 
-                          if chan.online
-                            if chan.active.active
-                              span.label.label-success.tip(data-original-title="#{chan.active.ago}", data-placement="right") Active
-                            else
-                              span.label.label-important.tip(data-original-title="#{chan.active.ago}", data-placement="right") Inactive
-                          else
-                            span.label.tip(data-original-title="#{chan.active.ago}", data-placement="right") Offline
-                      td
-                          #{chan.fields.lines.data}
-                      td
-                          #{chan.fields.words.data}
-                      td
-                          #{chan.fields.lincent.data}
-                      td
-                          #{chan.fields.wpl.data}
-                      td
-                          #{chan.fields.in_mentions.data}
+              if stats
+                  for chan, key in stats
+                    if stats.hasOwnProperty(key)
+                        tr
+                          td
+                              a(href='/users/'+connection+'/'+encodeURIComponent(key))
+                                #{key}
+                              span 
+                              if chan.online
+                                if chan.active.active
+                                  span.label.label-success.tip(data-original-title="#{chan.active.ago}", data-placement="right") Active
+                                else
+                                  span.label.label-important.tip(data-original-title="#{chan.active.ago}", data-placement="right") Inactive
+                              else
+                                span.label.tip(data-original-title="#{chan.active.ago}", data-placement="right") Offline
+                          td
+                              #{chan.fields.lines.data}
+                          td
+                              #{chan.fields.words.data}
+                          td
+                              #{chan.fields.lincent.data}
+                          td
+                              #{chan.fields.wpl.data}
+                          td
+                              #{chan.fields.in_mentions.data}
