@@ -96,7 +96,7 @@ var commands = function(dbot) {
         },
 
         '~rmlast': function(event) {
-            if(this.rmAllowed == true || _.include(dbot.config.admins, event.user)) {
+            if(this.rmAllowed === true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase();
                 if(_.has(quotes, key)) {
                     var quote = quotes[key].pop();

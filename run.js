@@ -1,10 +1,9 @@
 var fs = require('fs'),
     _ = require('underscore')._,
-    timers = require('./timer'),
     jsbot = require('./jsbot/jsbot');
 require('./snippets');
 
-var DBot = function(timers) {
+var DBot = function() {
     
     /*** Load the DB ***/
 
@@ -61,7 +60,6 @@ var DBot = function(timers) {
     this.usage = {};
     this.status = {};
     this.sessionData = {};
-    this.timers = timers.create();
 
     // Populate bot properties with config data
     // Create JSBot and connect to each server
@@ -130,7 +128,6 @@ DBot.prototype.reloadModules = function() {
     this.api = {};
     this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
-    this.timers.clearTimers();
     
     // Load config changes
     _.extend(this.config, this.db.config);
@@ -313,4 +310,4 @@ DBot.prototype.cleanNick = function(key) {
     return key;
 }
 
-new DBot(timers);
+new DBot();
