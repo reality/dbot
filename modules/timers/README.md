@@ -10,7 +10,7 @@ timers.
 
 ### API
 
-#### addTimer(callback, interval, [firstDate])
+#### addTimer(interval, callback, [firstDate])
 Execute the given callback every time *interval* (in ms) passes.
 
 The firstDate parameter is a Date object used to sync a timer to a given point in 
