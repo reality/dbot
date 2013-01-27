@@ -44,7 +44,7 @@ var quotes = function(dbot) {
 
         'resetRemoveTimer': function(event, key, quote) {
             this.rmAllowed = false;
-            dbot.timers.addOnceTimer(5000, function() {
+            setTimeout(5000, function() {
                 this.rmAllowed = true;
             });
 
@@ -52,10 +52,10 @@ var quotes = function(dbot) {
                 'key': key, 
                 'quote': quote
             });
-            dbot.timers.clearTimeout(this.rmTimer);
 
+            clearTimeout(this.rmTimer);
             if(this.rmCache.length < dbot.config.quotes.rmLimit) {
-                this.rmTimer = dbot.timers.addOnceTimer(600000, function() {
+                this.rmTimer = setTimeout(600000, function() {
                     this.rmCache.length = 0; // lol what
                 }.bind(this));
             } else {
