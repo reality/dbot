@@ -11,11 +11,12 @@ Command flow:
       command name
 2. Is the user banned from running the given command?
 3. Is the user ignoring the command?
-3. Does the use have the access level to run the command?
-4. Is the command set as disabled?
-4. Apply regex to the command, pass into event object.
+4. Is the channel ignoring the command?
+5. Does the use have the access level to run the command?
+6. Is the command set as disabled?
+7. Apply regex to the command, pass into event object.
     * If regex does not apply, show usage info.
-5. Run the command.
+8. Run the command.
 
 This is the only module which is force loaded, even if it's not specified in
 the configuration file.

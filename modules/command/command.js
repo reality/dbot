@@ -25,6 +25,7 @@ var command = function(dbot) {
             event.reply(dbot.t('command_ban', {'user': event.user})); 
         } else {
             if(!this.api.isIgnoring(event.user, commandName) && 
+                    !this.api.isIgnoring(event.channel, commandName) &&
                     this.api.hasAccess(event.user, commandName) &&
                     dbot.commands[commandName].disabled !== true) {
                 if(this.api.applyRegex(commandName, event)) {
