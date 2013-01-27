@@ -40,5 +40,20 @@
         "spanish": "{user}: Ya no ignoras {module}.",
         "na'vi": "{user}: Nga terìng mikyun {module}ne set",
         "welsh": "{user}: Ddim yn anwybyddu {module} bellach"
+    },
+    "ignoring_channel": {
+        "english": "Now ignoring {module} in {channel}"
+    },
+    "already_ignoring_channel": {
+        "english": "Already ignoring {module} in {channel}"
+    },
+    "module_not_exist": {
+        "english": "{module} isn't loaded or doesn't exist."
+    },
+    "unignoring_channel": {
+        "english": "No longer ignoring {module} in {channel}"
+    },
+    "not_ignoring_channel": {
+        "english": "{module} wasn't being ignored in {channel}"
     }
 }

@@ -2,7 +2,8 @@
  * Module Name: Ignore
  * Description: Handles commands in which users can choose to ignore listeners
  * and commands from certain modules. It also populates the JSBot instance with
- * this information, since that actually performs the ignorance.
+ * this information, since that actually performs the ignorance. Also provides
+ * commands for moderators to choose the bot to ignore certain channels.
  */
 var _ = require('underscore')._;
 
@@ -69,15 +70,64 @@ var ignore = function(dbot) {
                     event.reply(dbot.t('invalid_unignore', { 'user': event.user }));
                 }
             }
+        },
+
+        '~ignorechannel': function(event) {
+            var channel = ((event.params[1] == '@') ? event.channel.name : event.params[1]);
+            var module = event.params[2];
+
+            // Ignoring the value of 'ignorable' at the moment
+            if(_.include(dbot.config.moduleNames, module)) {
+                if(!_.has(dbot.db.ignores, channel)) dbot.db.ignores[channel] = [];
+                if(!_.include(dbot.db.ignores[channel], module)) {
+                    dbot.db.ignores[channel].push(module);
+                    dbot.instance.ignoreTag(channel, module);
+                    event.reply(dbot.t('ignoring_channel', {
+                        'module': module,
+                        'channel': channel
+                    })e;
+                } else {
+                    event.reply(dbot.t('already_ignoring_channel', {
+                        'module': module,
+                        'channel': channel
+                    }));
+                }
+            } else {
+                event.reply(dbot.t('module_not_exist', { 'module': module }));
+            }
+        },
+
+        '~unignorechannel': function(event) {
+            var channel = ((event.params[1] == '@') ? event.channel.name : event.params[1]);
+            var module = event.params[2];
+
+            if(!_.has(dbot.db.ignores, channel)) dbot.db.ignores[channel] = [];
+            if(_.include(dbot.db.ignores[channel], module)) {
+                dbot.db.ignores[channel] = _.without(dbot.db.ignores[channel], module); 
+                dbot.instance.removeIgnore(channel, module);
+                event.reply(dbot.t('unignoring_channel', {
+                    'module': module,
+                    'channel': channel
+                }));
+            } else {
+                event.reply(dbot.t('not_ignoring_channel', {
+                    'module': module,
+                    'channel': channel
+                }));
+            }
         }
     };
+
+    commands['~ignorechannel'].access = 'moderator';
+    commands['~unignorechannel'].access = 'moderator';
+
     this.commands = commands;
 
     this.onLoad = function() {
         dbot.instance.clearIgnores();
-        _.each(dbot.db.ignores, function(ignores, user) {
+        _.each(dbot.db.ignores, function(ignores, item) {
             _.each(ignores, function(ignore) {
-                    dbot.instance.ignoreTag(user, ignore);
+                    dbot.instance.ignoreTag(item, ignore);
             }, this);
         }, this);
     };
