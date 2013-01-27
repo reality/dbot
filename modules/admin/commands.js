@@ -6,7 +6,7 @@ var fs = require('fs'),
 var commands = function(dbot) {
     var noChangeConfig = [ 'servers', 'name', 'moduleNames' ];
 
-    var getCurrentConfigPath = function(configKey) {
+    var getCurrentConfig = function(configKey) {
         var defaultConfigPath = dbot.config;
         var userConfigPath = dbot.db.config;
 
@@ -25,9 +25,22 @@ var commands = function(dbot) {
             }
         } 
 
+        var currentOption;
+        if(configKey.length != 1) {
+            configKey = _.last(configKey);
+            if(_.has(userConfigPath, configKey) && !_.isUndefined(userConfigPath[configKey])) {
+                currentOption = userConfigPath[configKey];
+            } else if(_.has(defaultConfigPath, configKey)) {
+                currentOption = defaultConfigPath[configKey];
+            }
+        } else {
+            currentOption = defaultConfigPath[configKey];
+        }
+
         return { 
             'user': userConfigPath,
-            'default': defaultConfigPath
+            'default': defaultConfigPath,
+            'value': currentOption
         };
    };
 
@@ -205,16 +218,13 @@ var commands = function(dbot) {
             var newOption = event.params[2];
 
             if(!_.include(noChangeConfig, configKey)) {
-                var configPath = getCurrentConfigPath(configPathString);
-                var currentOption;
-                if(_.has(configPath['user'], configKey)) {
-                    currentOption = configPath['user'][configKey];
-                } else if(_.has(configPath['default'], configKey)) {
-                    currentOption = configPath['default'][configKey];
-                } else {
+                var configPath = getCurrentConfig(configPathString);
+
+                if(configPath == false || _.isUndefined(configPath.value)) {
                     event.reply("Config key doesn't exist bro");
                     return;
                 }
+                var currentOption = configPath.value;
 
                 // Convert to boolean type if config item boolean
                 if(_.isBoolean(currentOption)) {
@@ -224,8 +234,6 @@ var commands = function(dbot) {
                 if(_.isArray(currentOption)) {
                     event.reply("Config option is an array. Try 'pushconfig'.");
                 }
-
-                // TODO: Same for numbers and that I assume
                 
                 event.reply(configPathString + ": " + currentOption + " -> " + newOption);
                 configPath['user'][configKey] = newOption;
@@ -237,24 +245,19 @@ var commands = function(dbot) {
 
         'showconfig': function(event) {
             var configPathString = event.params[1];
-            var configPath = getCurrentConfigPath(configPathString);
+            var configPath = getCurrentConfig(configPathString);
             
             if(configPathString) {
                 var configKey = _.last(configPathString.split('.'));
-
-                if(!_.has(configPath['default'], configKey)) {
+                if(configKey == false) {
                     event.reply("Config path doesn't exist");
                     return;
                 }
 
-                if(_.isObject(configPath['default'][configKey])) {
-                    event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath['default'][configKey]));
+                if(_.isObject(configPath.value)) {
+                    event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath.value));
                 } else {
-                    var currentOption = configPath['default'][configKey];
-                    if(_.has(configPath['user'], configKey)) {
-                        currentOption = configPath['user'][configKey];
-                    }
-                    event.reply(configKey + ': ' + currentOption);
+                    event.reply(configKey + ': ' + configPath.value);
                 }
             } else {
                 event.reply('Config keys in root: ' + Object.keys(configPath['default']));
