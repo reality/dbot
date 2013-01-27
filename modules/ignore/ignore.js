@@ -85,7 +85,7 @@ var ignore = function(dbot) {
                     event.reply(dbot.t('ignoring_channel', {
                         'module': module,
                         'channel': channel
-                    })e;
+                    });
                 } else {
                     event.reply(dbot.t('already_ignoring_channel', {
                         'module': module,
