@@ -94,7 +94,7 @@ block content
               .text(String);
 
             chart.selectAll("text.days")
-              .data(["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+              .data([!{locals.chanFreqLabel}])
               .enter().append("text")
               .attr("x", function(d, i){ return ((i+0.5) * w * 24) + ticks; })
               .attr("y", h + 25)
@@ -149,6 +149,7 @@ block content
     div#backlink 
         a(href='/channels/'+connection) &laquo; Channel List
     div#row
+      h4 Seven Day Activity
       div.barchart#chanFreqChart
       hr
     div#row
