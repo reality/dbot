@@ -26,18 +26,24 @@ var pages = function(dbot) {
             if(connections.hasOwnProperty(connection) && 
                 connections[connection].channels.hasOwnProperty(channel)) {
 
-                var chanData = dbot.api.stats.getChanStats(connection, channel, ["freq"]);
+                //TODO(samstudio8): Stats API Functionality
+                var chanData = dbot.api.stats.getChanStats(connection, channel, ["week"]);
                 var chanFreq = [];
+                var chanFreqLabel = [];
 
                 if(chanData){
+                    var cur_ptr;
                     for(var i=0; i <= 6; i++){
+                        cur_ptr = ((i+1)+chanData.fields.week.raw.ptr) % 7;
                         for(var j=0; j <= 23; j++){
-                            chanFreq.push(chanData.fields.freq.raw[i][j]);
+                            chanFreq.push(chanData.fields.week.raw[cur_ptr][j]);
                         }
+                        chanFreqLabel.push("'"+chanData.fields.week.raw[cur_ptr].name+"'");
                     }
                 }
                 else{
                     for (var i = 0; i < 168; i++) chanFreq[i] = 0;
+                    chanFreqLabel = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
                 }
 
                 var userData = { "active": [], "inactive": [], "offline": []};
@@ -79,7 +85,10 @@ var pages = function(dbot) {
                     'channel': channel,
                     'userStats': userDataSorted,
                     'chanFreq': chanFreq,
-                    'chanFreqLen': chanFreq.length });
+                    'chanFreqLen': chanFreq.length,
+                    "locals": {
+                      'chanFreqLabel': chanFreqLabel,  
+                    }});
 
             } else {
                 res.render_core('error', { 'name': dbot.config.name, 'message': 'No such connection or channel.' });
