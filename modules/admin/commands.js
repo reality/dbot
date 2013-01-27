@@ -213,9 +213,9 @@ var commands = function(dbot) {
         /*** Config options ***/
 
         'setconfig': function(event) {
-            var configPathString = event.params[1];
-            var configKey = _.last(configPathString.split('.'));
-            var newOption = event.params[2];
+            var configPathString = event.params[1],
+                configKey = _.last(configPathString.split('.')),
+                newOption = event.params[2];
 
             if(!_.include(noChangeConfig, configKey)) {
                 var configPath = getCurrentConfig(configPathString);
@@ -243,6 +243,30 @@ var commands = function(dbot) {
             }
         },
 
+        'pushconfig': function(event) {
+            var configPathString = event.params[1],
+                configKey = _.last(configPathString.split('.')),
+                newOption = event.params[2];
+
+            if(!_.include(noChangeConfig, configKey)) {
+                var configPath = getCurrentConfig(configPathString);
+                if(configPath == false || _.isUndefined(configPath.value)) {
+                    event.reply("Config key doesn't exist bro");
+                    return;
+                }
+                var currentArray = configPath.value;
+
+                if(!_.isArray(currentArray)) {
+                    event.reply("Config option is not an array. Try 'setconfig'.");
+                    return
+                }
+
+                event.reply(configPathString + ": " + currentArray + " << " + newOption);
+                currentArray.push(newOption);
+                dbot.reloadModules(); 
+            }
+        },
+
         'showconfig': function(event) {
             var configPathString = event.params[1];
             var configPath = getCurrentConfig(configPathString);
@@ -254,7 +278,9 @@ var commands = function(dbot) {
                     return;
                 }
 
-                if(_.isObject(configPath.value)) {
+                if(_.isArray(configPath.value)) {
+                    event.reply(configKey + ': ' + configPath.value);
+                } else if(_.isObject(configPath.value)) {
                     event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath.value));
                 } else {
                     event.reply(configKey + ': ' + configPath.value);
