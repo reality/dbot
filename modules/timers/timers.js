@@ -18,23 +18,31 @@ var timers = function(dbot) {
                 setTimeout(function() {
                     console.log('Running first timer at ' + new Date().toUTCString()); 
                     this.runningIntervals.push(this.api.addTimer(timeout, callback));
-                    callback();
+                    try {
+                        callback();
+                    } catch(err) {
+                        console.log('Callback failed: ' + err);
+                    }
                 }.bind(this), firstTimeout);
             } else {
                 this.runningIntervals.push(setInterval(function() {
                     console.log('Running subsequent timer at ' + new Date().toUTCString()); 
-                    callback();
+                    try {
+                        callback();
+                    } catch(err) {
+                        console.log('Callback failed: ' + err);
+                    }
                 }.bind(this), timeout));
             }
         }
     };
 
     this.onDestroy = function() { 
-        for(var i=0;i<this.runningTimeouts;i++) {
+        for(var i=0;i<this.runningTimeouts.length;i++) {
             clearTimeout(this.runningTimeouts[i]); 
         }
-        for(i=0;i<this.runningIntervals;i++) {
-            clearTimer(this.runningIntervals[i]); 
+        for(i=0;i<this.runningIntervals.length;i++) {
+            clearInterval(this.runningIntervals[i]); 
         }
     }.bind(this);
 };
