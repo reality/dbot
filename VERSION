@@ -1,4 +1,5 @@
-depressionbot version 0.3-dev
+depressionbot version 0.3 (relentless)
 
+"the database is a grilled cheese"
 _.each(dbot.modules, function(module) { "RESCORE EVERYTHING" });
 "He called his bot depressionbot, and that's when he was happy."
