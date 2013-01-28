@@ -8,11 +8,23 @@ var api = function(dbot) {
          * If the server does not already exist, create it.
          */
         "createProfile": function(server, primary){
+            var primaryLower = primary.toLowerCase();
+
             if(!_.has(this.profiles, server)){
                 this.profiles[server] = {};
             }
-            this.profiles[server][primary.toLowerCase()] = {};
-            _.defaults(this.profiles[server][primary.toLowerCase()], this.config.schema);
+            if(!_.has(this.profiles[server], primaryLower)){
+                this.profiles[server][primaryLower] = {
+                    "profile": {},
+                    "preferences": {}
+                };
+                this.profiles[server][primaryLower].profile.primary = primary;
+            }
+
+            // Ensure all profiles have the keys specified by config.json
+            //TODO(samstudio8) Currently only handles "top-level"
+            _.defaults(this.profiles[server][primaryLower].profile, this.config.schema.profile);
+            _.defaults(this.profiles[server][primaryLower].preferences, this.config.schema.preferences);
         },
 
         /**
@@ -25,10 +37,12 @@ var api = function(dbot) {
             var profiles = dbot.db.profiles[server];
 
             if(_.has(profiles, alias)){
-                var primary = dbot.api.users.resolveUser(server, alias, true).toLowerCase();
+                var primary = dbot.api.users.resolveUser(server, alias, true);
+                var primaryLower = primary.toLowerCase();
                 alias = alias.trim().toLowerCase();
 
-                profiles[primary] = profiles[alias];
+                profiles[primaryLower] = profiles[alias];
+                profiles[primaryLower].profile.primary = primary;
                 delete profiles[alias];
             }
         },
