@@ -4,3 +4,6 @@
 [submodule "modules/stats"]
 	path = modules/stats
 	url = git://github.com/SamStudio8/stats.git
+[submodule "modules/github"]
+	path = modules/github
+	url = git://github.com/zuzak/dbot-github.git
