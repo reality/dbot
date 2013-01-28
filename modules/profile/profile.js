@@ -15,7 +15,6 @@ var profile = function(dbot) {
         // Ensure all known users have a profile
         _.each(dbot.api.users.getAllUsers(), function(server, serverName){
             _.each(server, function(primary, primaryi){
-                console.log(primary);
                 api.createProfile(serverName, primary);
             });
         });
@@ -24,6 +23,7 @@ var profile = function(dbot) {
         // Add API Hooks
         dbot.api.command.addHook('~setaliasparent', this.api.renameProfile);
         dbot.api.command.addHook('~mergeusers', this.api.mergeProfile);
+        dbot.api.event.addHook('new_user', this.api.createProfile);
     };
 };
 
