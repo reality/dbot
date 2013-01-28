@@ -9,27 +9,14 @@ var profile = function(dbot) {
      * required properties as defined in the configuation.
      */
     this.onLoad = function(){
+        var api = this.api;
         var schema = this.config.schema;
 
         // Ensure all known users have a profile
         _.each(dbot.api.users.getAllUsers(), function(server, serverName){
-            if(!_.has(dbot.db.profiles, serverName)){
-                dbot.db.profiles[serverName] = {}
-            }
-            _.each(server, function(userName){
-                var primary = userName;
-                userName = userName.toLowerCase();
-                // TODO why isn't this calling the profile create API function
-                if(!_.has(dbot.db.profiles[serverName], userName)){
-                    dbot.db.profiles[serverName][userName] = {
-                        "profile": {},
-                        "preferences": {}
-                    };
-                }
-                //TODO(samstudio8) Currently only handles "top-level"
-                _.defaults(dbot.db.profiles[serverName][userName].profile, schema.profile);
-                _.defaults(dbot.db.profiles[serverName][userName].preferences, schema.preferences);
-                dbot.db.profiles[serverName][userName].profile.primary = primary;
+            _.each(server, function(primary, primaryi){
+                console.log(primary);
+                api.createProfile(serverName, primary);
             });
         });
         dbot.save();
