@@ -105,21 +105,26 @@
         "english": "{category} ({needle}): '{quote}' [{matches} results]",
         "spanish" : "{category} ({needle}): '{quote}' [{matches} resultados]",
         "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
-        "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
+        "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]",
     },
     "quote_cache_auto_remove": {
-        "english": "There are {count} quotes in the removal cache, which will be automatically cleared."
+        "english": "There are {count} quotes in the removal cache, which will be automatically cleared.",
+        "na'vi": "{count}a 'upxarel sngelit tok, Oel 'ayku sngelit lukenga."
     },
     "quote_cache_manual_remove": {
-        "english": "There are {count} quotes in the removal cache, which must be manually cleared."
+        "english": "There are {count} quotes in the removal cache, which must be manually cleared.",
+        "na'vi": "{count}a 'upxarel sngelit tok slä oel ke 'ayku sngelit tafral nga zene 'aivku"
     },
     "quote_cache_cleared": {
-        "english": "{count} quotes cleared from the removal cache."
+        "english": "{count} quotes cleared from the removal cache.",
+        "na'vi": "Oel 'aìmku {count}a 'upxareti ta sngel."
     },
     "quote_cache_reinstated": {
-        "english": "{count} quotes reinstated from the removal cache."
+        "english": "{count} quotes reinstated from the removal cache.",
+        "na'vi": "{count}a 'upxare tolätxaw ta sngel."
     },
     "rm_cache_limit": {
-        "english": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny."
+        "english": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny.",
+        "na'vi": "Oel zerok 'upxareti apxay set, sweylu txo nga 'aivku upxareti ìlä ~rmconfirm fu ~rmdeny."
     }
 }
