@@ -105,7 +105,7 @@
         "english": "{category} ({needle}): '{quote}' [{matches} results]",
         "spanish" : "{category} ({needle}): '{quote}' [{matches} resultados]",
         "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
-        "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]",
+        "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
     },
     "quote_cache_auto_remove": {
         "english": "There are {count} quotes in the removal cache, which will be automatically cleared.",
