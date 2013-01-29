@@ -15,7 +15,7 @@ var timers = function(dbot) {
             if(firstDate) {
                 console.log('Setting first timer to run at ' + firstDate);
                 firstTimeout = firstDate.getTime() - now; 
-                setTimeout(function() {
+                this.runningTimeouts.push(setTimeout(function() {
                     console.log('Running first timer at ' + new Date().toUTCString()); 
                     this.runningIntervals.push(this.api.addTimer(timeout, callback));
                     try {
@@ -23,7 +23,7 @@ var timers = function(dbot) {
                     } catch(err) {
                         console.log('Callback failed: ' + err);
                     }
-                }.bind(this), firstTimeout);
+                }.bind(this), firstTimeout));
             } else {
                 this.runningIntervals.push(setInterval(function() {
                     console.log('Running subsequent timer at ' + new Date().toUTCString()); 
@@ -39,9 +39,11 @@ var timers = function(dbot) {
 
     this.onDestroy = function() { 
         for(var i=0;i<this.runningTimeouts.length;i++) {
+            console.log('destroying ' +this.runningTimeouts[i]);
             clearTimeout(this.runningTimeouts[i]); 
         }
         for(i=0;i<this.runningIntervals.length;i++) {
+            console.log('destroying ' +this.runningIntervals[i]);
             clearInterval(this.runningIntervals[i]); 
         }
     }.bind(this);
