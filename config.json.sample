@@ -1,13 +1,13 @@
 {
-    "name": "testressionbot",
+    "name": "welshtestbot",
     "servers": {
         "freenode": {
-            "server": "irc.freenode.net",
+            "server": "irc.aberwiki.org",
             "port": 6667,
             "nickserv": "nickserv",
-            "password": "lolturtles",
+            "password": "",
             "channels": [
-                "#realitest"
+                "#lolhax"
             ]
         }
     },
