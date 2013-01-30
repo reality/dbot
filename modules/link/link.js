@@ -52,15 +52,17 @@ var link = function(dbot) {
         },
 
         '~ud': function(event) {
-	    var query = event.input[1];
+	    	var query = event.input[1];
             var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + encodeURI(query); 
             request(reqUrl, function(error, response, body) {
-                var result = JSON.parse(body);
-                if(_.has(result, 'result_type') && result.result_type != 'no_results') {
-                    event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
-                } else {
-                    event.reply(event.user + ': No definition found.');
-                }
+            	try {
+	                var result = JSON.parse(body);
+	                if(_.has(result, 'result_type') && result.result_type != 'no_results') {
+	                    event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
+	                } else {
+	                    event.reply(event.user + ': No definition found.');
+	                }
+            	} catch(err) { }
             });
         }
     };
