@@ -20,20 +20,7 @@ var link = function(dbot) {
             }
         });
     };
-			
-	function outputComic(comicId,event){
-		var link = "http://xkcd.com/"+comicId+"info.0.json";
-        request(link,  function(error, response, body) {
-            if (response.statusCode == "200") {
-                data = JSON.parse(body);
-                event.reply(dbot.t("xkcd",data));
-			} else {
-                event.reply(dbot.t("no-hits"));
-            }
-        });
-    }
-	
-	
+				
     var commands = {
         '~title': function(event) {
             var link = this.links[event.channel.name];
@@ -52,21 +39,31 @@ var link = function(dbot) {
 			if(comicId == "*"){
 				request("http://xkcd.com/info.0.json",  function(error, response, body){
 					if (response.statusCode == "200") {
-					data = JSON.parse(body);
-					comicId = data.num;
-					comicId = Math.floor(Math.random() * comicId);
-					comicId++;
-					comicId = comicId + "/";
-					outputComic(comicId,event);
-					}
+                        data = JSON.parse(body);
+                        comicId = data.num;
+                        comicId = (Math.floor(Math.random() * comicId) + 1);
+                        event.message = '~xkcd ' + comicId;
+                        event.action = 'PRIVMSG';
+                        event.params = event.message.split(' ');
+                        dbot.instance.emit(event);
+                    }
 				});	
-			}else if(comicId){
-                comicId = comicId + "/";
-				outputComic(comicId,event);
-            } else {
-                comicId = "";
-				outputComic(comicId,event);
-            }
+			}else {
+				if(comicId){
+					comicId = comicId + "/";
+				} else {
+					comicId = "";
+				}
+				var link = "http://xkcd.com/"+comicId+"info.0.json";
+				request(link,  function(error, response, body) {
+				if (response.statusCode == "200") {
+					data = JSON.parse(body);
+					event.reply(dbot.t("xkcd",data));
+				} else {
+					event.reply(dbot.t("no-hits"));
+				}
+				});
+			}
 		},
 		
         '~ud': function(event) {
