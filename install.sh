@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cat LICENCE
 git submodule init
 git submodule update
 
@@ -16,8 +16,20 @@ wget http://d3js.org/d3.v3.zip
 unzip d3.v3.zip
 rm d3.v3.zip
 
-cd ..
+cd ../..
 
-cp config.json.sample config.json
+if [ ! -f config.json ];
+then
+    echo 'Creating configuration file...'
+    cp config.json.sample config.json
+    vim config.json
+fi
 
-echo 'Setup complete. Now edit config.json with your preferences and run the bot with "node run.js"'
+read -p "Setup complete. Run depressionbot now? [y/N]"
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo 'Okay. To run the bot, use "node run.js"'
+    exit
+fi
+node run.js
+
