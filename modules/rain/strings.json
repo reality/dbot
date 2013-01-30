@@ -37,5 +37,8 @@
     },
     "rain-e": {
         "english" : "Unable to fetch weather data."
+    },
+    "rain-u": {
+        "english": "Location too ambigious to process."
     }
 }
