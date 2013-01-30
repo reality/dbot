@@ -1,6 +1,5 @@
 {
-    "autoTitle": false,
     "dependencies": [ "command" ],
     "ignorable": true,
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/link/README.md"
+    "help": "http://github.com/reality/depressionbot/blob/master/modules/rain/README.md"
 }

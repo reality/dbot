@@ -1,23 +1,13 @@
-## Link
+## Rain 
 
-Retrieves page titles.
+Quietly judges your choice of climate.
 
 ### Description
 
-This module stores the last posted link in each channel, and provides a command
-for retrieving the title of a given link or the last posted link in the channel.
+It's a well documented fact that looking out of the window is sometimes far too much effort. However, sometimes you just need toknow how wet it is outside: this module queries for the precipitation level, and tells you when you need a raincoat.
 
-### Configuration
-
-#### autoTitle: false
-If this is set to true, the bot will automatically post the titles of links as
-they are posted in the channel.
 
 ### Commands
 
-#### ~title [link]
-If called with a link, the bot will attempt to find and return the title of that
-page. If called without a link, the bot will attempt the same on the last link
-which was posted in the current channel.
-#### ~ud [headword]
-Returns the first [Urban Dictionary](http://www.urbandictionary.com) definition for the headword provided.
+#### ~rain
+Polls the rainfall in the last hour, and returns an appropriate string.
