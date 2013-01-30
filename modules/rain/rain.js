@@ -8,6 +8,7 @@ var request = require('request'),
 var rain = function(dbot) {
     var commands = {
         '~rain': function(event) {
+            var apikey = dbot.config.rain.apikey;
             var precip = event.params[1];
             var score = 2 * Math.pow(precip,0.5); 
             score = Math.ceil(score);
