@@ -1,3 +1,5 @@
+var _ = require('underscore')._;
+
 var report = function(dbot) {
     var commands = {
         '~report': function(event) {
@@ -5,47 +7,37 @@ var report = function(dbot) {
             var nick = event.input[2];
             var reason = event.input[3];
 
-            if(event.allChannels.hasOwnProperty(channelName)) {
+            if(_.has(event.allChannels, channelName)) {
                 var channel = event.allChannels[channelName];
-                if(channel.nicks.hasOwnProperty(nick)) {
-                    var ops = [];
-                    for(var possibOps in channel.nicks) {
-                        if(channel.nicks[possibOps].op == true) {
-                            ops.push(possibOps);
-                        }
-                    }
+                if(dbot.api.users.isChannelUser(event.server, nick, channelName, true)) {
+                    var nick = dbot.api.users.resolveUser(event.server, nick, true);
+                    var ops = _.filter(channel.nicks, function(user) {
+                        return user.op; 
+                    });
 
-                    // Does the channel have an admin channel?
-                    if(event.allChannels.hasOwnProperty('#' + channelName)) {
-                        ops.push('#' + channelName);
-                    }
+                    _.each(ops, function(user) {
+                        dbot.say(event.server, user.name, dbot.t('report', {
+                            'reporter': event.user,
+                            'reported': nick,
+                            'channel': channelName,
+                            'reason': reason
+                        }));
+                    }, this);
 
-                    for(var i=0;i<ops.length;i++) {
-                        dbot.say(event.server, ops[i], 
-                            'Attention: ' + event.user + ' has reported ' +
-                            nick + ' in ' + channelName + '. The reason ' +
-                            'given was: "' + reason + '."');
-                    }
-
-                    event.reply('Thank you, ' + nick + ' has been reported the channel administrators.');
+                    event.reply(dbot.t('reported', { 'reported': nick }));
                 } else {
-                    event.reply('User is not in that channel.');
+                    event.reply(dbot.t('user_not_found', { 'reported': nick,
+                        'channel': channelName }));
                 }
             } else {
-                event.reply('I am not in that channel.');
+                event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
             }
         }
-
     };
     commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
-
-    return {
-        'name': 'report',
-        'ignorable': true,
-        'commands': commands
-    };
+    this.commands = commands;
 };
 
 exports.fetch = function(dbot) {
-    return report(dbot);
+    return new report(dbot);
 };

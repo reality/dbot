@@ -1,0 +1,21 @@
+{
+    "ignorable": false,
+    "dbKeys": [ "profiles" ],
+    "help": "https://github.com/reality/depressionbot/blob/master/modules/profile/README.md",
+    "schema": {
+        "profile": {
+            "primary": null,
+            "name": null,
+            "tagline": null,
+            "avatar": null,
+            "bio": null,
+            "favourites": {
+              "colour": null
+            }
+        },
+        "preferences": {
+            "timezone": null
+        }
+    },
+    "dependencies": [ "quotes", "users", "command" ]
+}

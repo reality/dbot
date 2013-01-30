@@ -1,9 +1,0 @@
-div#backlink 
-    a(href='/') &laquo; Home
-div#controls
-    input(type="text", name="search", id="search-text", oninput="search(this.value)")
-ul#quotelist
-    -each poll in polllist
-        a(href='/polls/'+poll)
-            li.quotes #{poll}
-

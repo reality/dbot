@@ -1,3 +1,5 @@
+var _ = require('underscore')._;
+
 var kick = function(dbot) {
     var commands = {
         // Give the number of times a given user has been kicked and has kicked
@@ -5,27 +7,35 @@ var kick = function(dbot) {
         '~kickcount': function(event) {
             var username = event.params[1];
 
-            if(!dbot.db.kicks.hasOwnProperty(username)) {
+            if(!_.has(dbot.db.kicks, username)) {
                 var kicks = '0';
             } else {
                 var kicks = dbot.db.kicks[username];
             }
 
-            if(!dbot.db.kickers.hasOwnProperty(username)) {
+            if(!_.has(dbot.db.kickers, username)) {
                 var kicked = '0';
             } else {
                 var kicked = dbot.db.kickers[username];
             }
 
-            event.reply(dbot.t('user_kicks', {'user': username, 'kicks': kicks, 'kicked': kicked}));
+            event.reply(dbot.t('user_kicks', {
+                'user': username, 
+                'kicks': kicks, 
+                'kicked': kicked
+            }));
         },
 
         // Output a list of the people who have been kicked the most and those
         // who have kicked other people the most.
         '~kickstats': function(event) {
             var orderedKickLeague = function(list, topWhat) {
-                var kickArr = Object.prototype.sort(list, function(key, obj) { return obj[key]; });
-                kickArr = kickArr.slice(kickArr.length - 10).reverse();
+                var kickArr = _.chain(list)
+                    .pairs()
+                    .sortBy(function(kick) { return kick[1] })
+                    .reverse()
+                    .first(10)
+                    .value();
 
                 var kickString = "Top " + topWhat + ": ";
                 for(var i=0;i<kickArr.length;i++) {
@@ -39,38 +49,36 @@ var kick = function(dbot) {
             event.reply(orderedKickLeague(dbot.db.kickers, 'Kickers'));
         }
     };
-
-    return {
-        'name': 'kick',
-        'ignorable': false,
-        'commands': commands,
-
-        'listener': function(event) {
-           if(event.kickee == dbot.config.name) {
-                dbot.instance.join(event, event.channel);
-                event.reply(dbot.t('kicked_dbot', {'botname': dbot.config.name}));
-                dbot.db.kicks[dbot.config.name] += 1;
+    this.commands = commands;
+    
+    this.listener = function(event) {
+       if(event.kickee == dbot.config.name) {
+            dbot.instance.join(event, event.channel);
+            event.reply(dbot.t('kicked_dbot', { 'botname': dbot.config.name }));
+            dbot.db.kicks[dbot.config.name] += 1;
+        } else {
+            if(!_.has(dbot.db.kicks, event.kickee)) {
+                dbot.db.kicks[event.kickee] = 1;
             } else {
-                if(!dbot.db.kicks.hasOwnProperty(event.kickee)) {
-                    dbot.db.kicks[event.kickee] = 1;
-                } else {
-                    dbot.db.kicks[event.kickee] += 1;
-                }
-
-                if(!dbot.db.kickers.hasOwnProperty(event.user)) {
-                    dbot.db.kickers[event.user] = 1; 
-                } else {
-                    dbot.db.kickers[event.user] += 1;
-                }
-
-                event.reply(event.kickee + '-- (' + dbot.t('user_kicks', 
-                    {'user': event.kickee, 'kicks': dbot.db.kicks[event.kickee], 'kicked': dbot.db.kickers[event.kickee]}) + ')');
+                dbot.db.kicks[event.kickee] += 1;
             }
-        },
-        on: 'KICK'
+
+            if(!_.has(dbot.db.kickers, event.user)) {
+                dbot.db.kickers[event.user] = 1; 
+            } else {
+                dbot.db.kickers[event.user] += 1;
+            }
+
+            event.reply(event.kickee + '-- (' + dbot.t('user_kicks', {
+                'user': event.kickee, 
+                'kicks': dbot.db.kicks[event.kickee], 
+                'kicked': dbot.db.kickers[event.kickee]
+            }) + ')');
+        }
     };
+    this.on = 'KICK';
 };
 
 exports.fetch = function(dbot) {
-    return kick(dbot);
+    return new kick(dbot);
 };

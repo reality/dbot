@@ -1,3 +1,6 @@
 {
-    "dbKeys": [ "bans", "locks" ]
+    "ignorable": false,
+    "dbKeys": [ "bans" ],
+    "dependencies": [ "command" ],
+    "help": "http://github.com/reality/depressionbot/blob/master/modules/admin/README.md"
 }

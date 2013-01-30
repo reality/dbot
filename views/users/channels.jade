@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h3 Channels on #{connection}
+    div#backlink 
+        a(href='/connections') &laquo; Connection List
+    ul#quotelist
+      -each channel in channels
+        a(href='/users/'+connection+'/'+encodeURIComponent(channel))
+          li.quotes #{channel}

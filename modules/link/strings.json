@@ -1,0 +1,12 @@
+{
+    "title_not_found": {
+        "english": "No page title found.",
+        "na'vi": "Oel ke tsun run 'upxare atxin."
+    },
+    "xkcd": {
+        "english": "xkcd {num}: {title} https://xkcd.com/{num}"
+    },
+    "no-hits": {
+        "english": "No hits."
+    }
+}

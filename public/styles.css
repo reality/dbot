@@ -6,19 +6,19 @@
  */
 
 html {
-    background: url("background.jpg") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
 }
 
 body {
     padding: 25px;
     margin: 0;
-    font-family: "Lucida Grande";
+    font-family: "Source Sans Pro", sans-serif;
     color: #444;
     text-shadow: 1px 1px 2px #2B2B2B;
+    background: url("background.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
 h1,h2 {
@@ -31,7 +31,6 @@ p {
 }
 
 div#page {
-	width: 90%;
 	margin: 0 auto 0 auto;
 }
 
@@ -55,9 +54,8 @@ div#title a {
 }
 
 div#main {
-	position: relative;
-    padding: 15px 5px;
-    margin: 0px; 
+    position: relative;
+    padding: 10px 5px;
     font-size: 21px;
     text-align:center;
     background: #FFF;
@@ -171,4 +169,59 @@ li.option-votes {
 	margin: 2px 0;
 
 	box-shadow: inset 0px 0px 3px #444;
+}
+
+/** 
+ * DataTables 
+ * Based on http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css
+ */
+.sorting { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_both.png') no-repeat center right; }
+.sorting_asc { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_asc.png') no-repeat center right; }
+.sorting_desc { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_desc.png') no-repeat center right; }
+
+.sorting_asc_disabled { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_asc_disabled.png') no-repeat center right; }
+.sorting_desc_disabled { background: url('http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/images/sort_desc_disabled.png') no-repeat center right; }
+
+/**
+ * Bootstrap Overrides
+ */
+.profile_page-header{
+  margin: 5px 0 10px 0;
+}
+
+.profile_row{
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+/**
+ * spaceinvader's thumbnails
+ */
+span.nicks {
+  display: none;
+  color: #fff;
+  text-decoration: none;
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  width: 100%;
+  word-wrap: break-word;
+}
+div.imgwrap {
+  background-color: #000;
+  position: relative;
+}
+div.imgwrap > img {
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.thumbnail:hover > div.imgwrap > img {
+  opacity: 0.5;
+}
+
+.thumbnail:hover > div.imgwrap > span.nicks {
+  display: inline;
 }

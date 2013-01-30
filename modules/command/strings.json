@@ -10,5 +10,21 @@
         "spanish": "Sintaxis no válida. Iniciar incineración.",
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
         "welsh": "Cystrawen annilys. Cychwyn orfflosgiad"
+    },
+    "usage": {
+        "english": "Usage for {command}: {usage}.",
+        "na'vi": "Nga tsun sivar ìlä {command}: {usage}."
+    },
+    "no_usage_info": {
+        "english": "No usage information found for {command}.",
+        "na'vi": "Oel ke tsun sivar {comamnd}it"
+    },
+    "help_link": {
+        "english": "Help for {module}: {link}",
+        "na'vi": "{module}ä srungìl {link} it tok"
+    },
+    "no_help": {
+        "english": "No help found for {module}.",
+        "na'vi": "Fì{module}ìri oel ke tsun run srungit"
     }
 }

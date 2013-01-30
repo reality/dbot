@@ -1,0 +1,7 @@
+{
+    "username": "youruserhere",
+    "password": "yourpasswordhere",
+    "dependencies": [ "command" ],
+    "ignorable": true,
+    "dentQuotes": false
+}

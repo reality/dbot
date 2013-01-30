@@ -64,5 +64,21 @@
         "spanish": "Cerrado la categoría: {category}",
         "na'vi": "{category}ìri oel 'upxareti fmoli",
         "welsh": "Categori wedi cloi: {category}"
+    },
+    "already_in_channel": {
+        "english": "I'm already in {channel}",
+        "na'vi": "Oel {channel}it tok li"
+    },
+    "not_in_channel": {
+        "english": "I'm not in {channel}",
+        "na'vi": "Oel {channel}it ke tok"
+    },
+    "already_loaded_web": {
+        "english": "WHY CAN'T I LOAD ALL THIS WEB? (web already loaded)",
+        "na'vi": "PELUN OEL KE TSUN OMUM FÌWETIT NÌWOTX (wetìri oe omum li)"
+    },
+    "already_loaded": {
+        "english": "{moduleName} is already loaded.",
+        "na'vi": "Oel omum teri {moduleName}it li."
     }
 }

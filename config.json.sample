@@ -12,6 +12,8 @@
         }
     },
     "admins": [ "batman" ],
-    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "puns", "quotes", "spelling", "youare" ],
-    "language": "english"
+    "moderators": [ "whatever" ],
+    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "youare", "stats", "users" ],
+    "language": "english",
+    "debugMode": true
 }

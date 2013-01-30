@@ -1,0 +1,197 @@
+extends ../layout
+
+block content
+    script(type="text/javascript", src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js")
+    style
+      .chart rect {
+        fill: steelblue;
+      }
+      .chart rect:hover {
+          fill: #000;
+      }
+      .yTicks {
+        stroke: #aaa;
+        stroke-width: 0.5;
+      }
+
+    script
+        $(document).ready(function(){
+            // d3.js Graph
+            var ticks = 25;
+            var timelabels = 30;
+            var chartw = 940;
+            var toppad = 10;
+            var w = (chartw - (ticks * 2)) / 168;
+            var h = 130;
+
+            var x = d3.scale.linear()
+                .domain([0,1])
+                .range([0,w]);
+
+            var y = d3.scale.linear()
+                .domain([0,d3.max([#{chanFreq}])])
+                .rangeRound([0,h-toppad]);
+
+            var chart = d3.select($("#chanFreqChart")[0]).append("svg")
+                .attr("class", "chart")
+                .attr("width", chartw)
+                .attr("height", h + timelabels);
+
+            chart.selectAll(".yTicks")
+                .data(y.ticks(5).slice(1))
+                .enter().append("svg:line")
+                .attr("class", "yTicks")
+                .attr("y1", function(d) { return -1 * y(d) + h; })
+                .attr("x1", 0)
+                .attr("y2", function(d) { return -1 * y(d) + h; })
+                .attr("x2", chartw)
+
+            chart.selectAll("rect")
+                .data([#{chanFreq}])
+              .enter().append("rect")
+                .attr("x", function(d, i) { return x(i) - .5 + ticks; })
+                .attr("y", function(d) { return h - y(d) - .5; })
+                .attr("width", w)
+                .attr("height", function(d) { return y(d); })
+                .attr("title", function(d){ return d; });
+
+            chart.selectAll(".l_rule")
+              .data(y.ticks(5).slice(1))
+              .enter().append("text")
+              .attr("class", "rule")
+              .attr("y", function(d) { return -1 * y(d) + h; })
+              .attr("x", 0)
+              .attr("text-anchor", "right")
+              .attr("font-size", 10)
+              .attr("dy", 3)
+              .text(String);
+            chart.selectAll(".r_rule")
+              .data(y.ticks(5).slice(1))
+              .enter().append("text")
+              .attr("class", "rule")
+              .attr("y", function(d) { return -1 * y(d) + h; })
+              .attr("x", chartw)
+              .attr("text-anchor", "end")
+              .attr("font-size", 10)
+              .attr("dy", 3)
+              .text(String);
+
+            chart.append("line")
+              .attr("x1", 0 + ticks)
+              .attr("x2", chartw - ticks)
+              .attr("y1", h - .5)
+              .attr("y2", h - .5)
+              .style("stroke", "#000");
+
+            chart.selectAll("text.times")
+              .data(["0", "6", "12", "18","0", "6", "12", "18","0", "6", "12", "18","0", "6", "12", "18" ,"0", "6", "12", "18" ,"0", "6", "12", "18" ,"0", "6", "12", "18"])
+              .enter().append("text")
+              .attr("x", function(d, i){ return ((i * w * 6)+(w/2)) + ticks; })
+              .attr("y", h + 10)
+              .attr("text-anchor", "middle")
+              .attr('class', 'name')
+              .attr("font-size", 10)
+              .text(String);
+
+            chart.selectAll("text.days")
+              .data([!{locals.chanFreqLabel}])
+              .enter().append("text")
+              .attr("x", function(d, i){ return ((i+0.5) * w * 24) + ticks; })
+              .attr("y", h + 25)
+              .attr("text-anchor", "middle")
+              .attr('class', 'name')
+              .attr("font-size", 12)
+              .text(String);
+
+
+            // Allowing forcing of string stats data to sort as numeric
+            jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+                "forcenum-pre": function ( a ) {
+                    a = a.replace("\,", "");
+                    return parseFloat( a );
+                },
+             
+                "forcenum-asc": function ( a, b ) {
+                    return a - b;
+                },
+             
+                "forcenum-desc": function ( a, b ) {
+                    return b - a;
+                }
+            } );
+
+            $('.tip').tooltip();
+            $('rect').tooltip({
+            });
+            $('.data').dataTable({
+              "aoColumnDefs": [
+                { "aDataSort": [ 1, 0 ], "asSorting": [ "asc" ], "aTargets": [ 0 ] },
+                { "bVisible": false, "aTargets": [ 1 ] },
+                { "sType": "forcenum",
+                  "asSorting": [ "desc", "asc" ],
+                  "aTargets": [ 2, 3, 4, 5, 6 ] }
+              ],
+              "bPaginate": false,
+              "bLengthChange": false,
+              "oLanguage": {
+                "sInfo":  "_TOTAL_ users",
+                "sInfoEmpty":  "No users",
+                "sInfoFiltered": "filtered (_MAX_ total)"
+              },
+            });
+        });
+
+    div.page-header.profile_page-header
+      h1
+        #{channel}
+      small
+        #{connection}
+    div#backlink 
+        a(href='/channels/'+connection) &laquo; Channel List
+    div#row
+      h4 Seven Day Activity
+      div.barchart#chanFreqChart
+      hr
+    div#row
+        table.table.table-hover.data
+            thead
+                tr
+                  th Users
+                  th 
+                  th Lines
+                  th Words
+                  th Lincent
+                  th Verbosity
+                  th Mentions
+            tbody
+              -each nick in userStats
+                tr
+                  td
+                      a(href='/profile/'+connection+'/'+nick.primary)
+                        #{nick.display}
+                      span 
+                      if nick.online
+                        if nick.active.active
+                          span.label.label-success.tip(data-original-title="#{nick.active.ago}", data-placement="right") Active
+                        else
+                          span.label.label-important.tip(data-original-title="#{nick.active.ago}", data-placement="right") Inactive 
+                      else
+                        span.label.tip(data-original-title="#{nick.active.ago}", data-placement="right") Offline
+                  td
+                      if nick.online
+                        if nick.active.active
+                          -1
+                        else
+                          0
+                      else
+                        1
+                  td
+                      #{nick.fields.lines.data}
+                  td
+                      #{nick.fields.words.data}
+                  td
+                      #{nick.fields.lincent.data}
+                  td
+                      #{nick.fields.wpl.data}
+                  td
+                      #{nick.fields.in_mentions.data}

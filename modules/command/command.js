@@ -4,100 +4,62 @@
  * command and then runs that command, given the user isn't banned from or
  * ignoring that command.
  */
+var _ = require('underscore')._;
 var command = function(dbot) {
+    this.dbot = dbot;
+    
     /**
-     * Is user banned from using command?
+     * Run the appropriate command given the input.
      */
-    var isBanned = function(user, command) {
-        var banned = false;
-        if(dbot.db.bans.hasOwnProperty(command)) {
-            if(dbot.db.bans[command].include(user) || dbot.db.bans['*'].include(user)) {
-                banned = true;
-            }
-        }
-        return banned;
-    };
-
-    /**
-     * Is user ignoring command?
-     */
-    var isIgnoring = function(user, command) {
-        var module = dbot.commandMap[command];
-        var ignoring = false;
-        if(dbot.db.ignores.hasOwnProperty(user) && dbot.db.ignores[user].include(module)) {
-            ignoring = true;
-        }
-        return ignoring;
-    };
-
-    /**
-     * Apply Regex to event message, store result. Return false if it doesn't
-     * apply.
-     */
-    var applyRegex = function(commandName, event) {
-        var applies = false;
-        if(dbot.commands[commandName].hasOwnProperty('regex')) {
-            var cRegex = dbot.commands[commandName].regex;
-            var q = event.message.valMatch(cRegex[0], cRegex[1]);
-            if(q) {
-                applies = true;
-                event.input = q;
-            }
-        } else {
-            applies = true;
-        }
-        return applies;
-    };
-
-    return {
-        'name': 'command',
-        'ignorable': false,
-
-        'commands': {
-            '~usage': function(event) {
-                var commandName = event.params[1];
-                if(dbot.usage.hasOwnProperty(commandName)) {
-                    event.reply('Usage for ' + commandName + ': ' +
-                        dbot.usage[commandName]); 
-                } else {
-                    event.reply('No usage information for ' + commandName);
-                }
-            }
-        },
-
-        /**
-         * Run the appropriate command given the input.
-         */
-        'listener': function(event) {
-            var commandName = event.params[0];
-            if(!dbot.commands.hasOwnProperty(commandName)) {
+    this.listener = function(event) {
+        var commandName = event.params[0];
+        if(!_.has(dbot.commands, commandName)) {
+            if(_.has(dbot.modules, 'quotes')) {
                 commandName = '~';
-            }
-
-            if(isBanned(event.user, commandName)) {
-                event.reply(dbot.t('command_ban', {'user': event.user})); 
             } else {
-                if(!isIgnoring(event.user, commandName)) {
-                    if(applyRegex(commandName, event)) {
-                        dbot.commands[commandName](event);
-                        dbot.save();
-                    } else {
-                        if(commandName !== '~') {
-                            if(dbot.usage.hasOwnProperty(commandName)){
-                                event.reply('Usage: ' + dbot.usage[commandName]);
-                            } else {
-                                event.reply(dbot.t('syntax_error'));
-                            }
+                return;
+            }
+        } 
+        
+        if(this.api.isBanned(event.user, commandName)) {
+            event.reply(dbot.t('command_ban', {'user': event.user})); 
+        } else {
+            if(!this.api.isIgnoring(event.user, commandName) && 
+                    !this.api.isIgnoring(event.channel, commandName) &&
+                    this.api.hasAccess(event.user, commandName) &&
+                    dbot.commands[commandName].disabled !== true) {
+                if(this.api.applyRegex(commandName, event)) {
+                    try {
+                        var command = dbot.commands[commandName];
+                        var results = command.apply(dbot.modules[command.module], [event]);
+                        if(_.has(command, 'hooks') && results !== false) {
+                            _.each(command['hooks'], function(hook) {
+                                hook.apply(hook.module, _.values(results)); 
+                            }, this);
+                        }
+                    } catch(err) {
+                        if(dbot.config.debugMode == true) {
+                            event.reply('- Error in ' + commandName + ':');
+                            event.reply('- Message: ' + err);
+                            event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
+                        }
+                    }
+                    dbot.save();
+                } else {
+                    if(commandName !== '~') {
+                        if(_.has(dbot.usage, commandName)) {
+                            event.reply('Usage: ' + dbot.usage[commandName]);
+                        } else {
+                            event.reply(dbot.t('syntax_error'));
                         }
                     }
                 }
             }
-        },
-        'on': 'PRIVMSG'
-    };
+        }
+    }.bind(this);
+    this.on = 'PRIVMSG';
 };
 
 exports.fetch = function(dbot) {
-    return command(dbot);
+    return new command(dbot);
 };
-

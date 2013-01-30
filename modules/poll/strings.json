@@ -17,7 +17,7 @@
         "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun - {url}"
     },
     "poll_describe": {
-        "english": "{name}: {description} - {url}"
+        "english": "{name}: {description} - {url}."
     },
     "changed_vote": {
         "english": "{user} changed their vote in {poll} to '{vote}' ({count}).",
