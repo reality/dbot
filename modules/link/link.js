@@ -34,11 +34,10 @@ var link = function(dbot) {
         },
         
         '~xkcd': function(event) {
-            var comicId = event.params[1];
-			
-			if(comicId == "*"){
-				request("http://xkcd.com/info.0.json",  function(error, response, body){
-					if (response.statusCode == "200") {
+            var comicId = event.params[1];	
+            if(comicId == "*"){
+                request("http://xkcd.com/info.0.json",  function(error, response, body){
+                    if (response.statusCode == "200") {
                         data = JSON.parse(body);
                         comicId = data.num;
                         comicId = (Math.floor(Math.random() * comicId) + 1);
@@ -47,21 +46,21 @@ var link = function(dbot) {
                         event.params = event.message.split(' ');
                         dbot.instance.emit(event);
                     }
-				});	
-			}else {
-				if(comicId){
-					comicId = comicId + "/";
-				} else {
-					comicId = "";
-				}
-				var link = "http://xkcd.com/"+comicId+"info.0.json";
-				request(link,  function(error, response, body) {
-				if (response.statusCode == "200") {
-					data = JSON.parse(body);
-					event.reply(dbot.t("xkcd",data));
-				} else {
-					event.reply(dbot.t("no-hits"));
-				}
+                });	
+            }else {
+                if(comicId){
+                    comicId = comicId + "/";
+                } else {
+                    comicId = "";
+                }
+                var link = "http://xkcd.com/"+comicId+"info.0.json";
+                request(link,  function(error, response, body) {
+                    if (response.statusCode == "200") {
+                        data = JSON.parse(body);
+                        event.reply(dbot.t("xkcd",data));
+                    } else {
+                        event.reply(dbot.t("no-hits"));
+                    }
 				});
 			}
 		},
