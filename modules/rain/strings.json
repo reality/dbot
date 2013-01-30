@@ -34,5 +34,8 @@
     },
     "rain-11": {
         "english" : "LOL U PROBABLY DIED"
+    },
+    "rain-e": {
+        "english" : "Unable to fetch weather data."
     }
 }
