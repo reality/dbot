@@ -88,7 +88,6 @@ var link = function(dbot) {
         var urlMatches = event.message.match(this.urlRegex);
         if(urlMatches !== null) {
             this.links[event.channel.name] = urlMatches[0];
-
             if(dbot.config.link.autoTitle == true) {
                 this.fetchTitle(event, urlMatches[0]);
             }
