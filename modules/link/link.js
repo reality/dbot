@@ -35,22 +35,29 @@ var link = function(dbot) {
         
         '~xkcd': function(event) {
             var comicId = event.params[1];
-            if(comicId){
+			if(comicId){
                 comicId = comicId + "/";
             } else {
                 comicId = "";
             }
             var link = "http://xkcd.com/"+comicId+"info.0.json";
+			
+			if(comicId == "*"){
+			link = "http://dynamic.xkcd.com/random/comic";
+			request(link,  function(error, response, body)
+			link = response.location + "info.0.json";
+			}
+			
             request(link,  function(error, response, body) {
                 if (response.statusCode == "200") {
                     data = JSON.parse(body);
                     event.reply(dbot.t("xkcd",data));
-                } else {
+				} else {
                     event.reply(dbot.t("no-hits"));
                 }
             });
         },
-
+		
         '~ud': function(event) {
 	    	var query = event.input[1];
             var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + encodeURI(query); 
