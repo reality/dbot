@@ -26,3 +26,5 @@ commands in the cloned repository:
 	
 	git submodule init
 	git submodule update
+
+You can also install depressionbot via the nifty Bash script, by invoking ``./install.sh``.
