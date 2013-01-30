@@ -32,6 +32,24 @@ var link = function(dbot) {
             }
             this.fetchTitle(event, link);
         },
+        
+        '~xkcd': function(event) {
+            var comicId = event.params[1];
+            if(comicId){
+                comicId = comicId + "/";
+            } else {
+                comicId = "";
+            }
+            var link = "http://xkcd.com/"+comicId+"info.0.json";
+            request(link,  function(error, response, body) {
+                if (response.statusCode == "200") {
+                    data = JSON.parse(body);
+                    event.reply(dbot.t("xkcd",data));
+                } else {
+                    event.reply(dbot.t("no-hits"));
+                }
+            });
+        },
 
         '~ud': function(event) {
 	    var query = event.input[1];
