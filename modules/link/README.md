@@ -22,4 +22,4 @@ which was posted in the current channel.
 #### ~ud [headword]
 Returns the first [Urban Dictionary](http://www.urbandictionary.com) definition for the headword provided.
 #### ~xkcd <comic ID>
-Returns a link to the [xkcd](http://xkcd.com) comic specified, or the latest one if a comic is not given.
+Returns a link to the [xkcd](http://xkcd.com) comic specified, or the latest one if a comic is not given. Use '*' to return a link to a random comic.
