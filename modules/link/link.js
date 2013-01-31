@@ -34,7 +34,10 @@ var link = function(dbot) {
         },
         
         '~xkcd': function(event) {
-            var comicId = event.params[1];	
+            var comicId;
+            if(!_.isUndefined(event.params[1])) {
+                comicId = event.params[1];	
+            }
             if(comicId == "*"){
                 request("http://xkcd.com/info.0.json",  function(error, response, body){
                     if (response.statusCode == "200") {
@@ -59,6 +62,7 @@ var link = function(dbot) {
                     }
                 });
             }
+            
         },
 		
         '~ud': function(event) {
