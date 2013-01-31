@@ -34,17 +34,16 @@ var link = function(dbot) {
         },
         
         '~xkcd': function(event) {
-            var comicId = event.params[1];	
+            var comicId;
+            if(!_.isUndefined(event.params[1])) {
+                comicId = event.params[1];	
+            }
             if(comicId == "*"){
                 request("http://xkcd.com/info.0.json",  function(error, response, body){
                     if (response.statusCode == "200") {
                         data = JSON.parse(body);
-                        comicId = data.num;
-                        comicId = (Math.floor(Math.random() * comicId) + 1);
-                        event.message = '~xkcd ' + comicId;
-                        event.action = 'PRIVMSG';
-                        event.params = event.message.split(' ');
-                        dbot.instance.emit(event);
+                        event.params[1] = (Math.floor(Math.random() * data.num) + 1);
+                        dbot.commands['~xkcd'](event);
                     }
                 });	
             }else {
@@ -63,6 +62,7 @@ var link = function(dbot) {
                     }
                 });
             }
+            
         },
 		
         '~ud': function(event) {
