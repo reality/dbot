@@ -41,10 +41,8 @@ var link = function(dbot) {
                         data = JSON.parse(body);
                         comicId = data.num;
                         comicId = (Math.floor(Math.random() * comicId) + 1);
-                        event.message = '~xkcd ' + comicId;
-                        event.action = 'PRIVMSG';
-                        event.params = event.message.split(' ');
-                        dbot.instance.emit(event);
+                        event.params[1] = comicId;
+                        dbot.commands['~xkcd'](event);
                     }
                 });	
             }else {
