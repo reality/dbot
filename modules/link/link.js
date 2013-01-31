@@ -39,9 +39,7 @@ var link = function(dbot) {
                 request("http://xkcd.com/info.0.json",  function(error, response, body){
                     if (response.statusCode == "200") {
                         data = JSON.parse(body);
-                        comicId = data.num;
-                        comicId = (Math.floor(Math.random() * comicId) + 1);
-                        event.params[1] = comicId;
+                        event.params[1] = (Math.floor(Math.random() * data.num) + 1);
                         dbot.commands['~xkcd'](event);
                     }
                 });	
