@@ -47,10 +47,8 @@ var link = function(dbot) {
                     } catch(err) { };
                 });    
             } else {
-                if(comicId) {
+                if(comicId !== "") {
                     comicId = comicId + "/";
-                } else {
-                    comicId = "";
                 }
 
                 var link = "http://xkcd.com/"+comicId+"info.0.json";
