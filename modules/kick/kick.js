@@ -57,7 +57,7 @@ var kick = function(dbot) {
         },
 
         'kick': function(server, user, channel, msg) {
-            dbot.instance.connections[server].send('KICK ' + channel + ' ' + event.user + ' :' + msg);
+            dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
         }
     };
     
