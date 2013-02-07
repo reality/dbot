@@ -20,7 +20,7 @@ var link = function(dbot) {
             }
         });
     };
-
+                
     var commands = {
         '~title': function(event) {
             var link = this.links[event.channel.name];
@@ -34,35 +34,51 @@ var link = function(dbot) {
         },
         
         '~xkcd': function(event) {
-            var comicId = event.params[1];
-            if(comicId){
-                comicId = comicId + "/";
-            } else {
-                comicId = "";
-            }
-            var link = "http://xkcd.com/"+comicId+"info.0.json";
-            request(link,  function(error, response, body) {
-                if (response.statusCode == "200") {
-                    data = JSON.parse(body);
-                    event.reply(dbot.t("xkcd",data));
-                } else {
-                    event.reply(dbot.t("no-hits"));
-                }
-            });
-        },
+            var comicId = event.params[1] || "";
 
+            if(comicId == "*") {
+                request("http://xkcd.com/info.0.json",  function(error, response, body){
+                    try {
+                        if(response.statusCode == "200") {
+                            data = JSON.parse(body);
+                            event.params[1] = (Math.floor(Math.random() * data.num) + 1);
+                            dbot.commands['~xkcd'](event);
+                        }
+                    } catch(err) { };
+                });    
+            } else {
+                if(comicId !== "") {
+                    comicId = comicId + "/";
+                }
+
+                var link = "http://xkcd.com/"+comicId+"info.0.json";
+                request(link,  function(error, response, body) {
+                    try {
+                        if (response.statusCode == "200") {
+                            data = JSON.parse(body);
+                            event.reply(dbot.t("xkcd",data));
+                        } else {
+                            event.reply(dbot.t("no-hits"));
+                        }
+                    } catch(err) { };
+                });
+            }
+            
+        },
+        
         '~ud': function(event) {
-	    	var query = event.input[1];
+            var query = event.input[1];
             var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + encodeURI(query); 
+
             request(reqUrl, function(error, response, body) {
-            	try {
-	                var result = JSON.parse(body);
-	                if(_.has(result, 'result_type') && result.result_type != 'no_results') {
-	                    event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
-	                } else {
-	                    event.reply(event.user + ': No definition found.');
-	                }
-            	} catch(err) { }
+                try {
+                    var result = JSON.parse(body);
+                    if(_.has(result, 'result_type') && result.result_type != 'no_results') {
+                        event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
+                    } else {
+                        event.reply(event.user + ': No definition found.');
+                    }
+                } catch(err) { }
             });
         }
     };
@@ -73,7 +89,6 @@ var link = function(dbot) {
         var urlMatches = event.message.match(this.urlRegex);
         if(urlMatches !== null) {
             this.links[event.channel.name] = urlMatches[0];
-
             if(dbot.config.link.autoTitle == true) {
                 this.fetchTitle(event, urlMatches[0]);
             }

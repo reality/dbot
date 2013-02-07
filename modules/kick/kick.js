@@ -50,6 +50,16 @@ var kick = function(dbot) {
         }
     };
     this.commands = commands;
+
+    this.api = {
+        'ban': function(server, user, channel) {
+            dbot.instance.connections[server].send('MODE ' + channel + ' +b ' + user + '!*@*');
+        },
+
+        'kick': function(server, user, channel, msg) {
+            dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
+        }
+    };
     
     this.listener = function(event) {
        if(event.kickee == dbot.config.name) {
