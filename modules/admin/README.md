@@ -18,7 +18,7 @@ Join the given channel.
 #### part [#channel]
 Leave the given channel.
 
-#### opme [#channel]
+#### opme (#channel)
 Gives the caller ops in a given channel if possible. If called without a
 channel, it will attempt to give the caller ops in the current channel.
 
