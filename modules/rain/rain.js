@@ -11,7 +11,7 @@ var rain = function(dbot) {
             var apikey = dbot.config.rain.apikey;
             var place = event.input[1];
             if (!place) { var place = "Aberystwyth"; }
-            var url = "http://api.wunderground.com/api/" + apikey + "/conditions/q/CA/" + place + ".json";
+            var url = "http://api.wunderground.com/api/" + apikey + "/conditions/q/" + place + ".json";
             request(url, function(error, response, body) {
                 if(response.statusCode == "200") {
                     var data = JSON.parse(body);
@@ -27,7 +27,7 @@ var rain = function(dbot) {
                 } else {
                     var score = "e";
                 }
-                event.reply(dbot.t("rain-"+score));
+                event.reply(dbot.t("rain-"+score,{"place": place}));
             });
         }
     };

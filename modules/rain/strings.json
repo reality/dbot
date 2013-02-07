@@ -1,12 +1,12 @@
  {
     "rain-0": { 
-        "english" : "It's not raining."
+        "english" : "It's not raining in {place}."
     },
     "rain-1": {
-        "english" : "It's raining."
+        "english" : "It's raining in {place}."
     },
     "rain-2": {
-        "english" : "It's raining rather a lot."
+        "english" : "It's raining rather a lot in {place}."
     },
     "rain-3": { 
         "english" : "It's raining shitloads."
@@ -15,7 +15,7 @@
         "english" : "It's raining fucktons."
     },
     "rain-5": { 
-        "english" : "It's raining whales (in Wales)!"
+        "english" : "It's raining whales (in {place})!"
     },
     "rain-6": { 
         "english" : "IT'S SO FUCKING WET OUT HERE MAN"
