@@ -15,5 +15,6 @@
     "moderators": [ "whatever" ],
     "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "youare", "stats", "users" ],
     "language": "english",
-    "debugMode": true
+    "debugMode": true,
+    "version": "Depressionbot IRC Bot 0.4-dev. https://github.com/reality/depressionbot/"
 }
