@@ -295,6 +295,7 @@ var commands = function(dbot) {
     commands['reload'].access = 'admin';
     commands['unload'].access = 'admin';
     commands['load'].access = 'admin';
+    commands['version'].access = 'admin';
     commands['setconfig'].access = 'admin';
     commands['showconfig'].access = 'moderator';
     commands['join'].access = 'moderator';
