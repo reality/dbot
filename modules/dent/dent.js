@@ -9,12 +9,12 @@ var dent = function(dbot) {
             var username = dbot.config.dent.username,
                 password = dbot.config.dent.password,
                 info,
-                auth = "Basic " + 
+                auth = "Basic " +
                 new Buffer(username + ":" + password).toString("base64");
 
             request.post({
                 'url': 'http://identi.ca/api/statuses/update.json?status=' +
-                    content, 
+                    escape(content),
                 'headers': {
                     'Authorization': auth
                 }
@@ -36,7 +36,7 @@ var dent = function(dbot) {
     this.onLoad = function() {
         if(dbot.config.dent.dentQuotes === true && _.has(dbot.modules, 'quotes')) {
             dbot.api.command.addHook('~qadd', function(key, text) {
-                this.api.post(key + ': ' + text); 
+                this.api.post(key + ': ' + text);
             }.bind(this));
         }
     }.bind(this);
