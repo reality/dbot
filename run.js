@@ -1,6 +1,7 @@
 var fs = require('fs'),
     _ = require('underscore')._,
-    jsbot = require('./jsbot/jsbot');
+    jsbot = require('./jsbot/jsbot'),
+    DatabaseDriver = require('./database').DatabaseDriver;
 require('./snippets');
 
 var DBot = function() {
@@ -21,6 +22,9 @@ var DBot = function() {
     if(!_.has(this.db, 'config')) {
         this.db.config = {};
     }
+
+    /*** Load the fancy DB ***/
+    this.ddb = new DatabaseDriver();
 
     /*** Load the Config ***/
 
@@ -198,15 +202,23 @@ DBot.prototype.reloadModules = function() {
                     }
                 }, this);
             }
-
-            // Generate missing DB keys
             this.config[name] = config;
-            _.each(config.dbKeys, function(dbKey) {
-                if(!_.has(this.db, dbKey)) {
-                    this.db[dbKey] = {};
-                }
-            }, this);
 
+            // Groovy funky database shit
+            if(!_.has(config, 'dbType') || config.dbType == 'olde') {
+                // Generate missing DB keys
+                _.each(config.dbKeys, function(dbKey) {
+                    if(!_.has(this.db, dbKey)) {
+                        this.db[dbKey] = {};
+                    }
+                }, this);
+            } else {
+                // Just use the name of the module for now, add dbKey iteration later
+                this.ddb.createDB(name, config.dbType, function(db) {
+                    module.db = db;
+                }.bind(this), {});
+            }
+            
             // Load the module itself
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
