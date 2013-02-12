@@ -3,15 +3,15 @@
     "english": "{s} [artist] {artist}"
   },
   "album": {
-    "english": "{s} [album] {artist} - {album}"
+    "english": "{s} [album] {artist} – {album}"
   },
   "track": {
-    "english": "{s} [track] {artist} - {track} (from {album})"
+    "english": "{s} [track] {artist} – {track} (from {album})"
   },
   "found": {
-    "english": "{s} [{url}] {artist} - {track} (from {album})"
+    "english": "{s} [{url}] {artist} – {track} (from {album})"
   },
-  "not-found": {
+  "not–found": {
     "english": "{s} No results."
   }
 }
