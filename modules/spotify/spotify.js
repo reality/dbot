@@ -44,13 +44,14 @@ var spotify = function(dbot) {
         json: true
       }, function(error, response, body) {
         if (!error && response.statusCode == 200) {
+          var spotify = "\u00039spotify\u000f";
           if (_.has(body, 'tracks') && body.tracks[0] && _.has(body.tracks[0], 'href')) {
             var t = body.tracks[0].href;
             t = t.replace(/:/g, '/');
             t = t.replace(/spotify/, 'http://open.spotify.com');
-            event.reply(t);
+            event.reply(dbot.t("found", {s: spotify, artist: _.map(body.tracks[0].artists, function(a) { return a.name }).join(', '), album: body.tracks[0].album.name, track: body.tracks[0].name, url: t}));
           } else {
-            event.reply(dbot.t("not-found", {s: "\u00039spotify\u000f"}));
+            event.reply(dbot.t("not-found", {s: spotify}));
           }
         }
       });  
