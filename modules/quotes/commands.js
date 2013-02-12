@@ -86,7 +86,7 @@ var commands = function(dbot) {
                     event.reply(dbot.t('search_results', {
                         'category': haystack, 
                         'needle': needle,
-                        'quote': matches.random(), 
+                        'quote': matches[0],
                         'matches': matches.length
                     }));
                 }

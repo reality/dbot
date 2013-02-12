@@ -1,9 +1,5 @@
 /*** Array ***/
 
-Array.prototype.random = function() {
-    return this[Math.floor((Math.random()*this.length))];
-};
-
 Array.prototype.each = function(fun) {
     for(var i=0;i<this.length;i++) {
         fun(this[i]);
@@ -79,66 +75,6 @@ String.prototype.format = function() { // format takes either multiple indexed a
         };
     };
     return targetStr;
-};
-
-/*** Object ***/
-
-Object.prototype.isFunction = function(obj) {
-    return typeof(obj) === 'function';
-};
-
-Object.prototype.isArray = function(obj) {
-    return Object.prototype.toString.call(obj) === '[object Array]';
-};
-
-Object.prototype.isString = function(obj) {
-    return Object.prototype.toString.call(obj) === '[object String]';
-};
-
-Object.prototype.withAll = function(fun) {
-    for(key in this) {
-        if(this.hasOwnProperty(key)){
-            fun(key, this[key]);
-        }
-    }
-};
-
-Object.prototype.length = function() {
-    var l = 0;
-    for(key in this)
-        if(this.hasOwnProperty(key))
-            l++;
-    return l;
-};
-
-Object.prototype.sort = function(object, scorer) {
-    var sortArr = [];
-    for(var key in object) {
-        if(object.hasOwnProperty(key)) {
-            sortArr.push([key, scorer(key, object)]);
-        }
-    }
-    return sortArr.sort(function(a, b) { return a[1] - b[1]; });
-};
-
-Object.prototype.filter = function(fun) {
-    var filtered = [];
-    for(var key in this) {
-        if(this.hasOwnProperty(key)) {
-            if(fun(this[key]) == true) {
-                filtered.push(this[key]);
-            }
-        }
-    }
-    return filtered;
-};
-
-Object.prototype.each = function(fun) {
-    for(var key in this) {
-        if(this.hasOwnProperty(key)) {
-            fun(this[key]);
-        }
-    }
 };
 
 /*** Integer ***/
