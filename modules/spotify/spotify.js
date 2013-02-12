@@ -21,15 +21,15 @@ var spotify = function(dbot) {
       json: true
     }, function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        var s = "\u00039spotify\u000f";
-        if (body.hasOwnProperty('track')) {
-          event.reply(dbot.t("track", {s: s, artist: _.map(body.track.artists, function(a) { return a.name }).join(', '), album: body.track.album.name, track: body.track.name}));
+        var spotify = "\u00039spotify\u000f";
+        if (_.has(body, 'track')) {
+          event.reply(dbot.t("track", {s: spotify, artist: _.map(body.track.artists, function(a) { return a.name }).join(', '), album: body.track.album.name, track: body.track.name}));
         }
-        else if (body.hasOwnProperty('album')) {
-          event.reply(dbot.t("album", {s: s, artist: body.album.artist, album: body.album.name}));
+        else if (_.has(body, 'album')) {
+          event.reply(dbot.t("album", {s: spotify, artist: body.album.artist, album: body.album.name}));
         }
-        else if (body.hasOwnProperty('artist')) {
-          event.reply(dbot.t("artist", {s: s, artist: body.artist.name}));
+        else if (_.has(body, 'artist')) {
+          event.reply(dbot.t("artist", {s: spotify, artist: body.artist.name}));
         }
       }
     });
@@ -44,11 +44,13 @@ var spotify = function(dbot) {
         json: true
       }, function(error, response, body) {
         if (!error && response.statusCode == 200) {
-          if (body.hasOwnProperty('tracks')) {
+          if (_.has(body, 'tracks') && body.tracks[0] && _.has(body.tracks[0], 'href')) {
             var t = body.tracks[0].href;
             t = t.replace(/:/g, '/');
             t = t.replace(/spotify/, 'http://open.spotify.com');
             event.reply(t);
+          } else {
+            event.reply(dbot.t("not-found", {s: "\u00039spotify\u000f"}));
           }
         }
       });  
