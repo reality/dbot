@@ -1,0 +1,11 @@
+{
+  "artist": {
+    "english": "{s} [artist] {artist}"
+  },
+  "album": {
+    "english": "{s} [album] {artist} - {album}"
+  },
+  "track": {
+    "english": "{s} [track] {artist} - {track} (from {album})"
+  }
+}
