@@ -1,130 +1,130 @@
 {
     "category_not_found": {
-        "english": "Nobody loves {category}",
-        "spanish": "Nadie ama a {category}",
+        "en": "Nobody loves {category}",
+        "es": "Nadie ama a {category}",
         "na'vi": "{category} yawne ke lu kawturu.",
-        "welsh": "Does neb yn caru {category}"
+        "cy": "Does neb yn caru {category}"
     },
     "large_categories": {
-        "english": "Largest categories: ",
-        "spanish": "Los categorías más grandes: ",
+        "en": "Largest categories: ",
+        "es": "Los categorías más grandes: ",
         "na'vi": "U atsawl: ",
-        "welsh": "Categoriau mwyaf: "
+        "cy": "Categoriau mwyaf: "
     },
     "empty_category": {
-        "english": "That category has no quotes in. Commence incineration.",
-        "spanish": "Categoría vacía. Iniciar incineración.",
+        "en": "That category has no quotes in. Commence incineration.",
+        "es": "Categoría vacía. Iniciar incineración.",
         "na'vi": "Tsauru upxare lu. Nga skxawng lu.",
-        "welsh": "Nid yw'r categori yna efo dyfyniadau. Cychwyn orfflosgiad"
+        "cy": "Nid yw'r categori yna efo dyfyniadau. Cychwyn orfflosgiad"
     },
     "no_results": {
-        "english": "No results found.",
-        "spanish": "No hubo ningún resultado.",
+        "en": "No results found.",
+        "es": "No hubo ningún resultado.",
         "na'vi": "Oel kea humit rìmun",
-        "welsh": "Dim canlyniadau ar gael"
+        "cy": "Dim canlyniadau ar gael"
     },
     "locked_category": {
-        "english": "{category} is locked. Commence incineration.",
-        "spanish": "{category} está cerrada. Comenzar incineración.",
+        "en": "{category} is locked. Commence incineration.",
+        "es": "{category} está cerrada. Comenzar incineración.",
         "na'vi": "{category} ke fkeytok set. Nga skxawng lu nafì'u",
-        "welsh": "Mae {category} wedi cloi. Cychwyn orfflosgiad"
+        "cy": "Mae {category} wedi cloi. Cychwyn orfflosgiad"
     },
     "no_quotes": {
-        "english": "No quotes exist under {category}",
-        "spanish": "Ninguna cita existe en {category}",
+        "en": "No quotes exist under {category}",
+        "es": "Ninguna cita existe en {category}",
         "na'vi": "Kea upxare fkeytok {category}mì",
-        "welsh": "Does dim dyfyniadau gan {category}"
+        "cy": "Does dim dyfyniadau gan {category}"
     },
     "last_removed": {
-        "english": "Last quote removed from {category}.",
-        "spanish": "Última cita quitado de {category}.",
+        "en": "Last quote removed from {category}.",
+        "es": "Última cita quitado de {category}.",
         "na'vi": "Oel 'upxareti aham 'aku {category}ta",
-        "welsh": "Dyfyniad olaf wedi ei ddileu o {category}"
+        "cy": "Dyfyniad olaf wedi ei ddileu o {category}"
     },
     "no_recent_adds": {
-        "english": "No quotes were added recently.",
-        "spanish": "Ninguna cita fue añadido recientamente.",
+        "en": "No quotes were added recently.",
+        "es": "Ninguna cita fue añadido recientamente.",
         "na'vi": "Kea upxareti samung nìfkrr",
-        "welsh": "Nid oes unrhyw dyfyniadau wedi ei ychwwanegu'n ddiweddar"
+        "cy": "Nid oes unrhyw dyfyniadau wedi ei ychwwanegu'n ddiweddar"
     },
     "rmlast_spam": {
-        "english": "No spamming that shit. Try again in a few minutes...",
-        "spanish": "No me inundes de mierda. Intenta otra vez en unos minutos...",
+        "en": "No spamming that shit. Try again in a few minutes...",
+        "es": "No me inundes de mierda. Intenta otra vez en unos minutos...",
         "na'vi": "Nga Tsasngelit ke zene fpivere'. Sweylu nga fmivi ye'rìn...",
-        "welsh": "Peidiwch a sbamio hwna. Triwch eto mewn ychydyg funudau..."
+        "cy": "Peidiwch a sbamio hwna. Triwch eto mewn ychydyg funudau..."
     },
     "removed_from": {
-        "english": "'{quote}' removed from {category}",
-        "spanish": "'{quote}' quitado de {category}",
+        "en": "'{quote}' removed from {category}",
+        "es": "'{quote}' quitado de {category}",
         "na'vi": "'{quote}'(it/ti) 'ìyaku {category}",
-        "welsh": "'{quote}' wedi ei ddileu o {category}"
+        "cy": "'{quote}' wedi ei ddileu o {category}"
     },
     "q_not_exist_under": {
-        "english": "'{quote}' doesn't exist under '{category}'.",
-        "spanish": "'{quote}' no existe en '{category}'.",
+        "en": "'{quote}' doesn't exist under '{category}'.",
+        "es": "'{quote}' no existe en '{category}'.",
         "na'vi": "'{quote}' ke fkeytok '{category}'ta.",
-        "welsh": "Nid yw '{quote}' yn bodoli yn '{category}'"
+        "cy": "Nid yw '{quote}' yn bodoli yn '{category}'"
     },
     "total_quotes": {
-        "english": "Total quote count: {count}.",
-        "spanish": "Total de citas: {count}.",
+        "en": "Total quote count: {count}.",
+        "es": "Total de citas: {count}.",
         "na'vi": "'upxareri holpxay: {count}.",
-        "welsh": "Cyfanswm dyfyniadau: {count}."
+        "cy": "Cyfanswm dyfyniadau: {count}."
     },
     "quote_exists": {
-        "english": "Quote already in DB. Initiate incineration.",
-        "spanish": "Cita ya existe. Iniciar incineración.",
+        "en": "Quote already in DB. Initiate incineration.",
+        "es": "Cita ya existe. Iniciar incineración.",
         "na'vi": "'Upxarel säomumit fìtsengit tok srekrr. Nga skxawng lu.",
-        "welsh": "Dyfyniad yn y gronfa ddata yn barod. Cychwyn orfflosgiad"
+        "cy": "Dyfyniad yn y gronfa ddata yn barod. Cychwyn orfflosgiad"
     },
     "quote_saved": {
-        "english": "Quote saved in '{category}' ({count}).",
-        "spanish": "Cita guardada en '{category}' ({count}).",
+        "en": "Quote saved in '{category}' ({count}).",
+        "es": "Cita guardada en '{category}' ({count}).",
         "na'vi": "Oe zayerok '{category}'mì ({count}).",
-        "welsh": "Dyfyniad wedi ei gadw yn '{category}' ({count})."
+        "cy": "Dyfyniad wedi ei gadw yn '{category}' ({count})."
     },
     "quote_replace": {
-        "english": "No replacing arrays, you whore.",
-        "spanish": "No sustituites arrays, hijo de puta.",
+        "en": "No replacing arrays, you whore.",
+        "es": "No sustituites arrays, hijo de puta.",
         "na'vi": "Ngal fìsäomumit ke tsun rivawn. Nga muntxa sayi suteo hrh.",
-        "welsh": "Peidiwch a newid rhestrau, y cachgi"
+        "cy": "Peidiwch a newid rhestrau, y cachgi"
     },
     "quote_count": {
-        "english": "{category} has {count} quotes.",
-        "spanish": "{category} tiene {count} citas.",
+        "en": "{category} has {count} quotes.",
+        "es": "{category} tiene {count} citas.",
         "na'vi": "{count}a upxare {category}ur lu.",
-        "welsh": "{count} dyfyniad yn {category}"
+        "cy": "{count} dyfyniad yn {category}"
     },
     "quote_link": {
-        "english": "Link to {category} - {url}",
-        "spanish": "Enlace a {category} - {url}",
+        "en": "Link to {category} - {url}",
+        "es": "Enlace a {category} - {url}",
         "na'vi": "Fya'o {category}ne - {url}",
-        "welsh": "Dolen i {category} - {url}"
+        "cy": "Dolen i {category} - {url}"
     },
     "search_results": {
-        "english": "{category} ({needle}): '{quote}' [{matches} results]",
-        "spanish" : "{category} ({needle}): '{quote}' [{matches} resultados]",
+        "en": "{category} ({needle}): '{quote}' [{matches} results]",
+        "es" : "{category} ({needle}): '{quote}' [{matches} resultados]",
         "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
-        "welsh": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
+        "cy": "{category} ({needle}): '{quote}' [{matches} canlyniad]"
     },
     "quote_cache_auto_remove": {
-        "english": "There are {count} quotes in the removal cache, which will be automatically cleared.",
+        "en": "There are {count} quotes in the removal cache, which will be automatically cleared.",
         "na'vi": "{count}a 'upxarel sngelit tok, Oel 'ayku sngelit lukenga."
     },
     "quote_cache_manual_remove": {
-        "english": "There are {count} quotes in the removal cache, which must be manually cleared.",
+        "en": "There are {count} quotes in the removal cache, which must be manually cleared.",
         "na'vi": "{count}a 'upxarel sngelit tok slä oel ke 'ayku sngelit tafral nga zene 'aivku"
     },
     "quote_cache_cleared": {
-        "english": "{count} quotes cleared from the removal cache.",
+        "en": "{count} quotes cleared from the removal cache.",
         "na'vi": "Oel 'aìmku {count}a 'upxareti ta sngel."
     },
     "quote_cache_reinstated": {
-        "english": "{count} quotes reinstated from the removal cache.",
+        "en": "{count} quotes reinstated from the removal cache.",
         "na'vi": "{count}a 'upxare tolätxaw ta sngel."
     },
     "rm_cache_limit": {
-        "english": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny.",
+        "en": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny.",
         "na'vi": "Oel zerok 'upxareti apxay set, sweylu txo nga 'aivku upxareti ìlä ~rmconfirm fu ~rmdeny."
     }
 }

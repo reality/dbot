@@ -1,30 +1,30 @@
 {
     "command_ban": {
-        "english": "{user} is banned from using this command. Commence incineration.",
-        "spanish": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
+        "en": "{user} is banned from using this command. Commence incineration.",
+        "es": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
         "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu.",
-        "welsh": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad"
+        "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad"
     },
     "syntax_error": { 
-        "english": "Invalid syntax. Initiate incineration.",
-        "spanish": "Sintaxis no válida. Iniciar incineración.",
+        "en": "Invalid syntax. Initiate incineration.",
+        "es": "Sintaxis no válida. Iniciar incineración.",
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
-        "welsh": "Cystrawen annilys. Cychwyn orfflosgiad"
+        "cy": "Cystrawen annilys. Cychwyn orfflosgiad"
     },
     "usage": {
-        "english": "Usage for {command}: {usage}.",
+        "en": "Usage for {command}: {usage}.",
         "na'vi": "Nga tsun sivar ìlä {command}: {usage}."
     },
     "no_usage_info": {
-        "english": "No usage information found for {command}.",
+        "en": "No usage information found for {command}.",
         "na'vi": "Oel ke tsun sivar {comamnd}it"
     },
     "help_link": {
-        "english": "Help for {module}: {link}",
+        "en": "Help for {module}: {link}",
         "na'vi": "{module}ä srungìl {link} it tok"
     },
     "no_help": {
-        "english": "No help found for {module}.",
+        "en": "No help found for {module}.",
         "na'vi": "Fì{module}ìri oel ke tsun run srungit"
     }
 }
