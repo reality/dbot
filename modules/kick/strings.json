@@ -1,14 +1,14 @@
 {
     "user_kicks": {
-        "english": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
-        "spanish": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces.",
+        "en": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
+        "es": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces.",
         "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan.",
-        "welsh": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith."
+        "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith."
     },
     "kicked_dbot": {
-        "english": "Thou shalt not kick {botname}",
-        "spanish": "No expulsás {botname}",
+        "en": "Thou shalt not kick {botname}",
+        "es": "No expulsás {botname}",
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
-        "welsh": "Ni ddylech cicio {botname}"
+        "cy": "Ni ddylech cicio {botname}"
     }
 }

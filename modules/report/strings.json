@@ -1,18 +1,18 @@
 {
     "report": {
-        "english": "Attention: {reporter} has reported {reported} in {channel}. The reason given was: \"{reason}.\"",
+        "en": "Attention: {reporter} has reported {reported} in {channel}. The reason given was: \"{reason}.\"",
         "na'vi": "{reporter}ìl fpìl futa {reported} fe' lu taluna {reason}."
     },
     "reported": {
-        "english": "Thank you, {reported} has been reported to the channel administrators.",
+        "en": "Thank you, {reported} has been reported to the channel administrators.",
         "na'vi": "Irayo si ngari, fìtsengìri ayeyktan omum teri {reported}it set."
     },
     "user_not_found": {
-        "english": "{reported} isn't a known user in {channel}.",
+        "en": "{reported} isn't a known user in {channel}.",
         "na'vi": "Oel ke omum {reported}it mì {channel}."
     },
     "not_in_channel": {
-        "english": "I am not present in {channel}.",
+        "en": "I am not present in {channel}.",
         "na'vi": "Oel {channel}it ke tok."
     }
 }

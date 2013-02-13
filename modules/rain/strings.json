@@ -1,44 +1,44 @@
  {
     "rain-0": { 
-        "english" : "It's not raining in {place}."
+        "en" : "It's not raining in {place}."
     },
     "rain-1": {
-        "english" : "It's raining in {place}."
+        "en" : "It's raining in {place}."
     },
     "rain-2": {
-        "english" : "It's raining rather a lot in {place}."
+        "en" : "It's raining rather a lot in {place}."
     },
     "rain-3": { 
-        "english" : "It's raining shitloads."
+        "en" : "It's raining shitloads."
     },
     "rain-4": {
-        "english" : "It's raining fucktons."
+        "en" : "It's raining fucktons."
     },
     "rain-5": { 
-        "english" : "It's raining whales (in {place})!"
+        "en" : "It's raining whales (in {place})!"
     },
     "rain-6": { 
-        "english" : "IT'S SO FUCKING WET OUT HERE MAN"
+        "en" : "IT'S SO FUCKING WET OUT HERE MAN"
     },
     "rain-7": { 
-        "english" : "I AM SO MOIST RIGHT NOW"
+        "en" : "I AM SO MOIST RIGHT NOW"
     },
     "rain-8": {
-        "english" : "You used a #3 pencil instead of #2, didn't you?"
+        "en" : "You used a #3 pencil instead of #2, didn't you?"
     },
     "rain-9": { 
-        "english" : "WELCOME TO ATLANTIS"
+        "en" : "WELCOME TO ATLANTIS"
     },
     "rain-10": { 
-        "english" : "GET INSIDE"
+        "en" : "GET INSIDE"
     },
     "rain-11": {
-        "english" : "LOL U PROBABLY DIED"
+        "en" : "LOL U PROBABLY DIED"
     },
     "rain-e": {
-        "english" : "Unable to fetch weather data."
+        "en" : "Unable to fetch weather data."
     },
     "rain-u": {
-        "english": "Location too ambigious to process."
+        "en": "Location too ambigious to process."
     }
 }
