@@ -1,17 +1,17 @@
 {
     "correction": {
-        "english": "Did you mean: ",
-        "spanish": "¿Querías decir: ",
+        "en": "Did you mean: ",
+        "es": "¿Querías decir: ",
         "na'vi": "Srake sweylu nga pamrel sivi: ",
-        "welsh": "A oeddech chi'n feddwl: "
+        "cy": "A oeddech chi'n feddwl: "
     },
     "module_load_error": {
-        "english": "Failed to load module: {moduleName}",
-        "spanish": "No se pudó cargar el módulo: {moduleName}",
+        "en": "Failed to load module: {moduleName}",
+        "es": "No se pudó cargar el módulo: {moduleName}",
         "na'vi": "Oeru Oel {moduleName}it sung.",
-        "welsh": "Wedi methu a llwytho modiwl: {moduleName}"
+        "cy": "Wedi methu a llwytho modiwl: {moduleName}"
     },
     "url": {
-        "english": "http://{host}:{port}/{path}"
+        "en": "http://{host}:{port}/{path}"
     }
 }
