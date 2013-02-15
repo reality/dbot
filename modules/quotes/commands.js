@@ -192,7 +192,7 @@ var commands = function(dbot) {
         },
         
         '~link': function(event) {
-            var key = event.params[1].trim().toLowerCase();
+            var key = event.input[1].toLowerCase();
             if(_.has(quotes, key)) {
                 event.reply(dbot.t('quote_link', {
                     'category': key, 
@@ -214,6 +214,7 @@ var commands = function(dbot) {
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~link'].regex = [/^~link ([\d\w\s-]*)/, 2];
 
     commands['~rmconfirm'].access = 'moderator';
     commands['~rmdeny'].access = 'moderator';
