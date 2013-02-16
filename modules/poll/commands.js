@@ -7,30 +7,33 @@ var commands = function(dbot) {
             var name = event.input[1].toLowerCase(),
                 options = event.input[2].toLowerCase().split(','),
                 description = event.input[3];
-            
-            if(_.has(polls, name)) {
-                event.reply(dbot.t('poll_exists', { 'name': name }));
-            } else {
-                polls[name] = {
-                    'name': name,
-                    'description': description,
-                    'owner': dbot.api.users.resolveUser(event.server, event.user),
-                    'votes': {},
-                    'votees': {}
-                };
-                for(var i=0;i<options.length;i++) {
-                    polls[name]['votes'][options[i]] = 0;
+ 
+            var votes = {};
+            for(var i=0;i<options.length;i++) {
+                votes[options[i]] = 0;
+            }       
+
+            this.db.create(poll, name, {
+                'description': description,
+                'owner': dbot.api.users.resolveUser(event.server, event.user),
+                'votes': votes,
+                'votees': {}
+            }, 
+            function(err, value) {
+                if(!err) {
+                    event.reply(dbot.t('poll_created', {
+                        'name': name, 
+                        'description': description, 
+                        'url': dbot.t('url', {
+                            'host': dbot.config.web.webHost,
+                            'port': dbot.config.web.webPort, 
+                            'path': 'polls/' + name
+                        })
+                    })); 
+                } else if(err instanceof AlreadyExistsError) {
+                    event.reply(dbot.t('poll_exists', { 'name': name }));
                 }
-                event.reply(dbot.t('poll_created', {
-                    'name': name, 
-                    'description': description, 
-                    'url': dbot.t('url', {
-                        'host': dbot.config.web.webHost,
-                        'port': dbot.config.web.webPort, 
-                        'path': 'polls/' + name
-                    })
-                })); 
-            }
+            });
         },
 
         '~addoption': function(event) {

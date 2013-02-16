@@ -1,6 +1,13 @@
 {
     "help": "http://github.com/reality/depressionbot/blob/master/modules/poll/README.md",
+    "dbType": "disk",
     "dbKeys": [ "polls" ],
     "ignorable": true,
-    "dependencies": [ "users", "command" ]
+    "dependencies": [ "users", "command" ],
+    "schema": {
+        "poll": {
+            "pkey": "name",
+            "fields": [ "description", "owner", "votes", "votees" ]
+        }
+    }
 }
