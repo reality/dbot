@@ -77,7 +77,7 @@ var commands = function(dbot) {
             var needle = event.input[2];
             if(_.has(quotes, haystack)) {
                 var matches = _.filter(quotes[haystack], function(quote) {
-                    return _.indexOf(quote, needle) != -1;
+                    return quote.indexOf(needle) != -1;
                 }, this);
 
                 if(matches.length == 0) {
