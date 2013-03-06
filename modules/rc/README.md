@@ -3,9 +3,9 @@ Prints UDP packets; designed for a MediaWiki installation.
 
 # Configuration
 ## server
-The server name, as configured in the main ``config.json``, that depressionbot will announce packets from.
+The server name, as configured in the main ``config.json``, that depressionbot will announce packets on.
 ## channel
-The channel name, that depressionbot will announce packets from.
+The channel name, that depressionbot will announce packets on.
 ## port
 The port depressionbot will listen for UDP packets on.
 ## address
