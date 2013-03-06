@@ -7,13 +7,13 @@ var dgram = require('dgram');
 
 var rc = function(dbot) {
     var server = dgram.createSocket("udp4");
-
-    server.on("message", function(msg, rinfo) {
+    server.on("message", function(msg, msginfo) {
         var message = msg.toString();
         console.log(message);
-    //  dbot.say(dbot.config.rc.server, dbot.config.rc.channel, message);
+        if (msginfo.address == dbot.config.rc.address) {
+            dbot.say(dbot.config.rc.server, dbot.config.rc.channel, message);
+        }
     });
-
     server.bind(dbot.config.rc.port);
 };
 
