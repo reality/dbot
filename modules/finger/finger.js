@@ -16,7 +16,11 @@ var finger = function(dbot) {
                 stdout = stdout.substring(name);
                 ret = stdout.search("Dir");
                 stdout = stdout.substring(6,ret);
-                event.reply(dbot.t("name",{user: username, name: stdout}));
+                if (stdout == "Welcom") {
+                    event.reply(dbot.t("nonexistent",{user: username}));
+                } else {
+                    event.reply(dbot.t("name",{user: username, name: stdout}));
+                }
             });
         }
     };
