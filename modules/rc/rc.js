@@ -1,7 +1,7 @@
 /**
- * Module Name: Link
- * Description: Stores recent channel rcs, with commands to retrieve
- * information about rcs.
+ * Module Name: RC
+ * Description: Relays UDP packets, intended for
+ * a feed of RecentChanges on a MediaWiki install.
  */
 var dgram = require('dgram');
 
@@ -9,17 +9,12 @@ var rc = function(dbot) {
     var server = dgram.createSocket("udp4");
 
     server.on("message", function(msg, rinfo) {
+        var message = msg.toString();
         console.log(msg.toString());
+    //  dbot.say(dbot.config.rc.server, dbot.config.rc.channel, message);
     });
 
     server.bind(dbot.config.rc.port);
-
-                
-    var commands = {
-    };
-    this.commands = commands;
-
-    this.on = 'PRIVMSG';
 };
 
 exports.fetch = function(dbot) {
