@@ -10,7 +10,7 @@ var rc = function(dbot) {
 
     server.on("message", function(msg, rinfo) {
         var message = msg.toString();
-        console.log(msg.toString());
+        console.log(message);
     //  dbot.say(dbot.config.rc.server, dbot.config.rc.channel, message);
     });
 
