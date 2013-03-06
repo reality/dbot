@@ -11,11 +11,12 @@ var finger = function(dbot) {
         '~finger': function(event) {
             var username = event.params[1];
             exec("finger -s " + username + "@central.aber.ac.uk",function(error,stdout,stderr){
+                stdout = stdout.replace(/(\r\n|\n|\r)/gm,"");
                 name = stdout.search("Name:");
                 stdout = stdout.substring(name);
                 ret = stdout.search("Dir");
-                stdout = stdout.substring(0,ret);
-                event.reply(stdout);
+                stdout = stdout.substring(6,ret);
+                event.reply(dbot.t("name",{user: username, name: stdout}));
             });
         }
     };
