@@ -1,5 +1,5 @@
-# RC
-Prints UDP packets; designed for a MediaWiki installation.
+# UDP 
+Prints UDP packets; designed for a [MediaWiki installation](https://www.mediawiki.org/wiki/Manual:$wgRC2UDPAddress).
 
 # Configuration
 ## server
