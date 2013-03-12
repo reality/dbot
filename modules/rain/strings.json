@@ -1,44 +1,58 @@
  {
     "rain-0": { 
-        "en" : "It's not raining in {place}."
+        "en" : "It's not raining in {place}.",
+        "na'vi": "tompa ke zup {place}ur."
     },
     "rain-1": {
-        "en" : "It's raining in {place}."
+        "en" : "It's raining in {place}.",
+        "na'vi":"tompa zup {place}ur."
     },
     "rain-2": {
-        "en" : "It's raining rather a lot in {place}."
+        "en" : "It's raining rather a lot in {place}.",
+        "na'vi":"tompa zup {place}ur nìhawng."
     },
     "rain-3": { 
-        "en" : "It's raining shitloads."
+        "en" : "It's raining shitloads.",
+        "na'vi":"tompa zup {place}ur nìhawng."
     },
     "rain-4": {
-        "en" : "It's raining fucktons."
+        "en" : "It's raining fucktons.",
+        "na'vi": "tompa zup {place}ur nìhawng."
     },
     "rain-5": { 
-        "en" : "It's raining whales (in {place})!"
+        "en" : "It's raining whales (in {place})!",
+        "na'vi": "payoang zup {place}ur"
     },
     "rain-6": { 
-        "en" : "IT'S SO FUCKING WET OUT HERE MAN"
+        "en" : "IT'S SO FUCKING WET OUT HERE MAN",
+        "na'vi" : "pey lu oeru nìhawng taluna tok fìtengeti"
     },
     "rain-7": { 
-        "en" : "I AM SO MOIST RIGHT NOW"
+        "en" : "I AM SO MOIST RIGHT NOW",
+        "na'vi":"pey lu oeru nìhawng taluna tok fìtengeti"
     },
     "rain-8": {
-        "en" : "You used a #3 pencil instead of #2, didn't you?"
+        "en" : "You used a #3 pencil instead of #2, didn't you?",
+        "na'vi": "Nga pamrel sami hu pencìl a#3 ulte ke pamrel sami pencìl a#2 kefyak?"
     },
     "rain-9": { 
-        "en" : "WELCOME TO ATLANTIS"
+        "en" : "WELCOME TO ATLANTIS",
+        "na'vi": "ziva'u nìprrte atlantisftu."
     },
     "rain-10": { 
-        "en" : "GET INSIDE"
+        "en" : "GET INSIDE",
+        "na'vi": "Sweylu txo nga livatam futa ngal fìtsengeti tok"
     },
     "rain-11": {
-        "en" : "LOL U PROBABLY DIED"
+        "en" : "LOL U PROBABLY DIED",
+        "na'vi": "hrh kxawm nga tolerkup."
     },
     "rain-e": {
-        "en" : "Unable to fetch weather data."
+        "en" : "Unable to fetch weather data.",
+        "na'vi":"Oel ke tsun rivum sänumeti teriyafkeyk."
     },
     "rain-u": {
-        "en": "Location too ambigious to process."
+        "en": "Location too ambigious to process.",
+        "na'vi":"tsengeri, yayayr lu oeru."
     }
 }
