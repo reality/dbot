@@ -12,6 +12,7 @@
     "english": "{s} [{url}] {artist} – {track} (from {album})"
   },
   "not-found": {
-    "english": "{s} No results."
+    "english": "{s} No results.",
+    "na'vi": "{s}, Oel ke tsun rivum ayuoti."
   }
 }
