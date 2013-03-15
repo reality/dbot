@@ -23,3 +23,6 @@ which was posted in the current channel.
 Returns the first [Urban Dictionary](http://www.urbandictionary.com) definition for the headword provided.
 #### ~xkcd <comic ID>
 Returns a link to the [xkcd](http://xkcd.com) comic specified, or the latest one if a comic is not given. Use '*' to return a link to a random comic.
+
+### Requirements
+* [node-ent](https://github.com/substack/node-ent)

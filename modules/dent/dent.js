@@ -3,6 +3,15 @@ var request = require('request');
 
 var dent = function(dbot) {
     this.dbot = dbot;
+    this.StatusRegex = {
+      identica: /\bhttps?:\/\/identi\.ca\/notice\/(\d+)\b/ig,
+      twitter: /\bhttps?:\/\/twitter\.com\/\w+\/status\/(\d+)\b/ig
+    };
+
+    this.StatusAPI = {
+      identica: "http://identi.ca/api/statuses/show.json",
+      twitter: "https://api.twitter.com/1/statuses/show.json"
+    };
 
     this.api = {
         'post': function(content) {
@@ -25,6 +34,20 @@ var dent = function(dbot) {
         }
     };
 
+    this.lookup = function(event, id, service) {
+      request({
+        url: this.StatusAPI[service],
+        qs: {"id": id},
+        json: true
+      }, function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+          if (_.has(body, 'text')) {
+            event.reply(service + " [" + body.user.screen_name + '] ' + body.text);
+          }
+        }
+      });
+    };
+
     this.commands = {
         '~dent': function(event) {
             this.api.post(event.input[1]);
@@ -40,6 +63,19 @@ var dent = function(dbot) {
             }.bind(this));
         }
     }.bind(this);
+    
+    this.listener = function(event) {
+      for (s in this.StatusRegex) {
+        if (this.StatusRegex.hasOwnProperty(s)) {
+          var matches = this.StatusRegex[s].exec(event.message);
+          if (matches != null) {
+            this.lookup(event, matches[1], s);
+          }
+        }
+      }
+    }.bind(this);
+
+    this.on = 'PRIVMSG';
 };
 
 exports.fetch = function(dbot) {

@@ -94,7 +94,7 @@ DBot.prototype.t = function(string, formatData) {
     if(_.has(this.strings, string)) {
         var lang = this.config.language;
         if(!_.has(this.strings[string], lang)) {
-            lang = "english"; 
+            lang = "en"; 
         }
 
         formattedString = this.strings[string][lang].format(formatData);

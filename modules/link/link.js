@@ -4,7 +4,8 @@
  * information about links.
  */
 var request = require('request'),
-    _ = require('underscore')._;
+    _ = require('underscore')._,
+    ent = require('ent');
 
 var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -14,8 +15,8 @@ var link = function(dbot) {
             if(!error && response.statusCode == 200) {
                 body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
                 var title = body.valMatch(/<title>(.*)<\/title>/, 2);
-                if(title) {
-                    event.reply(title[1]);
+                if(title && title.length < 140) {
+                    event.reply(ent.decode(title[1]));
                 }
             }
         });
