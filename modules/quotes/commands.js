@@ -1,4 +1,7 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    databank = require('databank'),
+    AlreadyExistsError = databank.AlreadyExistsError,
+    NoSuchThingError = databank.NoSuchThingError;
 
 var commands = function(dbot) {
     var quotes = dbot.db.quoteArrs;
@@ -41,20 +44,22 @@ var commands = function(dbot) {
                 { 'count': rmCacheCount }));
         },
 
-
         // Retrieve quote from a category in the database.
-        '~q': function(event) { 
-            var key = event.input[1].trim().toLowerCase();
-            var quote = this.api.getQuote(event, event.input[1]);
-            if(quote) {
-                event.reply(key + ': ' + quote);
-            } else {
-                event.reply(dbot.t('category_not_found', {'category': key}));
-            }
+        '~q': function(event) {
+            var name = event.input[1].trim().toLowerCase();
+            this.db.read('quote_category', name, function(err, category) {
+                if(!err) {
+                    var quoteIndex = _.random(0, category.length - 1); 
+                    event.reply(key + ': ' + category[quoteIndex]);
+                } else if(err instanceof AlreadyExistsError) {
+                    event.reply(dbot.t('category_not_found', { 'category': name }));
+                }
+            });
         },
 
         // Shows a list of the biggest categories
         '~qstats': function(event) {
+            this.db.readAll('quote_category)
             var qSizes = _.chain(quotes)
                 .pairs()
                 .sortBy(function(category) { return category[1].length })
@@ -122,23 +127,22 @@ var commands = function(dbot) {
                 var key = event.input[1].trim().toLowerCase();
                 var quote = event.input[2];
 
-                if(_.has(quotes, key)) {
-                    var category = quotes[key];
-                    var index = category.indexOf(quote);
-                    if(index !== -1) {
-                        category.splice(index, 1);
-                        if(category.length === 0) {
-                            delete quotes[key];
-                        }
+                this.db.remove('quote_category', key, quote, function(err) {
+                    if(!err) {
                         this.internalAPI.resetRemoveTimer(event, key, quote);
-
-                        event.reply(dbot.t('removed_from', {'category': key, 'quote': quote}));
-                    } else {
-                        event.reply(dbot.t('q_not_exist_under', {'category': key, 'quote': quote}));
+                        event.reply(dbot.t('removed_from', {
+                            'category': key, 
+                            'quote': quote
+                        }));
+                    } else if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('category_not_found', { 'category': key }));
+                    } else if(err instanceof NoSuchItemError) {
+                        event.reply(dbot.t('q_not_exist_under', {
+                            'category': key, 
+                            'quote': quote
+                        }));
                     }
-                } else {
-                    event.reply(dbot.t('category_not_found', {'category': key}));
-                }
+                }.bind(this));
             } else {
                 event.reply(dbot.t('rmlast_spam'));
             }
@@ -148,15 +152,17 @@ var commands = function(dbot) {
             var input = event.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
             if(input) { // Give quote count for named category
                 var key = input[1].trim().toLowerCase();
-                if(_.has(quotes, key)) {
-                    event.reply(dbot.t('quote_count', {
-                        'category': key, 
-                        'count': quotes[key].length
-                    }));
-                } else {
-                    event.reply(dbot.t('no_quotes', { 'category': key }));
-                }
-            } else { // Give total quote count
+                this.db.get('quote_category', key, function(err, category) {
+                    if(!err) {
+                        event.reply(dbot.t('quote_count', {
+                            'category': key, 
+                            'count': category.length
+                        }));
+                    } else if(err instanceof AlreadyExistsError) {
+                        event.reply(dbot.t('category_not_found', { 'category': name }));
+                    }
+                }.bind(this));
+            } else { // TODO: databankise total quote count
                 var totalQuoteCount = _.reduce(quotes, function(memo, category) {
                     return memo + category.length;
                 }, 0);
@@ -166,24 +172,25 @@ var commands = function(dbot) {
 
         '~qadd': function(event) {
             var key = event.input[1].toLowerCase();
-            var text = event.input[2];
-            if(!_.isArray(quotes[key])) {
-                quotes[key] = [];
-            } 
+            var quote = event.input[2];
 
-            if(_.include(quotes[key], text)) {
-                event.reply(dbot.t('quote_exists'));
-            } else {
-                quotes[key].push(text);
-                this.rmAllowed = true;
-                event.reply(dbot.t('quote_saved', {
-                    'category': key, 
-                    'count': quotes[key].length
-                }));
-
-                return { 'key': key, 'text': text };
-            }
-            return false;
+            this.db.indexOf('quote_category', key, text, function(err, index) {
+                if(index == -1) {
+                    this.db.append('quote_category', key, quote, function(err) {
+                        this.rmAllowed = true;
+                        dbot.api.event.emit('~qadd', {
+                            'key': key,
+                            'text': text
+                        });
+                        event.reply(dbot.t('quote_saved', {
+                            'category': key, 
+                            'count': 0 // TODO: Figure out a way to get the count in the shim
+                        }));
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('quote_exists'));
+                }
+            }.bind(this));
         },
 
         '~rq': function(event) {

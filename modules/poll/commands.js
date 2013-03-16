@@ -1,6 +1,6 @@
 var _ = require('underscore')._,
     databank = require('databank'),
-    AlreadyExistsError = databank.AlreadyExistsError;
+    AlreadyExistsError = databank.AlreadyExistsError,
     NoSuchThingError = databank.NoSuchThingError;
 
 var commands = function(dbot) {
