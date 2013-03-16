@@ -1,4 +1,7 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    databank = require('databank'),
+    AlreadyExistsError = databank.AlreadyExistsError;
+    NoSuchThingError = databank.NoSuchThingError;
 
 var commands = function(dbot) {
     var polls = dbot.db.polls;
@@ -13,7 +16,7 @@ var commands = function(dbot) {
                 votes[options[i]] = 0;
             }       
 
-            this.db.create(poll, name, {
+            this.db.create('poll', name, {
                 'description': description,
                 'owner': dbot.api.users.resolveUser(event.server, event.user),
                 'votes': votes,
@@ -25,8 +28,8 @@ var commands = function(dbot) {
                         'name': name, 
                         'description': description, 
                         'url': dbot.t('url', {
-                            'host': dbot.config.web.webHost,
-                            'port': dbot.config.web.webPort, 
+                            'host': 'test.com',
+                            'port': 80, 
                             'path': 'polls/' + name
                         })
                     })); 
@@ -41,31 +44,37 @@ var commands = function(dbot) {
                 option = event.input[2].toLowerCase(),
                 user = dbot.api.users.resolveUser(event.server, event.user);
             
-            if(_.has(polls, name)) {
-                if(polls[name].owner === user) {
-                    if(!_.has(polls[name].votes, option)) {
-                        polls[name]['votes'][option] = 0;
-                        event.reply(dbot.t('option_added', {
-                            'user': event.user, 
-                            'name': name, 
-                            'option': option
-                        }));
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    if(poll.owner === user) {
+                        if(!_.has(poll.votes, option)) {
+                            poll.votes[option] = 0;
+                            this.db.save('poll', name, poll, function(err) {
+                                event.reply(dbot.t('option_added', {
+                                    'user': event.user, 
+                                    'name': name, 
+                                    'option': option
+                                }));
+                            }.bind(this));
+                        } else {
+                            event.reply(dbot.t('option_exists', {
+                                'option': option,
+                                'name': name, 
+                                'user': event.user
+                            }));
+                        }
                     } else {
-                        event.reply(dbot.t('option_exists', {
-                            'option': option,
-                            'name': name, 
-                            'user': event.user
+                        event.reply(dbot.t('not_poll_owner', {
+                            'user': event.user,
+                            'name': name
                         }));
                     }
                 } else {
-                    event.reply(dbot.t('not_poll_owner', {
-                        'user': event.user,
-                        'name': name
-                    }));
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                    }
                 }
-            } else {
-                event.reply(dbot.t('poll_unexistent', {'name': name}));
-            }
+            }.bind(this));
         },
 
         '~rmoption': function(event) {
@@ -73,24 +82,31 @@ var commands = function(dbot) {
                 option = event.input[2].toLowerCase(),
                 user = dbot.api.users.resolveUser(event.server, event.user);
             
-            if(_.has(polls, name)) {
-                if(polls[name].owner === user) {
-                    if(_.has(polls[name].votes, option)) {
-                        delete polls[name]['votes'][option];
-                        event.reply(dbot.t('option_removed', {
-                            'user': event.user,
-                            'name': name, 
-                            'option': option
-                        }));
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    if(poll.owner === user) {
+                        if(_.has(poll.votes, option)) {
+                            delete poll.votes[option];
+
+                            this.db.save('poll', name, poll, function(err) {
+                                event.reply(dbot.t('option_removed', {
+                                    'user': event.user,
+                                    'name': name, 
+                                    'option': option
+                                }));
+                            }.bind(this));
+                        } else {
+                            event.reply(dbot.t('invalid_vote', { 'vote': option }));
+                        }
                     } else {
-                        event.reply(dbot.t('invalid_vote', { 'vote': option }));
+                        event.reply(dbot.t('not_poll_owner', { 'name': name }));
                     }
                 } else {
-                    event.reply(dbot.t('not_poll_owner', { 'name': name }));
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                    }
                 }
-            } else {
-                event.reply(dbot.t('poll_unexistent', { 'name': name }));
-            }
+            }.bind(this));
         },
 
         '~vote': function(event) {
@@ -98,91 +114,97 @@ var commands = function(dbot) {
                 vote = event.input[2].toLowerCase(),
                 user = dbot.api.users.resolveUser(event.server, event.user);
 
-            if(_.has(polls, name)) {
-                if(_.has(polls[name].votes, vote)) {
-                    if(_.has(polls[name].votees, user)) {
-                        var oldVote = polls[name].votees[user];
-                        polls[name].votes[oldVote]--;
-                        polls[name].votes[vote]++;
-                        polls[name].votees[user] = vote;
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    if(_.has(poll.votes, vote)) {
+                        if(_.has(poll.votees, user)) {
+                            var oldVote = poll.votees[user];
+                            poll.votes[oldVote]--;
+                            poll.votes[vote]++;
+                            poll.votees[user] = vote;
+                        } else {
+                            poll.votes[vote]++;
+                            poll.votees[user] = vote;
+                        }
 
-                        event.reply(dbot.t('changed_vote', {
-                            'vote': vote, 
-                            'poll': name,
-                            'count': polls[name].votes[vote], 
-                            'user': event.user
-                        }));
+                        this.db.save('poll', name, poll, function(err) {
+                            event.reply(dbot.t('voted', {
+                                'vote': vote, 
+                                'poll': name,
+                                'count': poll.votes[vote], 
+                                'user': event.user
+                            }));
+                        }.bind(this));
                     } else {
-                        polls[name].votes[vote]++;
-                        polls[name].votees[user] = vote;
-                        event.reply(dbot.t('voted', {
-                            'vote': vote, 
-                            'poll': name,
-                            'count': polls[name].votes[vote], 
-                            'user': event.user
-                        }));
+                        event.reply(dbot.t('invalid_vote', { 'vote': vote }));
                     }
                 } else {
-                    event.reply(dbot.t('invalid_vote', { 'vote': vote }));
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                    }
                 }
-            } else {
-                event.reply(dbot.t('poll_unexistent', { 'name': name }));
-            }
+            }.bind(this));
         },
 
         '~pdesc': function(event) {
             var name = event.input[1].toLowerCase();
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    var options = _.keys(poll.votes);
+                    var optionString = " Choices: ";
+                    for(var i=0;i<options.length;i++) {
+                        optionString += options[i] + ', ';
+                    }
+                    optionString = optionString.slice(0, -2) + '.';
 
-            if(_.has(polls, name)) {
-                var options = _.keys(polls[name].votes);
-                var optionString = " Choices: ";
-                for(var i=0;i<options.length;i++) {
-                    optionString += options[i] + ', ';
+                    event.reply(dbot.t('poll_describe', {
+                        'name': name, 
+                        'description': poll.description,
+                        'url': dbot.t('url', {
+                            'host': 'test.com', 
+                            'port': 80, 
+                            'path': 'polls/' + name
+                        })
+                    }) + optionString);
+                } else {
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', {'name': name}));
+                    }
                 }
-                optionString = optionString.slice(0, -2) + '.';
-
-                event.reply(dbot.t('poll_describe', {
-                    'name': name, 
-                    'description': polls[name].description,
-                    'url': dbot.t('url', {
-                        'host': dbot.config.web.webHost, 
-                        'port': dbot.config.web.webPort, 
-                        'path': 'polls/' + name
-                    })
-                }) + optionString);
-            } else {
-                event.reply(dbot.t('poll_unexistent', { 'name': name }));
-            }
+            });
         },
         
         '~count': function(event) {
             var name = event.input[1].toLowerCase();
-            
-            if(_.has(polls, name)) {
-                var order;
-                var votesArr = [];
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    var order;
+                    var votesArr = [];
 
-                var order = _.chain(polls[name].votes)
-                    .pairs()
-                    .sortBy(function(option) { return option[1] })
-                    .reverse()
-                    .value();
+                    var order = _.chain(poll.votes)
+                        .pairs()
+                        .sortBy(function(option) { return option[1] })
+                        .reverse()
+                        .value();
 
-                var orderString = "";
-                for(var i=0;i<order.length;i++) {
-                    orderString += order[i][0] +
-                        " (" + order[i][1] + "), ";
+                    var orderString = "";
+                    for(var i=0;i<order.length;i++) {
+                        orderString += order[i][0] +
+                            " (" + order[i][1] + "), ";
+                    }
+                    orderString = orderString.slice(0, -2);
+
+                    event.reply(dbot.t('count', {
+                        'poll': name, 
+                        'description': poll.description, 
+                        'places': orderString
+                    }));
+                } else {
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', {'name': name}));
+                    }
                 }
-                orderString = orderString.slice(0, -2);
-
-                event.reply(dbot.t('count', {
-                    'poll': name, 
-                    'description': polls[name].description, 
-                    'places': orderString
-                }));
-            } else {
-                event.reply(dbot.t('poll_unexistent', {'name': name}));
-            }
+            });
         }
     };
     commands['~newpoll'].regex = [/~newpoll ([^ ]+) options=([^ ]+) (.+)/, 4];
