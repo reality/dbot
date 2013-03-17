@@ -1,8 +1,0 @@
-{
-    "name": {
-        "en": "{user} is {name}."
-    },
-    "nonexistent": {
-        "en": "{user} not found."
-    }
-}
