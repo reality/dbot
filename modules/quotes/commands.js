@@ -199,7 +199,7 @@ var commands = function(dbot) {
                     'url': dbot.t('url', {
                         'host': dbot.config.web.webHost, 
                         'port': dbot.config.web.webPort, 
-                        'path': 'quotes/' + key
+                        'path': 'quotes/' + encodeURIComponent(key)
                     })
                 }));
             } else {
