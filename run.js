@@ -86,16 +86,17 @@ DBot.prototype.say = function(server, channel, message) {
 
 // Format given stored string in config language
 DBot.prototype.t = function(string, formatData) {
-    var formattedString;
+    var formattedString = 'String not found. Something has gone screwy. Maybe.';
+    
     if(_.has(this.strings, string)) {
         var lang = this.config.language;
         if(!_.has(this.strings[string], lang)) {
             lang = "en"; 
         }
 
-        formattedString = this.strings[string][lang].format(formatData);
-    } else {
-        formattedString = 'String not found. Something has gone screwy. Maybe.';
+        if(_.has(this.strings[string], lang)) {
+            formattedString = this.strings[string][lang].format(formatData);
+        }
     }
     
     return formattedString;
