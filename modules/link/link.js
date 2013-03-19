@@ -16,7 +16,7 @@ var link = function(dbot) {
                 body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
                 var title = body.valMatch(/<title>(.*)<\/title>/, 2);
                 if(title && title.length < 140) {
-                    event.reply(ent.decode(title[1]));
+                    event.reply(ent.decode(title[1]).trim());
                 }
             }
         });
