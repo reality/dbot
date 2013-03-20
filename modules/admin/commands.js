@@ -173,8 +173,10 @@ var commands = function(dbot) {
             var moduleName = event.params[1];
             if(_.include(moduleNames, moduleName)) {
                 var moduleDir = '../' + moduleName + '/';
-                var cacheKey = require.resolve(moduleDir + moduleName);
-                delete require.cache[cacheKey];
+                try {
+                    var cacheKey = require.resolve(moduleDir + moduleName);
+                    delete require.cache[cacheKey];
+                } catch(err) { }
                 dbot.config.moduleNames = _.without(dbot.config.moduleNames, moduleName);
                 dbot.reloadModules();
 
