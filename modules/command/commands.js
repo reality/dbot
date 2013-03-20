@@ -18,8 +18,20 @@ var commands = function(dbot) {
 
         '~help': function(event) {
             var moduleName = event.params[1];
+            if(!moduleName) {
+                event.reply(dbot.t('usage', {
+                    'command': '~help',
+                    'usage': '~help [module]'
+                }));
+                return;
+            }
+            
             if(!_.has(dbot.modules, moduleName)) {
-                var moduleName = dbot.commands[moduleName].module; 
+                if(_.has(dbot.commands, moduleName)) {
+                    var moduleName = dbot.commands[moduleName].module; 
+                } else {
+                    var moduleName = undefined;
+                }
             }
 
             if(moduleName && _.has(dbot.config[moduleName], 'help')) {
