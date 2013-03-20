@@ -19,9 +19,16 @@ var commands = function(dbot) {
         '~help': function(event) {
             var moduleName = event.params[1];
             if(!moduleName) {
+                helpfulModules = _.filter(dbot.modules, function(element, index, array) {
+                    return _.has(dbot.config[element], 'help');
+                });
+                
                 event.reply(dbot.t('usage', {
                     'command': '~help',
                     'usage': '~help [module]'
+                }));
+                event.reply(dbot.t('loaded_modules_with_help', {
+                    'modules': helpfulModules.join(', ')
                 }));
                 return;
             }
