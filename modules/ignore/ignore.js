@@ -24,7 +24,7 @@ var ignore = function(dbot) {
                     'modules': ignorableModules.join(', ')
                 }));
             } else {
-                if(_.include(ignorableModules, module)) {
+                if(module == '*' || _.include(ignorableModules, module)) {
                     if(_.has(dbot.db.ignores, event.user) && _.include(dbot.db.ignores[event.user], module)) {
                         event.reply(dbot.t('already_ignoring', { 'user': event.user }));
                     } else {
@@ -137,7 +137,7 @@ var ignore = function(dbot) {
             var module = event.params[2];
 
             // Ignoring the value of 'ignorable' at the moment
-            if(_.include(dbot.config.moduleNames, module)) {
+            if(module == '*' || _.include(dbot.config.moduleNames, module)) {
                 if(!_.has(dbot.db.ignores, channel)) dbot.db.ignores[channel] = [];
                 if(!_.include(dbot.db.ignores[channel], module)) {
                     dbot.db.ignores[channel].push(module);
