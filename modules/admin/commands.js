@@ -186,32 +186,6 @@ var commands = function(dbot) {
             }
         },
 
-        // Ban user from command or *
-        'ban': function(event) {
-            var username = event.params[1];
-            var command = event.params[2];
-
-            if(!_.has(dbot.db.bans, command)) {
-                dbot.db.bans[command] = [ ];
-            }
-            dbot.db.bans[command].push(username);
-            event.reply(dbot.t('banned', {'user': username, 'command': command}));
-        },
-
-        // Unban a user from command or *
-        'unban': function(event) {
-            var username = event.params[1];
-            var command = event.params[2];
-            if(_.has(dbot.db.bans, command) && _.include(dbot.db.bans[command], username)) {
-                _.reject(dbot.db.bans[command], function(bans) {
-                    return bans == username;
-                }, this);
-                event.reply(dbot.t('unbanned', {'user': username, 'command': command}));
-            } else {
-                event.reply(dbot.t('unban_error', {'user': username}));
-            }
-        },
-
         /*** Config options ***/
 
         'setconfig': function(event) {
@@ -304,8 +278,6 @@ var commands = function(dbot) {
     commands['part'].access = 'moderator';
     commands['opme'].access = 'moderator';
     commands['say'].access = 'moderator';
-    commands['ban'].access = 'moderator';
-    commands['unban'].access = 'moderator';
 
     return commands;
 };
