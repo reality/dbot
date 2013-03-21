@@ -72,6 +72,66 @@ var ignore = function(dbot) {
             }
         },
 
+        '~ban': function(event) {
+            var user = event.params[1];
+            var module = event.params[2];
+
+            if(_.isUndefined(user) || _.isUndefined(module)) {
+                event.reply(dbot.t('ban_usage', {'user': event.user}));
+                return;
+            }
+ 
+            if(module == '*' || _.include(dbot.config.moduleNames, module) || _.include(dbot.commands, module)) {
+                if(_.has(dbot.db.bans, user) && _.include(dbot.db.bans[user], module)) {
+                    event.reply(dbot.t('already_banned', {
+                        'user': event.user,
+                        'banned': user
+                    }));
+                    return;
+                }
+
+                if(_.has(dbot.db.bans, event.params[1])) {
+                    dbot.db.bans[event.params[1]].push(module);
+                } else {
+                    dbot.db.bans[event.params[1]] = [module];
+                }
+
+                event.reply(dbot.t('banned_success', {
+                    'user': event.user,
+                    'banned': user,
+                    'module': module
+                }));
+            } else {
+                event.reply(dbot.t('invalid_ban', {'user': event.user}));
+            }
+        },
+
+        '~unban': function(event) {
+            var bannedModules = [];
+
+            var user = event.params[1];
+            var module = event.params[2];
+
+            if(_.isUndefined(user) || _.isUndefined(module)) {
+                event.reply(dbot.t('unban_usage', {'user': event.user}));
+            } else {
+                if(_.has(dbot.db.bans, user) && _.include(dbot.db.bans[user], module)) {
+                    dbot.db.bans[user].splice(dbot.db.bans[user].indexOf(module), 1);
+
+                    event.reply(dbot.t('unbanned_success', {
+                        'user': event.user,
+                        'banned': user,
+                        'module': module
+                    }));
+                } else {
+                    event.reply(dbot.t('invalid_unban', {
+                        'user': event.user,
+                        'banned': user
+                    }));
+                }
+            }
+        },
+
         '~ignorechannel': function(event) {
             var channel = ((event.params[1] == '@') ? event.channel.name : event.params[1]);
             var module = event.params[2];
@@ -118,6 +178,8 @@ var ignore = function(dbot) {
         }
     };
 
+    commands['~ban'].access = 'moderator';
+    commands['~unban'].access = 'moderator';
     commands['~ignorechannel'].access = 'moderator';
     commands['~unignorechannel'].access = 'moderator';
 
