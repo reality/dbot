@@ -38,7 +38,7 @@ var users = function(dbot) {
         var knownUsers = this.getServerUsers(event.server); 
         var nick = event.user;
 
-        if(event.action == 'JOIN') {
+        if(event.action == 'JOIN' && nick != dbot.config.name) {
             if(!_.has(knownUsers.channelUsers, event.channel.name)) {
                 knownUsers.channelUsers[event.channel.name] = [];
             }
