@@ -55,7 +55,7 @@ var users = function(dbot) {
                 channelUsers.push(nick);
             }
         } else if(event.action == 'NICK') {
-            var newNick = event.params.substr(1);
+            var newNick = event.params;
             if(!this.api.isKnownUser(newNick)) {
                 knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
                 dbot.api.event.emit('nick_change', [ event.server, newNick ]);
