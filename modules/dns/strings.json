@@ -1,0 +1,14 @@
+{
+    "lookup-error": {
+        "en": "{domain} is \u000303AVAILABLE! \u000314({code})"
+    },
+    "lookup": {
+        "en": "{domain} is \u000305TAKEN! \u000314({address})"
+    },
+    "rdns": {
+        "en": "{ip} \u2192 {domain}"
+    },
+    "rdns-error": {
+        "en": "Unable to lookup {ip}. \u000314({error})"
+    }
+}
