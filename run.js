@@ -293,6 +293,7 @@ DBot.prototype.reloadModules = function() {
                 module.onLoad();
             } catch(err) {
                 this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
+                console.log('MODULE ONLOAD ERROR (' + name + '): ' + err );
             }
         }
     }, this);
