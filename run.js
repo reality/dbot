@@ -155,9 +155,16 @@ DBot.prototype.reloadModules = function() {
     this.instance.removeListeners();
 
     moduleNames.each(function(name) {
+        this.status[name] = true;
+
         var moduleDir = './modules/' + name + '/';
-        var cacheKey = require.resolve(moduleDir + name);
-        delete require.cache[cacheKey];
+        try {
+            var cacheKey = require.resolve(moduleDir + name);
+            delete require.cache[cacheKey];
+        } catch(err) {
+            this.status[name] = 'Error loading module: ' + err + ' ' + err.stack.split('\n')[2].trim();
+            return;
+        }
 
         try {
             var webKey = require.resolve(moduleDir + 'web');
@@ -166,8 +173,6 @@ DBot.prototype.reloadModules = function() {
         if(webKey) {
             delete require.cache[webKey];
         }
-
-        this.status[name] = true;
 
         try {
             // Load the module config data
