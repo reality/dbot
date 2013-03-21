@@ -273,6 +273,7 @@ var commands = function(dbot) {
     commands['load'].access = 'admin';
     commands['version'].access = 'admin';
     commands['setconfig'].access = 'admin';
+    commands['pushconfig'].access = 'admin';
     commands['showconfig'].access = 'moderator';
     commands['join'].access = 'moderator';
     commands['part'].access = 'moderator';
