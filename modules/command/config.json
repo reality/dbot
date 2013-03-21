@@ -1,5 +1,5 @@
 {
     "ignorable": false,
     "help": "http://github.com/reality/depressionbot/blob/master/modules/command/README.md",
-    "dbKeys": [ "ignores" ]
+    "dbKeys": [ "ignores", "bans" ]
 }
