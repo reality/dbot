@@ -23,10 +23,10 @@ var commands = function(dbot) {
                     return false;
                 }
             }
-        } 
+        }
 
         var currentOption;
-        if(configKey.length != 1) {
+        if(configKey && configKey.length != 1) {
             configKey = _.last(configKey);
             if(_.has(userConfigPath, configKey) && !_.isUndefined(userConfigPath[configKey])) {
                 currentOption = userConfigPath[configKey];
