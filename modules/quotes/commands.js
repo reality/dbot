@@ -110,7 +110,7 @@ var commands = function(dbot) {
                         'category': key
                     }));
                 } else {
-                    event.reply(dbot.t('no_quotes', {'category': q[1]}));
+                    event.reply(dbot.t('no_quotes', {'category': key}));
                 }
             } else {
                 event.reply(dbot.t('rmlast_spam'));
