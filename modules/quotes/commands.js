@@ -194,14 +194,19 @@ var commands = function(dbot) {
         '~link': function(event) {
             var key = event.input[1].toLowerCase();
             if(_.has(quotes, key)) {
-                event.reply(dbot.t('quote_link', {
-                    'category': key, 
-                    'url': dbot.t('url', {
-                        'host': dbot.config.web.webHost, 
-                        'port': dbot.config.web.webPort, 
-                        'path': 'quotes/' + encodeURIComponent(key)
-                    })
-                }));
+                if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost') &&
+                   _.has(dbot.config.web, 'webPort')) {
+                    event.reply(dbot.t('quote_link', {
+                        'category': key,
+                        'url': dbot.t('url', {
+                            'host': dbot.config.web.webHost,
+                            'port': dbot.config.web.webPort,
+                            'path': 'quotes/' + encodeURIComponent(key)
+                        })
+                    }));
+                } else {
+                    event.reply(dbot.t('web_not_configured'));
+                }
             } else {
                 event.reply(dbot.t('category_not_found', { 'category': key }));
             }
