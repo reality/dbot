@@ -4,8 +4,10 @@ var api = function(dbot) {
     return {
         'isBanned': function(user, command) {
             var banned = false;
-            if(_.has(dbot.db.bans, command)) {
-                if(_.include(dbot.db.bans[command], user) || _.include(dbot.db.bans['*'], user)) {
+            if(_.has(dbot.db.bans, user)) {
+                if(_.include(dbot.db.bans[user], command) ||
+                   _.include(dbot.db.bans[user], dbot.commands[command].module) ||
+                   _.include(dbot.db.bans[user], '*')) {
                     banned = true;
                 }
             }
@@ -39,7 +41,8 @@ var api = function(dbot) {
         'isIgnoring': function(item, command) {
             var module = dbot.commands[command].module;
             return (_.has(dbot.db.ignores, item) &&
-                _.include(dbot.db.ignores[item], module));
+                (_.include(dbot.db.ignores[item], module) ||
+                 _.include(dbot.db.ignores[item], '*')));
         },
 
         /**
