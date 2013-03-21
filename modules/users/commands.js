@@ -12,12 +12,8 @@ var commands = function(dbot) {
 
                 if(aliasCount != 0) {
                     var aliases = _.first(aliases, 10);
-                    var including = 'including: ';
-                    for(var i=0;i<aliases.length;i++) {
-                        including += aliases[i] + ', ';
-                    }
-                    including = including.slice(0, -2) + '.';
-
+                    var including = 'including: ' + aliases.join(', ') + '.';
+                    
                     event.reply(dbot.t('primary', { 
                         'user': alias, 
                         'count': aliasCount 
@@ -26,7 +22,7 @@ var commands = function(dbot) {
                     event.reply(dbot.t('primary', { 
                         'user': alias, 
                         'count': aliasCount 
-                    })); 
+                    }).slice(0, -2) + ".");
                 }
             } else if(_.has(knownUsers.aliases, alias)) {
                 event.reply(dbot.t('alias', { 
@@ -100,7 +96,11 @@ var commands = function(dbot) {
             return false;
         } 
     };
-
+    
+    commands['~alias'].regex = [/^~alias ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~setaliasparent'].regex = [/^~setaliasparent ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~mergeusers'].regex = [/^~mergeusers ([\d\w[\]{}^|\\`_-]+?)\s*?([\d\w[\]{}^|\\`_-]+?)/, 3];
+    
     commands['~setaliasparent'].access = 'moderator';
     commands['~mergeusers'].access = 'moderator';
     
