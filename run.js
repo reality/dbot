@@ -153,7 +153,7 @@ DBot.prototype.reloadModules = function() {
 
     this.instance.removeListeners();
 
-    moduleNames.each(function(name) {
+    _.each(moduleNames, function(name) {
         var moduleDir = './modules/' + name + '/';
         var cacheKey = require.resolve(moduleDir + name);
         delete require.cache[cacheKey];

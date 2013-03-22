@@ -1,5 +1,4 @@
 {
-    "ignorable": false,
     "webHost": "localhost",
-    "webPort": 9001
+    "webPort": 8080
 }
