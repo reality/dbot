@@ -267,13 +267,10 @@ var commands = function(dbot) {
         }
     };
 
-    commands['greload'].access = 'admin';
-    commands['reload'].access = 'admin';
-    commands['unload'].access = 'admin';
-    commands['load'].access = 'admin';
-    commands['version'].access = 'admin';
-    commands['setconfig'].access = 'admin';
-    commands['pushconfig'].access = 'admin';
+    _.each(commands, function(command) {
+        command.access = 'admin'; 
+    });
+
     commands['showconfig'].access = 'moderator';
     commands['join'].access = 'moderator';
     commands['part'].access = 'moderator';
