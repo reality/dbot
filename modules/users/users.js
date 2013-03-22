@@ -55,9 +55,7 @@ var users = function(dbot) {
                 channelUsers.push(nick);
             }
         } else if(event.action == 'NICK') {
-            // remove the first character from the NICK message if it is a :, 
-            // due to some IRCd's disregarding RFC 1459 and adding a :
-            var newNick = (event.params[0] == ":" ? event.params.substr(1) : event.params);
+            var newNick = event.newNick;
             if(!this.api.isKnownUser(newNick)) {
                 knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
                 dbot.api.event.emit('nick_change', [ event.server, newNick ]);
