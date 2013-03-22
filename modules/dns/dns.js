@@ -10,7 +10,6 @@ var dns = function(dbot) {
             domain = event.params[1];
             dnsmod.lookup(domain, function (error, addr) {
                 if (error) {
-                    console.log(error);
                     event.reply(dbot.t("lookup-error",{"domain": domain, "code": error.code}));
                 } else {
                     event.reply(dbot.t("lookup",{"domain": domain, "address": addr}));
@@ -19,18 +18,14 @@ var dns = function(dbot) {
         },
         '~rdns': function(event) {
             ip = event.params[1];
-            try {
-                dnsmod.reverse(ip, function (error, domain) {
-                    if (error) {
-                        throw error;
-                    }
+            dnsmod.reverse(ip, function (error, domain) {
+                if (error) {
+                    event.reply(dbot.t("rdns-error",{"domain": domain, "ip": ip, "error": error.code}));
+                } else {
                     event.reply(dbot.t("rdns",{"domain": domain, "ip": ip}));
-                });
-            } catch (err) {
-                    event.reply(dbot.t("rdns-error",{"domain": domain, "ip": ip, "error": err}));
-            }
+                }
+            });
         }
-            
     };
     this.commands = commands;
 
