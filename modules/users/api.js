@@ -7,9 +7,21 @@ var api = function(dbot) {
 
     var api = {
         'resolveUser': function(server, nick, useLowerCase) {
-            var knownUsers = this.getServerUsers(server); 
             var user = nick;
+            if(this.api.isPrimaryUser(nick)) {
+                return user;
+            } else {
+                this.db.search('user', { 'server': server }, function(user) {
+                    if(_.include(user.aliases, nick)) user = user.primaryNick; 
+                }.bind(this), function(err) {
+                    if(err instanceof NotImplementedError) {
+                        // QQ
+                    }
+                });
+                return user;
+            }
 
+            /** TODO: Re-add lowercase support
             if(!useLowerCase) {
                 if(!_.include(knownUsers.users, nick) && _.has(knownUsers.aliases, nick)) {
                     user = knownUsers.aliases[nick];
@@ -34,9 +46,11 @@ var api = function(dbot) {
                 }
             }
             return user;
+            **/
         },
 
         'getRandomChannelUser': function(server, channel) {
+            this.db.get('channel_users', { '' })
             var channelUsers = this.getServerUsers(server).channelUsers[channel];
             if(!_.isUndefined(channelUsers)) {
                 return channelUsers[_.random(0, channelUsers.length - 1)];
@@ -46,7 +60,16 @@ var api = function(dbot) {
         },
 
         'getServerUsers': function(server) {
-            return dbot.db.knownUsers[server].users;
+            var users = [];
+            this.db.search('user', { 'server': server }, function(user) {
+                users.push(user.primaryNick); 
+            }.bind(this), function(err) {
+                if(err instanceof NotImplementedError) {
+                    // QQ
+                }
+            });
+
+            return users;
         },
 
         'getAllUsers': function() {
