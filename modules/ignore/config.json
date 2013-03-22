@@ -1,6 +1,6 @@
 {
     "ignorable": false,
     "dependencies": [ "command" ],
-    "dbKeys": [ "ignores" ],
+    "dbKeys": [ "ignores", "bans" ],
     "help": "http://github.com/reality/depressionbot/blob/master/modules/ignore/README.md"
 }

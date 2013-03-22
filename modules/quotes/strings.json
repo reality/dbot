@@ -126,5 +126,8 @@
     "rm_cache_limit": {
         "en": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny.",
         "na'vi": "Oel zerok 'upxareti apxay set, sweylu txo nga 'aivku upxareti ìlä ~rmconfirm fu ~rmdeny."
+    },
+    "web_not_configured": {
+        "en": "Cannot link to category. Web module is either not loaded or misconfigured."
     }
 }

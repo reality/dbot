@@ -110,7 +110,7 @@ var commands = function(dbot) {
                         'category': key
                     }));
                 } else {
-                    event.reply(dbot.t('no_quotes', {'category': q[1]}));
+                    event.reply(dbot.t('no_quotes', {'category': key}));
                 }
             } else {
                 event.reply(dbot.t('rmlast_spam'));
@@ -187,21 +187,30 @@ var commands = function(dbot) {
         },
 
         '~rq': function(event) {
-            var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
-            event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event.server, event.channel.name, category));
+            if(_.keys(quotes).length > 0) {
+                var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
+                event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event.server, event.channel.name, category));
+            } else {
+                event.reply(dbot.t('no_results'));
+            }
         },
         
         '~link': function(event) {
             var key = event.input[1].toLowerCase();
             if(_.has(quotes, key)) {
-                event.reply(dbot.t('quote_link', {
-                    'category': key, 
-                    'url': dbot.t('url', {
-                        'host': dbot.config.web.webHost, 
-                        'port': dbot.config.web.webPort, 
-                        'path': 'quotes/' + key
-                    })
-                }));
+                if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost') &&
+                   _.has(dbot.config.web, 'webPort')) {
+                    event.reply(dbot.t('quote_link', {
+                        'category': key,
+                        'url': dbot.t('url', {
+                            'host': dbot.config.web.webHost,
+                            'port': dbot.config.web.webPort,
+                            'path': 'quotes/' + encodeURIComponent(key)
+                        })
+                    }));
+                } else {
+                    event.reply(dbot.t('web_not_configured'));
+                }
             } else {
                 event.reply(dbot.t('category_not_found', { 'category': key }));
             }
@@ -213,7 +222,7 @@ var commands = function(dbot) {
     commands['~qsearch'].regex = [/^~qsearch ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
-    commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qadd'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
     commands['~link'].regex = [/^~link ([\d\w\s-]*)/, 2];
 
     commands['~rmconfirm'].access = 'moderator';

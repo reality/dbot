@@ -86,16 +86,17 @@ DBot.prototype.say = function(server, channel, message) {
 
 // Format given stored string in config language
 DBot.prototype.t = function(string, formatData) {
-    var formattedString;
+    var formattedString = 'String not found. Something has gone screwy. Maybe.';
+    
     if(_.has(this.strings, string)) {
         var lang = this.config.language;
         if(!_.has(this.strings[string], lang)) {
             lang = "en"; 
         }
 
-        formattedString = this.strings[string][lang].format(formatData);
-    } else {
-        formattedString = 'String not found. Something has gone screwy. Maybe.';
+        if(_.has(this.strings[string], lang)) {
+            formattedString = this.strings[string][lang].format(formatData);
+        }
     }
     
     return formattedString;
@@ -154,9 +155,15 @@ DBot.prototype.reloadModules = function() {
     this.instance.removeListeners();
 
     _.each(moduleNames, function(name) {
+        this.status[name] = true;
         var moduleDir = './modules/' + name + '/';
-        var cacheKey = require.resolve(moduleDir + name);
-        delete require.cache[cacheKey];
+        try {
+            var cacheKey = require.resolve(moduleDir + name);
+            delete require.cache[cacheKey];
+        } catch(err) {
+            this.status[name] = 'Error loading module: ' + err + ' ' + err.stack.split('\n')[2].trim();
+            return;
+        }
 
         try {
             var webKey = require.resolve(moduleDir + 'web');
@@ -165,8 +172,6 @@ DBot.prototype.reloadModules = function() {
         if(webKey) {
             delete require.cache[webKey];
         }
-
-        this.status[name] = true;
 
         try {
             // Load the module config data
@@ -292,6 +297,7 @@ DBot.prototype.reloadModules = function() {
                 module.onLoad();
             } catch(err) {
                 this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
+                console.log('MODULE ONLOAD ERROR (' + name + '): ' + err );
             }
         }
     }, this);

@@ -26,5 +26,8 @@
     "no_help": {
         "en": "No help found for {module}.",
         "na'vi": "Fì{module}ìri oel ke tsun run srungit"
+    },
+    "loaded_modules_with_help": {
+        "en": "Loaded modules with help information: {modules}."
     }
 }

@@ -1,0 +1,5 @@
+{
+    "~alias": "~alias [nick]",
+    "~setaliasparent": "~setaliasparent [nick]",
+    "~mergeusers": "~mergeusers [primary] [secondary]"
+}
