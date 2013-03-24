@@ -25,6 +25,20 @@ var api = function(dbot) {
             });
         },
 
+        'getChannel': function(server, channel, callback) {
+            var channel = false;
+            this.db.search('channel_users', {
+                'server': server,
+                'name': channel
+            }, function(result) {
+                channel = result;
+            }, function(err) {
+                if(!err) {
+                    callback(channel);
+                }
+            });
+        },
+
         'getRandomChannelUser': function(server, channel, callback) {
             var channel;
             this.db.search('channel_users', { 

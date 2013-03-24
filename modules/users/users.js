@@ -6,16 +6,6 @@ var _ = require('underscore')._;
 
 var users = function(dbot) {
     this.knownUsers = dbot.db.knownUsers;
-    this.getServerUsers = function(server) {
-        var knownUsers = this.knownUsers;
-        if(!_.has(knownUsers, server)) {
-            knownUsers[server] = { 'users': [], 'aliases': {}, 'channelUsers': {} };
-        }
-        if(!_.has(knownUsers[server], 'channelUsers')) {
-            knownUsers[server].channelUsers = {};
-        }
-        return knownUsers[server];    
-    };
 
     this.updateAliases = function(event, oldUser, newUser) {
         var knownUsers = this.getServerUsers(event.server);
@@ -35,32 +25,53 @@ var users = function(dbot) {
     };
         
     this.listener = function(event) {
-        /*var knownUsers = this.getServerUsers(event.server); 
-        var nick = event.user;
-
         if(event.action == 'JOIN' && nick != dbot.config.name) {
-            if(!_.has(knownUsers.channelUsers, event.channel.name)) {
-                knownUsers.channelUsers[event.channel.name] = [];
-            }
-            var channelUsers = knownUsers.channelUsers[event.channel.name];
-
-            if(this.api.isKnownUser(event.server, nick)) {
-                nick = this.api.resolveUser(event.server, nick);
-            } else {
-                knownUsers.users.push(nick);
-                dbot.api.event.emit('new_user', [ event.server, nick ]);
-            }
-
-            if(!_.include(channelUsers, nick)) {
-                channelUsers.push(nick);
+            this.api.resolveUser(event.server, event.user, function(user) {
+                if(!user) { // User does not yet exist 
+                    var id = uuid.v4();
+                    this.db.create('users', id, {
+                        'uuid': id,
+                        'primaryNick': event.user,
+                        'currentNick': event.user,
+                        'server': event.server,
+                        'channels': [ event.channel ],
+                        'aliases': []
+                    }, function(err, result) {
+                        if(!err) {
+                            user = result;
+                            dbot.api.event.emit('new_user', [ user ]);
+                        }
+                    });
+                } 
+                
+                if(!_.include(user.channels, event.channel)) { // User not yet channel user
+                    user.channels.push(event.channel);
+                    this.db.save('users', user.id, user, function(err) {
+                        if(!err) {
+                            this.api.getChannel(event.server, event.channel, function(channel) {
+                                channel.users.push(user.primaryNick);
+                                this.db.save('channel_users', channel.id, channel, function(err)) {
+                                    if(!err) {
+                                        dbot.api.event.emit('new_channel_user', [ user ]);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
             }
         } else if(event.action == 'NICK') {
-            var newNick = event.newNick;
-            if(!this.api.isKnownUser(newNick)) {
-                knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
-                dbot.api.event.emit('nick_change', [ event.server, newNick ]);
+            if(!this.api.isKnownUser(event.newNick)) {
+                this.api.resolveUser(event.server, event.user, function(user) {
+                    user.aliases.push(event.newNick);
+                    this.db.save('users', user.id, function(err) {
+                        if(!err) {
+                            dbot.api.event.emit('new_user_alias', [ user, event.newNick ]);
+                        }
+                    });
+                });
             }
-        }*/
+        }
     }.bind(this);
     this.on =  ['JOIN', 'NICK'];
     
