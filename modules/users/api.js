@@ -11,19 +11,18 @@ var api = function(dbot) {
     };
 
     var api = {
+        // Return a user record given a primary nick or an alias
         'resolveUser': function(server, nick, callback) {
-            if(this.api.isPrimaryUser(nick)) {
-                callback(nick);
-            } else {
-                var user = false;
-                this.db.search('user', { 'server': server }, function(user) {
-                    if(_.include(user.aliases, nick)) user = user.primaryNick; 
-                }, function(err) {
-                    if(!err) {
-                        callback(user);
-                    }
-                });
-            }
+            var user = false;
+            this.db.search('user', { 'server': server }, function(result) {
+                if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
+                    user = result;
+                }
+            }, function(err) {
+                if(!err) {
+                    callback(user);
+                }
+            });
         },
 
         'getRandomChannelUser': function(server, channel, callback) {
@@ -36,22 +35,14 @@ var api = function(dbot) {
             }, function(err) {
                 if(!err) {
                     if(!_.isUndefined(channel.users)) {
-                        callback(channel.users[_.random(0, channel.users.length - 1)]);
+                        var randomUser = channel.users[_.random(0, channel.users.length - 1)];
+                        this.api.resolveUser(server, randomUser, function(user) {
+                            callback(user);
+                        });
                     } else {
                         callback(false);
                     }
                 } 
-            });
-        },
-
-        'getServerUsers': function(server, callback) {
-            var users = [];
-            this.db.search('users', { 'server': server }, function(user) {
-                users.push(user); 
-            }, function(err) {
-                if(!err) {
-                    callback(users);
-                }
             });
         },
 
@@ -102,29 +93,27 @@ var api = function(dbot) {
             });
         },
 
-        'isOnline': function(server, user, channel, callback) {
-            var user = this.api.resolveUser(server, user, useLowerCase);
-            var possiNicks = [user].concat(this.api.getAliases(server, user));
+        'isOnline': function(server, nick, channel, callback) {
+            this.api.resolveUser(server, nick, function(user) {
+                var possiNicks = [user].concat(user.aliases);
 
-            if(!_.has(dbot.instance.connections[server].channels, channel)) return false;
-            var onlineNicks = dbot.instance.connections[server].channels[channel].nicks;
+                if(_.has(dbot.instance.connections[server].channels, channel)) {
+                    var onlineNicks = dbot.instance.connections[server].channels[channel].nicks;
+                    var isOnline = _.any(onlineNicks, function(nick) {
+                        nick = nick.name;
+                        return _.include(possiNicks, nick); 
+                    }, this);
 
-            var isOnline = _.any(onlineNicks, function(nick) {
-                nick = nick.name;
-                return _.include(possiNicks, nick); 
-            }, this);
-
-            callback(isOnline);
+                    callback(isOnline);
+                }
+            });
         },
 
-        'isChannelUser': function(server, user, channel) {
-            var knownUsers = this.getServerUsers(server);
-            var user = this.api.resolveUser(server, user, useLowerCase); 
-
-            if(!_.has(knownUsers.channelUsers, channel)) {
-                return false;
-            } 
-            return _.include(knownUsers.channelUsers[channel], user);
+        'isChannelUser': function(server, nick, channel, callback) {
+            this.api.resolveUser(server, nick, function(user) {
+                var isChannelUser = _.include(user.channels, channel);
+                callback(isChannelUser);
+            }); 
         }
     };
 
