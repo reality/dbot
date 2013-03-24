@@ -15,7 +15,6 @@ var api = function(dbot) {
         'resolveUser': function(server, nick, callback) {
             var user = false;
             this.db.search('users', { 'server': server }, function(result) {
-                console.log(result.primaryNick);
                 if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
                     user = result;
                 }

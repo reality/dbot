@@ -42,7 +42,7 @@ var users = function(dbot) {
                         });
                     });
                 }
-            });
+            }.bind(this));
         }.bind(this), 
 
         'updateChannelPrimaryUser': function(server, oldUser, newUser) {
@@ -82,7 +82,6 @@ var users = function(dbot) {
             this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
                 if(!isKnown) {
                     this.api.resolveUser(event.server, event.user, function(user) {
-                        dbot.say('aberwiki', '#realitest', event.newNick);
                         user.aliases.push(event.newNick);
                         this.db.save('users', user.id, user, function(err) {
                             if(!err) {
