@@ -23,10 +23,10 @@ var commands = function(dbot) {
                     return false;
                 }
             }
-        } 
+        }
 
         var currentOption;
-        if(configKey.length != 1) {
+        if(configKey && configKey.length != 1) {
             configKey = _.last(configKey);
             if(_.has(userConfigPath, configKey) && !_.isUndefined(userConfigPath[configKey])) {
                 currentOption = userConfigPath[configKey];
@@ -173,40 +173,16 @@ var commands = function(dbot) {
             var moduleName = event.params[1];
             if(_.include(moduleNames, moduleName)) {
                 var moduleDir = '../' + moduleName + '/';
-                var cacheKey = require.resolve(moduleDir + moduleName);
-                delete require.cache[cacheKey];
+                try {
+                    var cacheKey = require.resolve(moduleDir + moduleName);
+                    delete require.cache[cacheKey];
+                } catch(err) { }
                 dbot.config.moduleNames = _.without(dbot.config.moduleNames, moduleName);
                 dbot.reloadModules();
 
                 event.reply(dbot.t('unload_module', {'moduleName': moduleName}));
             } else {
                 event.reply(dbot.t('unload_error', {'moduleName': moduleName}));
-            }
-        },
-
-        // Ban user from command or *
-        'ban': function(event) {
-            var username = event.params[1];
-            var command = event.params[2];
-
-            if(!_.has(dbot.db.bans, command)) {
-                dbot.db.bans[command] = [ ];
-            }
-            dbot.db.bans[command].push(username);
-            event.reply(dbot.t('banned', {'user': username, 'command': command}));
-        },
-
-        // Unban a user from command or *
-        'unban': function(event) {
-            var username = event.params[1];
-            var command = event.params[2];
-            if(_.has(dbot.db.bans, command) && _.include(dbot.db.bans[command], username)) {
-                _.reject(dbot.db.bans[command], function(bans) {
-                    return bans == username;
-                }, this);
-                event.reply(dbot.t('unbanned', {'user': username, 'command': command}));
-            } else {
-                event.reply(dbot.t('unban_error', {'user': username}));
             }
         },
 
@@ -291,19 +267,15 @@ var commands = function(dbot) {
         }
     };
 
-    commands['greload'].access = 'admin';
-    commands['reload'].access = 'admin';
-    commands['unload'].access = 'admin';
-    commands['load'].access = 'admin';
-    commands['version'].access = 'admin';
-    commands['setconfig'].access = 'admin';
+    _.each(commands, function(command) {
+        command.access = 'admin'; 
+    });
+
     commands['showconfig'].access = 'moderator';
     commands['join'].access = 'moderator';
     commands['part'].access = 'moderator';
     commands['opme'].access = 'moderator';
     commands['say'].access = 'moderator';
-    commands['ban'].access = 'moderator';
-    commands['unban'].access = 'moderator';
 
     return commands;
 };

@@ -41,6 +41,27 @@
         "na'vi": "{user}: Nga terìng mikyun {module}ne set",
         "cy": "{user}: Ddim yn anwybyddu {module} bellach"
     },
+    "ban_usage": {
+        "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands."
+    },
+    "already_banned": {
+        "en": "{user}: {banned} is already banned from that module."
+    },
+    "banned_success": {
+        "en": "{user}: {banned} is now banned from {module}."
+    },
+    "invalid_ban": {
+        "en": "{user}: That isn't a valid module name."
+    },
+    "unban_usage": {
+        "en": "{user}: Usage: ~unban [user] [module]."
+    },
+    "invalid_unban": {
+        "en": "{user}: {banned} is not banned from that module or it doesn't exist."
+    },
+    "unbanned_success": {
+        "en": "{user}: {banned} is no longer banned from {module}."
+    },
     "ignoring_channel": {
         "en": "Now ignoring {module} in {channel}",
         "na'vi": "Oe ke stayawm {module}ur mì {channel}"

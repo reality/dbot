@@ -7,6 +7,32 @@ var commands = function(dbot) {
     var quotes = dbot.db.quoteArrs;
     var commands = {
 
+        /*** Quote Addition ***/
+
+        // Add a quote to a category
+        '~qadd': function(event) {
+            var key = event.input[1].toLowerCase();
+            var quote = event.input[2];
+
+            this.db.indexOf('quote_category', key, quote, function(err, index) {
+                if(index == null || index == -1) {
+                    this.db.append('quote_category', key, quote, function(err, newCount) {
+                        this.rmAllowed = true;
+                        dbot.api.event.emit('~qadd', {
+                            'key': key,
+                            'text': quote
+                        });
+                        event.reply(dbot.t('quote_saved', {
+                            'category': key, 
+                            'count': newCount
+                        }));
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('quote_exists'));
+                }
+            }.bind(this));
+        },
+
         /*** Quote Retrieval ***/
 
         // Alternative ~q syntax
@@ -25,6 +51,15 @@ var commands = function(dbot) {
                     event.reply(dbot.t('category_not_found', { 'category': name }));
                 }
             });
+        },
+
+        '~rq': function(event) {
+            if(_.keys(quotes).length > 0) {
+                var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
+                event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event.server, event.channel.name, category));
+            } else {
+                event.reply(dbot.t('no_results'));
+            }
         },
 
         /*** Quote Removal ***/
@@ -145,7 +180,6 @@ var commands = function(dbot) {
         },
         
         // Search a given category for some text.
-        // TODO fix
         '~qsearch': function(event) {
             var haystack = event.input[1].trim().toLowerCase();
             var needle = event.input[2];
@@ -171,7 +205,8 @@ var commands = function(dbot) {
                 }
             }.bind(this));
         },
-        
+       
+        // Count quotes in a given category or total quotes overall
         '~qcount': function(event) {
             var input = event.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
             if(input) { // Give quote count for named category
@@ -198,51 +233,28 @@ var commands = function(dbot) {
             }
         },
 
-        '~qadd': function(event) {
-            var key = event.input[1].toLowerCase();
-            var quote = event.input[2];
-
-            this.db.indexOf('quote_category', key, quote, function(err, index) {
-                if(index == null || index == -1) {
-                    this.db.append('quote_category', key, quote, function(err, newCount) {
-                        this.rmAllowed = true;
-                        dbot.api.event.emit('~qadd', {
-                            'key': key,
-                            'text': quote
-                        });
-                        event.reply(dbot.t('quote_saved', {
-                            'category': key, 
-                            'count': newCount
-                        }));
-                    }.bind(this));
-                } else {
-                    event.reply(dbot.t('quote_exists'));
-                }
-            }.bind(this));
-        },
-
-        '~rq': function(event) {
-            var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
-            event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event.server, event.channel.name, category));
-        },
-        
+        // Link to quote web page
         '~link': function(event) {
             var key = event.input[1].toLowerCase();
             this.db.read('quote_category', key, function(err, category) {
                 if(!err) {
-                    event.reply(dbot.t('quote_link', {
-                        'category': key, 
-                        'url': dbot.t('url', {
-                            'host': dbot.config.web.webHost, 
-                            'port': dbot.config.web.webPort, 
-                            'path': 'quotes/' + key
-                        })
-                    }));
+                    if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost')
+                        event.reply(dbot.t('quote_link', {
+                            'category': key, 
+                            'url': dbot.t('url', {
+                                'host': dbot.config.web.webHost, 
+                                'port': dbot.config.web.webPort, 
+                                'path': 'quotes/' + encodeURIComponent(key)
+                            })
+                        }));
+                    } else {
+                        event.reply(dbot.t('web_not_configured'));
+                    }
                 } else if(err == NoSuchThingError) {
                     event.reply(dbot.t('category_not_found', { 'category': key }));
                 }
             });
-        },
+        }
     };
 
     commands['~'].regex = [/^~([\d\w\s-]*)/, 2];
@@ -250,7 +262,7 @@ var commands = function(dbot) {
     commands['~qsearch'].regex = [/^~qsearch ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
-    commands['~qadd'].regex = [/^~qadd ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qadd'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
     commands['~link'].regex = [/^~link ([\d\w\s-]*)/, 2];
 
     commands['~rmconfirm'].access = 'moderator';

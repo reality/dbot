@@ -1,4 +1,9 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    uuid = require('node-uuid');
+    databank = require('databank'),
+    AlreadyExistsError = databank.AlreadyExistsError,
+    NoSuchThingError = databank.NoSuchThingError,
+    NotImplementedError = databank.NotImplementedError;
 
 var api = function(dbot) {
     var escapeRegexen = function(str) {
@@ -6,113 +11,113 @@ var api = function(dbot) {
     };
 
     var api = {
-        'resolveUser': function(server, nick, useLowerCase) {
-            var user = nick;
+        'resolveUser': function(server, nick, callback) {
             if(this.api.isPrimaryUser(nick)) {
-                return user;
+                callback(nick);
             } else {
+                var user = false;
                 this.db.search('user', { 'server': server }, function(user) {
                     if(_.include(user.aliases, nick)) user = user.primaryNick; 
-                }.bind(this), function(err) {
-                    if(err instanceof NotImplementedError) {
-                        // QQ
+                }, function(err) {
+                    if(!err) {
+                        callback(user);
                     }
                 });
-                return user;
-            }
-
-            /** TODO: Re-add lowercase support
-            if(!useLowerCase) {
-                if(!_.include(knownUsers.users, nick) && _.has(knownUsers.aliases, nick)) {
-                    user = knownUsers.aliases[nick];
-                }
-            } else {
-                // this is retarded
-                user = user.toLowerCase();
-                var toMatch = new RegExp("^" + escapeRegexen(user) + "$", "i");
-
-                var resolvedUser = _.find(knownUsers.users, function(nick) {
-                    return nick.match(toMatch) !== null; 
-                }, this);
-
-                if(!resolvedUser) {
-                    resolvedUser = _.find(knownUsers.aliases, function(nick, alias) {
-                        if(alias.match(toMatch) !== null) return nick;
-                    }, this);
-                    if(!_.isUndefined(resolvedUser)) user = resolvedUser;
-                }
-                else{
-                    user = resolvedUser;
-                }
-            }
-            return user;
-            **/
-        },
-
-        'getRandomChannelUser': function(server, channel) {
-            this.db.get('channel_users', { '' })
-            var channelUsers = this.getServerUsers(server).channelUsers[channel];
-            if(!_.isUndefined(channelUsers)) {
-                return channelUsers[_.random(0, channelUsers.length - 1)];
-            } else {
-                return false;
             }
         },
 
-        'getServerUsers': function(server) {
+        'getRandomChannelUser': function(server, channel, callback) {
+            var channel;
+            this.db.search('channel_users', { 
+                'server': server,
+                'channel': channel
+            }, function(result) {
+                channel = result; 
+            }, function(err) {
+                if(!err) {
+                    if(!_.isUndefined(channel.users)) {
+                        callback(channel.users[_.random(0, channel.users.length - 1)]);
+                    } else {
+                        callback(false);
+                    }
+                } 
+            });
+        },
+
+        'getServerUsers': function(server, callback) {
             var users = [];
-            this.db.search('user', { 'server': server }, function(user) {
-                users.push(user.primaryNick); 
-            }.bind(this), function(err) {
-                if(err instanceof NotImplementedError) {
-                    // QQ
+            this.db.search('users', { 'server': server }, function(user) {
+                users.push(user); 
+            }, function(err) {
+                if(!err) {
+                    callback(users);
                 }
             });
-
-            return users;
         },
 
-        'getAllUsers': function() {
-            return _.reduce(dbot.db.knownUsers, function(memo, server, name) {
-                memo[name] = server.users;
-                return memo;
-            }, {}, this);
+        'getAllUsers': function(callback) {
+            var users = [];
+            this.db.scan('users', function(user) {
+                users.push(user); 
+            }, function(err) {
+                if(!err) {
+                    callback(users);
+                }
+            });
         },
 
-        'isKnownUser': function(server, nick) {
-            var knownUsers = this.getServerUsers(server); 
-            return (_.include(knownUsers.users, nick) || _.has(knownUsers.aliases, nick));
+        'isKnownUser': function(server, nick, callback) {
+            this.api.resolveUser(server, nick, function(isKnown) {
+                if(isKnown == false) {
+                    callback(false);
+                } else {
+                    callback(true);
+                }
+            });
         },
 
-        'isPrimaryUser': function(server, nick) {
-            var knownUsers = this.getServerUsers(server); 
-            return _.include(knownUsers.users, nick);
+        'isPrimaryUser': function(server, nick, callback) {
+            var isPrimaryUser = false; 
+            this.db.search('users', {
+                'server': server,
+                'primaryNick': nick 
+            }, function(user) {
+                isPrimaryUser = true;
+            }, function(err) {
+                if(!err) {
+                    callback(isPrimaryUser);
+                }
+            });
         },
 
-        'getAliases': function(server, nick) {
-            var knownUsers = this.getServerUsers(server);
-            return _.chain(knownUsers.aliases)
-                .keys()
-                .filter(function(user) {
-                    return knownUsers.aliases[user] == nick;
-                }, this)
-                .value();
+        'getAliases': function(server, nick, callback) {
+            var aliases;
+            this.db.search('users', { 
+                'server': server,
+                'primaryNick': nick
+            }, function(result) {
+                aliases = result.aliases; 
+            }, function(err) {
+                callback(aliases); 
+            });
         },
 
-        'isOnline': function(server, user, channel, useLowerCase) {
+        'isOnline': function(server, user, channel, callback) {
             var user = this.api.resolveUser(server, user, useLowerCase);
             var possiNicks = [user].concat(this.api.getAliases(server, user));
 
             if(!_.has(dbot.instance.connections[server].channels, channel)) return false;
             var onlineNicks = dbot.instance.connections[server].channels[channel].nicks;
 
-            return _.any(onlineNicks, function(nick) {
+            var isOnline = _.any(onlineNicks, function(nick) {
                 nick = nick.name;
                 return _.include(possiNicks, nick); 
             }, this);
+
+            callback(isOnline);
         },
 
-        'isChannelUser': function(server, user, channel, useLowerCase) {
+        'isChannelUser': function(server, user, channel) {
             var knownUsers = this.getServerUsers(server);
             var user = this.api.resolveUser(server, user, useLowerCase); 
 

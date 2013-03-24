@@ -3,6 +3,17 @@ cat LICENCE
 git submodule init
 git submodule update
 
+if [ ! -e /usr/bin/node ]  && [ ! -e /usr/local/bin/node ];
+then
+    echo 'node.js is not installed. Please install it before running install.sh.'
+    exit 1
+fi
+if [ ! -e /usr/bin/npm ] && [ ! -e /usr/local/bin/npm ];
+then
+    echo 'npm is not installed. Please install it before running install.sh'
+    exit 1
+fi
+
 npm install underscore request sandbox express moment jade@0.25
 
 cd public/

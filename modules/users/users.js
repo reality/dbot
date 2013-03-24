@@ -35,10 +35,10 @@ var users = function(dbot) {
     };
         
     this.listener = function(event) {
-        var knownUsers = this.getServerUsers(event.server); 
+        /*var knownUsers = this.getServerUsers(event.server); 
         var nick = event.user;
 
-        if(event.action == 'JOIN') {
+        if(event.action == 'JOIN' && nick != dbot.config.name) {
             if(!_.has(knownUsers.channelUsers, event.channel.name)) {
                 knownUsers.channelUsers[event.channel.name] = [];
             }
@@ -55,17 +55,17 @@ var users = function(dbot) {
                 channelUsers.push(nick);
             }
         } else if(event.action == 'NICK') {
-            var newNick = event.params.substr(1);
+            var newNick = event.newNick;
             if(!this.api.isKnownUser(newNick)) {
                 knownUsers.aliases[newNick] = this.api.resolveUser(event.server, event.user);
                 dbot.api.event.emit('nick_change', [ event.server, newNick ]);
             }
-        }
+        }*/
     }.bind(this);
     this.on =  ['JOIN', 'NICK'];
     
     this.onLoad = function() {
-        // Trigger updateNickLists to stat current users in channel
+        /* Trigger updateNickLists to stat current users in channel
         dbot.instance.addListener('366', 'users', function(event) {
             var knownUsers = this.getServerUsers(event.server);
             if(!_.has(knownUsers.channelUsers, event.channel.name)) {
@@ -90,7 +90,7 @@ var users = function(dbot) {
         var connections = dbot.instance.connections;
         _.each(connections, function(connection) {
             connection.updateNickLists(); 
-        });
+        });*/
     };
 };
 
