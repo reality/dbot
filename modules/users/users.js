@@ -12,7 +12,7 @@ var users = function(dbot) {
         'createUser': function(server, nick, channel, callback) {
             var id = uuid.v4();
             this.db.create('users', id, {
-                'uuid': id,
+                'id': id,
                 'primaryNick': nick,
                 'currentNick': nick,
                 'server': server,
@@ -22,15 +22,12 @@ var users = function(dbot) {
                 if(!err) {
                     dbot.api.event.emit('new_user', [ result ]);
                     callback(result);
-                    dbot.say('aberwiki', '#realitest', result.server);
-                    dbot.say('aberwiki', '#realitest', result.primaryNick);
                 }
             });
         }.bind(this),
 
         'addChannelUser': function(user, channelName) {
             user.channels.push(channelName);
-            dbot.say('aberwiki', '#realitest', user.id);
             this.db.save('users', user.id, user, function(err) {
                 if(!err) {
                     this.api.getChannel(user.server, channelName, function(channel) {
@@ -40,7 +37,7 @@ var users = function(dbot) {
                                 dbot.api.event.emit('new_channel_user', [ user, channel]);
                             }
                         });
-                    });
+                    }.bind(this));
                 }
             }.bind(this));
         }.bind(this), 
@@ -101,7 +98,7 @@ var users = function(dbot) {
                 if(!channel) { // Channel does not yet exist
                     var id = uuid.v4();
                     this.db.create('channel_users', id, {
-                        'uuid': id,
+                        'id': id,
                         'server': event.server,
                         'name': event.channel.name,
                         'users': []
