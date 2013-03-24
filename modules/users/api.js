@@ -14,7 +14,8 @@ var api = function(dbot) {
         // Return a user record given a primary nick or an alias
         'resolveUser': function(server, nick, callback) {
             var user = false;
-            this.db.search('user', { 'server': server }, function(result) {
+            this.db.search('users', { 'server': server }, function(result) {
+                console.log(result.primaryNick);
                 if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
                     user = result;
                 }
@@ -25,11 +26,11 @@ var api = function(dbot) {
             });
         },
 
-        'getChannel': function(server, channel, callback) {
+        'getChannel': function(server, channelName, callback) {
             var channel = false;
             this.db.search('channel_users', {
                 'server': server,
-                'name': channel
+                'name': channelName
             }, function(result) {
                 channel = result;
             }, function(err) {
