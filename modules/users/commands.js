@@ -13,11 +13,13 @@ var commands = function(dbot) {
                         if(user.aliases.length != 0) {
                             event.reply(dbot.t('primary', { 
                                 'user': nick,
+                                'currentNick': user.currentNick,
                                 'count': user.aliases.length,
                             }) + including);
                         } else {
                             event.reply(dbot.t('primary', { 
                                 'user': nick, 
+                                'currentNick': user.currentNick,
                                 'count': user.aliases.length 
                             }).slice(0, -2) + ".");
                         }

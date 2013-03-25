@@ -4,7 +4,7 @@
         "na'vi": "ayfko syaw {user} {alias} nìteng"
     }, 
     "primary": {
-        "en": "{user} is a primary user with {count} aliases, ",
+        "en": "{user} is a primary user (currently {currentNick}) with {count} aliases, ",
         "na'vi": "{user} lu txin ulte {count}a stxo lu poru, "
     },
     "unknown_alias": {

@@ -73,20 +73,30 @@ var users = function(dbot) {
                     if(!_.include(user.channels, event.channel)) { // User not yet channel user
                         this.internalAPI.addChannelUser(user, event.channel.name);
                     }
+
+                    user.currentNick = event.user;
+                    this.db.save(users, user.id, user, function(err) {
+                        if(err) { 
+                            // QQ
+                        }
+                    });
                 }
             }.bind(this));
         } else if(event.action == 'NICK') {
-            this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
-                if(!isKnown) {
-                    this.api.resolveUser(event.server, event.user, function(user) {
+            this.api.resolveUser(event.server, event.user, function(user) {
+                this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
+                    user.currentNick = event.newNick;
+
+                    if(!isKnown) {
                         user.aliases.push(event.newNick);
-                        this.db.save('users', user.id, user, function(err) {
-                            if(!err) {
-                                dbot.api.event.emit('new_user_alias', [ user, event.newNick ]);
-                            }
-                        });
-                    }.bind(this));
-                }
+                    }
+
+                    this.db.save('users', user.id, user, function(err) {
+                        if(!err) {
+                            dbot.api.event.emit('new_user_alias', [ user, event.newNick ]);
+                        }
+                    });
+                }.bind(this));
             }.bind(this));
         }
     }.bind(this);
