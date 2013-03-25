@@ -11,7 +11,7 @@ var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     this.links = {}; 
     this.fetchTitle = function(event, link) {
-        var limit = 25 * 1000,
+        var limit = 250 * 1000,
         size = 0,
         page = request(link, function(error, response, body) {
             if(!error && response.statusCode == 200) {
