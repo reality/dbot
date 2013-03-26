@@ -27,7 +27,6 @@ var link = function(dbot) {
             size += chunk.length;
             if(size > limit) {
                 page.abort();
-                event.reply('request too big, fuck off');
             }
         });
     };
