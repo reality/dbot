@@ -99,6 +99,7 @@ var spelling = function(dbot) {
                 var fix = this.last[event.channel.name][candidate].replace(winner, correction);
                 if (/^.ACTION/.test(fix)) {
                     fix = fix.replace(/^.ACTION/, '/me');
+                    fix = fix.replace("\x01", '');
                 }
                 this.last[event.channel.name][candidate] = fix;
                 var output = {

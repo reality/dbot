@@ -11,13 +11,22 @@ var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     this.links = {}; 
     this.fetchTitle = function(event, link) {
-        request(link, function(error, response, body) {
+        var limit = 250 * 1000,
+        size = 0,
+        page = request(link, function(error, response, body) {
             if(!error && response.statusCode == 200) {
                 body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
                 var title = body.valMatch(/<title>(.*)<\/title>/, 2);
                 if(title && title.length < 140) {
                     event.reply(ent.decode(title[1]).trim());
                 }
+            }
+        });
+
+        page.on('data', function(chunk) {
+            size += chunk.length;
+            if(size > limit) {
+                page.abort();
             }
         });
     };
