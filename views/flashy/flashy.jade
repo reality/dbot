@@ -2,7 +2,10 @@
 html(lang='en')
   head 
     meta(charset='utf-8')
-    link(rel='stylesheet', type='text/css', href='/styles.css')
+    link(rel='stylesheet', type='text/css', href='/flash.css')
     title #{name} web interface
   body
     div.container
+      div.stamp [
+        span.flash(style='color: #'+colour+';') #{text}
+        ]
