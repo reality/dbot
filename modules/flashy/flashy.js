@@ -14,8 +14,8 @@ var flashy = function(dbot) {
 
     this.commands = {
         '~flashy': function(event) {
-            var colour = event.params[1];
-            var text = event.params[2];
+            var colour = event.input[1];
+            var text = event.input[2];
 
             if(_.has(this.colourMap, colour)) {
                 dbot.t('url', {
