@@ -79,16 +79,28 @@ var ignore = function(dbot) {
                     'modules': ignoredModules.join(', ')
                 }));
             } else {
-                if(_.include(ignoredModules, module)) {
-                    dbot.db.ignores[event.user].splice(dbot.db.ignores[event.user].indexOf(module), 1);
-                    dbot.instance.removeIgnore(event.user, module)
-                    event.reply(dbot.t('unignored', { 
-                        'user': event.user, 
-                        'module': module
-                    }));
-                } else {
-                    event.reply(dbot.t('invalid_unignore', { 'user': event.user }));
-                }
+                dbot.api.users.resolveUser(event.server, event.user, function(user) {
+                    this.db.read('ignores', user.id, function(err, ignores) {
+                        if(!err) {
+                            if(_.include(ignores.ignores, module)) {
+                                ignores.ignores = _.without(ignores.ignores, module);
+                                this.db.save('ignores', user.id, function(err) {
+                                    if(!err) {
+                                        dbot.instance.removeIgnore(event.user, module)
+                                        event.reply(dbot.t('unignored', {
+                                            'user': event.user, 
+                                            'module': module
+                                        }));
+                                    }
+                                });
+                            } else {
+                                event.reply(dbot.t('invalid_unignore', { 'user': event.user }));
+                            }
+                        } else if(err == NoSuchThingError) {
+                            event.reply(dbot.t('invalid_unignore', { 'user': event.user }));
+                        }
+                    });
+                });
             }
         },
 
@@ -207,11 +219,16 @@ var ignore = function(dbot) {
 
     this.onLoad = function() {
         dbot.instance.clearIgnores();
-        _.each(dbot.db.ignores, function(ignores, item) {
-            _.each(ignores, function(ignore) {
-                    dbot.instance.ignoreTag(item, ignore);
-            }, this);
-        }, this);
+
+        this.db.scan('ignores', function(ignores) {
+            dbot.api.users.getUser(ignores.id, function(user) {
+                if(user) {
+                    _.each(ignores.ignores, function(module) {
+                        dbot.instance.ignoreTag(user.primaryNick, module);
+                    });
+                }
+            });
+        }, function(err) { });
     };
 };
 
