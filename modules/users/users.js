@@ -75,7 +75,7 @@ var users = function(dbot) {
                     }
 
                     user.currentNick = event.user;
-                    this.db.save(users, user.id, user, function(err) {
+                    this.db.save('users', user.id, user, function(err) {
                         if(err) { 
                             // QQ
                         }

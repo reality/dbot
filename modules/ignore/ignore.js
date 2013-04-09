@@ -5,7 +5,9 @@
  * this information, since that actually performs the ignorance. Also provides
  * commands for moderators to choose the bot to ignore certain channels.
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    databank = require('databank'),
+    NoSuchThingError = databank.NoSuchThingError;
 
 var ignore = function(dbot) {
     var commands = {
@@ -25,21 +27,39 @@ var ignore = function(dbot) {
                 }));
             } else {
                 if(module == '*' || _.include(ignorableModules, module)) {
-                    if(_.has(dbot.db.ignores, event.user) && _.include(dbot.db.ignores[event.user], module)) {
-                        event.reply(dbot.t('already_ignoring', { 'user': event.user }));
-                    } else {
-                        if(_.has(dbot.db.ignores, module)) {
-                            dbot.db.ignores[event.user].push(module);
-                        } else {
-                            dbot.db.ignores[event.user] = [module];
-                        }
-
-                        dbot.instance.ignoreTag(event.user, module);
-                        event.reply(dbot.t('ignored', {
-                            'user': event.user, 
-                            'module': module
-                        }));
-                    }
+                    dbot.api.users.resolveUser(event.server, event.user, function(user) {
+                        this.db.read('ignores', user.id, function(err, ignores) {
+                            if(err == NoSuchThingError) {
+                                this.db.create('ignores', user.id, {
+                                    'id': user.id,
+                                    'ignores': [ module ]
+                                }, function(err, result) {
+                                    if(!err) {
+                                        dbot.instance.ignoreTag(event.user, module);
+                                        event.reply(dbot.t('ignored', {
+                                            'user': event.user, 
+                                            'module': module
+                                        }));
+                                    }
+                                });
+                            } else {
+                                if(!_.include(ignores.ignores, module)) {
+                                    ignores.ignores.push(module);
+                                    this.db.save('ignores', user.id, function(err) {
+                                        if(!err) {
+                                            dbot.instance.ignoreTag(event.user, module);
+                                            event.reply(dbot.t('ignored', {
+                                                'user': event.user, 
+                                                'module': module
+                                            }));
+                                        }
+                                    });
+                                } else {
+                                    event.reply(dbot.t('already_ignoring', { 'user': event.user }));
+                                }
+                            }
+                        });
+                    });
                 } else {
                     event.reply(dbot.t('invalid_ignore', { 'user': event.user }));
                 }
