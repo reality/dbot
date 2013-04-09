@@ -7,15 +7,19 @@ var _ = require('underscore')._;
 
 var flashy = function(dbot) {
     this.colourMap = {
+        'white': 'FFFFFF',
         'red': 'FF0000',
         'green': '00FF00',
-        'blue': '0000FF'
+        'blue': '0000FF',
+        'yellow': 'FFFF00',
+        'magenta': 'FF00FF',
+        'cyan': '00FFFF'
     };
 
     this.commands = {
         '~flashy': function(event) {
-            var colour = event.input[1];
-            var text = event.input[2];
+            var colour = event.input[1].trim();
+            var text = event.input[2].trim().toUpperCase();
 
             if(_.has(this.colourMap, colour)) {
                 event.reply(dbot.t('url', {
@@ -24,7 +28,8 @@ var flashy = function(dbot) {
                     'path': 'flashy/' + colour + '/' + encodeURIComponent(text)
                 }));
             } else {
-                event.reply('no such colour brah');
+                var possibleColours = _.keys(this.colourMap).join(', ').slice(0, -2) + '.';
+                event.reply('No such colour, brah. Available colours are: ' + possibleColours);
             }
         }
     };
