@@ -18,11 +18,11 @@ var flashy = function(dbot) {
             var text = event.input[2];
 
             if(_.has(this.colourMap, colour)) {
-                dbot.t('url', {
+                event.reply(dbot.t('url', {
                     'host': dbot.config.web.webHost,
                     'port': dbot.config.web.webPort,
                     'path': 'flashy/' + colour + '/' + encodeURIComponent(text)
-                });
+                }));
             } else {
                 event.reply('no such colour brah');
             }
