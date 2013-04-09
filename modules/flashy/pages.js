@@ -10,7 +10,7 @@ var pages = function(dbot) {
             res.render('flashy', {
                 'name': dbot.config.name,
                 'colour': colour,
-                'text': text
+                'text': req.params.text
             });
         }
     };
