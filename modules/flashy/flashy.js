@@ -28,7 +28,7 @@ var flashy = function(dbot) {
                     'path': 'flashy/' + colour + '/' + encodeURIComponent(text)
                 }));
             } else {
-                var possibleColours = _.keys(this.colourMap).join(', ').slice(0, -2) + '.';
+                var possibleColours = _.keys(this.colourMap).join(', ') + '.';
                 event.reply('No such colour, brah. Available colours are: ' + possibleColours);
             }
         }
