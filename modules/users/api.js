@@ -25,6 +25,14 @@ var api = function(dbot) {
             });
         },
 
+        // Return a user record given a UUID
+        'getUser': function(uuid, callback) {
+            this.db.get('users', uuid, function(err, user) {
+                if(err) user = false;
+                callback(user);
+            });
+        },
+
         'getChannel': function(server, channelName, callback) {
             var channel = false;
             this.db.search('channel_users', {
