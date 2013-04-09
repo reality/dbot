@@ -7,7 +7,9 @@ var _ = require('underscore')._;
 
 var flashy = function(dbot) {
     this.colourMap = {
-        'red': 'FF0000'
+        'red': 'FF0000',
+        'green': '00FF00',
+        'blue': '0000FF'
     };
 
     this.commands = {
@@ -27,7 +29,7 @@ var flashy = function(dbot) {
         }
     };
 
-    this.commands['~flashy'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
+    this.commands['~flashy'].regex = [/^~flashy ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
 };
 
 exports.fetch = function(dbot) {
