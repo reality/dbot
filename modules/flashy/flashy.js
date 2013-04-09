@@ -18,7 +18,7 @@ var flashy = function(dbot) {
 
     this.commands = {
         '~flashy': function(event) {
-            var colour = event.input[1].trim();
+            var colour = event.input[1];
             var text = event.input[2].trim().toUpperCase();
 
             if(_.has(this.colourMap, colour)) {
@@ -34,7 +34,7 @@ var flashy = function(dbot) {
         }
     };
 
-    this.commands['~flashy'].regex = [/^~flashy ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
+    this.commands['~flashy'].regex = [/^~flashy ([^ ]+) (.+)$/, 3];
 };
 
 exports.fetch = function(dbot) {
