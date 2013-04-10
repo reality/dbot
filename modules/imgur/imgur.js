@@ -9,8 +9,13 @@ var _ = require('underscore')._,
 var imgur = function(dbot) {
     this.api = { 
         'getRandomImage': function(callback) {
+            var random = function(len) {
+                var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+                return len ? chars.charAt(~~(Math.random()*chars.length)) + random(len-1) : "";
+            };
+
             var testUrl = 'http://i.imgur.com/' + 
-                Math.random().toString(36).substr(2,6) +
+                random(5) +
                 '.png';
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
