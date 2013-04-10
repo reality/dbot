@@ -1,5 +1,5 @@
 var _ = require('underscore')._,
-    uuid = require('node-uuid');
+    uuid = require('node-uuid'),
     databank = require('databank'),
     AlreadyExistsError = databank.AlreadyExistsError,
     NoSuchThingError = databank.NoSuchThingError,

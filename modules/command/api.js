@@ -36,16 +36,6 @@ var api = function(dbot) {
         },
 
         /**
-         * Is item (user or channel) ignoring command?
-         */
-        'isIgnoring': function(item, command) {
-            var module = dbot.commands[command].module;
-            return (_.has(dbot.db.ignores, item) &&
-                (_.include(dbot.db.ignores[item], module) ||
-                 _.include(dbot.db.ignores[item], '*')));
-        },
-
-        /**
          * Apply Regex to event message, store result. Return false if it doesn't
          * apply.
          */

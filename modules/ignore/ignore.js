@@ -68,7 +68,7 @@ var ignore = function(dbot) {
 
         '~unignore': function(event) {
             var module = event.params[1];
-              
+
             dbot.api.users.resolveUser(event.server, event.user, function(user) {
                 this.db.read('ignores', user.id, function(err, ignores) {
                     if(!ignores) {
