@@ -13,7 +13,8 @@ var imgur = function(dbot) {
                 Math.random().toString(36).substr(2,6) +
                 '.jpg';
             var image = request(testUrl, function(error, response, body) {
-                if(!error && response.statusCode == 200) {
+                // 492 is body.length of a removed image
+                if(!error && response.statusCode == 200 && body.length != 492) {
                     callback(testUrl);
                 } else {
                     this.api.getRandomImage(callback);
