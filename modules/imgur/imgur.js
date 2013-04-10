@@ -29,7 +29,7 @@ var imgur = function(dbot) {
     };
 
     this.commands = {
-        '~randomimgur': function(event) {
+        '~ri': function(event) {
             this.api.getRandomImage(function(link) {
                 event.reply(event.user + ': ' + link);
             });
