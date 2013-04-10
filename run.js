@@ -171,135 +171,136 @@ DBot.prototype.reloadModules = function() {
 
         try {
             var webKey = require.resolve(moduleDir + 'web');
-        } catch(err) {
-        }
+        } catch(err) { }
         if(webKey) {
             delete require.cache[webKey];
         }
 
+        // Load the module config data
+        var config = {};
+        
+        if(_.has(this.db.config, name)) {
+            config = _.clone(this.db.config[name]); 
+        }
+
         try {
-            // Load the module config data
-            var config = {};
-            
-            if(_.has(this.db.config, name)) {
-                config = _.clone(this.db.config[name]); 
-            }
-
+            var defaultConfig = fs.readFileSync(moduleDir + 'config.json', 'utf-8');
             try {
-                var defaultConfig = fs.readFileSync(moduleDir + 'config.json', 'utf-8');
-                try {
-                    defaultConfig = JSON.parse(defaultConfig);
-                } catch(err) { // syntax error
-                    this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
-                    return;
-                }
-                config = _.defaults(config, defaultConfig);
-            } catch(err) {
-                // Invalid or no config data
+                defaultConfig = JSON.parse(defaultConfig);
+            } catch(err) { // syntax error
+                this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
+                return;
             }
-
-            // Don't shit out if dependencies not met
-            if(_.has(config, 'dependencies')) {
-                _.each(config.dependencies, function(dependency) {
-                    if(!_.include(moduleNames, dependency)) {
-                        console.log('Warning: Automatically loading ' + dependency);
-                        moduleNames.push(dependency);
-                    }
-                }, this);
-            }
-            this.config[name] = config;
-
-            // Groovy funky database shit
-            if(!_.has(config, 'dbType') || config.dbType == 'olde') {
-                // Generate missing DB keys
-                _.each(config.dbKeys, function(dbKey) {
-                    if(!_.has(this.db, dbKey)) {
-                        this.db[dbKey] = {};
-                    }
-                }, this);
-            } else {
-                // Just use the name of the module for now, add dbKey iteration later
-                this.ddb.createDB(name, config.dbType, function(db) {
-                    module.db = db;
-                }.bind(this), {});
-            }
-            
-            // Load the module itself
-            var rawModule = require(moduleDir + name);
-            var module = rawModule.fetch(this);
-            module.name = name;
-            this.rawModules.push(rawModule);
-
-            module.config = this.config[name];
-
-            // Load the module data
-            _.each([ 'commands', 'pages', 'api' ], function(property) {
-                var propertyObj = {};
-
-                if(fs.existsSync(moduleDir + property + '.js')) {
-                    try {
-                        var propertyKey = require.resolve(moduleDir + property);
-                        if(propertyKey) delete require.cache[propertyKey];
-                        propertyObj = require(moduleDir + property).fetch(this);
-                    } catch(err) {
-                        this.status[name] = 'Error loading ' + propertyKey + ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
-                        console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
-                    } 
-                }
-
-                if(!_.has(module, property)) module[property] = {};
-                _.extend(module[property], propertyObj);
-                _.each(module[property], function(item, itemName) {
-                    item.module = name; 
-                    if(_.has(config, property) && _.has(config[property], itemName)) {
-                        _.extend(item, config[property][itemName]);
-                    }
-                    module[property][itemName] = _.bind(item, module);
-                    _.extend(module[property][itemName], item);
-                }, this);
-
-                if(property == 'api') {
-                    this[property][name] = module[property];
-                } else {
-                    _.extend(this[property], module[property]);
-                }
-            }, this);
-
-            // Load the module listener
-            if(module.listener) {
-                if(!_.isArray(module.on)) {
-                    module.on = [ module.on ];
-                }
-                _.each(module.on, function(on) {
-                    this.instance.addListener(on, module.name, module.listener);
-                }, this);
-            }
-
-            // Load string data for the module
-            _.each([ 'usage', 'strings' ], function(property) {
-                var propertyData = {};
-                try {
-                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
-                } catch(err) {};
-                _.extend(this[property], propertyData);
-            }, this);
-
-            // Provide toString for module name
-            module.toString = function() {
-                return this.name;
-            }
-
-            this.modules[module.name] = module;
+            config = _.defaults(config, defaultConfig);
         } catch(err) {
-            console.log(this.t('module_load_error', {'moduleName': name}));
-            this.status[name] = err + ' - ' + err.stack.split('\n')[1].trim();
-            if(this.config.debugMode) {
-                console.log('MODULE ERROR (' + name + '): ' + err.stack );
-            } else {
-                console.log('MODULE ERROR (' + name + '): ' + err );
-            }
+            // Invalid or no config data
+        }
+
+        // Don't shit out if dependencies not met
+        if(_.has(config, 'dependencies')) {
+            _.each(config.dependencies, function(dependency) {
+                if(!_.include(moduleNames, dependency)) {
+                    console.log('Warning: Automatically loading ' + dependency);
+                    moduleNames.push(dependency);
+                }
+            }, this);
+        }
+        this.config[name] = config;
+
+        // Groovy funky database shit
+        if(!_.has(config, 'dbType') || config.dbType == 'olde') {
+            // Generate missing DB keys
+            _.each(config.dbKeys, function(dbKey) {
+                if(!_.has(this.db, dbKey)) {
+                    this.db[dbKey] = {};
+                }
+            }, this);
+            this.loadModule(name, this.db);
+        } else {
+            // Just use the name of the module for now, add dbKey iteration later
+            this.ddb.createDB(name, config.dbType, {}, function(db) {
+                this.loadModule(name, db);
+            }.bind(this));
         }
     }.bind(this));
+            
+    this.save();
+};
+
+// Load the module itself
+DBot.prototype.loadModule = function(name, db) {
+    var moduleDir = './modules/' + name + '/';
+    var rawModule = require(moduleDir + name);
+    var module = rawModule.fetch(this);
+    this.rawModules.push(rawModule);
+
+    module.name = name;
+    module.db = db;
+    module.config = this.config[name];
+
+    // Load the module data
+    _.each([ 'commands', 'pages', 'api' ], function(property) {
+        var propertyObj = {};
+
+        if(fs.existsSync(moduleDir + property + '.js')) {
+            try {
+                var propertyKey = require.resolve(moduleDir + property);
+                if(propertyKey) delete require.cache[propertyKey];
+                propertyObj = require(moduleDir + property).fetch(this);
+            } catch(err) {
+                this.status[name] = 'Error loading ' + propertyKey + 
+                    ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
+                console.log('Module error (' + module.name + ') in ' + 
+                    property + ': ' + err);
+            } 
+        }
+
+        if(!_.has(module, property)) module[property] = {};
+        _.extend(module[property], propertyObj);
+        _.each(module[property], function(item, itemName) {
+            item.module = name; 
+            if(_.has(module.config, property) && _.has(module.config[property], itemName)) {
+                _.extend(item, module.config[property][itemName]);
+            }
+            module[property][itemName] = _.bind(item, module);
+            _.extend(module[property][itemName], item);
+        }, this);
+
+        if(property == 'api') {
+            this[property][name] = module[property];
+        } else {
+            _.extend(this[property], module[property]);
+        }
+    }, this);
+
+    // Load the module listener
+    if(module.listener) {
+        if(!_.isArray(module.on)) {
+            module.on = [ module.on ];
+        }
+        _.each(module.on, function(on) {
+            this.instance.addListener(on, module.name, module.listener);
+        }, this);
+    }
+
+    // Load string data for the module
+    _.each([ 'usage', 'strings' ], function(property) {
+        var propertyData = {};
+        try {
+            propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
+    } catch(err) {};
+    _.extend(this[property], propertyData);
+    }, this);
+
+    // Provide toString for module name
+    module.toString = function() {
+        return this.name;
+    }
+
+    console.log(module);
+    console.log(this);
+
+    this.modules[module.name] = module;
 
     if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
     
@@ -313,9 +314,7 @@ DBot.prototype.reloadModules = function() {
             }
         }
     }, this);
-
-    this.save();
-};
+}
 
 DBot.prototype.cleanNick = function(key) {
     key = key.toLowerCase();

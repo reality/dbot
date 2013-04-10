@@ -12,7 +12,7 @@ var DatabaseDriver = function() {
 /**
  * Connect to or create a new DataBank
  */
-DatabaseDriver.prototype.createDB = function(name, driver, callback, schema) {
+DatabaseDriver.prototype.createDB = function(name, driver, schema, callback) {
     var params = { 'schema': schema };
 
     if(driver == 'disk') params.dir = 'db';
