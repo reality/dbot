@@ -1,8 +1,4 @@
-var _ = require('underscore')._,
-    databank = require('databank'),
-    AlreadyExistsError = databank.AlreadyExistsError,
-    NoSuchThingError = databank.NoSuchThingError,
-    NotImplementedError = databank.NotImplementedError;
+var _ = require('underscore')._;
 
 var api = function(dbot) {
     
