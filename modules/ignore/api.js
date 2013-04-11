@@ -1,7 +1,6 @@
 var _ = require('underscore')._;
 
 var api = function(dbot) {
-    
     return {
         // Is user ignoring command/module?
         'isUserIgnoring': function(server, user, item, callback) {
