@@ -12,8 +12,14 @@ var flashy = function(dbot) {
         'green': '00FF00',
         'blue': '0000FF',
         'yellow': 'FFFF00',
+        'pink': 'FFC0CB',
         'magenta': 'FF00FF',
-        'cyan': '00FFFF'
+        'purple': 'AA00FF',
+        'cyan': '00FFFF',
+        'orange': 'FFAA00',
+        'lime': 'AAFF00',
+        'grey': 'AAAAAA',
+        'infrared': '000000'
     };
 
     this.commands = {
