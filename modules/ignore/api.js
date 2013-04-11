@@ -12,6 +12,25 @@ var api = function(dbot) {
             this.internalAPI.isUserImpeded(server, user, item, 'bans', callback);
         },
 
+        // Is channel ignoring module?
+        // TODO: Command support
+        'isChannelIgnoring': function(server, channelName, item, callback) {
+            var isIgnoring = false,
+                channel = false;
+
+            this.db.search('channel_ignores', {
+                'server': server,
+                'name': channel
+            }, function(result) {
+                channel = result;
+            }, function(err) {
+                if(!err && channel && _.include(channel.ignores, item)) {
+                    isIgnoring = true;
+                }
+                callback(isIgnoring);
+            });
+        },
+
         // Resolve a nick and return their user and ignores object
         'getUserIgnores': function(server, user, callback) {
             dbot.api.users.resolveUser(server, user, function(user) {

@@ -20,7 +20,7 @@ var command = function(dbot) {
                 return;
             }
         } 
-        
+       
         dbot.api.ignore.isUserIgnoring(event.server, event.user, commandName, function(isIgnoring) {
             dbot.api.ignore.isUserBanned(event.server, event.user, commandName, function(isBanned) {
                 if(isBanned) {
