@@ -21,11 +21,13 @@ var command = function(dbot) {
             }
         } 
         
-        if(this.api.isBanned(event.user, commandName)) {
-            event.reply(dbot.t('command_ban', {'user': event.user})); 
-        } else {
-            dbot.api.ignore.isUserIgnoring(event.server, event.user, commandName, function(isIgnoring) {
-                if(!isIgnoring && this.api.hasAccess(event.user, commandName) && dbot.commands[commandName].disabled !== true) {
+        dbot.api.ignore.isUserIgnoring(event.server, event.user, commandName, function(isIgnoring) {
+            dbot.api.ignore.isUserBanned(event.server, event.user, commandName, function(isBanned) {
+                if(isBanned) {
+                    event.reply(dbot.t('command_ban', {'user': event.user})); 
+                } else if(!isIgnoring && 
+                        this.api.hasAccess(event.user, commandName) && 
+                        dbot.commands[commandName].disabled !== true) {
                     if(this.api.applyRegex(commandName, event)) {
                         try {
                             var command = dbot.commands[commandName];
@@ -51,10 +53,10 @@ var command = function(dbot) {
                                 event.reply(dbot.t('syntax_error'));
                             }
                         }
-                    }    
+                    }
                 }
             }.bind(this));
-        }
+        }.bind(this));
     }.bind(this);
     this.on = 'PRIVMSG';
 };

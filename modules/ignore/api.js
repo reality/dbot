@@ -5,21 +5,28 @@ var _ = require('underscore')._,
     NotImplementedError = databank.NotImplementedError;
 
 var api = function(dbot) {
+    
     return {
+        // Is user ignoring command/module?
         'isUserIgnoring': function(server, user, item, callback) {
+            this.internalAPI.isUserImpeded(server, user, item, 'ignores', callback);
+        },
+
+        // Is user banned from command/module?
+        'isUserBanned': function(server, user, item, callback) {
+            this.internalAPI.isUserImpeded(server, user, item, 'bans', callback);
+        },
+
+        // Resolve a nick and return their user and ignores object
+        'getUserIgnores': function(server, user, callback) {
             dbot.api.users.resolveUser(server, user, function(user) {
-                this.db.read('ignores', user.id, function(err, ignores) {
-                    var isIgnoring = false;
-                    if(ignores) {
-                        if(_.has(dbot.commands, item)) {
-                            item = moduleName = dbot.commands[item].module;
-                        }
-                        if(_.include(ignores.ignores, item)) {
-                            isIgnoring = true;
-                        }
-                    }
-                    callback(isIgnoring);
-                });
+                if(user) {
+                    this.db.read('ignores', user.id, function(err, ignores) {
+                        callback(false, user, ignores);
+                    });
+                } else {
+                    callback(true, null, null);
+                }
             }.bind(this));
         }
     };

@@ -2,18 +2,6 @@ var _ = require('underscore')._;
 
 var api = function(dbot) {
     return {
-        'isBanned': function(user, command) {
-            var banned = false;
-            if(_.has(dbot.db.bans, user)) {
-                if(_.include(dbot.db.bans[user], command) ||
-                   _.include(dbot.db.bans[user], dbot.commands[command].module) ||
-                   _.include(dbot.db.bans[user], '*')) {
-                    banned = true;
-                }
-            }
-            return banned;
-        },
-
         /**
          * Does the user have the correct access level to use the command?
          */
