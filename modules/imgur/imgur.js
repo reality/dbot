@@ -31,7 +31,7 @@ var imgur = function(dbot) {
     this.commands = {
         '~ri': function(event) {
             this.api.getRandomImage(function(link) {
-                event.reply(event.user + ' (' + dbot.t('nsfw') + '): ' + link);
+                event.reply(event.user + ': (' + dbot.t('nsfw') + ') ' + link);
             });
         }
     }
