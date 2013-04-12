@@ -33,8 +33,12 @@ var link = function(dbot) {
     };
 
     this.api = {
-        'addHandler': function(regex, handler) {
-            this.handlers.push({ 'regex': regex, 'callback': handler });
+        'addHandler': function(name, regex, handler) {
+            this.handlers.push({ 
+                'name': name, 
+                'regex': regex, 
+                'callback': handler 
+            });
         }
     };
                 
@@ -111,7 +115,7 @@ var link = function(dbot) {
                 for(var i=0;i<this.handlers.length;i++) {
                     var matches = this.handlers[i].regex.exec(urlMatches[0]);     
                     if(matches) {
-                        this.handlers[i].callback(event, matches);
+                        this.handlers[i].callback(event, matches, this.handlers[i].name);
                         handlerFound = true; break;
                     }
                 }

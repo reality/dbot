@@ -66,8 +66,8 @@ var dent = function(dbot) {
         }
 
         for(s in this.StatusRegex) {
-            dbot.api.link.addHandler(this.StatusRegex[s], function(event, matches) {
-                this.lookup(event, matches[1], s);
+            dbot.api.link.addHandler(s, this.StatusRegex[s], function(event, matches, name) {
+                this.lookup(event, matches[1], name);
             }.bind(this));
         }
     }.bind(this);
