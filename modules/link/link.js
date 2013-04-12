@@ -14,7 +14,7 @@ var link = function(dbot) {
     this.fetchTitle = function(event, link) {
         var limit = 1000000,
         size = 0,
-        page = request(link, function(error, response, body) {
+        page = request(link.replace('https', 'http'), function(error, response, body) {
             if(!error && response.statusCode == 200) {
                 body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
                 var title = body.valMatch(/<title>(.*)<\/title>/, 2);
