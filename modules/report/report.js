@@ -12,8 +12,12 @@ var report = function(dbot) {
                 if(dbot.api.users.isChannelUser(event.server, nick, channelName, true)) {
                     var nick = dbot.api.users.resolveUser(event.server, nick, true);
                     var ops = _.filter(channel.nicks, function(user) {
-                        return user.op; 
-                    });
+                        if(this.config.notifyVoice) {
+                            return user.op || user.voice;
+                        } else {
+                            return user.op; 
+                        }
+                    }, this);
 
                     _.each(ops, function(user) {
                         dbot.say(event.server, user.name, dbot.t('report', {
