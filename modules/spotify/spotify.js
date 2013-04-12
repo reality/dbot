@@ -58,14 +58,13 @@ var spotify = function(dbot) {
     }
   };
   commands['~spotify'].regex = [/^~spotify (.*)/, 2];
-  this.listener = function(event) {
-    var spotifyMatches = event.message.match(this.spotifyRegex);
-    if (spotifyMatches != null) {
-      this.lookup(event, spotifyMatches[0]);
-    }
-  }.bind(this);
-  this.on = 'PRIVMSG';
   this.commands = commands;
+
+  this.onLoad = function() {
+    dbot.api.link.addHandler(this.name, this.spotifyRegex, function(event, matches, name) {
+      this.lookup(event, matches[0]);
+    }.bind(this));
+  }.bind(this);
 };
 
 exports.fetch = function(dbot) {
