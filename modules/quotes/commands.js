@@ -11,36 +11,34 @@ var commands = function(dbot) {
         '~qadd': function(event) {
             var key = event.input[1].toLowerCase().trim(),
                 quote = event.input[2],
-                newCount;
-            var quoteAdded = function(err, result) {
-                this.rmAllowed = true;
-                dbot.api.event.emit('~qadd', {
-                    'key': key,
-                    'text': quote
-                });
-                event.reply(dbot.t('quote_saved', {
-                    'category': key, 
-                    'count': newCount
-                }));
-            }.bind(this);
+                newCount,
+                category = false;
 
-            var category = false;
             this.db.search('quote_category', { 'name': key }, function(result) {
                 category = result;
             }, function(err) {
                 if(!category) {
                     var id = uuid.v4();
-                    newCount = 1;
-                    this.db.create('quote_category', id, {
+                    category = {
                         'id': id,
                         'name': key,
-                        'quotes': [ quote ], 
+                        'quotes': [], 
                         'creator': event.user
-                    }, quoteAdded);
-                } else {
-                    newCount = category.quotes.push(quote);
-                    this.db.save('quote_category', category.id, category, quoteAdded);
-                }
+                    };
+                } 
+
+                newCount = category.quotes.push(quote);
+                this.db.save('quote_category', category.id, category, function(err) {
+                    this.rmAllowed = true;
+                    dbot.api.event.emit('~qadd', {
+                        'key': key,
+                        'text': quote
+                    });
+                    event.reply(dbot.t('quote_saved', {
+                        'category': key, 
+                        'count': newCount
+                    }));
+                });
             }.bind(this));
         },
 
