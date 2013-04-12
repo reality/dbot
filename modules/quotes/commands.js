@@ -270,6 +270,34 @@ var commands = function(dbot) {
             }
         },
 
+        // Rename a quote category
+        '~qrename': function(event) {
+            var oldName = event.input[1],
+                newName = event.input[2],
+                oldCategory = false,
+                newCategory = false;
+
+            this.db.search('quote_category', { 'name': newName }, function(result) {
+                newCategory = result;
+            }, function(err) {
+                if(!newCategory) {
+                    this.db.search('quote_category', { 'name': oldName }, function(result) { 
+                        oldCategory = result;
+                    }, function(err) {
+                        oldCategory.name = newName;
+                        this.db.save('quote_category', oldCategory.id, oldCategory, function(err) {
+                            event.reply(dbot.t('category_renamed', {
+                                'oldName': oldName,
+                                'newName': newName
+                            }));  
+                        });
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('newcat_exists', { 'newcat': newName }));
+                }
+            }.bind(this));
+        },
+
         // Link to quote web page
         '~link': function(event) {
             var key = event.input[1].toLowerCase(),
@@ -304,10 +332,12 @@ var commands = function(dbot) {
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qrename'].regex = [/^~qrename ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~link'].regex = [/^~link ([\d\w\s-]*)/, 2];
 
     commands['~rmconfirm'].access = 'moderator';
     commands['~rmdeny'].access = 'moderator';
+    commands['~qrename'].access = 'moderator';
 
     return commands;
 };

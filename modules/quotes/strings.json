@@ -129,5 +129,11 @@
     },
     "web_not_configured": {
         "en": "Cannot link to category. Web module is either not loaded or misconfigured."
+    },
+    "category_renamed": {
+        "en": "Category ~{oldName} renamed to ~{newName}."
+    },
+    "newcat_exists": {
+        "en": "Category ~{newcat} already exists. Delete that first or use ~qmerge."
     }
 }
