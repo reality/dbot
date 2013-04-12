@@ -37,7 +37,17 @@ var webInterface = function(dbot) {
 
     this.onDestroy = function() {
         server.close();
-    }
+    };
+
+    this.api = {
+        'getUrl': function(path) {
+            if(this.config.externalPath) {
+                return this.config.externalPath + '/' + path;
+            } else {
+                return 'http://' + this.config.webHost + ':' + port + '/' + path;
+            }
+        };
+    };
 };
 
 exports.fetch = function(dbot) {

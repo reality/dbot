@@ -71,7 +71,6 @@ var commands = function(dbot) {
         },
         
         // Search a given category for some text.
-        // TODO fix
         '~qsearch': function(event) {
             var haystack = event.input[1].trim().toLowerCase();
             var needle = event.input[2];
@@ -202,11 +201,7 @@ var commands = function(dbot) {
                    _.has(dbot.config.web, 'webPort')) {
                     event.reply(dbot.t('quote_link', {
                         'category': key,
-                        'url': dbot.t('url', {
-                            'host': dbot.config.web.webHost,
-                            'port': dbot.config.web.webPort,
-                            'path': 'quotes/' + encodeURIComponent(key)
-                        })
+                        'url': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
                     }));
                 } else {
                     event.reply(dbot.t('web_not_configured'));

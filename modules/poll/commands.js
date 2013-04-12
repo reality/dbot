@@ -21,14 +21,12 @@ var commands = function(dbot) {
                 for(var i=0;i<options.length;i++) {
                     polls[name]['votes'][options[i]] = 0;
                 }
+
+                
                 event.reply(dbot.t('poll_created', {
                     'name': name, 
                     'description': description, 
-                    'url': dbot.t('url', {
-                        'host': dbot.config.web.webHost,
-                        'port': dbot.config.web.webPort, 
-                        'path': 'polls/' + name
-                    })
+                    'url': dbot.api.web.getUrl('/poll/' + name)     
                 })); 
             }
         },

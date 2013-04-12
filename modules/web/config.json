@@ -1,4 +1,5 @@
 {
     "webHost": "localhost",
-    "webPort": 8080
+    "webPort": 8080,
+    "externalPath": false
 }
