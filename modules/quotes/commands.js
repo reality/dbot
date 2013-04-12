@@ -217,29 +217,57 @@ var commands = function(dbot) {
             var haystack = event.input[1].trim().toLowerCase(),
                 needle = event.input[2],
                 category = false;
-
-            this.db.search('quote_category', { 'name': haystack }, function(result) {
-                category = result;
-            }, function(err) {
-                if(category) {
-                    var matches = _.filter(category.quotes, function(quote) {
-                        return quote.indexOf(needle) != -1;
-                    });
-
-                    if(matches.length == 0) {
-                        event.reply(dbot.t('no_results'));
-                    } else {
+            
+            if(haystack == '*') {
+                var matches = [];
+                this.db.scan('quote_category', function(category) {
+                    if(category) {
+                        var theseMatches =_.each(category.quotes, function(quote) {
+                            if(quote.indexOf(needle) != -1) {
+                                matches.push({ 
+                                    'category': category.name, 
+                                    'quote': quote 
+                                });
+                            }
+                        });
+                    }
+                }, function(err) {
+                    if(matches.length > 0) {
+                        console.log(matches);
                         event.reply(dbot.t('search_results', {
-                            'category': haystack, 
+                            'category': matches[0].category, 
                             'needle': needle,
-                            'quote': matches[0],
+                            'quote': matches[0].quote,
                             'matches': matches.length
                         }));
+                    } else {
+                        event.reply(dbot.t('no_results'));
                     }
-                } else {
-                    event.reply(dbot.t('empty_category'));
-                }
-            });
+                });
+            } else {
+                this.db.search('quote_category', { 'name': haystack }, function(result) {
+                    category = result;
+                }, function(err) {
+                    if(category) {
+                        var matches = _.filter(category.quotes, function(quote) {
+                            return quote.indexOf(needle) != -1;
+                        });
+
+                        if(matches.length == 0) {
+                            event.reply(dbot.t('no_results'));
+                        } else {
+                            event.reply(dbot.t('search_results', {
+                                'category': haystack, 
+                                'needle': needle,
+                                'quote': matches[0],
+                                'matches': matches.length
+                            }));
+                        }
+                    } else {
+                        event.reply(dbot.t('empty_category'));
+                    }
+                });
+            }
         },
        
         // Count quotes in a given category or total quotes overall
@@ -365,7 +393,7 @@ var commands = function(dbot) {
 
     commands['~'].regex = [/^~([\d\w\s-]*)/, 2];
     commands['~q'].regex = [/^~q ([\d\w\s-]*)/, 2];
-    commands['~qsearch'].regex = [/^~qsearch ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qsearch'].regex = [/^~qsearch ([\d\w\s*-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
