@@ -25,6 +25,17 @@ var imgur = function(dbot) {
                     this.api.getRandomImage(callback);
                 }
             }.bind(this)); 
+        },
+
+        'getImageInfo': function(slug, callback) {
+            request.get({
+                'url': 'https://api.imgur.com/3/image/' + slug + '.json',
+                'headers': {
+                    'Authorization': 'Client-ID 86fd3a8da348b65'
+                }
+            }, function(err, response, body) {
+                callback(body);
+            });
         }
     };
 
@@ -35,6 +46,9 @@ var imgur = function(dbot) {
             });
         }
     }
+
+    this.onLoad = function() {
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {
