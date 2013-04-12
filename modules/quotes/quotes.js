@@ -99,10 +99,11 @@ var quotes = function(dbot) {
                 dbot.instance.emit(event);
            }
         } else if(event.action == 'JOIN') {
-            var userQuote = this.api.getQuote(event, event.user)
-            if(userQuote) {
-                event.reply(event.user + ': ' + this.api.getQuote(event, event.user));
-            }
+            var userQuote = this.api.getQuote(event.user, function(quote) {
+                if(quote) {
+                    event.reply(event.user + ': ' + quote);
+                }
+            });
         }
     }.bind(this);
     this.on = ['PRIVMSG', 'JOIN'];
