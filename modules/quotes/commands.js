@@ -51,18 +51,12 @@ var commands = function(dbot) {
 
         // Retrieve quote from a category in the database.
         '~q': function(event) {
-            var name = event.input[1].trim().toLowerCase(),
-                category = false;
-
-            this.db.search('quote_category', { 'name': name }, function(result) {
-                category = result;
-            }, function(err) {
-                if(category) {
-                    var quotes = category.quotes;
-                    var index = _.random(0, quotes.length - 1); 
-                    event.reply(name + ': ' + quotes[index]);
+            var key = event.input[1];
+            this.api.getInterpolatedQuote(event.server, event.channel, key, function(quote) {
+                if(quote) {
+                    event.reply(key + ': ' + quote);
                 } else {
-                    event.reply(dbot.t('category_not_found', { 'category': name }));
+                    event.reply(dbot.t('category_not_found', { 'category': key }));
                 }
             });
         },

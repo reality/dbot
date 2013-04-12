@@ -9,37 +9,28 @@ var quotes = function(dbot) {
     this.rmTimer;
 
     this.internalAPI = {
-        // Retrieve a random quote from a given category, interpolating any quote
-        // references (~~QUOTE CATEGORY~~) within it
-        'interpolatedQuote': function(server, channel, key, quoteTree) {
-            if(!_.isUndefined(quoteTree) && quoteTree.indexOf(key) != -1) { 
-                return ''; 
-            } else if(_.isUndefined(quoteTree)) { 
-                quoteTree = [];
-            }
-
-            var index = _.random(0, this.quotes[key].length - 1);
-            var quoteString = this.quotes[key][index];
-
+        'interpolatedQuote': function(server, channel, key, quote, callback) {
             // Parse quote interpolations
-            var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
-            var thisRef;
-
-            while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
-                var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
-                if(cleanRef === '-nicks-') {
-                    var randomNick = dbot.api.users.getRandomChannelUser(server, channel);
-                    quoteString = quoteString.replace("~~" + cleanRef + "~~", randomNick);
-                    quoteTree.pop();
-                } else if(_.has(this.quotes, cleanRef)) {
-                    quoteTree.push(key);
-                    quoteString = quoteString.replace("~~" + cleanRef + "~~", 
-                            this.internalAPI.interpolatedQuote(server, channel, cleanRef, quoteTree.slice()));
-                    quoteTree.pop();
+            var quoteRefs = quote.match(/~~([\d\w\s-]*)~~/g);
+            if(quoteRefs) {
+                var ref = dbot.cleanNick(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
+                if(ref === '-nicks-') {
+                    dbot.api.users.getRandomChannelUser(server, channel, function(user) {
+                        quote = quote.replace('~~' + ref + '~~', randomNick);
+                        this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
+                    }.bind(this));
+                } else {
+                    this.api.getQuote(ref, function(interQuote) {
+                        if(!interQuote || ref == key) {
+                            interQuote = '';
+                        }
+                        quote = quote.replace('~~' + ref + '~~', interQuote);
+                        this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
+                    }.bind(this));
                 }
+            } else {
+                callback(quote);
             }
-
-            return quoteString;
         }.bind(this),
 
         'resetRemoveTimer': function(event, key, quote) {
@@ -67,22 +58,29 @@ var quotes = function(dbot) {
     };
 
     this.api = {
-        'getQuote': function(event, category) {
-            var key = category.trim().toLowerCase();
-            var altKey;
-            if(key.split(' ').length > 0) {
-                altKey = key.replace(/ /g, '_');
-            }
+        'getQuote': function(key, callback) {
+            var category = false;
+            key = key.trim().toLowerCase(),
 
-            if(key.charAt(0) !== '_') { // lol
-                if(_.has(this.quotes, key)) {
-                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, key);
-                } else if(_.has(this.quotes, altKey)) {
-                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, altKey);
+            this.db.search('quote_category', { 'name': key }, function(result) {
+                category = result;
+            }, function(err) {
+                if(category) {
+                    var quotes = category.quotes;
+                    var index = _.random(0, quotes.length - 1); 
+                    callback(quotes[index]);
                 } else {
-                    return false;
+                    callback(false);
                 }
-            } 
+            });
+        },
+
+        'getInterpolatedQuote': function(server, channel, key, callback) {
+            key = key.trim().toLowerCase(),
+
+            this.api.getQuote(key, function(quote) {
+                this.internalAPI.interpolatedQuote(server, channel, key, quote, callback); 
+            }.bind(this));
         }
     };
    
