@@ -13,14 +13,16 @@ var imgur = function(dbot) {
                 var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
                 return len ? chars.charAt(~~(Math.random()*chars.length)) + random(len-1) : "";
             };
-
+            
+            var ext = [ 'gif', 'png', 'jpg' ];
+            var testSlug = random(5);
             var testUrl = 'http://i.imgur.com/' + 
-                random(5) +
-                '.png';
+                testSlug +
+                '.' + ext[_.random(0, ext.length - 1)];
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
-                    callback(testUrl);
+                    callback(testUrl, testSlug);
                 } else {
                     this.api.getRandomImage(callback);
                 }
@@ -30,6 +32,7 @@ var imgur = function(dbot) {
         'getImageInfo': function(slug, callback) {
             request.get({
                 'url': 'https://api.imgur.com/3/image/' + slug + '.json',
+                'json': true,
                 'headers': {
                     'Authorization': 'Client-ID 86fd3a8da348b65'
                 }
@@ -41,9 +44,26 @@ var imgur = function(dbot) {
 
     this.commands = {
         '~ri': function(event) {
-            this.api.getRandomImage(function(link) {
-                event.reply(event.user + ': (' + dbot.t('nsfw') + ') ' + link);
-            });
+            this.api.getRandomImage(function(link, slug) {
+                this.api.getImageInfo(slug, function(imgData) {
+                    imgData = imgData.data;
+                    var info = '[';
+                    if(imgData.title) {
+                        info += imgData.title + ' is ';
+                    } else {
+                        info += 'no-title is ';
+                    }
+                    if(imgData.animated) {
+                        info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
+                    } else {
+                        info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
+                    }
+                    info += imgData.views + ' views.]';
+
+                    event.reply(event.user + ': ' + link + ' ' + info);
+                });
+                
+            }.bind(this));
         }
     }
 
