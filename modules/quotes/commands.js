@@ -255,7 +255,7 @@ var commands = function(dbot) {
                             'count': category.quotes.length
                         }));
                     } else {
-                        event.reply(dbot.t('category_not_found', { 'category': name }));
+                        event.reply(dbot.t('category_not_found', { 'category': key }));
                     }
                 });
             } else {
@@ -298,6 +298,40 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
+        // Merge a quote category insto another
+        '~qmerge': function(event) {
+            var primaryName = event.input[1],
+                secondName = event.input[2],
+                primary = false,
+                secondary = false;
+
+            this.db.search('quote_category', { 'name': primaryName }, function(result) { 
+                primary = result;
+            }, function(err) {
+                if(primary) {
+                    this.db.search('quote_category', { 'name': secondName }, function(result) { 
+                        secondary = result;
+                    }, function(err) {
+                        if(secondary) {
+                            primary.quotes = _.union(primary.quotes, secondary.quotes);
+                            this.db.save('quote_category', primary.id, primary, function(err) {
+                                this.db.del('quote_category', secondary.id, function(err) {
+                                    event.reply(dbot.t('categories_merged', {
+                                        'from': secondName, 
+                                        'into': primaryName
+                                    }));
+                                });
+                            }.bind(this));
+                        } else {
+                            event.reply(dbot.t('category_not_found', { 'category': secondName }));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('category_not_found', { 'category': primaryName }));
+                }
+            }.bind(this));
+        },
+
         // Link to quote web page
         '~link': function(event) {
             var key = event.input[1].toLowerCase(),
@@ -333,6 +367,7 @@ var commands = function(dbot) {
     commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
     commands['~qadd'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
     commands['~qrename'].regex = [/^~qrename ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qmerge'].regex = [/^~qmerge ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
     commands['~link'].regex = [/^~link ([\d\w\s-]*)/, 2];
 
     commands['~rmconfirm'].access = 'moderator';

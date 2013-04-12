@@ -135,5 +135,8 @@
     },
     "newcat_exists": {
         "en": "Category ~{newcat} already exists. Delete that first or use ~qmerge."
+    },
+    "categories_merged": {
+        "en": "Category ~{from} and its quotes merged into ~{into}."
     }
 }
