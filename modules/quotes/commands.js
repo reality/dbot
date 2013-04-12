@@ -80,9 +80,7 @@ var commands = function(dbot) {
             });
         },
 
-        /*** Quote Removal
-                TODO: Remove empty quote categories
-        ***/
+        /*** Quote Removal ***/
 
         // Show number of quotes in removal cache
         '~rmstatus': function(event) {
@@ -125,20 +123,26 @@ var commands = function(dbot) {
         '~rmlast': function(event) {
             if(this.rmAllowed === true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase(),
-                    category = false;
+                    category = false,
+                    removedQuote;
+                var quoteRemoved = function(err) {
+                    this.internalAPI.resetRemoveTimer(event, key, removedQuote);
+                    event.reply(dbot.t('removed_from', {
+                        'quote': removedQuote, 
+                        'category': key
+                    }));
+                }.bind(this);
 
                 this.db.search('quote_category', { 'name': key }, function(result) {
                     category = result;    
                 }, function(err) {
                     if(category) {
-                        var removedQuote = category.quotes.pop();
-                        this.db.save('quote_category', category.id, category, function(err) {
-                            this.internalAPI.resetRemoveTimer(event, key, removedQuote);
-                            event.reply(dbot.t('removed_from', {
-                                'quote': removedQuote, 
-                                'category': key
-                            }));
-                        }.bind(this));
+                        removedQuote = category.quotes.pop();
+                        if(category.quotes.length == 0) {
+                            this.db.del('quote_category', category.id, quoteRemoved);
+                        } else {
+                            this.db.save('quote_category', category.id, category, quoteRemoved);
+                        }
                     } else {
                         event.reply(dbot.t('category_not_found', { 'category': key }));
                     }
@@ -154,6 +158,13 @@ var commands = function(dbot) {
                 var key = event.input[1].trim().toLowerCase();
                     quote = event.input[2],
                     category = false;
+                var quoteRemoved = function(err) {
+                    this.internalAPI.resetRemoveTimer(event, key, quote);
+                    event.reply(dbot.t('removed_from', {
+                        'category': key, 
+                        'quote': quote
+                    }));
+                }.bind(this);
 
                 this.db.search('quote_category', { 'name': key }, function(result) {
                     category = result;
@@ -161,13 +172,11 @@ var commands = function(dbot) {
                     if(category) {
                         if(category.quotes.indexOf(quote) != -1) {
                             category.quotes = _.without(category.quotes, quote);
-                            this.db.save('quote_category', category.id, category, function(err) {
-                                this.internalAPI.resetRemoveTimer(event, key, quote);
-                                event.reply(dbot.t('removed_from', {
-                                    'category': key, 
-                                    'quote': quote
-                                }));
-                            }.bind(this));
+                            if(category.quotes.length == 0) {
+                                this.db.del('quote_category', category.id, quoteRemoved);
+                            } else {
+                                this.db.save('quote_category', category.id, category, quoteRemoved);
+                            }
                         } else {
                             event.reply(dbot.t('q_not_exist_under', {
                                 'category': key, 
