@@ -1,5 +1,5 @@
 {
-    "dbKeys": [ "quoteArrs" ],
+    "dbType": "redis",
     "dependencies": [ "command", "users" ],
     "rmLimit": 10,
     "ignorable": true,

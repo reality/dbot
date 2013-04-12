@@ -1,34 +1,45 @@
 var _ = require('underscore')._,
     databank = require('databank'),
-    AlreadyExistsError = databank.AlreadyExistsError,
-    NoSuchThingError = databank.NoSuchThingError;
+    uuid = require('node-uuid');
 
 var commands = function(dbot) {
     var quotes = dbot.db.quoteArrs;
     var commands = {
-
         /*** Quote Addition ***/
 
         // Add a quote to a category
         '~qadd': function(event) {
-            var key = event.input[1].toLowerCase();
-            var quote = event.input[2];
+            var key = event.input[1].toLowerCase().trim(),
+                quote = event.input[2],
+                newCount;
+            var quoteAdded = function(err, result) {
+                this.rmAllowed = true;
+                dbot.api.event.emit('~qadd', {
+                    'key': key,
+                    'text': quote
+                });
+                event.reply(dbot.t('quote_saved', {
+                    'category': key, 
+                    'count': newCount
+                }));
+            }.bind(this);
 
-            this.db.indexOf('quote_category', key, quote, function(err, index) {
-                if(index == null || index == -1) {
-                    this.db.append('quote_category', key, quote, function(err, newCount) {
-                        this.rmAllowed = true;
-                        dbot.api.event.emit('~qadd', {
-                            'key': key,
-                            'text': quote
-                        });
-                        event.reply(dbot.t('quote_saved', {
-                            'category': key, 
-                            'count': newCount
-                        }));
-                    }.bind(this));
+            var category = false;
+            this.db.search('quote_category', { 'name': key }, function(result) {
+                category = result;
+            }, function(err) {
+                if(!category) {
+                    var id = uuid.v4();
+                    newCount = 1;
+                    this.db.create('quote_category', id, {
+                        'id': id,
+                        'name': key,
+                        'quotes': [ quote ], 
+                        'creator': event.user
+                    }, quoteAdded);
                 } else {
-                    event.reply(dbot.t('quote_exists'));
+                    newCount = category.quotes.push(quote);
+                    this.db.save('quote_category', category.id, category, quoteAdded);
                 }
             }.bind(this));
         },
@@ -42,27 +53,38 @@ var commands = function(dbot) {
 
         // Retrieve quote from a category in the database.
         '~q': function(event) {
-            var name = event.input[1].trim().toLowerCase();
-            this.db.read('quote_category', name, function(err, category) {
-                if(!err) {
-                    var quoteIndex = _.random(0, category.length - 1); 
-                    event.reply(name + ': ' + category[quoteIndex]);
-                } else if(err instanceof NoSuchThingError) {
+            var name = event.input[1].trim().toLowerCase(),
+                category = false;
+
+            this.db.search('quote_category', { 'name': name }, function(result) {
+                category = result;
+            }, function(err) {
+                if(category) {
+                    var quotes = category.quotes;
+                    var index = _.random(0, quotes.length - 1); 
+                    event.reply(name + ': ' + quotes[index]);
+                } else {
                     event.reply(dbot.t('category_not_found', { 'category': name }));
                 }
             });
         },
 
+        // Choose a random quote category and a random quote from that
+        // TODO: This is quite inefficient, but databank must evolve to do otherwise.
         '~rq': function(event) {
-            if(_.keys(quotes).length > 0) {
-                var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
-                event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event.server, event.channel.name, category));
-            } else {
-                event.reply(dbot.t('no_results'));
-            }
+            var categories = []; 
+            this.db.scan('quote_category', function(result) {
+                categories.push(result);
+            }, function(err) {
+                var cIndex = _.random(0, _.size(categories) -1); 
+                var qIndex = _.random(0, categories[cIndex].quotes.length - 1); 
+                event.reply(categories[cIndex].name + ': ' + categories[cIndex].quotes[qIndex]);
+            });
         },
 
-        /*** Quote Removal ***/
+        /*** Quote Removal
+                TODO: Remove empty quote categories
+        ***/
 
         // Show number of quotes in removal cache
         '~rmstatus': function(event) {
@@ -90,11 +112,10 @@ var commands = function(dbot) {
             var rmCacheCount = rmCache.length;
             
             _.each(rmCache, function(quote, index) {
-                this.db.append('quote_category', quote.key, quote.quote, function(err, length) {
-                    if(err) {
-                        // QQ
-                    }
-                });
+                //TODO: Add quote add API func
+                var qadd = _.clone(event);
+                qadd.message = '~qadd ' + quote.key + '=' + quote.quote;
+                dbot.instance.emit(qadd);
             });
 
             rmCache.length = 0;
@@ -105,16 +126,22 @@ var commands = function(dbot) {
         // Remove last quote from category
         '~rmlast': function(event) {
             if(this.rmAllowed === true || _.include(dbot.config.admins, event.user)) {
-                var key = event.input[1].trim().toLowerCase();
+                var key = event.input[1].trim().toLowerCase(),
+                    category = false;
 
-                this.db.slice('quote_category', key, -1, 1, function(err, removed) {
-                    if(!err) {
-                        this.internalAPI.resetRemoveTimer(event, key, removed);
-                        event.reply(dbot.t('removed_from', {
-                            'quote': removed, 
-                            'category': key
-                        }));
-                    } else if(err instanceof NoSuchThingError) {
+                this.db.search('quote_category', { 'name': key }, function(result) {
+                    category = result;    
+                }, function(err) {
+                    if(category) {
+                        var removedQuote = category.quotes.pop();
+                        this.db.save('quote_category', category.id, category, function(err) {
+                            this.internalAPI.resetRemoveTimer(event, key, removedQuote);
+                            event.reply(dbot.t('removed_from', {
+                                'quote': removedQuote, 
+                                'category': key
+                            }));
+                        }.bind(this));
+                    } else {
                         event.reply(dbot.t('category_not_found', { 'category': key }));
                     }
                 }.bind(this));
@@ -127,22 +154,30 @@ var commands = function(dbot) {
         '~rm': function(event) {
             if(this.rmAllowed == true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase();
-                var quote = event.input[2];
+                    quote = event.input[2],
+                    category = false;
 
-                this.db.remove('quote_category', key, quote, function(err) {
-                    if(!err) {
-                        this.internalAPI.resetRemoveTimer(event, key, quote);
-                        event.reply(dbot.t('removed_from', {
-                            'category': key, 
-                            'quote': quote
-                        }));
-                    } else if(err instanceof NoSuchThingError) {
+                this.db.search('quote_category', { 'name': key }, function(result) {
+                    category = result;
+                }, function(err) {
+                    if(category) {
+                        if(category.quotes.indexOf(quote) != -1) {
+                            category.quotes = _.without(category.quotes, quote);
+                            this.db.save('quote_category', category.id, category, function(err) {
+                                this.internalAPI.resetRemoveTimer(event, key, quote);
+                                event.reply(dbot.t('removed_from', {
+                                    'category': key, 
+                                    'quote': quote
+                                }));
+                            }.bind(this));
+                        } else {
+                            event.reply(dbot.t('q_not_exist_under', {
+                                'category': key, 
+                                'quote': quote
+                            }));
+                        }
+                    } else {
                         event.reply(dbot.t('category_not_found', { 'category': key }));
-                    } else if(err instanceof NoSuchItemError) {
-                        event.reply(dbot.t('q_not_exist_under', {
-                            'category': key, 
-                            'quote': quote
-                        }));
                     }
                 }.bind(this));
             } else {
@@ -156,39 +191,39 @@ var commands = function(dbot) {
         '~qstats': function(event) {
             var quoteSizes = {};
             this.db.scan('quote_category', function(category) {
-                // TODO: get name?
-                quoteSizes[name] = category.length; 
-            }.bind(this), function(err) {
-                if(err) {
-                    // QQ
+                if(category) {
+                    quoteSizes[category.name] = category.quotes.length; 
                 }
+            }.bind(this), function(err) {
+                var qSizes = _.chain(quoteSizes)
+                    .pairs()
+                    .sortBy(function(category) { return category[1] })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                var qString = dbot.t('large_categories');
+                for(var i=0;i<qSizes.length;i++) {
+                    qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
+                }
+
+                event.reply(qString.slice(0, -2));
             });
-
-            var qSizes = _.chain(quoteSizes)
-                .pairs()
-                .sortBy(function(category) { return category[1] })
-                .reverse()
-                .first(10)
-                .value();
-
-            var qString = dbot.t('large_categories');
-            for(var i=0;i<qSizes.length;i++) {
-                qString += qSizes[i][0] + " (" + qSizes[i][1].length + "), ";
-            }
-
-            event.reply(qString.slice(0, -2));
         },
         
         // Search a given category for some text.
         '~qsearch': function(event) {
-            var haystack = event.input[1].trim().toLowerCase();
-            var needle = event.input[2];
+            var haystack = event.input[1].trim().toLowerCase(),
+                needle = event.input[2],
+                category = false;
 
-            this.db.read('quote_category', haystack, function(err, category) {
-                if(!err) {
-                    var matches = _.filter(category, function(quote) {
+            this.db.search('quote_category', { 'name': haystack }, function(result) {
+                category = result;
+            }, function(err) {
+                if(category) {
+                    var matches = _.filter(category.quotes, function(quote) {
                         return quote.indexOf(needle) != -1;
-                    }, this);
+                    });
 
                     if(matches.length == 0) {
                         event.reply(dbot.t('no_results'));
@@ -200,45 +235,53 @@ var commands = function(dbot) {
                             'matches': matches.length
                         }));
                     }
-                } else if(err == NoSuchThingError) {
+                } else {
                     event.reply(dbot.t('empty_category'));
                 }
-            }.bind(this));
+            });
         },
        
         // Count quotes in a given category or total quotes overall
         '~qcount': function(event) {
             var input = event.message.valMatch(/^~qcount ([\d\w\s-]*)/, 2);
             if(input) { // Give quote count for named category
-                var key = input[1].trim().toLowerCase();
-                this.db.read('quote_category', key, function(err, category) {
-                    if(!err) {
+                var key = input[1].trim().toLowerCase(),
+                    category = false;
+
+                this.db.search('quote_category', { 'name': key }, function(result) {
+                    category = result;
+                }, function(err) {
+                    if(category) {
                         event.reply(dbot.t('quote_count', {
                             'category': key, 
-                            'count': category.length
+                            'count': category.quotes.length
                         }));
-                    } else if(err instanceof AlreadyExistsError) {
+                    } else {
                         event.reply(dbot.t('category_not_found', { 'category': name }));
                     }
-                }.bind(this));
+                });
             } else {
                 var quoteCount = 0;
                 this.db.scan('quote_category', function(category) {
-                    quoteCount += category.length; 
-                }.bind(this), function(err) {
-                    if(!err) {
-                        event.reply(dbot.t('total_quotes', { 'count': quoteCount }));
+                    if(category) {
+                        quoteCount += category.quotes.length; 
                     }
-                }.bind(this));
+                }, function(err) {
+                    event.reply(dbot.t('total_quotes', { 'count': quoteCount }));
+                });
             }
         },
 
         // Link to quote web page
         '~link': function(event) {
-            var key = event.input[1].toLowerCase();
-            this.db.read('quote_category', key, function(err, category) {
-                if(!err) {
-                    if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost')
+            var key = event.input[1].toLowerCase(),
+                category = false;
+
+            this.db.search('quote_category', { 'name': key }, function(result) {
+                category = result;
+            }, function(err) {
+                if(category) {
+                    if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost')) {
                         event.reply(dbot.t('quote_link', {
                             'category': key, 
                             'url': dbot.t('url', {
@@ -250,7 +293,7 @@ var commands = function(dbot) {
                     } else {
                         event.reply(dbot.t('web_not_configured'));
                     }
-                } else if(err == NoSuchThingError) {
+                } else {
                     event.reply(dbot.t('category_not_found', { 'category': key }));
                 }
             });
