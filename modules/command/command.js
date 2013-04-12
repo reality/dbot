@@ -13,6 +13,9 @@ var command = function(dbot) {
      */
     this.listener = function(event) {
         var commandName = event.params[0];
+        if(commandName.charAt(0) != '~') {
+            return;
+        }
         if(!_.has(dbot.commands, commandName)) {
             if(_.has(dbot.modules, 'quotes')) {
                 commandName = '~';
