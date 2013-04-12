@@ -84,7 +84,7 @@ var link = function(dbot) {
                 try {
                     var result = JSON.parse(body);
                     if(_.has(result, 'result_type') && result.result_type != 'no_results') {
-                        event.reply(query + ': ' + result.list[0].definition.split('\n')[0]);
+                        event.reply(result.list[0].word + ': ' + result.list[0].definition.split('\n')[0]);
                     } else {
                         event.reply(event.user + ': No definition found.');
                     }
