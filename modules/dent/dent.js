@@ -64,20 +64,13 @@ var dent = function(dbot) {
                 }
             }.bind(this));
         }
-    }.bind(this);
-    
-    this.listener = function(event) {
-      for (s in this.StatusRegex) {
-        if (this.StatusRegex.hasOwnProperty(s)) {
-          var matches = this.StatusRegex[s].exec(event.message);
-          if (matches != null) {
-            this.lookup(event, matches[1], s);
-          }
-        }
-      }
-    }.bind(this);
 
-    this.on = 'PRIVMSG';
+        for(s in this.StatusRegex) {
+            dbot.api.link.addHandler(this.StatusRegex[s], function(event, matches) {
+                this.lookup(event, matches[1], s);
+            }.bind(this));
+        }
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {

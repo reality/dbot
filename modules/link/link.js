@@ -10,6 +10,7 @@ var request = require('request'),
 var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     this.links = {}; 
+    this.handlers = [];
     this.fetchTitle = function(event, link) {
         var limit = 1000000,
         size = 0,
@@ -29,6 +30,12 @@ var link = function(dbot) {
                 page.abort();
             }
         });
+    };
+
+    this.api = {
+        'addHandler': function(regex, handler) {
+            this.handlers.push({ 'regex': regex, 'callback': handler });
+        }
     };
                 
     var commands = {
@@ -100,7 +107,15 @@ var link = function(dbot) {
         if(urlMatches !== null) {
             this.links[event.channel.name] = urlMatches[0];
             if(dbot.config.link.autoTitle == true) {
-                this.fetchTitle(event, urlMatches[0]);
+                var handlerFound = false;
+                for(var i=0;i<this.handlers.length;i++) {
+                    var matches = this.handlers[i].regex.exec(urlMatches[0]);     
+                    if(matches) {
+                        this.handlers[i].callback(event, matches);
+                        handlerFound = true; break;
+                    }
+                }
+                if(!handlerFound) this.fetchTitle(event, urlMatches[0]);
             }
         }
     }.bind(this);
