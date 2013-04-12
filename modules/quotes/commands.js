@@ -3,43 +3,24 @@ var _ = require('underscore')._,
     uuid = require('node-uuid');
 
 var commands = function(dbot) {
-    var quotes = dbot.db.quoteArrs;
     var commands = {
         /*** Quote Addition ***/
 
         // Add a quote to a category
         '~qadd': function(event) {
-            var key = event.input[1].toLowerCase().trim(),
-                quote = event.input[2],
-                newCount,
-                category = false;
+            var key = event.input[1].toLowerCase().trim();
+                quote = event.input[2];
 
-            this.db.search('quote_category', { 'name': key }, function(result) {
-                category = result;
-            }, function(err) {
-                if(!category) {
-                    var id = uuid.v4();
-                    category = {
-                        'id': id,
-                        'name': key,
-                        'quotes': [], 
-                        'creator': event.user
-                    };
-                } 
-
-                newCount = category.quotes.push(quote);
-                this.db.save('quote_category', category.id, category, function(err) {
-                    this.rmAllowed = true;
-                    dbot.api.event.emit('~qadd', {
-                        'key': key,
-                        'text': quote
-                    });
-                    event.reply(dbot.t('quote_saved', {
-                        'category': key, 
-                        'count': newCount
-                    }));
+            this.api.addQuote(key, quote, event.user, function(newCount) {
+                dbot.api.event.emit('~qadd', {
+                    'key': key,
+                    'text': quote
                 });
-            }.bind(this));
+                event.reply(dbot.t('quote_saved', {
+                    'category': key, 
+                    'count': newCount
+                }));
+            });
         },
 
         /*** Quote Retrieval ***/
@@ -102,10 +83,7 @@ var commands = function(dbot) {
             var rmCacheCount = rmCache.length;
             
             _.each(rmCache, function(quote, index) {
-                //TODO: Add quote add API func
-                var qadd = _.clone(event);
-                qadd.message = '~qadd ' + quote.key + '=' + quote.quote;
-                dbot.instance.emit(qadd);
+                this.api.addQuote(quote.key, quote.quote, event.user, function(newCount) { });
             });
 
             rmCache.length = 0;
@@ -233,7 +211,6 @@ var commands = function(dbot) {
                     }
                 }, function(err) {
                     if(matches.length > 0) {
-                        console.log(matches);
                         event.reply(dbot.t('search_results', {
                             'category': matches[0].category, 
                             'needle': needle,
