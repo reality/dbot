@@ -1,5 +1,8 @@
 {
     "about_subreddit": {
         "en": "[{display_name} has {subscribers} subscribers ({active} active)]"
+    },
+    "about_post": {
+        "en": "[Post by {poster} in {subreddit}. Comments: {comments}. Score: {score} ({up}|{down})]"
     }
 }

@@ -7,6 +7,7 @@ var _ = require('underscore')._,
 
 var reddit = function(dbot) {
     this.ApiRoot = 'http://reddit.com/';
+    this.UserAgent = 'dbot by u/realitone';
 
     this.api = {
         'getSubredditInfo': function(name, callback) {
@@ -14,30 +15,67 @@ var reddit = function(dbot) {
                 'url': this.ApiRoot + 'r/' + name + '/about.json',
                 'json': true,
                 'headers': {
-                    'User-Agent': 'dbot by u/realitone'
+                    'User-Agent': this.UserAgent
                 }
             }, function(err, response, body) {
-                callback(body);
+                var data = null;
+                if(_.has(body, 'data')) data = body.data;
+                callback(data);
+            });
+        },
+
+        'getPostInfo': function(name, callback) {
+            request.get({
+                'url': this.ApiRoot + 'comments/' + name + '.json',
+                'json': true,
+                'headers': {
+                    'User-Agent': this.UserAgent
+                }
+            }, function(err, response, body) {
+                if(body[0] && _.has(body[0], 'data')) {
+                    callback(body[0].data.children[0].data);
+                }
             });
         }
     };
 
     this.onLoad = function() {
-        var srHandler = function(event, matches, name) {
-            this.api.getSubredditInfo(matches[2], function(info) {
-                if(info.data) {
-                    info = info.data;
-                    var infoString = dbot.t('about_subreddit', {
-                        'display_name': info.display_name,
-                        'subscribers': info.subscribers,
-                        'active': info.accounts_active
-                    });
-                    if(info.over18) infoString += ' [NSFW]';
-                    event.reply(infoString);
-                }
-            });
+        var rHandler = function(event, matches, name) {
+            if(matches[6]) { // It's a comment
+
+            } else if(matches[4]) { // It's a post
+                this.api.getPostInfo(matches[4], function(info) {
+                    if(info) {
+                        var infoString = dbot.t('about_post', {
+                            'poster': info.author,
+                            'subreddit': info.subreddit,
+                            'comments': info.num_comments,
+                            'score': info.score,
+                            'up': info.ups,
+                            'down': info.downs
+                        });
+                        if(info.over18) infoString += ' [NSFW]';
+                        event.reply(infoString);
+                    }
+                });
+            } else if(matches[2]) { // It's a subreddit
+                this.api.getSubredditInfo(matches[2], function(info) {
+                    if(info) {
+                        var infoString = dbot.t('about_subreddit', {
+                            'display_name': info.display_name,
+                            'subscribers': info.subscribers,
+                            'active': info.accounts_active
+                        });
+                        if(info.over18) infoString += ' [NSFW]';
+                        event.reply(infoString);
+                    }
+                });
+            }
         }.bind(this);
-        dbot.api.link.addHandler(this.name, /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)/, srHandler);
+
+        dbot.api.link.addHandler(this.name, // I'm so sorry, Jesus.
+            /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)(\/comments\/([a-zA-Z0-9]+)?\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)?)?/, 
+            rHandler);
     }.bind(this);
 };
 
