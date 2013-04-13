@@ -27,11 +27,7 @@ var commands = function(dbot) {
                     event.reply(dbot.t('poll_created', {
                         'name': name, 
                         'description': description, 
-                        'url': dbot.t('url', {
-                            'host': 'test.com',
-                            'port': 80, 
-                            'path': 'polls/' + name
-                        })
+                        'url': dbot.api.web.getUrl('/poll/' + name)     
                     })); 
                 } else if(err instanceof AlreadyExistsError) {
                     event.reply(dbot.t('poll_exists', { 'name': name }));

@@ -91,7 +91,17 @@ var commands = function(dbot) {
                 { 'count': rmCacheCount }));
         },
 
-        // Remove last quote from category
+        // Retrieve quote from a category in the database.
+        '~q': function(event) { 
+            var key = event.input[1].trim().toLowerCase();
+            var quote = this.api.getQuote(event, event.input[1]);
+            if(quote) {
+                event.reply(key + ': ' + quote);
+            } else {
+                event.reply(dbot.t('category_not_found', {'category': key}));
+            }
+        },
+
         '~rmlast': function(event) {
             if(this.rmAllowed === true || _.include(dbot.config.admins, event.user)) {
                 var key = event.input[1].trim().toLowerCase(),
@@ -352,11 +362,7 @@ var commands = function(dbot) {
                     if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost')) {
                         event.reply(dbot.t('quote_link', {
                             'category': key, 
-                            'url': dbot.t('url', {
-                                'host': dbot.config.web.webHost, 
-                                'port': dbot.config.web.webPort, 
-                                'path': 'quotes/' + encodeURIComponent(key)
-                            })
+                            'url': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
                         }));
                     } else {
                         event.reply(dbot.t('web_not_configured'));
