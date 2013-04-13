@@ -3,7 +3,7 @@
         "en": "[{display_name} has {subscribers} subscribers ({active} active)]"
     },
     "about_post": {
-        "en": "[Post by {poster} in {subreddit} - Comments: {comments}, Score: {score} ({up}|{down})]"
+        "en": "[Post by {poster} in {subreddit} - Comments: {comments}, Score: {score} ({up}|{down})] - {url}"
     },
     "about_comment": {
         "en": "[Comment by {poster} in {subreddit} - Score: {score} ({up}|{down})]"

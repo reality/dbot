@@ -82,12 +82,13 @@ var reddit = function(dbot) {
                             'comments': info.num_comments,
                             'score': info.score,
                             'up': info.ups,
-                            'down': info.downs
+                            'down': info.downs,
+                            'url': this.ApiRoot + matches[4]
                         });
                         if(info.over_18) infoString += ' [NSFW]';
                         event.reply(infoString);
                     }
-                });
+                }.bind(this));
             } else if(matches[2]) { // It's a subreddit
                 this.api.getSubredditInfo(matches[2], function(info) {
                     if(info) {
