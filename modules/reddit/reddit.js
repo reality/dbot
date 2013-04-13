@@ -36,13 +36,43 @@ var reddit = function(dbot) {
                     callback(body[0].data.children[0].data);
                 }
             });
+        },
+
+        'getCommentInfo': function(post, name, callback) {
+            request.get({
+                'url': this.ApiRoot + 'comments/' + post + '.json',
+                'qs': {
+                    'comment': name
+                },
+                'json': true,
+                'headers': {
+                    'User-Agent': this.UserAgent
+                }
+            }, function(err, response, body) {
+                if(body[1] && _.has(body[1], 'data')) {
+                    callback(body[1].data.children[0].data);
+                }
+            });
         }
     };
 
     this.onLoad = function() {
         var rHandler = function(event, matches, name) {
             if(matches[6]) { // It's a comment
-
+                this.api.getCommentInfo(matches[4], matches[6], function(info) {
+                    if(info) {
+                        var infoString = dbot.t('about_comment', {
+                            'poster': info.author,
+                            'subreddit': info.subreddit,
+                            'comments': info.num_comments,
+                            'score': info.ups - info.downs,
+                            'up': info.ups,
+                            'down': info.downs
+                        });
+                        if(info.over_18) infoString += ' [NSFW]';
+                        event.reply(infoString);
+                    } 
+                });
             } else if(matches[4]) { // It's a post
                 this.api.getPostInfo(matches[4], function(info) {
                     if(info) {
@@ -54,7 +84,7 @@ var reddit = function(dbot) {
                             'up': info.ups,
                             'down': info.downs
                         });
-                        if(info.over18) infoString += ' [NSFW]';
+                        if(info.over_18) infoString += ' [NSFW]';
                         event.reply(infoString);
                     }
                 });
