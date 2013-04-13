@@ -24,7 +24,7 @@ var reddit = function(dbot) {
 
     this.onLoad = function() {
         var srHandler = function(event, matches, name) {
-            this.api.getSubredditInfo(matches[1], function(info) {
+            this.api.getSubredditInfo(matches[2], function(info) {
                 if(info.data) {
                     info = info.data;
                     var infoString = dbot.t('about_subreddit', {
@@ -37,7 +37,7 @@ var reddit = function(dbot) {
                 }
             });
         }.bind(this);
-        dbot.api.link.addHandler(this.name, /https?:\/\/reddit\.com\/r\/([a-zA-Z0-9]+)/, srHandler);
+        dbot.api.link.addHandler(this.name, /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)/, srHandler);
     }.bind(this);
 };
 
