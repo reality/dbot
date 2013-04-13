@@ -46,7 +46,7 @@ var webInterface = function(dbot) {
             } else {
                 return 'http://' + this.config.webHost + ':' + port + '/' + path;
             }
-        };
+        }
     };
 };
 
