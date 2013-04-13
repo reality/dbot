@@ -3,5 +3,6 @@
     "password": "yourpasswordhere",
     "dependencies": [ "command" ],
     "ignorable": true,
+    "help": "https://github.com/reality/depressionbot/blob/master/modules/dent/README.md",
     "dentQuotes": false
 }
