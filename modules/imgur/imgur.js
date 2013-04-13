@@ -16,10 +16,14 @@ var imgur = function(dbot) {
                 if(imgData.title) {
                     info += imgData.title + ' is ';
                 }
-                if(imgData.animated) {
-                    info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
+                if(imgData.type) {
+                    if(imgData.animated) {
+                        info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
+                    } else {
+                        info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
+                    }
                 } else {
-                    info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
+                    info += 'an image with ';
                 }
                 info += imgData.views + ' views (';
                 info += imgData.width + 'x' + imgData.height + ')].';
