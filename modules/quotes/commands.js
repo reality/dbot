@@ -387,6 +387,7 @@ var commands = function(dbot) {
     commands['~rmconfirm'].access = 'moderator';
     commands['~rmdeny'].access = 'moderator';
     commands['~qrename'].access = 'moderator';
+    commands['~qmerge'].access = 'moderator';
 
     return commands;
 };
