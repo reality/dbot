@@ -7,6 +7,27 @@ var _ = require('underscore')._,
     request = require('request');
 
 var imgur = function(dbot) {
+    this.internalAPI = {
+        'infoString': function(imgData) {
+            info = null;
+            if(imgData && _.has(imgData, 'data')) {
+                imgData = imgData.data;
+                info = '[';
+                if(imgData.title) {
+                    info += imgData.title + ' is ';
+                }
+                if(imgData.animated) {
+                    info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
+                } else {
+                    info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
+                }
+                info += imgData.views + ' views].';
+            }
+
+            return info;
+        }
+    };
+
     this.api = { 
         'getRandomImage': function(callback) {
             var random = function(len) {
@@ -46,28 +67,24 @@ var imgur = function(dbot) {
         '~ri': function(event) {
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
-                    imgData = imgData.data;
-                    var info = '[';
-                    if(imgData.title) {
-                        info += imgData.title + ' is ';
-                    } else {
-                        info += 'no-title is ';
-                    }
-                    if(imgData.animated) {
-                        info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
-                    } else {
-                        info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
-                    }
-                    info += imgData.views + ' views.]';
-
+                    var info = this.internalAPI.infoString(imgData);
                     event.reply(event.user + ': ' + link + ' ' + info);
-                });
-                
+                }.bind(this));
             }.bind(this));
         }
     }
 
     this.onLoad = function() {
+        var imgurHandler = function(event, matches, name) {
+            if(matches[2]) { // TODO: handle this in the regex
+                this.api.getImageInfo(matches[1], function(imgData) {
+                    var info = this.internalAPI.infoString(imgData);
+                    if(info) event.reply(info);
+                }.bind(this));
+            }
+        }.bind(this);
+        dbot.api.link.addHandler(this.name, /http:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
+        dbot.api.link.addHandler(this.name, /\bhttps?:\/\/imgur\.com\/([a-zA-Z0-9]+)\b/i, imgurHandler);
     }.bind(this);
 };
 
