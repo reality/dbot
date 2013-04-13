@@ -21,7 +21,8 @@ var imgur = function(dbot) {
                 } else {
                     info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
                 }
-                info += imgData.views + ' views].';
+                info += imgData.views + ' views (';
+                info += imgData.width + 'x' + imgData.height + ')].';
             }
 
             return info;
