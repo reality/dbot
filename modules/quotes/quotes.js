@@ -110,6 +110,9 @@ var quotes = function(dbot) {
             }.bind(this));
         }
     };
+
+    this.api['getQuoteCategory'].external = true;
+    this.api['getQuoteCategory'].extMap = [ 'name' ];
    
     this.listener = function(event) {
         if(event.action == 'PRIVMSG') {
