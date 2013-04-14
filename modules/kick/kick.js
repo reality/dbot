@@ -38,7 +38,7 @@ var kick = function(dbot) {
                 }) + ')');
             }
         }
-    };
+    }.bind(this);
     this.on = 'KICK';
 };
 
