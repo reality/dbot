@@ -28,11 +28,8 @@ var flashy = function(dbot) {
             var text = event.input[2].trim().toUpperCase();
 
             if(_.has(this.colourMap, colour)) {
-                event.reply(dbot.t('url', {
-                    'host': dbot.config.web.webHost,
-                    'port': dbot.config.web.webPort,
-                    'path': 'flashy/' + colour + '/' + encodeURIComponent(text)
-                }));
+                event.reply(dbot.api.web.getUrl('flashy/' + colour + '/' +
+                    encodeURIComponent(text)));
             } else {
                 var possibleColours = _.keys(this.colourMap).join(', ') + '.';
                 event.reply('No such colour, brah. Available colours are: ' + possibleColours);

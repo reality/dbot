@@ -1,3 +1,4 @@
 {
-    "ignorable": true
+    "ignorable": true,
+    "help": "https://github.com/reality/depressionbot/blob/master/modules/ctcp/README.md"
 }

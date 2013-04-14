@@ -16,12 +16,17 @@ var imgur = function(dbot) {
                 if(imgData.title) {
                     info += imgData.title + ' is ';
                 }
-                if(imgData.animated) {
-                    info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
+                if(imgData.type) {
+                    if(imgData.animated) {
+                        info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
+                    } else {
+                        info += 'a ' + imgData.type.split('/')[1] + ' with ';
+                    }
                 } else {
-                    info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
+                    info += 'an image with ';
                 }
-                info += imgData.views + ' views].';
+                info += imgData.views + ' views (';
+                info += imgData.width + 'x' + imgData.height + ')].';
             }
 
             return info;
@@ -76,15 +81,15 @@ var imgur = function(dbot) {
 
     this.onLoad = function() {
         var imgurHandler = function(event, matches, name) {
-            if(matches[2]) { // TODO: handle this in the regex
+            if(matches[1]) { 
                 this.api.getImageInfo(matches[1], function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
                     if(info) event.reply(info);
                 }.bind(this));
             }
         }.bind(this);
-        dbot.api.link.addHandler(this.name, /http:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
-        dbot.api.link.addHandler(this.name, /\bhttps?:\/\/imgur\.com\/([a-zA-Z0-9]+)\b/i, imgurHandler);
+        dbot.api.link.addHandler(this.name, /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
+        dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
     }.bind(this);
 };
 

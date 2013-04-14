@@ -1,5 +1,6 @@
 {
     "webHost": "localhost",
     "webPort": 8080,
-    "externalPath": false
+    "externalPath": false,
+    "help": "https://github.com/reality/depressionbot/blob/master/modules/web/README.md"
 }

@@ -1,6 +1,23 @@
 var _ = require('underscore')._;
 
 var report = function(dbot) {
+    this.api = {
+        'notify': function(server, channel, reporter, reported, message) {
+            var channel = dbot.instance.connections[server].channels[channel]; 
+            var ops = _.filter(channel.nicks, function(user) {
+                if(this.config.notifyVoice) {
+                    return user.op || user.voice;
+                } else {
+                    return user.op; 
+                }
+            }, this);
+
+            _.each(ops, function(user) {
+                dbot.say(server, user.name, message);
+            }, this);
+        }
+    };
+
     var commands = {
         '~report': function(event) {
             var channelName = event.input[1];
@@ -8,31 +25,21 @@ var report = function(dbot) {
             var reason = event.input[3];
 
             if(_.has(event.allChannels, channelName)) {
-                var channel = event.allChannels[channelName];
                 if(dbot.api.users.isChannelUser(event.server, nick, channelName, true)) {
-                    var nick = dbot.api.users.resolveUser(event.server, nick, true);
-                    var ops = _.filter(channel.nicks, function(user) {
-                        if(this.config.notifyVoice) {
-                            return user.op || user.voice;
-                        } else {
-                            return user.op; 
-                        }
-                    }, this);
-
-                    _.each(ops, function(user) {
-                        dbot.say(event.server, user.name, dbot.t('report', {
-                            'reporter': event.user,
-                            'reported': nick,
-                            'channel': channelName,
-                            'reason': reason
-                        }));
-                    }, this);
-
+                    nick = dbot.api.users.resolveUser(event.server, nick, true);
+                    this.api.notify(event.server, channelName, event.user, nick, dbot.t('report', {
+                        'reporter': event.user,
+                        'reported': nick,
+                        'channel': channelName,
+                        'reason': reason
+                    }));
                     event.reply(dbot.t('reported', { 'reported': nick }));
                 } else {
-                    event.reply(dbot.t('user_not_found', { 'reported': nick,
-                        'channel': channelName }));
-                }
+                    event.reply(dbot.t('user_not_found', { 
+                        'reported': nick,
+                        'channel': channelName 
+                    }));
+                } 
             } else {
                 event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
             }

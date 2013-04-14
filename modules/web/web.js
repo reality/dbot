@@ -41,12 +41,15 @@ var webInterface = function(dbot) {
 
     this.api = {
         'getUrl': function(path) {
+            console.log(path);
             if(this.config.externalPath) {
+                console.log('external');
                 return this.config.externalPath + '/' + path;
             } else {
-                return 'http://' + this.config.webHost + ':' + port + '/' + path;
+                console.log('internal');
+                return 'http://' + this.config.webHost + ':' + this.config.webPort + '/' + path;
             }
-        };
+        }
     };
 };
 
