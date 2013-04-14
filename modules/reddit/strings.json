@@ -7,7 +7,7 @@
     },
     "about_comment": {
         "en": "[Comment by {poster} in {subreddit} — Score: {score} (\u00039▲{up}\u0015|\u000312{down}▼\u0015)]"
-    }
+    },
     "nsfw": {
         "en": "[NSFW]"
     }
