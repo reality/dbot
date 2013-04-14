@@ -1,6 +1,6 @@
 {
-    "webHost": "localhost",
-    "webPort": 8080,
+    "webHost": "nourishedcloud.com",
+    "webPort": 9001,
     "externalPath": false,
     "help": "https://github.com/reality/depressionbot/blob/master/modules/web/README.md"
 }

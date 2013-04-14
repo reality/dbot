@@ -10,5 +10,8 @@
         "es": "No expulsás {botname}",
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
         "cy": "Ni ddylech cicio {botname}"
+    },
+    "ckicked": {
+        "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\""
     }
 }
