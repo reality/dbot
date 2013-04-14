@@ -67,6 +67,8 @@ var imgur = function(dbot) {
             });
         }
     };
+    this.api['getRandomImage'].external = true;
+    this.api['getRandomImage'].extMap = [ 'callback' ];
 
     this.commands = {
         '~ri': function(event) {

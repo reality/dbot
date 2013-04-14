@@ -3,17 +3,17 @@ var express = require('express'),
     fs = require('fs');
 
 var webInterface = function(dbot) {
-    var pub = 'public';
-    var app = express();
+    this.pub = 'public';
+    this.app = express();
 
-    app.use(express.static(pub));
-    app.set('view engine', 'jade');
+    this.app.use(express.static(this.pub));
+    this.app.set('view engine', 'jade');
 
-    app.get('/', function(req, res) {
+    this.app.get('/', function(req, res) {
         res.render('index', { 'name': dbot.config.name });
     });
    
-    var server = app.listen(dbot.config.web.webPort);
+    var server = this.app.listen(dbot.config.web.webPort);
 
     this.reloadPages = function() {
         var pages = dbot.pages;
@@ -21,7 +21,7 @@ var webInterface = function(dbot) {
             if(_.has(pages, p)) {
                 var func = pages[p];
                 var mod = func.module;
-                app.get(p, (function(req, resp) {
+                this.app.get(p, (function(req, resp) {
                     // Crazy shim to seperate module views.
                     var shim = Object.create(resp);
                     shim.render = (function(view, one, two) {
