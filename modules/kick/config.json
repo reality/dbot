@@ -3,5 +3,6 @@
     "dependencies": [ "command", "report", "users" ],
     "help": "http://github.com/reality/depressionbot/blob/master/modules/kick/README.md",
     "ignorable": true,
-    "countSilently": true
+    "countSilently": true,
+    "chanserv": "ChanServ"
 }

@@ -4,7 +4,11 @@ var kick = function(dbot) {
     
     this.api = {
         'ban': function(server, user, channel) {
-            dbot.instance.connections[server].send('MODE ' + channel + ' +b ' + user + '!*@*');
+            dbot.say(event.server, this.config.chanserv, '!ban ' + user)
+        },
+
+        'quiet': function(server, user, channel) {
+            dbot.say(event.server, this.config.chanserv, '!quiet ' + user)
         },
 
         'kick': function(server, user, channel, msg) {
