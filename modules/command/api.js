@@ -59,12 +59,12 @@ var api = function(dbot) {
                         applies = true;
                         event.input = q;
                     }
-                } else if {
+                } else {
                     var q = event.message.match(cRegex);
                     if(q) {
                         applies = true;
                         event.input = q;
-                    ]
+                    }
                 }
             } else {
                 applies = true;
