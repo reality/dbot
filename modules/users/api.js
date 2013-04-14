@@ -139,6 +139,12 @@ var api = function(dbot) {
         }
     };
 
+    api['resolveUser'].external = true;
+    api['resolveUser'].extMap = [ 'server', 'nick', 'callback' ];
+
+    api['getChannel'].external = true;
+    api['getChannel'].extMap = [ 'server', 'channel', 'callback' ];
+
     return api;
 };
 

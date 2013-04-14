@@ -26,19 +26,30 @@ var users = function(dbot) {
             });
         }.bind(this),
 
-        'addChannelUser': function(user, channelName) {
-            user.channels.push(channelName);
-            this.db.save('users', user.id, user, function(err) {
+        'createChannel': function(server, name, callback) {
+            var id = uuid.v4();
+            this.db.create('channel_users', id, {
+                'id': id,
+                'server': server,
+                'name': name,
+                'users': []
+            }, function(err, result) {
                 if(!err) {
-                    this.api.getChannel(user.server, channelName, function(channel) {
-                        channel.users.push(user.primaryNick);
-                        this.db.save('channel_users', channel.id, channel, function(err) {
-                            if(!err) {
-                                dbot.api.event.emit('new_channel_user', [ user, channel]);
-                            }
-                        });
-                    }.bind(this));
+                    dbot.api.event.emit('new_channel', [ result ]);
+                    callback(result);
                 }
+            });
+        }.bind(this),
+
+        'addChannelUser': function(user, channelName, callback) {
+            this.api.getChannel(user.server, channelName, function(channel) {
+                channel.users.push(user.id);
+                this.db.save('channel_users', channel.id, channel, function(err) {
+                    if(!err) {
+                        dbot.api.event.emit('new_channel_user', [ user, channel ]);
+                        callback();
+                    }
+                });
             }.bind(this));
         }.bind(this), 
 
@@ -63,15 +74,13 @@ var users = function(dbot) {
         if(event.action == 'JOIN' && event.user != dbot.config.name) {
             this.api.resolveUser(event.server, event.user, function(user) {
                 if(!user) { // User does not yet exist 
-                    this.internalAPI.createUser(event.server, event.user, event.channel, function(result) {
-                        user = result;
-                        if(!_.include(user.channels, event.channel)) { // User not yet channel user
-                            this.internalAPI.addChannelUser(user, event.channel.name);
-                        }
-                    });
+                    this.internalAPI.createUser(event.server, event.user, event.channel.name, function(result) {
+                        this.internalAPI.addChannelUser(result, event.channel.name, function(err) { });
+                    }.bind(this));
                 } else {
-                    if(!_.include(user.channels, event.channel)) { // User not yet channel user
-                        this.internalAPI.addChannelUser(user, event.channel.name);
+                    if(!_.include(user.channels, event.channel.name)) { // User not yet channel user
+                        users.channels.push(event.channel.name);
+                        this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
                     }
 
                     user.currentNick = event.user;
@@ -105,38 +114,33 @@ var users = function(dbot) {
     this.onLoad = function() {
         dbot.instance.addListener('366', 'users', function(event) {
             this.api.getChannel(event.server, event.channel.name, function(channel) {
-                if(!channel) { // Channel does not yet exist
-                    var id = uuid.v4();
-                    this.db.create('channel_users', id, {
-                        'id': id,
-                        'server': event.server,
-                        'name': event.channel.name,
-                        'users': []
-                    }, function(err, result) {
-                        if(!err) {
-                            channel = result;
-                            dbot.api.event.emit('new_channel', [ channel ]);
-                        }
-                    });
-                }
 
-                _.each(event.channel.nicks, function(nick) {
-                    var nick = nick.name;
-                    this.api.resolveUser(event.server, nick, function(user) {
-                        if(!user) {
-                            this.internalAPI.createUser(event.server, nick, event.channel, function(result) {
-                                user = result;
+                var checkChannelUsers = function(channel) {
+                    _.each(event.channel.nicks, function(nick) {
+                        var nick = nick.name;
+                        this.api.resolveUser(event.server, nick, function(user) {
+                            if(!user) {
+                                this.internalAPI.createUser(event.server, nick, event.channel.name, function(result) {
+                                    channel.users.push(result.id);
+                                }.bind(this));
+                            } else {
                                 if(!_.include(user.channels, event.channel)) {
-                                    this.internalAPI.addChannelUser(user, event.channel.name);
+                                    channel.users.push(user.id);
                                 }
-                            });
-                        } else {
-                            if(!_.include(user.channels, event.channel)) {
-                                this.internalAPI.addChannelUser(user, event.channel.name);
                             }
-                        }
+                        }.bind(this));
+                    }, this);
+
+                    process.nextTick(function() {
+                        this.db.save('channel_users', channel.id, channel, function(err) { });
                     }.bind(this));
-                }, this);
+                }.bind(this);
+
+                if(!channel) { // Channel does not yet exist
+                    this.internalAPI.createChannel(event.server, event.channel.name, checkChannelUsers);
+                } else {
+                    checkChannelUsers(channel);
+                }
             }.bind(this));
         }.bind(this));
 
