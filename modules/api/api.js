@@ -9,6 +9,7 @@ var api = function(dbot) {
         dbot.modules.web.app.get('/api/:module/:method', function(req, res) {
             var module = req.params.module,
                 method = req.params.method,
+                reqArgs = req.query,
                 body = { 'err': null, 'data': null };
 
                 if(!_.has(dbot.api, module)) {
@@ -21,11 +22,16 @@ var api = function(dbot) {
                 }
                 
                 if(!body.err) {
-                    var func = dbot.api[module][method];
-                    var paramNames = func.extMap;
-                    var args = [];
+                    var func = dbot.api[module][method],
+                        paramNames = func.extMap,
+                        args = [];
                     
-                    // TODO: Use request params to map to extMap args
+                    _.each(reqArgs, function(arg, name) {
+                        var callbackIndex = paramNames.indexOf(name);
+                        if(callbackIndex != -1) {
+                            args[callbackIndex] = decodeURIComponent(arg);
+                        }
+                    });
 
                     var callbackIndex = paramNames.indexOf('callback');
                     if(callbackIndex != -1) {
@@ -35,7 +41,7 @@ var api = function(dbot) {
                         };
                         func.apply(null, args);
                     } else {
-                        body.data = func.call(null, args);
+                        body.data = func.apply(null, args);
                         res.json(body);
                     }
                 } else {

@@ -83,8 +83,21 @@ var quotes = function(dbot) {
                     return false;
                 }
             } 
+        },
+
+        'getQuoteCategory': function(name) {
+            console.log(name);
+            var key = name.trim().toLowerCase();
+            if(_.has(this.quotes, key)) {
+                return this.quotes[key];
+            } else {
+                return false;
+            }
         }
     };
+
+    this.api['getQuoteCategory'].external = true;
+    this.api['getQuoteCategory'].extMap = [ 'name' ];
    
     this.listener = function(event) {
         if(event.action == 'PRIVMSG') {
