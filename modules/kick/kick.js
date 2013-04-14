@@ -9,7 +9,7 @@ var kick = function(dbot) {
 
         'quiet': function(server, user, channel) {
             dbot.say(server, this.config.chanserv, 'quiet ' + channel + ' ' + user)
-        }
+        },
 
         'kick': function(server, user, channel, msg) {
             dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
