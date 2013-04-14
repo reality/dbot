@@ -33,7 +33,7 @@ var commands = function(dbot){
             if(event.params[1]){
                 var primary = dbot.api.users.resolveUser(event.server, event.params[1]);
                 if(_.has(dbot.db.profiles[event.server], primary.toLowerCase())){
-                    event.reply(dbot.api.web.getUrl("/profile/"+event.server+"/"+primary.toLowerCase());
+                    event.reply(dbot.api.web.getUrl("/profile/"+event.server+"/"+primary.toLowerCase()));
                 }
                 else{
                     event.reply("No profile found for "+event.params[1]);
