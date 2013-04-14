@@ -3,9 +3,12 @@
         "en": "[{display_name} has {subscribers} subscribers ({active} active)]"
     },
     "about_post": {
-        "en": "[Post by {poster} in {subreddit} - Comments: {comments}, Score: {score} ({up}|{down})] - {url}"
+        "en": "[Post by {poster} in {subreddit} — Comments: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}"
     },
     "about_comment": {
-        "en": "[Comment by {poster} in {subreddit} - Score: {score} ({up}|{down})]"
+        "en": "[Comment by {poster} in {subreddit} — Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)]"
+    },
+    "nsfw": {
+        "en": "[NSFW]"
     }
 }

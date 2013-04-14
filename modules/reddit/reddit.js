@@ -69,7 +69,7 @@ var reddit = function(dbot) {
                             'up': info.ups,
                             'down': info.downs
                         });
-                        if(info.over_18) infoString += ' [NSFW]';
+                        if(info.over_18) infoString += " " + dbot.t("nsfw");
                         event.reply(infoString);
                     } 
                 });
@@ -85,7 +85,7 @@ var reddit = function(dbot) {
                             'down': info.downs,
                             'url': this.ApiRoot + matches[4]
                         });
-                        if(info.over_18) infoString += ' [NSFW]';
+                        if(info.over_18) infoString += " " + dbot.t("nsfw");
                         event.reply(infoString);
                     }
                 }.bind(this));
@@ -97,7 +97,7 @@ var reddit = function(dbot) {
                             'subscribers': info.subscribers,
                             'active': info.accounts_active
                         });
-                        if(info.over18) infoString += ' [NSFW]';
+                        if(info.over18) infoString += dbot.t("nsfw");
                         event.reply(infoString);
                     }
                 });

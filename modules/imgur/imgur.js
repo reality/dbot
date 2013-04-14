@@ -20,7 +20,7 @@ var imgur = function(dbot) {
                     if(imgData.animated) {
                         info += 'an animated ' + imgData.type.split('/')[1] + ' with ';
                     } else {
-                        info += 'a non-animated ' + imgData.type.split('/')[1] + ' with ';
+                        info += 'a ' + imgData.type.split('/')[1] + ' with ';
                     }
                 } else {
                     info += 'an image with ';
