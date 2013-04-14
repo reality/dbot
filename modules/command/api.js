@@ -53,10 +53,18 @@ var api = function(dbot) {
             var applies = false;
             if(_.has(dbot.commands[commandName], 'regex')) {
                 var cRegex = dbot.commands[commandName].regex;
-                var q = event.message.valMatch(cRegex[0], cRegex[1]);
-                if(q) {
-                    applies = true;
-                    event.input = q;
+                if(_.isArray(cRegex) && cRegex.length == 2) {
+                    var q = event.message.valMatch(cRegex[0], cRegex[1]);
+                    if(q) {
+                        applies = true;
+                        event.input = q;
+                    }
+                } else if {
+                    var q = event.message.match(cRegex);
+                    if(q) {
+                        applies = true;
+                        event.input = q;
+                    ]
                 }
             } else {
                 applies = true;
