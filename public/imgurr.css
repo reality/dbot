@@ -1,0 +1,15 @@
+html, body { margin: 0; padding: 0; height: 100%; }
+#container, #image {
+  margin: 0; padding: 0;
+  max-height: 100%;
+}
+#container { text-align: center; }
+#loading { 
+  background: rgba(255, 0, 0, 0.8); 
+  display: none; 
+  position: absolute;
+  top: 50px;
+  left: 30px;
+  padding: 10px;
+  color: #EFEFEF;
+}
