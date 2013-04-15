@@ -6,7 +6,10 @@ html(lang='en')
     link(rel="stylesheet", href="/imgurr.css")
     title random imgur
     script
+      var count = 0;
       function wat() {
+        count += 1;
+        $('#loading').text('Loading image ' + count);
         $('#loading').show();
         $('#image').load(function(){$('#loading').hide(); console.log('loaded')});
         $.get("/api/imgur/getRandomImage", function(d) {$('#image').attr('src', d.data[0])}, "json");
