@@ -1,15 +1,30 @@
-html, body { margin: 0; padding: 0; height: 100%; }
-#container, #image {
-  margin: 0; padding: 0;
-  max-height: 100%;
+#container {
+  text-align:center;
 }
-#container { text-align: center; }
-#loading { 
-  background: rgba(255, 0, 0, 0.8); 
-  display: none; 
-  position: absolute;
-  top: 50px;
-  left: 30px;
-  padding: 10px;
-  color: #EFEFEF;
+
+#container,#image {
+  margin:0;
+  max-height:100%;
+  padding:0;
+}
+
+#loading {
+  background:rgba(43,43,43,0.8);
+  border-bottom-right-radius:5px;
+  border-top-right-radius:5px;
+  color:#85bf25;
+  display:none;
+  font-family:sans-serif;
+  font-weight:700;
+  left:0;
+  padding:20px;
+  position:absolute;
+  top:50px;
+}
+
+html,body {
+  background-color:#121211;
+  height:100%;
+  margin:0;
+  padding:0;
 }
