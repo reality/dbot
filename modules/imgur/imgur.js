@@ -14,7 +14,7 @@ var imgur = function(dbot) {
                 imgData = imgData.data;
                 info = '[';
                 if(imgData.title) {
-                    info += imgData.title + ' is ';
+                    info += imgData.title + '][';
                 }
                 if(imgData.type) {
                     if(imgData.animated) {
