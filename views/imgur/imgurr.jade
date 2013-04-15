@@ -3,13 +3,17 @@ html(lang='en')
   head 
     meta(charset='utf-8')
     script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js")
+    link(rel="stylesheet", href="/imgurr.css")
     title random imgur
     script
       function wat() {
+        $('#loading').show();
+        $('#image').load(function(){$('#loading').hide(); console.log('loaded')});
         $.get("/api/imgur/getRandomImage", function(d) {$('#image').attr('src', d.data[0])}, "json");
       };
       $(wat());
-      $(document).keypress(wat);
+      $(document).on('keydown', function(e){(e.which==32)&&(wat()) });
   body
+    div#loading Loading Image
     div#container
-      img#image(style='width: 100%')
+      img#image
