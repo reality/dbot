@@ -65,7 +65,7 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/image/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID 86fd3a8da348b65'
+                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
                 }
             }, function(err, response, body) {
                 callback(body);
