@@ -7,15 +7,19 @@ html(lang='en')
     title random imgur
     script
       var count = 0;
-      function wat() {
+      function getNewImage() {
         count += 1;
-        $('#loading').text('Loading image ' + count);
-        $('#loading').show();
-        $('#image').load(function(){$('#loading').hide(); console.log('loaded')});
-        $.get("/api/imgur/getRandomImage", function(d) {$('#image').attr('src', d.data[0])}, "json");
-      };
-      $(wat());
-      $(document).on('keydown', function(e){(e.which==32)&&(wat()) });
+        $('#loading').text('Loading image ' + count + '...');
+        $('#image').load(function(){});
+        $.get("/api/imgur/getRandomImage", function(d) {
+          $('#image').attr('src', d.data[0]);
+          $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
+              $("#loading").text(count + ': ' + info.data[0]);
+          }, "json");
+        }, "json");
+      }
+      $(getNewImage());
+      $(document).on('keydown', function(e){(e.which==32)&&(getNewImage()) });
   body
     div#loading Loading Image
     div#container

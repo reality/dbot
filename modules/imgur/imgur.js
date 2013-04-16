@@ -9,12 +9,11 @@ var _ = require('underscore')._,
 var imgur = function(dbot) {
     this.internalAPI = {
         'infoString': function(imgData) {
-            info = null;
+            info = '';
             if(imgData && _.has(imgData, 'data')) {
                 imgData = imgData.data;
-                info = '[';
                 if(imgData.title) {
-                    info += imgData.title + '][';
+                    info += imgData.title + ' - ';
                 }
                 if(imgData.type) {
                     if(imgData.animated) {
@@ -26,7 +25,7 @@ var imgur = function(dbot) {
                     info += 'an image with ';
                 }
                 info += imgData.views + ' views (';
-                info += imgData.width + 'x' + imgData.height + ')].';
+                info += imgData.width + 'x' + imgData.height + ')';
             }
 
             return info;
@@ -55,6 +54,12 @@ var imgur = function(dbot) {
             }.bind(this)); 
         },
 
+        'getImageInfoString': function(slug, callback) {
+            this.api.getImageInfo(slug, function(imgData) {
+                callback(this.internalAPI.infoString(imgData));
+            }.bind(this));
+        },
+
         'getImageInfo': function(slug, callback) {
             request.get({
                 'url': 'https://api.imgur.com/3/image/' + slug + '.json',
@@ -69,13 +74,15 @@ var imgur = function(dbot) {
     };
     this.api['getRandomImage'].external = true;
     this.api['getRandomImage'].extMap = [ 'callback' ];
+    this.api['getImageInfoString'].external = true;
+    this.api['getImageInfoString'].extMap = [ 'slug', 'callback' ];
 
     this.commands = {
         '~ri': function(event) {
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    event.reply(event.user + ': ' + link + ' ' + info);
+                    event.reply(event.user + ': ' + link + ' [' + info + ']');
                 }.bind(this));
             }.bind(this));
         }
@@ -86,7 +93,7 @@ var imgur = function(dbot) {
             if(matches[1]) { 
                 this.api.getImageInfo(matches[1], function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    if(info) event.reply(info);
+                    if(info) event.reply('[' + info + ']');
                 }.bind(this));
             }
         }.bind(this);
