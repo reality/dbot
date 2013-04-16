@@ -3,7 +3,15 @@ var _ = require('underscore')._;
 var pages = function(dbot) {
     return {
         '/imgur/random': function(req, res) {
-            res.render('imgurr', {
+            res.render('imgurr', { });
+        },
+
+        '/imgur/stats': function(req, res) {
+            res.render('imgurstats', {
+                'name': dbot.config.name,
+                'totalHttpRequests': this.db.totalHttpRequests,
+                'totalApiRequests': this.db.totalApiRequests,
+                'totalImages': this.db.totalImages
             });
         }
     };
