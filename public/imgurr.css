@@ -12,7 +12,6 @@
   background:rgba(43,43,43,0.8);
   color:#85bf25;
   font-family:sans-serif;
-  font-size:12px;
   font-weight:700;
   padding:20px;
   position:absolute;
@@ -29,6 +28,7 @@
 
 #loading {
     left:0;
+    font-size:12px;
     border-bottom-right-radius:5px;
     border-top-right-radius:5px;
 }
