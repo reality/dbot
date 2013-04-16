@@ -8,17 +8,29 @@
   padding:0;
 }
 
-#loading {
+#loading, #details{
   background:rgba(43,43,43,0.8);
-  border-bottom-right-radius:5px;
-  border-top-right-radius:5px;
   color:#85bf25;
   font-family:sans-serif;
   font-weight:700;
-  left:0;
   padding:20px;
   position:absolute;
   top:50px;
+}
+
+#details {
+    right:0;
+    text-align:right;
+    border-bottom-left-radius:5px;
+    border-top-left-radius:5px
+    display:none;
+}
+
+#loading {
+    left:0;
+    font-size:12px;
+    border-bottom-right-radius:5px;
+    border-top-right-radius:5px;
 }
 
 html,body {
