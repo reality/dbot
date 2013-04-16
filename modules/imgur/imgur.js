@@ -7,6 +7,7 @@ var _ = require('underscore')._,
     request = require('request');
 
 var imgur = function(dbot) {
+    this.db = dbot.db.imgur;
     this.internalAPI = {
         'infoString': function(imgData) {
             info = '';
@@ -29,7 +30,7 @@ var imgur = function(dbot) {
             }
 
             return info;
-        }
+        }.bind(this)
     };
 
     this.api = { 
@@ -44,9 +45,11 @@ var imgur = function(dbot) {
             var testUrl = 'http://i.imgur.com/' + 
                 testSlug +
                 '.' + ext[_.random(0, ext.length - 1)];
+            this.db.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
+                    this.db.totalImages += 1;
                     callback(testUrl, testSlug);
                 } else {
                     this.api.getRandomImage(callback);
@@ -68,8 +71,9 @@ var imgur = function(dbot) {
                     'Authorization': 'Client-ID 86fd3a8da348b65'
                 }
             }, function(err, response, body) {
+                this.db.totalApiRequests += 1;
                 callback(body);
-            });
+            }.bind(this));
         }
     };
     this.api['getRandomImage'].external = true;
@@ -99,6 +103,9 @@ var imgur = function(dbot) {
         }.bind(this);
         dbot.api.link.addHandler(this.name, /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
         dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
+        if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
+        if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
+        if(!_.has(dbot.db.imgur, 'totalImages')) dbot.db.imgur.totalImages = 0;
     }.bind(this);
 };
 
