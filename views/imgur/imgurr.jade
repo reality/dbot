@@ -9,12 +9,17 @@ html(lang='en')
       var count = 0;
       function getNewImage() {
         count += 1;
+        $('#loading').show();
         $('#loading').text('Loading image ' + count + '...');
         $('#image').load(function(){});
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
           $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
-              $("#loading").text(count + ': ' + info.data[0]);
+              if(info.data[0].indexOf('undefined') == -1) {
+                  $("#loading").text(count + ': ' + info.data[0]);
+              } else {
+                  $("#loading").hide();
+              }
           }, "json");
         }, "json");
       }
