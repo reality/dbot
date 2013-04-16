@@ -10,6 +10,7 @@ html(lang='en')
       function getNewImage() {
         count += 1;
         $('#loading').text('Loading image ' + count + '...');
+        $('#loading').css('font-size', ((count * 0.03) + 12));
         $('#image').load(function(){});
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
