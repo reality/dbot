@@ -9,13 +9,17 @@ html(lang='en')
       var count = 0;
       function getNewImage() {
         count += 1;
+        $('#details').hide();
         $('#loading').text('Loading image ' + count + '...');
         $('#loading').css('font-size', ((count * 0.03) + 12));
+        $('#loading').show();
         $('#image').load(function(){});
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
           $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
-              $("#loading").text(count + ': ' + info.data[0]);
+              $("#details").text(count + ': ' + info.data[0]);
+              $('#details').show();
+              $('#loading').hide();
           }, "json");
         }, "json");
       }
@@ -23,5 +27,6 @@ html(lang='en')
       $(document).on('keydown', function(e){(e.which==32)&&(getNewImage()) });
   body
     div#loading Loading Image
+    div#details Press [SPACE] to load a new image
     div#container
       img#image
