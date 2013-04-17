@@ -5,6 +5,7 @@
 #container,#image {
     margin:0;
     max-height:100%;
+    max-width:100%;
     padding:0;
 }
 
@@ -12,7 +13,7 @@
     display:none;
     font-weight:700;
     left:25px;
-    min-width:280px;
+    min-width:300px;
     padding:20px;
     text-align:center;
     top:25px;
@@ -25,20 +26,30 @@
     font-family:monospace
 }
 
-#link,#loading {
+#link,#loading,#reddit {
     font-family:monospace;
     font-size:10px;
     padding:10px;
+}
+
+#link,#loading {
     top:95px;
+}
+
+#reddit {
+    top:135px;
+    left:25px;
+    min-width:300px;
+    text-align:center;
 }
 
 #loading {
     font-weight:500;
     left:220px;
-    min-width:95px;
+    min-width:105px;
 }
 
-#loading,#details,#link {
+#loading,#details,#link,#reddit {
     background:rgba(43,43,43,0.8);
     border-radius:5px;
     color:#85bf25;
@@ -48,7 +59,8 @@
 
 html,body {
     background-color:#121211;
-    height:100%;
     margin:0;
     padding:0;
+    overflow:hidden;
+    white-space-collapse:discard;
 }

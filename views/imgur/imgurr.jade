@@ -28,6 +28,9 @@ html(lang='en')
               }
               $('#loading').fadeOut();
           }, "json");
+          $.get("/api/reddit/searchPost", { 'query': d.data[0] }, function(reddit) {
+              console.log(reddit);
+          }, "json");
         }, "json");
       }
       $(getNewImage());
@@ -36,5 +39,6 @@ html(lang='en')
     div#loading Loading image 1...
     div#details Press [SPACE] to load a new image
     a#link [SPACE] for next 
+    div#reddit /r/reddit.com
     div#container
       img#image

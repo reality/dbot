@@ -53,6 +53,23 @@ var reddit = function(dbot) {
                     callback(body[1].data.children[0].data);
                 }
             });
+        },
+
+        'searchPost': function(query, callback) {
+            request.get({
+                'url': this.ApiRoot + 'submit.json',
+                'qs': {
+                    'url': query,
+                },
+                'json': true,
+                'headers': {
+                    'User-Agent': this.UserAgent
+                }
+            }, function(err, response, body) {
+                if(body[1] && _.has(body[1], 'data')) {
+                    callback(body[1].data.children[0].data);
+                } 
+            }); 
         }
     };
 
@@ -103,6 +120,8 @@ var reddit = function(dbot) {
                 });
             }
         }.bind(this);
+
+        this.api['searchPost'].external = true;
 
         dbot.api.link.addHandler(this.name, // I'm so sorry, Jesus.
             /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)(\/comments\/([a-zA-Z0-9]+)?\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)?)?/, 
