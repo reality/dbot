@@ -5,11 +5,13 @@
 #container,#image {
     margin:0;
     max-height:100%;
+    max-width:100%;
     padding:0;
 }
 
 #details {
     display:none;
+    font-family:sans-serif;
     font-weight:700;
     left:25px;
     min-width:280px;
@@ -18,37 +20,81 @@
     top:25px;
 }
 
-#link {
+#history {
     left:25px;
-    text-align:center;
-    width:168px;
-    font-family:monospace
+    margin:0;
+    max-height:210px;
+    overflow:hidden;
+    padding:0;
+    top:95px;
 }
 
-#link,#loading {
+#history li {
+    font-family:monospace;
+    left:25px;
+    margin-bottom:10px;
+    opacity:0.1;
+    text-align:center;
+    width:168px;
+}
+
+#history li,#loading {
+    display:block;
     font-family:monospace;
     font-size:10px;
     padding:10px;
-    top:95px;
+}
+
+#history li:hover,#history li:nth-of-type(1) {
+    opacity:1!important;
+}
+
+#history li:nth-of-type(2) {
+    opacity:0.8;
+}
+
+#history li:nth-of-type(3) {
+    opacity:0.6;
+}
+
+#history li:nth-of-type(4) {
+    opacity:0.4;
+}
+
+#history li:nth-of-type(5) {
+    opacity:0.2;
+}
+
+#history,#loading,#details {
+    position:absolute;
 }
 
 #loading {
     font-weight:500;
     left:220px;
     min-width:95px;
+    top:95px;
 }
 
-#loading,#details,#link {
+#loading,#details,#history li {
     background:rgba(43,43,43,0.8);
     border-radius:5px;
     color:#85bf25;
-    font-family:sans-serif;
-    position:absolute;
+}
+
+a {
+    color:inherit;
+}
+
+body.crop {
+    overflow:hidden;
 }
 
 html,body {
     background-color:#121211;
+    border:0;
     height:100%;
     margin:0;
+    overflow:auto;
     padding:0;
 }
