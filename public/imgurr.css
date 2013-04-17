@@ -13,13 +13,13 @@
     display:none;
     font-weight:700;
     left:25px;
-    min-width:300px;
+    min-width:280px;
     padding:20px;
     text-align:center;
     top:25px;
 }
 
-#link {
+#link, #reddit {
     left:25px;
     text-align:center;
     width:168px;
@@ -38,9 +38,7 @@
 
 #reddit {
     top:135px;
-    left:25px;
-    min-width:300px;
-    text-align:center;
+    display:none;
 }
 
 #loading {
@@ -49,7 +47,7 @@
     min-width:105px;
 }
 
-#loading,#details,#link,#reddit {
+.box {
     background:rgba(43,43,43,0.8);
     border-radius:5px;
     color:#85bf25;
@@ -61,6 +59,5 @@ html,body {
     background-color:#121211;
     margin:0;
     padding:0;
-    overflow:hidden;
     white-space-collapse:discard;
 }

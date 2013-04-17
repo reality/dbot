@@ -66,9 +66,17 @@ var reddit = function(dbot) {
                     'User-Agent': this.UserAgent
                 }
             }, function(err, response, body) {
-                if(body[1] && _.has(body[1], 'data')) {
-                    callback(body[1].data.children[0].data);
-                } 
+                // awful? code please ignore
+                    try {
+                        if(body != "{}") {
+//                            callback(body[0].data.children[0].data);
+                            callback("YES");
+                        } else {
+                            callback("none");
+                        }
+                    } catch(err) {
+                        console.log("no hits");
+                    }
             }); 
         }
     };
@@ -122,6 +130,7 @@ var reddit = function(dbot) {
         }.bind(this);
 
         this.api['searchPost'].external = true;
+        this.api['searchPost'].extMap = ['query', 'callback'];
 
         dbot.api.link.addHandler(this.name, // I'm so sorry, Jesus.
             /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)(\/comments\/([a-zA-Z0-9]+)?\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)?)?/, 
