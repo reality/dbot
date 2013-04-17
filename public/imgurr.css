@@ -61,12 +61,12 @@ html,body {
 #history {
     top:95px;
     left:25px;
-    max-height:210x;
+    max-height:210px;
     overflow:hidden;
 }
 #history a {
     margin-bottom:10px;
-    opacity:0.05;
+    opacity:0.1; /* won't display anyway due to #history max height */
 }
 
 #details {
