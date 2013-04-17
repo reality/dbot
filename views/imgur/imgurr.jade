@@ -9,7 +9,7 @@ html(lang='en')
       var count = 0;
       function getNewImage() {
         count += 1;
-        $('#loading').show();
+        $('#loading').fadeIn();
         $('#loading').text('Loading image ' + count + '...');
         document.title = 'random imgur (' + count + ')';
         $('#loading').fadeIn();
@@ -17,16 +17,15 @@ html(lang='en')
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
           $('#details').text("Fetching info...");
-          $('#link').text(d.data[0]);
-          $('#link').attr('href',d.data[0]);
+          $('<a href="' + d.data[0] + '">' + d.data[0] + '</a>').prependTo('#history').hide().slideDown();
           $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
-              if(info.data[0].indexOf('undefined') == -1) {
-                $("#details").text(count + ': ' + info.data[0]);
-                $('#details').show();
-              } else {
-                $("#details").hide();
-              }
-              $('#loading').fadeOut();
+            if(info.data[0].indexOf('undefined') == -1) {
+              $("#details").text(count + ': ' + info.data[0]);
+              $('#details').show();
+            } else {
+              $("#details").hide();
+            }
+            $('#loading').fadeOut();
           }, "json");
         }, "json");
       }
@@ -35,6 +34,7 @@ html(lang='en')
   body
     div#loading Loading image 1...
     div#details Press [SPACE] to load a new image
-    a#link [SPACE] for next 
+    div#history
+      a Press [SPACE] for next 
     div#container
       img#image
