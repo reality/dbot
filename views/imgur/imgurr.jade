@@ -10,8 +10,10 @@ html(lang='en')
       function giveMessage(msg) {
         $('<li>'+msg+'</li>').prependTo('#history').hide().slideDown();
       }
+      var lock = false
       function getNewImage() {
         count += 1;
+        lock = true;
         $('#loading').fadeIn();
         $('#loading').text('Loading image ' + count + '...');
         document.title = 'random imgur (' + count + ')';
@@ -19,6 +21,7 @@ html(lang='en')
         $('#image').load(function(){});
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
+          lock = false;
           $('#details').text("Fetching info...");
           giveMessage('<a href="' + d.data[0] + '">' + d.data[0] + '</a>');
           $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
@@ -37,7 +40,13 @@ html(lang='en')
         switch(e.which){
           case 13: // enter
           case 32: // space
-            getNewImage();
+            if (lock) {
+              $('#loading').text(function(index, text){
+                return text.replace(/\.(?=[^.]*$)/, "!");
+              });
+            } else {
+              getNewImage();
+            }
             break;
           case 83: // s
             $('body').toggleClass('crop');
