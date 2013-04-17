@@ -7,6 +7,9 @@ html(lang='en')
     title random imgur
     script
       var count = 0;
+      function giveMessage(msg) {
+        $('<li>'+msg+'</li>').prependTo('#history').hide().slideDown();
+      }
       function getNewImage() {
         count += 1;
         $('#loading').fadeIn();
@@ -17,7 +20,7 @@ html(lang='en')
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
           $('#details').text("Fetching info...");
-          $('<a href="' + d.data[0] + '">' + d.data[0] + '</a>').prependTo('#history').hide().slideDown();
+          giveMessage('<a href="' + d.data[0] + '">' + d.data[0] + '</a>');
           $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
             if(info.data[0].indexOf('undefined') == -1) {
               $("#details").text(count + ': ' + info.data[0]);
@@ -30,11 +33,21 @@ html(lang='en')
         }, "json");
       }
       $(getNewImage());
-      $(document).on('keydown', function(e){(e.which==32)&&(getNewImage()) });
+      $(document).on('keydown', function(e){
+        switch(e.which){
+          case 13: // enter
+          case 32: // space
+            getNewImage();
+            break;
+          case 83: // s
+            $('body').toggleClass('crop');
+            giveMessage("Toggled scrollbars.")
+        };
+      });
   body
     div#loading Loading image 1...
     div#details Press [SPACE] to load a new image
-    div#history
-      a Press [SPACE] for next 
+    ul#history
+      li Press [SPACE] for next 
     div#container
       img#image
