@@ -1,0 +1,100 @@
+{
+    "dbotintro": {
+        "en": "{botname} lorem ipsum dolor sit amet"
+    },
+    "dbotspeaks": {
+            "en": "{name} speaks {lang})",
+            "de": "{name} spricht {lang} ({langen})",
+            "fr": "{name} parle {lang} ({langen})",
+            "it": "{name} parla {lang} ({langen})"
+    },
+    "pagetitle": {
+        "en": "{botname} web interface",
+        "fr": "{botname} interface réseau",
+        "de": "{botname} Web-Interface",
+        "it": "{botname} interfaccia web"
+    },
+    "en": {
+        "en": "English",
+        "fr": "anglais",
+        "de": "Englisch",
+        "it": "inglese"
+    },
+    "fr": {
+        "en": "French",
+        "fr": "français",
+        "de": "Französisch",
+        "it": "francese"
+    },
+    "de": {
+        "en": "German",
+        "fr": "allemande",
+        "de": "Deutsch",
+        "it": "tedesco"
+    },
+    "it": {
+        "en": "Italian",
+        "fr": "italien",
+        "de": "Italienier",
+        "it": "italiano"
+    },
+    "revnum": {
+        "en": "{name} is at revision {rev}",
+        "fr": "{name} est à révision {rev}",
+        "de": "{name} ist in der Revision {rev}",
+        "it": "{name} il numero di revisione {rev}"
+    },
+    "loadedmodules": {
+        "en": "loaded modules",
+        "fr": "modules chargés",
+        "it": "moduli caricati"
+    },
+    "configoptions": {
+        "en": "Configuration",
+        "fr": "Configuration",
+        "de": "Konfiguration",
+        "it": "Configuazione"
+    },
+    "debugmode-true": {
+        "en": "Debug mode active",
+        "fr": "debug actif",
+        "de": "Debug aktiv",
+        "it": "debug attivo"
+    },
+    "debugmode-false": {
+        "en": "Debug off",
+        "fr": "debug éteint",
+        "de": "Debug ausgeschaltet",
+        "it": "debug spento"
+    },
+    "milestoneprog": {
+        "en": "Progress",
+        "fr": "Progression",
+        "de": "Fortschritt",
+        "it": "sviluppo"
+    },
+    "openmilestone": {
+        "en": "Open",
+        "fr": "Ouvert",
+        "de": "Offen",
+        "it": "Aperto"
+    },
+    "closedmilestone": {
+        "en": "Closed",
+        "fr": "Fermé",
+        "de": "Gesperrt",
+        "it": "Chiuso"
+    },
+    "milestonename": {
+        "en": "Name",
+        "fr": "Nom",
+        "de": "Name",
+        "it": "Nome"
+    },
+    "development": {
+        "en": "Development",
+        "fr": "Développement",
+        "de": "Entwicklung",
+        "it": "Sviluppo"
+    }
+}
