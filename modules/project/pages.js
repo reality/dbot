@@ -2,12 +2,15 @@ var exec = require('child_process').exec,
     request = require('request');
 
 var pages = function(dbot) {
-    var depression = dbot.db.quoteArrs[dbot.config.project.quotecat];
+    var quoteCat = dbot.db.quoteArrs[dbot.config.name],
+        rev, diff;
 
-    var rev;
-    exec("git rev-list --all | wc -l", function(a,b,c){rev = b});
-    var diff;
-    exec("git log -1", function(a, b, c){diff = b});
+    exec("git rev-list --all | wc -l", function(a, b, c) {
+        rev = b
+    });
+    exec("git log -1", function(a, b, c) {
+        diff = b
+    });
     
     /* TODO: merge back into github module */
     var milestones;
@@ -18,6 +21,11 @@ var pages = function(dbot) {
 
     return {
         '/project': function(req, res) {
+            var quote = dbot.config.name;
+            if(quoteCat) {
+                quote = quoteCat[Math.floor(Math.random()*quoteCat.length)];
+            }
+
             res.render('project', {
                 "name": dbot.config.name,
                 "intro": dbot.t("dbotintro", {
@@ -47,7 +55,7 @@ var pages = function(dbot) {
                 "openmilestone": dbot.t("openmilestone"),
                 "closedmilestone": dbot.t("closedmilestone"),
                 "development": dbot.t("development"),
-                "dquote": depression[Math.floor(Math.random()*depression.length)],
+                "dquote": quote,
                 "diff": diff,
                 "pagetitle": dbot.t("pagetitle", {
                     "botname": dbot.config.name

@@ -1,4 +1,3 @@
 {
-    "quotecat":"depressionbot",
     "dependencies": ["web", "quotes", "github"]
 }

@@ -1,14 +1,13 @@
 /**
- * Module Name: imgur
- * Description: Various imgur functionality
+ * Module Name: Project
+ * Description: Web page which shows git status and other various stats about
+ * the dbot.
  */
 
-var _ = require('underscore')._,
-    request = require('request');
-
 var project = function(dbot) {
-    // nothing to see here go away love zuzak
+    // Nothing to see here go away love zuzak
 }
+
 exports.fetch = function(dbot) {
     return new project(dbot);
 }
