@@ -2,6 +2,8 @@ var exec = require('child_process').exec,
     request = require('request');
 
 var pages = function(dbot) {
+    var depression = dbot.db.quoteArrs[dbot.config.project.quotecat];
+
     var rev;
     exec("git rev-list --all | wc -l", function(a,b,c){rev = b});
     var diff;
@@ -52,6 +54,7 @@ var pages = function(dbot) {
                 "openmilestone": dbot.t("openmilestone"),
                 "closedmilestone": dbot.t("closedmilestone"),
                 "development": dbot.t("development"),
+                "dquote": depression[Math.floor(Math.random()*depression.length)],
                 "diff": diff,
                 "pagetitle": dbot.t("pagetitle", {
                     "botname": dbot.config.name
