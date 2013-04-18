@@ -2,35 +2,66 @@
     "dbotspeaks": {
             "en": "{name} speaks {lang} ({langen})",
             "de": "{name} spricht {lang} ({langen})",
-            "fr": "{name} parle {lang} ({langen})"
+            "fr": "{name} parle {lang} ({langen})",
+            "it": "{name} parla {lang} ({langen})"
     },
     "en": {
         "en": "English",
         "fr": "anglais",
-        "de": "Englisch"
+        "de": "Englisch",
+        "it": "inglese"
     },
     "fr": {
         "en": "French",
         "fr": "français",
-        "de": "Französisch"
+        "de": "Französisch",
+        "it": "francese"
     },
     "de": {
         "en": "German",
         "fr": "allemande",
-        "de": "Deutsch"
+        "de": "Deutsch",
+        "it": "tedesco"
+    },
+    "it": {
+        "en": "Italian",
+        "fr": "italien",
+        "de": "Italienier",
+        "it": "italiano"
     },
     "projectstatus": {
-        "en": "Project Status",
-        "fr": "Situation du Projet",
-        "de": "Projektstatus"
+        "en": "project status",
+        "fr": "situation du projet",
+        "de": "Projektstatus",
+        "it": "stato del progetto"
     },
     "revnum": {
         "en": "{name} is at revision {rev} ({ver})",
         "fr": "{name} est à révision {rev} ({ver})",
-        "de": "{name} ist in der Revision {rev} ({ver})"
+        "de": "{name} ist in der Revision {rev} ({ver})",
+        "it": "{name} è il numero di revisione {rev} ({ver})"
     },
     "loadedmodules": {
-        "en": "Loaded modules",
-        "fr": "Modules chargés"
+        "en": "loaded modules",
+        "fr": "modules chargés",
+        "it": "moduli caricati"
+    },
+    "configuration": {
+        "en": "Configuration",
+        "fr": "Configuration",
+        "de": "Konfiguration",
+        "it": "configuazione"
+    },
+    "debugmode-true": {
+        "en": "Debug mode active",
+        "fr": "debug actif",
+        "de": "Debug aktiv",
+        "it": "debug attivo"
+    },
+    "debugmode-false": {
+        "en": "Debug off",
+        "fr": "debug éteint",
+        "de": "Debug ausgeschaltet",
+        "it": "debug spento"
     }
 }
