@@ -40,7 +40,9 @@ html(lang='#{curr839}')
                - var pc = "%"
                - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
                tr(id=mstone+milestone.number)
-                 td #{milestone.title}
+                 td
+                   a(href=milestone.url)
+                     #{milestone.title}
                  td 
                    div.progress(class=milestone.state)
                      div.progress-inner(style=wd+wdth+pc)(class=milestone.state)
@@ -59,6 +61,3 @@ html(lang='#{curr839}')
           section#footer
             p
               #{currver}
-   script(type="text/javascript", src="/bootstrap/js/bootstrap.min.js")
-   script(type="text/javascript", src="/d3/d3.v3.min.js")
-   script(type="text/javascript", src="/script.js")   
