@@ -39,18 +39,18 @@
         "en": "{name} is at revision {rev} ({ver})",
         "fr": "{name} est à révision {rev} ({ver})",
         "de": "{name} ist in der Revision {rev} ({ver})",
-        "it": "{name} è il numero di revisione {rev} ({ver})"
+        "it": "{name} il numero di revisione {rev} ({ver})"
     },
     "loadedmodules": {
         "en": "loaded modules",
         "fr": "modules chargés",
         "it": "moduli caricati"
     },
-    "configuration": {
+    "configoptions": {
         "en": "Configuration",
         "fr": "Configuration",
         "de": "Konfiguration",
-        "it": "configuazione"
+        "it": "Configuazione"
     },
     "debugmode-true": {
         "en": "Debug mode active",
@@ -63,5 +63,35 @@
         "fr": "debug éteint",
         "de": "Debug ausgeschaltet",
         "it": "debug spento"
+    },
+    "milestoneprog": {
+        "en": "Progress",
+        "fr": "Progression",
+        "de": "Fortschritt",
+        "it": "sviluppo"
+    },
+    "openmilestone": {
+        "en": "Open",
+        "fr": "Ouvert",
+        "de": "Offen",
+        "it": "Aperto"
+    },
+    "closedmilestone": {
+        "en": "Closed",
+        "fr": "Fermé",
+        "de": "Gesperrt",
+        "it": "Chiuso"
+    },
+    "milestonename": {
+        "en": "Name",
+        "fr": "Nom",
+        "de": "Name",
+        "it": "Nome"
+    },
+    "git": {
+        "en": "Git",
+        "fr": "Git",
+        "de": "Git",
+        "it": "Git"
     }
 }

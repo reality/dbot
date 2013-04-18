@@ -1,8 +1,19 @@
-var exec = require('child_process').exec;
+var exec = require('child_process').exec,
+    request = require('request');
 
 var pages = function(dbot) {
     var rev;
-    exec("git rev-list --all | wc -l", function(a,b,c){rev = b});
+   exec("git rev-list --all | wc -l", function(a,b,c){rev = b});
+    var gstatus;
+    dbot.api.github.githubStatus(function(a){gstatus = a});
+    
+    /* TODO: merge back into github module */
+    var milestones;
+    request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones", function(e, r, b){
+        milestones = JSON.parse(b);
+    });
+
+
     return {
         '/project': function(req, res) {
             res.render('project', {
@@ -23,7 +34,15 @@ var pages = function(dbot) {
                 }),
                 "modules": dbot.config.moduleNames,
                 "loadmod": dbot.t("loadedmodules"),
-                "debugmode": dbot.t("debugmode-" + dbot.config.debugMode)
+                "debugmode": dbot.t("debugmode-" + dbot.config.debugMode),
+                "githubstatus": gstatus,
+                "milestones": milestones,
+                "milestoneprog": dbot.t("milestoneprog"),
+                "config": dbot.t("configoptions"),
+                "milestonename": dbot.t("milestonename"),
+                "openmilestone": dbot.t("openmilestone"),
+                "closedmilestone": dbot.t("closedmilestone")
+                 
            });
         },
     };
