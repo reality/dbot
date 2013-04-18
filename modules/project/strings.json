@@ -3,7 +3,7 @@
         "en": "{botname} lorem ipsum dolor sit amet"
     },
     "dbotspeaks": {
-            "en": "{name} speaks {lang})",
+            "en": "{name} speaks {lang}",
             "de": "{name} spricht {lang} ({langen})",
             "fr": "{name} parle {lang} ({langen})",
             "it": "{name} parla {lang} ({langen})"
