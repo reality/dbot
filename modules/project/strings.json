@@ -18,7 +18,8 @@
         "en": "English",
         "fr": "anglais",
         "de": "Englisch",
-        "it": "inglese"
+        "it": "inglese",
+        "cy": "saesneg"
     },
     "fr": {
         "en": "French",
@@ -35,8 +36,27 @@
     "it": {
         "en": "Italian",
         "fr": "italien",
-        "de": "Italienier",
+        "de": "Italiener",
         "it": "italiano"
+    },
+    "cy": {
+        "en": "Welsh",
+        "fr": "gallois",
+        "de": "Walisisch",
+        "it": "gallese",
+        "cy": "cymraeg"
+    },
+    "na'vi": {
+        "en": "Na'vi",
+        "fr": "na'vi",
+        "de": "Na'vi",
+        "it": "Na'vi"
+    },
+    "es": {
+        "en": "Spanish",
+        "fr": "espagnole",
+        "de": "Spanisch",
+        "it": "spagnolo"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
