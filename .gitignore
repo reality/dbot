@@ -1,5 +1,10 @@
 # Ignore the user config files
-./config.json
-
-# Ignore the user database
+config.json
 db.json
+
+# ignore npm
+node_modules/
+
+# ignore assets
+public/bootstrap/
+public/d3/
