@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  h2 #{projectstatus} 
+  section#git
+    h3 Git
+    p
+        #{revnum}
+  section#config
+    h3 Configuration
+    ul
+      li #{currlang}
+    h4 #{loadmod}
+    ul
+      each module in modules
+        li #{module}
+  section#footer
+    p
+      #{currver}

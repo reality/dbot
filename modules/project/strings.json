@@ -1,0 +1,36 @@
+{
+    "dbotspeaks": {
+            "en": "{name} speaks {lang} ({langen})",
+            "de": "{name} spricht {lang} ({langen})",
+            "fr": "{name} parle {lang} ({langen})"
+    },
+    "en": {
+        "en": "English",
+        "fr": "anglais",
+        "de": "Englisch"
+    },
+    "fr": {
+        "en": "French",
+        "fr": "français",
+        "de": "Französisch"
+    },
+    "de": {
+        "en": "German",
+        "fr": "allemande",
+        "de": "Deutsch"
+    },
+    "projectstatus": {
+        "en": "Project Status",
+        "fr": "Situation du Projet",
+        "de": "Projektstatus"
+    },
+    "revnum": {
+        "en": "{name} is at revision {rev} ({ver})",
+        "fr": "{name} est à révision {rev} ({ver})",
+        "de": "{name} ist in der Revision {rev} ({ver})"
+    },
+    "loadedmodules": {
+        "en": "Loaded modules",
+        "fr": "Modules chargés"
+    }
+}
