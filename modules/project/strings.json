@@ -3,7 +3,7 @@
         "en": "{botname} lorem ipsum dolor sit amet"
     },
     "dbotspeaks": {
-            "en": "{name} speaks {lang} ({langen})",
+            "en": "{name} speaks {lang})",
             "de": "{name} spricht {lang} ({langen})",
             "fr": "{name} parle {lang} ({langen})",
             "it": "{name} parla {lang} ({langen})"
@@ -39,10 +39,10 @@
         "it": "italiano"
     },
     "revnum": {
-        "en": "{name} is at revision {rev} ({ver})",
-        "fr": "{name} est à révision {rev} ({ver})",
-        "de": "{name} ist in der Revision {rev} ({ver})",
-        "it": "{name} il numero di revisione {rev} ({ver})"
+        "en": "{name} is at revision {rev}",
+        "fr": "{name} est à révision {rev}",
+        "de": "{name} ist in der Revision {rev}",
+        "it": "{name} il numero di revisione {rev}"
     },
     "loadedmodules": {
         "en": "loaded modules",
