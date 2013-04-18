@@ -11,15 +11,8 @@ var pages = function(dbot) {
     
     /* TODO: merge back into github module */
     var milestones;
-    request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones", function(e, r, b){
+    request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=open", function(e, r, b){
         milestones = JSON.parse(b);
-        request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=closed", function (a, c, d){
-            var milestones2 = [];
-            try{
-                milestones2 = JSON.parse(c);
-            } catch(e){}
-            milestones = milestones.concat(milestones2)
-        });
     });
 
 
