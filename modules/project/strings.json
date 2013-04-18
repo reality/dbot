@@ -1,9 +1,18 @@
 {
+    "dbotintro": {
+        "en": "{botname} lorem ipsum dolor sit amet"
+    },
     "dbotspeaks": {
             "en": "{name} speaks {lang} ({langen})",
             "de": "{name} spricht {lang} ({langen})",
             "fr": "{name} parle {lang} ({langen})",
             "it": "{name} parla {lang} ({langen})"
+    },
+    "pagetitle": {
+        "en": "{botname} web interface",
+        "fr": "{botname} interface réseau",
+        "de": "{botname} Web-Interface",
+        "it": "{botname} interfaccia web"
     },
     "en": {
         "en": "English",
@@ -28,12 +37,6 @@
         "fr": "italien",
         "de": "Italienier",
         "it": "italiano"
-    },
-    "projectstatus": {
-        "en": "project status",
-        "fr": "situation du projet",
-        "de": "Projektstatus",
-        "it": "stato del progetto"
     },
     "revnum": {
         "en": "{name} is at revision {rev} ({ver})",

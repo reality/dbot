@@ -3,14 +3,21 @@ var exec = require('child_process').exec,
 
 var pages = function(dbot) {
     var rev;
-   exec("git rev-list --all | wc -l", function(a,b,c){rev = b});
-    var gstatus;
-    dbot.api.github.githubStatus(function(a){gstatus = a});
+    exec("git rev-list --all | wc -l", function(a,b,c){rev = b});
+    var diff;
+    exec("git log -1", function(a, b, c){diff = b});
     
     /* TODO: merge back into github module */
     var milestones;
     request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones", function(e, r, b){
         milestones = JSON.parse(b);
+        request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=closed", function (a, c, d){
+            var milestones2 = [];
+            try{
+                milestones2 = JSON.parse(c);
+            } catch(e){}
+            milestones = milestones.concat(milestones2)
+        });
     });
 
 
@@ -18,6 +25,9 @@ var pages = function(dbot) {
         '/project': function(req, res) {
             res.render('project', {
                 "name": dbot.config.name,
+                "intro": dbot.t("dbotintro", {
+                    "botname": dbot.config.name
+                }),
                 "curr839": dbot.config.language,
                 "currver": dbot.config.version,
                 "currlang": dbot.t("dbotspeaks",{
@@ -35,14 +45,16 @@ var pages = function(dbot) {
                 "modules": dbot.config.moduleNames,
                 "loadmod": dbot.t("loadedmodules"),
                 "debugmode": dbot.t("debugmode-" + dbot.config.debugMode),
-                "githubstatus": gstatus,
                 "milestones": milestones,
                 "milestoneprog": dbot.t("milestoneprog"),
                 "config": dbot.t("configoptions"),
                 "milestonename": dbot.t("milestonename"),
                 "openmilestone": dbot.t("openmilestone"),
-                "closedmilestone": dbot.t("closedmilestone")
-                 
+                "closedmilestone": dbot.t("closedmilestone"),
+                "diff": diff,
+                "pagetitle": dbot.t("pagetitle", {
+                    "botname": dbot.config.name
+                })
            });
         },
     };
