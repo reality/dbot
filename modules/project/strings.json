@@ -91,10 +91,10 @@
         "de": "Name",
         "it": "Nome"
     },
-    "git": {
-        "en": "Git",
-        "fr": "Git",
-        "de": "Git",
-        "it": "Git"
+    "development": {
+        "en": "Development",
+        "fr": "Développement",
+        "de": "Entwicklung",
+        "it": "Sviluppo"
     }
 }

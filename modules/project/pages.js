@@ -51,6 +51,7 @@ var pages = function(dbot) {
                 "milestonename": dbot.t("milestonename"),
                 "openmilestone": dbot.t("openmilestone"),
                 "closedmilestone": dbot.t("closedmilestone"),
+                "development": dbot.t("development"),
                 "diff": diff,
                 "pagetitle": dbot.t("pagetitle", {
                     "botname": dbot.config.name
