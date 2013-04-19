@@ -13,6 +13,7 @@
   },
   "not-found": {
     "en": "{s} No results.",
-    "na'vi": "{s}, Oel ke tsun rivum ayuoti."
+    "na'vi": "{s}, Oel ke tsun rivum ayuoti.",
+    "nl": "{s} Geen resultaten."
   }
 }

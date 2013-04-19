@@ -1,26 +1,32 @@
 {
     "alias": {
         "en": "{alias} is an alias of {user}",
-        "na'vi": "ayfko syaw {user} {alias} nìteng"
+        "na'vi": "ayfko syaw {user} {alias} nìteng",
+        "nl": "{alias} is een alias van {user}"
     }, 
     "primary": {
         "en": "{user} is a primary user with {count} aliases, ",
-        "na'vi": "{user} lu txin ulte {count}a stxo lu poru, "
+        "na'vi": "{user} lu txin ulte {count}a stxo lu poru, ",
+        "nl": "{user} is een primaire gebruiker met {count} aliassen, "
     },
     "unknown_alias": {
         "en": "{alias} does not currently exist as an alias or known user.",
-        "na'vi": "{alias} ke fkeytok nìfkrr"
+        "na'vi": "{alias} ke fkeytok nìfkrr",
+        "nl": "{alias} staat momenteel niet bekend als een bestaande gebruiker of alias."
     }, 
     "aliasparentset": {
         "en": "{newParent} is now the parent user, and {newAlias} is an alias.",
-        "na'vi": "{newParent} lu sa'sem set ulte {newAlias} lu stxo set nìteng."
+        "na'vi": "{newParent} lu sa'sem set ulte {newAlias} lu stxo set nìteng.",
+        "nl": "{newParent} is nu de bovenliggende gebruiker, en {newAlias} is een alias."
     },
     "unprimary_error": {
         "en": "One of those users isn't currently recorded as a primary user.",
-        "na'vi": "fo sute txin ke lu."
+        "na'vi": "fo sute txin ke lu.",
+        "nl": "Een van deze gebruikers is nog niet bekend als een primaire gebruiker."
     },
     "merged_users": {
         "en": "{old_user} and their aliases have been merged into {new_user}.",
-        "na'vi": "{old_user} ulte stxo alahe {new_user} lu set."
+        "na'vi": "{old_user} ulte stxo alahe {new_user} lu set.",
+        "nl": "{old_user} en zijn aliassen zijn samengevoegd met {new_user}."
     }
 }

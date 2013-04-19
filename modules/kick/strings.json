@@ -3,12 +3,14 @@
         "en": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
         "es": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces.",
         "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan.",
-        "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith."
+        "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith.",
+        "nl": "{user} is {kicks} keer gekickt en heeft anderen {kicked} keer gekickt."
     },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
         "es": "No expulsás {botname}",
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
-        "cy": "Ni ddylech cicio {botname}"
+        "cy": "Ni ddylech cicio {botname}",
+        "nl": "Gij zult {botname} niet kicken"
     }
 }
