@@ -8,7 +8,7 @@
         "nl": "{domain} is \u000305BEZET! \u000314({address})"
     },
     "rdns": {
-        "en": "{ip} \u2192 {domain}",
+        "en": "{ip} \u2192 {domain}"
     },
     "rdns-error": {
         "en": "Unable to lookup {ip}. \u000314({error})",
