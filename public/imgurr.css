@@ -38,7 +38,7 @@
     width:168px;
 }
 
-#history li,#loading {
+#history li,#loading,#count {
     display:block;
     font-family:monospace;
     font-size:10px;
@@ -65,18 +65,26 @@
     opacity:0.2;
 }
 
-#history,#loading,#details {
+#history,#loading,#details,#count {
     position:absolute;
 }
 
-#loading {
+#loading, #count {
     font-weight:500;
+}
+#loading {
+    top:95px;
     left:220px;
     min-width:95px;
-    top:95px;
 }
 
-#loading,#details,#history li {
+#count {
+    bottom:25px;
+    left:25px;
+    display:none;
+}
+
+#loading,#details,#history li,#count {
     background:rgba(43,43,43,0.8);
     border-radius:5px;
     color:#85bf25;

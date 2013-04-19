@@ -11,6 +11,9 @@ html(lang='en')
         $('<li>'+msg+'</li>').prependTo('#history').hide().slideDown();
       }
       var lock = false
+      var highscore = #{highscore} + 1;
+      var score = highscore;
+      $('#count').text(score);
       function getNewImage() {
         count += 1;
         lock = true;
@@ -22,6 +25,8 @@ html(lang='en')
         $.get("/api/imgur/getRandomImage", function(d) {
           $('#image').attr('src', d.data[0]);
           lock = false;
+          score -= 1;
+          $('#count').text(score);
           $('#details').text("Fetching info...");
           giveMessage('<a href="' + d.data[0] + '">' + d.data[0] + '</a>');
           $.get("/api/imgur/getImageInfoString", { 'slug': d.data[1] }, function(info) {
@@ -38,6 +43,10 @@ html(lang='en')
       $(getNewImage());
       $(document).on('keydown', function(e){
         switch(e.which){
+          case 82: // r
+            score = highscore;
+            $('#count').text(highscore);
+            giveMessage("Score reset.");
           case 13: // enter
           case 32: // space
             if (lock) {
@@ -48,6 +57,9 @@ html(lang='en')
               getNewImage();
             }
             break;
+          case 67:
+            $('#count').fadeToggle();
+            break;
           case 83: // s
             $('body').toggleClass('crop');
             giveMessage("Toggled scrollbars.")
@@ -56,6 +68,8 @@ html(lang='en')
   body
     div#loading Loading image 1...
     div#details Press [SPACE] to load a new image
+    div#count
+      #{highscore} 
     ul#history
       li Press [SPACE] for next 
     div#container

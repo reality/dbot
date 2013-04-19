@@ -3,7 +3,9 @@ var _ = require('underscore')._;
 var pages = function(dbot) {
     return {
         '/imgur/random': function(req, res) {
-            res.render('imgurr', { });
+            var hs = dbot.db.quoteArrs[dbot.config.imgur.highscore];
+            hs = hs[hs.length-1];
+            res.render('imgurr', {"highscore" : hs });
         },
 
         '/imgur/stats': function(req, res) {
