@@ -3,10 +3,13 @@
         "en": "{botname} lorem ipsum dolor sit amet"
     },
     "dbotspeaks": {
-            "en": "{name} speaks {lang}",
-            "de": "{name} spricht {lang} ({langen})",
-            "fr": "{name} parle {lang} ({langen})",
-            "it": "{name} parla {lang} ({langen})"
+        "en": "{name} speaks {lang}",
+        "de": "{name} spricht {lang} ({langen})",
+        "fr": "{name} parle {lang} ({langen})",
+        "it": "{name} parla {lang} ({langen})"
+    },
+    "branch": {
+        "en": "{branch}"
     },
     "pagetitle": {
         "en": "{botname} web interface",
@@ -111,10 +114,23 @@
         "de": "Name",
         "it": "Nome"
     },
+    "milestones": {
+        "en": "Milestones"
+    },
     "development": {
         "en": "Development",
         "fr": "Développement",
         "de": "Entwicklung",
         "it": "Sviluppo"
+    },
+    "git" : {
+        "en": "Version Control",
+        "fr": "Gestion de Versions",
+        "de": "Versionsverwaltung",
+        "it": "Controllo versione"
+    },
+    "propaganda": {
+        "en": "Contribute via Github!",
+        "fr": "Contribuer via Github!"
     }
 }

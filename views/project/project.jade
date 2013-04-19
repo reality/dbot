@@ -8,12 +8,6 @@ html(lang='#{curr839}')
     link(rel='stylesheet', type='text/css', href='/styles.css')    
     link(rel="stylesheet", href="/project.css")
     title #{pagetitle}
-    - var mstone = "milestone"
-    style(type="text/css")
-       each milestone in milestones
-         - current = mstone+milestone.number
-         - wdth = ((milestone.open_issues/(milestone.open_issues + milestone.closed_issues))*100)
-         .current { width: wdth% }
   body  
     div.container
       div#page
@@ -21,13 +15,19 @@ html(lang='#{curr839}')
         div.container#main
           p.intro
             #{dquote}
-          section#git
+          section#development
            h3 #{development} 
+           h4 #{git}
            p.center
              #{revnum}
+           p.center
+             a(href="https://github.com/"+repo) #{propaganda}
+
+           ul
+             li #{branch}
            pre#gitdiff
              #{diff}
-           h4 #{milestoneprog} 
+           h4 #{milestonehead} 
            table#milestones.center
              tr
                th #{milestonename}
@@ -35,18 +35,16 @@ html(lang='#{curr839}')
                th #{openmilestone}
                th #{closedmilestone}
              each milestone in milestones
-               - var mstone = "milestone"
-               - var wd = "width:"
-               - var pc = "%"
-               - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
-               tr(id=mstone+milestone.number)
+               - var width = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
+               tr(id="milestone"+milestone.number)
                  td
-                   a(href=milestone.url)
+                   a(href="https://github.com/"+repo+"/issues?milestone="+milestone.number)
                      #{milestone.title}
                  td 
                    div.progress(class=milestone.state)
-                     div.progress-inner(style=wd+wdth+pc)(class=milestone.state)
+                     div.progress-inner(style="width:"+width+"%")(class=milestone.state)
                        &nbsp;
+                     print #{Math.round(width)+"%"}
                  td #{milestone.open_issues}
                  td #{milestone.closed_issues}
           section#config
