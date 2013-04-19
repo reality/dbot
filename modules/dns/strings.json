@@ -1,14 +1,18 @@
 {
     "lookup-error": {
-        "en": "{domain} is \u000303AVAILABLE! \u000314({code})"
+        "en": "{domain} is \u000303AVAILABLE! \u000314({code})",
+	"fr": "{domain} est indisponible ({code})."
     },
     "lookup": {
-        "en": "{domain} is \u000305TAKEN! \u000314({address})"
+        "en": "{domain} is \u000305TAKEN! \u000314({address})",
+	"fr": "{domain} est déjà pris! ({address})."
     },
     "rdns": {
-        "en": "{ip} \u2192 {domain}"
+        "en": "{ip} \u2192 {domain}",
+	"fr": "{ip} \u2192 {domain}"
     },
     "rdns-error": {
-        "en": "Unable to lookup {ip}. \u000314({error})"
+        "en": "Unable to lookup {ip}. \u000314({error})",
+	"fr": "IP invalide. ({error})."
     }
 }

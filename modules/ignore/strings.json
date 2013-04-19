@@ -3,83 +3,102 @@
         "en": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}.",
         "es": "{user}: Modo de empleo: ~ignore [módulo]. Módulos que tú puedes ignorar son: {modules}.",
         "na'vi": "{user}: Sar: ~ignore ['u]. U, nga ke tìng mikyun: {modules}.",
-        "cy": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}."
+        "cy": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}.",
+	"fr": "{user}: Usage: ~ignore [module}. Modules pouvant être ignoré sont: {modules}."
     },
     "already_ignoring": {
         "en": "{user}: You're already ignoring that module.",
         "es": "{user}: Ya ignoras este módulo.",
         "na'vi": "{user}: 'uri nga ke tìng mikyun srekrr.",
-        "cy": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod."
+        "cy": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod.",
+	"fr": "{user}: Vous ignorez déjà ce module."
     },
     "ignored": {
         "en": "{user}: Now ignoring {module}.",
         "es": "{user}: Estás ignorando {module}.",
         "na'vi": "{user}: Nga ke terìng mikyun {module}ne set.",
-        "cy": "{user}: Nawr yn anwybyddu {module}"
+        "cy": "{user}: Nawr yn anwybyddu {module}",
+	"fr": "{user}: Vous ignorez maintenans {module}."
     },
     "invalid_ignore": {
         "en": "{user}: That isn't a valid module name.",
         "es": "{user}: Ese no es un nombre de un módulo valido.",
         "na'vi": "{user}: Tsatstxo eyawr ke lu.",
-        "cy": "{user}: Nid oedd hwna'n modiwl dilys"
+        "cy": "{user}: Nid oedd hwna'n modiwl dilys",
+	"fr": {user}: Ceci n'est pas un nom de module valide."
     },
     "unignore_usage": {
         "en": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
         "es": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}.",
         "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}.",
-        "cy": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}"
+        "cy": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}",
+	"fr:" "{user}: Usage: ~unignore [module]. Modules que vous ignorez présentement: {modules}"
     },
     "invalid_unignore": {
         "en": "{user}: You're not ignoring that module or it doesn't exist.",
         "es": "{user}: No ignoras este módulo o no existe.",
         "na'vi":"{user}: Nga terìng mikyun fu fì'ul fìtsengit ke tok.",
-        "cy": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli"
+        "cy": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli",
+	"fr": "{user}: Vous n'ignores pas ce module, ou il n'existe pas."
     },
     "unignored": {
         "en": "{user}: No longer ignoring {module}.",
         "es": "{user}: Ya no ignoras {module}.",
         "na'vi": "{user}: Nga terìng mikyun {module}ne set",
-        "cy": "{user}: Ddim yn anwybyddu {module} bellach"
+        "cy": "{user}: Ddim yn anwybyddu {module} bellach",
+	"fr": "{user}: Vous n'ignorez plus {module}."
     },
     "ban_usage": {
-        "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands."
+        "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands.",
+	"fr": "{user}: Usage: ~ban [nom] [module/commande]. Utilisez * pour toutes les commandes et modules."
     },
     "already_banned": {
-        "en": "{user}: {banned} is already banned from that module."
+        "en": "{user}: {banned} is already banned from that module.",
+	"fr": "{user}: {banned} est déjà bannis de ce module."
     },
     "banned_success": {
         "en": "{user}: {banned} is now banned from {module}."
+	"fr": "{user}: {banned} est maintenant banni de {module}."
     },
     "invalid_ban": {
-        "en": "{user}: That isn't a valid module name."
+        "en": "{user}: That isn't a valid module name.",
+	"fr": "{user}: Ceci n'est pas un nom de module valide."
     },
     "unban_usage": {
-        "en": "{user}: Usage: ~unban [user] [module]."
+        "en": "{user}: Usage: ~unban [user] [module].",
+	"fr": "{user}: Usage: ~unban [nom] [module]."
     },
     "invalid_unban": {
-        "en": "{user}: {banned} is not banned from that module or it doesn't exist."
+        "en": "{user}: {banned} is not banned from that module or it doesn't exist.",
+	"fr": "{user}: {banned} n'est pas bannis de ce module, ou il n'existe pas."
     },
     "unbanned_success": {
-        "en": "{user}: {banned} is no longer banned from {module}."
+        "en": "{user}: {banned} is no longer banned from {module}.",
+	"fr": "{user}: {banned} n'est plus bannis de {module}."
     },
     "ignoring_channel": {
         "en": "Now ignoring {module} in {channel}",
-        "na'vi": "Oe ke stayawm {module}ur mì {channel}"
+        "na'vi": "Oe ke stayawm {module}ur mì {channel}",
+	"fr": "J'ignore maintenant {module} dans {channel}"
     },
     "already_ignoring_channel": {
         "en": "Already ignoring {module} in {channel}",
-        "na'vi": "Oe ke stayawm {module}ur mì {channel} li"
+        "na'vi": "Oe ke stayawm {module}ur mì {channel} li",
+	"fr": "J'ignore déjà {module} dans {channel}"
     },
     "module_not_exist": {
         "en": "{module} isn't loaded or doesn't exist.",
-        "na'vi": "Oel ke omum teri {module}it fu {module} ke fkeytok"
+        "na'vi": "Oel ke omum teri {module}it fu {module} ke fkeytok",
+	"fr": "{module} n'est pas chargé, ou il n'existe pas."
     },
     "unignoring_channel": {
         "en": "No longer ignoring {module} in {channel}",
-        "na'vi": "Oel stayawm {module}ur mì {channel} set."
+        "na'vi": "Oel stayawm {module}ur mì {channel} set.",
+	"fr": "Je n'ignore plus {module} dans {channel}"
     },
     "not_ignoring_channel": {
         "en": "{module} wasn't being ignored in {channel}",
-        "na'vi": "Oel stayawm {module}ur mì {channel} li."
+        "na'vi": "Oel stayawm {module}ur mì {channel} li.",
+	"fr": "{module} n'était pas ignoré dans {channel}"
     }
 }

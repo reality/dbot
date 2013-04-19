@@ -3,15 +3,18 @@
         "en": "{user} has been kicked {kicks} times and has kicked people {kicked} times.",
         "es": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces.",
         "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan.",
-        "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith."
+        "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith.",
+	"fr": "{user} a été kické {kicks} fois et a kické {kicked} personnes.
     },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
         "es": "No expulsás {botname}",
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
-        "cy": "Ni ddylech cicio {botname}"
+        "cy": "Ni ddylech cicio {botname}",
+	"fr": "Vous ne pouvez pas kicker {botname}."
     },
     "ckicked": {
-        "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\""
+        "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
+	"fr": Attention: {kicker} a kické {kickee} de {channel}. La raison est: \"{reason}.\""
     }
 }

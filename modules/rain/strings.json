@@ -1,58 +1,72 @@
  {
     "rain-0": { 
         "en" : "It's not raining in {place}.",
-        "na'vi": "tompa ke zup {place}ur."
+        "na'vi": "tompa ke zup {place}ur.",
+	"fr": "Il ne pleut pas à {place}"
     },
     "rain-1": {
         "en" : "It's raining in {place}.",
-        "na'vi":"tompa zup {place}ur."
+        "na'vi":"tompa zup {place}ur.",
+	"fr": "Il pleut à {place}"
     },
     "rain-2": {
         "en" : "It's raining rather a lot in {place}.",
-        "na'vi":"tompa zup {place}ur nìhawng."
+        "na'vi":"tompa zup {place}ur nìhawng.",
+	"fr": "Il pleut beaucoup à {place}"
     },
     "rain-3": { 
         "en" : "It's raining shitloads.",
-        "na'vi":"tompa zup {place}ur nìhawng."
+        "na'vi":"tompa zup {place}ur nìhawng.",
+	"fr": "Il pleut vraiment beaucoup"
     },
     "rain-4": {
         "en" : "It's raining fucktons.",
-        "na'vi": "tompa zup {place}ur nìhawng."
+        "na'vi": "tompa zup {place}ur nìhawng.",
+	"fr": "Il pleut vraiment vraiment beaucoup, putain"
     },
     "rain-5": { 
         "en" : "It's raining whales (in {place})!",
-        "na'vi": "payoang zup {place}ur"
+        "na'vi": "payoang zup {place}ur",
+	"fr" : "Il pleut des baleines à {place}!"
     },
     "rain-6": { 
         "en" : "IT'S SO FUCKING WET OUT HERE MAN",
-        "na'vi" : "pey lu oeru nìhawng taluna tok fìtengeti"
+        "na'vi" : "pey lu oeru nìhawng taluna tok fìtengeti",
+	"fr" : "C'EST TELLEMENT PLUVIEUX DEHORS"
     },
     "rain-7": { 
         "en" : "I AM SO MOIST RIGHT NOW",
-        "na'vi":"pey lu oeru nìhawng taluna tok fìtengeti"
+        "na'vi":"pey lu oeru nìhawng taluna tok fìtengeti",
+	"fr": "JE SUIS TELLEMENT MOUILLÉ"
     },
     "rain-8": {
         "en" : "You used a #3 pencil instead of #2, didn't you?",
-        "na'vi": "Nga pamrel sami hu pencìl a#3 ulte ke pamrel sami pencìl a#2 kefyak?"
+        "na'vi": "Nga pamrel sami hu pencìl a#3 ulte ke pamrel sami pencìl a#2 kefyak?",
+	"fr": "Vous avez utilisez un crayon #3 au lieu de #2, hein?"
     },
     "rain-9": { 
         "en" : "WELCOME TO ATLANTIS",
-        "na'vi": "ziva'u nìprrte atlantisftu."
+        "na'vi": "ziva'u nìprrte atlantisftu.",
+	"fr": "BIENVENUE À ATLANTIS!"
     },
     "rain-10": { 
         "en" : "GET INSIDE",
-        "na'vi": "Sweylu txo nga livatam futa ngal fìtsengeti tok"
+        "na'vi": "Sweylu txo nga livatam futa ngal fìtsengeti tok",
+	"fr": "RENTREZ CHEZ VOUS"
     },
     "rain-11": {
         "en" : "LOL U PROBABLY DIED",
-        "na'vi": "hrh kxawm nga tolerkup."
+        "na'vi": "hrh kxawm nga tolerkup.",
+	"fr:" "Vous êtes probablement mort."
     },
     "rain-e": {
         "en" : "Unable to fetch weather data.",
-        "na'vi":"Oel ke tsun rivum sänumeti teriyafkeyk."
+        "na'vi":"Oel ke tsun rivum sänumeti teriyafkeyk.",
+	"fr": "Impossible d'afficher les données météos."
     },
     "rain-u": {
         "en": "Location too ambigious to process.",
-        "na'vi":"tsengeri, yayayr lu oeru."
+        "na'vi":"tsengeri, yayayr lu oeru.",
+	"fr": "Location trop vague."
     }
 }
