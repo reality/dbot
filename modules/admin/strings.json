@@ -3,82 +3,98 @@
         "en": "Joined {channel}",
         "es" : "Entrado en {channel}",
         "na'vi": "fpxäkìm {channel}(nemfa)",
-        "cy": "Wedi ymuno {channel}"
+        "cy": "Wedi ymuno {channel}",
+        "fr": "J'ai rejoins {channel}"
     },
     "part": {
         "en": "Left {channel}",
         "es" : "Abandonada {channel}",
         "na'vi": "Hum {channel}",
-        "cy": "Wedi gadael {channel}"
+        "cy": "Wedi gadael {channel}",
+	"fr": "J'ai quitté {channel}"
     },
     "gpull": {
         "en": "Git pulled that shit.",
         "es": "Hecho git pull en esta mierda.",
         "na'vi": "Gìtìl fì'uti stamarsìm.",
-        "cy": "Wedi tynnu git yr cach na i gyd"
+        "cy": "Wedi tynnu git yr cach na i gyd",
+	"fr": "Git pull accomplis avec succès."
     },
     "reload": {
         "en": "Reloaded that shit.",
         "es": "Recargado esta mierda.",
         "na'vi": "Oel fìuti stìyeftxaw.",
-        "cy": "Ail-lwytho'r cach na"
+        "cy": "Ail-lwytho'r cach na",
+	"fr": "Tout est rechargé"
     },
     "load_module": {
         "en": "Loaded new module: {moduleName}",
         "es": "Cargado módulo nuevo: {moduleName}",
         "na'vi": "Oel {moduleName}it amip stìyeftxaw.",
-        "cy": "Wedi llwytho modiwl newydd: {moduleName}"
+        "cy": "Wedi llwytho modiwl newydd: {moduleName}",
+        "fr": "Nouveau module chargé: {moduleName}"
     },
     "unload_module": {
         "en": "Turned off module: {moduleName}",
         "es": "Descargado módulo: {moduleName}",
         "na'vi": "Oel {moduleName} tswìya'.",
-        "cy": "Wedi troi ffwrdd y modiwl: {moduleName}"
+        "cy": "Wedi troi ffwrdd y modiwl: {moduleName}",
+	"fr"' "Module déchargé: {moduleName}"
     },
     "unload_error": {
         "en": "{moduleName} isn't loaded. Idiot.",
         "es": "{moduleName} no está cargado. Idiota.",
         "na'vi": "Oel {moduleName}it omum. Nga skxawng lu.",
-        "cy": "Di {moduleName} ddim wedi llwytho. Twpsyn"
+        "cy": "Di {moduleName} ddim wedi llwytho. Twpsyn",
+        "fr": "{moduleName} n'est pas chargé"
     },
     "banned": {
         "en": "{user} banned from {command}",
         "es": "{user} está prohibido de usar {command}",
         "na'vi": "{command}ìri {user} ke tung.",
-        "cy": "{user} wedi ei gohurio o {command}"
+        "cy": "{user} wedi ei gohurio o {command}",
+	"fr": "{user} est bannis de l'utilisation de {command}"
+	
     },
     "unbanned": {
         "en": "{user} unbanned from {command}",
         "es": "{user} no está prohibido de user {command}",
         "na'vi": "{command}ìri {user} tung set.",
-        "cy": "{user} wedi ei dad-wahardd o {command}"
+        "cy": "{user} wedi ei dad-wahardd o {command}",
+        "fr": "{user} n'est plus bannis de l'utilisation de {command}"
     },
     "unban_error": {
         "en": "{user} wasn't banned from that command, fool.",
         "es": "{user} no fue prohibido de esta instrucción, tont@.",
         "na'vi": "{user} fìtsu'oti tamung srekrr, nga skxawng lu.",
-        "cy": "Nid oedd {user} wedi ei wahardd o'r gyrchymun yna, fŵl"
+        "cy": "Nid oedd {user} wedi ei wahardd o'r gyrchymun yna, fŵl",
+	"fr": "{user} n'était pas bannis de l'utilisation de cette commande..."
     },
     "qlock": {
         "en": "Locked quote category: {category}",
         "es": "Cerrado la categoría: {category}",
         "na'vi": "{category}ìri oel 'upxareti fmoli",
-        "cy": "Categori wedi cloi: {category}"
+        "cy": "Categori wedi cloi: {category}",
+	"fr": "Verouillage de la catégorie de quotes: {category}"
     },
     "already_in_channel": {
         "en": "I'm already in {channel}",
-        "na'vi": "Oel {channel}it tok li"
+        "na'vi": "Oel {channel}it tok li",
+	"fr" :Je suis déjà dans {channel}"
     },
     "not_in_channel": {
         "en": "I'm not in {channel}",
-        "na'vi": "Oel {channel}it ke tok"
+        "na'vi": "Oel {channel}it ke tok",
+	"fr": "Je ne suis pas dans {channel}"
     },
     "already_loaded_web": {
         "en": "WHY CAN'T I LOAD ALL THIS WEB? (web already loaded)",
-        "na'vi": "PELUN OEL KE TSUN OMUM FÌWETIT NÌWOTX (wetìri oe omum li)"
+        "na'vi": "PELUN OEL KE TSUN OMUM FÌWETIT NÌWOTX (wetìri oe omum li)",
+	"fr": "POURQUOI ÇA NE CHARGE PAS? (déjà chargé!)"
     },
     "already_loaded": {
         "en": "{moduleName} is already loaded.",
-        "na'vi": "Oel omum teri {moduleName}it li."
+        "na'vi": "Oel omum teri {moduleName}it li.",
+	"fr": "{moduleName} est déjà chargé."
     }
 }

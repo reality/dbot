@@ -1,13 +1,16 @@
 {
     "title_not_found": {
         "en": "No page title found.",
-        "na'vi": "Oel ke tsun run 'upxare atxin."
+        "na'vi": "Oel ke tsun run 'upxare atxin.",
+	"fr": "Pas de page trouvé avec ce titre."
     },
     "xkcd": {
-        "en": "xkcd {num}: {title} https://xkcd.com/{num}"
+        "en": "xkcd {num}: {title} https://xkcd.com/{num}",
+	"fr": "xkcd {num}: {title} https://xkcd.com/{num}"
     },
     "no-hits": {
         "en": "No hits.",
-        "na'vi": "Oel ke tsun rivum ayuoti."
+        "na'vi": "Oel ke tsun rivum ayuoti.",
+	"fr": "Rien."
     }
 }

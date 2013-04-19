@@ -3,31 +3,38 @@
         "en": "{user} is banned from using this command. Commence incineration.",
         "es": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
         "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu.",
-        "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad"
+        "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad",
+	"fr": "{user} est bannis de cette commande."
     },
     "syntax_error": { 
         "en": "Invalid syntax. Initiate incineration.",
         "es": "Sintaxis no válida. Iniciar incineración.",
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
-        "cy": "Cystrawen annilys. Cychwyn orfflosgiad"
+        "cy": "Cystrawen annilys. Cychwyn orfflosgiad",
+	"fr": "Syntaxe invalide."
     },
     "usage": {
         "en": "Usage for {command}: {usage}.",
-        "na'vi": "Nga tsun sivar ìlä {command}: {usage}."
+        "na'vi": "Nga tsun sivar ìlä {command}: {usage}.",
+	"fr": "Usage pour {command}: {usage}."
     },
     "no_usage_info": {
         "en": "No usage information found for {command}.",
-        "na'vi": "Oel ke tsun sivar {comamnd}it"
+        "na'vi": "Oel ke tsun sivar {comamnd}it",
+	"fr": "Pas d'information trouvé pour l'usage de {command}."
     },
     "help_link": {
         "en": "Help for {module}: {link}",
-        "na'vi": "{module}ä srungìl {link} it tok"
+        "na'vi": "{module}ä srungìl {link} it tok",
+	"fr": "Aide pour {module}: {link}"
     },
     "no_help": {
         "en": "No help found for {module}.",
         "na'vi": "Fì{module}ìri oel ke tsun run srungit"
+	"fr": "Pas d'aide trouvée pour {module}."
     },
     "loaded_modules_with_help": {
         "en": "Loaded modules with help information: {modules}."
+	"fr": "Modules chargés avec fichiers d'aides: {modules}."
     }
 }

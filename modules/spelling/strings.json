@@ -3,12 +3,14 @@
         "en": "{correcter} meant: {fix}",
         "es": "{correcter} quería decir: {fix}",
         "na'vi": "Sweylu {correcter} pamrel sivi: {fix}",
-        "cy": "Oedd {correcter} yn feddwl: {fix}"
+        "cy": "Oedd {correcter} yn feddwl: {fix}",
+	"fr": "{correcter} voulait dire: {fix}"
     },
     "spelling_other": {
         "en": "{correcter} thinks {candidate} meant: {fix}",
         "es": "{correcter} piensa que {candidate} queria decir: {fix}",
         "na'vi": "{correcter} fpìl futa sweylu {candiate} pamrel sivi: {fix}",
-        "cy": "Mae {correcter} yn meddwl bod {candidate} yn feddwl: {fix}"
+        "cy": "Mae {correcter} yn meddwl bod {candidate} yn feddwl: {fix}",
+	"fr": "{correcter pense que {canditate} voulait dire: {fix}"
     }
 }
