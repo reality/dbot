@@ -90,7 +90,7 @@
     "already_loaded_web": {
         "en": "WHY CAN'T I LOAD ALL THIS WEB? (web already loaded)",
         "na'vi": "PELUN OEL KE TSUN OMUM FÌWETIT NÌWOTX (wetìri oe omum li)",
-	"fr": "POURQUOI ÇA NE CHARGE PAS? (déjà chargé!)"
+	"fr": "POURQUOI ÇA NE CHARGE PAS? (déjà chargé)"
     },
     "already_loaded": {
         "en": "{moduleName} is already loaded.",
