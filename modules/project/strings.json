@@ -115,7 +115,10 @@
         "it": "Nome"
     },
     "milestones": {
-        "en": "Milestones"
+        "en": "Milestones",
+        "it": "tappe",
+        "fr": "étapes",
+        "de": "Etappenziele"
     },
     "development": {
         "en": "Development",
@@ -131,6 +134,26 @@
     },
     "propaganda": {
         "en": "Contribute via Github!",
-        "fr": "Contribuer via Github!"
+        "fr": "Contribuer via Github!",
+        "it": "Contribuire con Github!",
+        "de": "Beisteuern Github"
+    },
+    "dent-account": {
+        "en": "{name} dents as @{username}"
+    },
+    "dent-push": {
+        "en": "Quotes are automatically dented"
+    },
+    "link-autotitle": {
+        "en": "Links are automatically titled"
+    },
+    "quote-rmlimit": {
+        "en": "Quote removal throttle set to {limit}"
+    },
+    "report-notifyvoice": {
+        "en": "Reports are sent to voiced users"
+    },
+    "web-port": {
+        "en": "Running web interface on {port}"
     }
 }

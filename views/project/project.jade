@@ -20,9 +20,6 @@ html(lang='#{curr839}')
            h4 #{git}
            p.center
              #{revnum}
-           p.center
-             a(href="https://github.com/"+repo) #{propaganda}
-
            ul
              li #{branch}
            pre#gitdiff
@@ -47,11 +44,15 @@ html(lang='#{curr839}')
                      print #{Math.round(width)+"%"}
                  td #{milestone.open_issues}
                  td #{milestone.closed_issues}
+          p.center
+            a(href="https://github.com/"+repo) #{propaganda}
           section#config
              h3 #{config}
              ul
                li #{currlang}
                li #{debugmode}
+               each message in configList
+                 li #{message}
              h4 #{loadmod}
              ul#modules 
                each module in modules
