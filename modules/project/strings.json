@@ -6,115 +6,133 @@
             "en": "{name} speaks {lang}",
             "de": "{name} spricht {lang} ({langen})",
             "fr": "{name} parle {lang} ({langen})",
-            "it": "{name} parla {lang} ({langen})"
+            "it": "{name} parla {lang} ({langen})",
+            "nl": "{name} spreekt {lang} ({langen})"
     },
     "pagetitle": {
         "en": "{botname} web interface",
         "fr": "{botname} interface réseau",
         "de": "{botname} Web-Interface",
-        "it": "{botname} interfaccia web"
+        "it": "{botname} interfaccia web",
     },
     "en": {
         "en": "English",
         "fr": "anglais",
         "de": "Englisch",
         "it": "inglese",
-        "cy": "saesneg"
+        "cy": "saesneg",
+        "nl": "Engels"
     },
     "fr": {
         "en": "French",
         "fr": "français",
         "de": "Französisch",
-        "it": "francese"
+        "it": "francese",
+        "nl": "Frans"
     },
     "de": {
         "en": "German",
         "fr": "allemande",
         "de": "Deutsch",
-        "it": "tedesco"
+        "it": "tedesco",
+        "nl": "Duits"
     },
     "it": {
         "en": "Italian",
         "fr": "italien",
         "de": "Italiener",
-        "it": "italiano"
+        "it": "italiano",
+        "nl": "Italiaans"
     },
     "cy": {
         "en": "Welsh",
         "fr": "gallois",
         "de": "Walisisch",
         "it": "gallese",
-        "cy": "cymraeg"
+        "cy": "cymraeg",
+        "nl": "Welsh"
     },
     "na'vi": {
         "en": "Na'vi",
         "fr": "na'vi",
         "de": "Na'vi",
-        "it": "Na'vi"
+        "it": "Na'vi",
+        "nl": "Na'vi"
     },
     "es": {
         "en": "Spanish",
         "fr": "espagnole",
         "de": "Spanisch",
-        "it": "spagnolo"
+        "it": "spagnolo",
+        "nl": "Spaans"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
         "fr": "{name} est à révision {rev}",
         "de": "{name} ist in der Revision {rev}",
-        "it": "{name} il numero di revisione {rev}"
+        "it": "{name} il numero di revisione {rev}",
+        "nl": "{name} is bij revisie {rev}"
     },
     "loadedmodules": {
         "en": "loaded modules",
         "fr": "modules chargés",
-        "it": "moduli caricati"
+        "it": "moduli caricati",
+        "nl": "geladen modules"
     },
     "configoptions": {
         "en": "Configuration",
         "fr": "Configuration",
         "de": "Konfiguration",
-        "it": "Configuazione"
+        "it": "Configuazione",
+        "nl": "Configuratie"
     },
     "debugmode-true": {
         "en": "Debug mode active",
         "fr": "debug actif",
         "de": "Debug aktiv",
-        "it": "debug attivo"
+        "it": "debug attivo",
+        "nl": "Debug actief"
     },
     "debugmode-false": {
         "en": "Debug off",
         "fr": "debug éteint",
         "de": "Debug ausgeschaltet",
-        "it": "debug spento"
+        "it": "debug spento",
+        "nl": "Debug uitgeschakeld"
     },
     "milestoneprog": {
         "en": "Progress",
         "fr": "Progression",
         "de": "Fortschritt",
-        "it": "sviluppo"
+        "it": "sviluppo",
+        "nl": "Voortgang"
     },
     "openmilestone": {
         "en": "Open",
         "fr": "Ouvert",
         "de": "Offen",
-        "it": "Aperto"
+        "it": "Aperto",
+        "nl": "Open"
     },
     "closedmilestone": {
         "en": "Closed",
         "fr": "Fermé",
         "de": "Gesperrt",
-        "it": "Chiuso"
+        "it": "Chiuso",
+        "nl": "Gesloten"
     },
     "milestonename": {
         "en": "Name",
         "fr": "Nom",
         "de": "Name",
-        "it": "Nome"
+        "it": "Nome",
+        "nl": "Naam"
     },
     "development": {
         "en": "Development",
         "fr": "Développement",
         "de": "Entwicklung",
-        "it": "Sviluppo"
+        "it": "Sviluppo",
+        "nl": "Ontwikkeling"
     }
 }
