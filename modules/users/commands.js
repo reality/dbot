@@ -35,6 +35,31 @@ var commands = function(dbot) {
             });
         },
 
+        '~addalias': function(event) {
+            var nick = event.input[1],
+                alias = event.input[2];
+
+            this.api.resolveUser(event.server, nick, function(user) {
+                if(user) {
+                    if(!_.include(user.aliases, alias)) {
+                        user.aliases.push(alias);
+                        this.db.save('users', user.id, user, function(err) {
+                            if(!err) {
+                                event.reply(dbot.t('alias_added', {
+                                    'user': user.primaryNick,
+                                    'alias': alias
+                                }));
+                            }
+                        });
+                    } else {
+                        event.reply(dbot.t('alias_exists', { 'alias': alias }));
+                    }
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            }.bind(this));
+        },
+
         '~setaliasparent': function(event) {
             var newPrimary = event.params[1].trim();
             this.api.resolveUser(event.server, newPrimary, function(user) {
@@ -104,9 +129,11 @@ var commands = function(dbot) {
     commands['~alias'].regex = [/^~alias ([\d\w[\]{}^|\\`_-]+?)/, 2];
     commands['~setaliasparent'].regex = [/^~setaliasparent ([\d\w[\]{}^|\\`_-]+?)/, 2];
     commands['~mergeusers'].regex = [/^~mergeusers ([\d\w[\]{}^|\\`_-]+?)\s*?([\d\w[\]{}^|\\`_-]+?)/, 3];
+    commands['~addalias'].regex = [/^~addalias ([\d\w[\]{}^|\\`_-]+?) ([\d\w[\]{}^|\\`_-]+?)$/, 3];
     
     commands['~setaliasparent'].access = 'moderator';
     commands['~mergeusers'].access = 'moderator';
+    commands['~addalias'].access = 'moderator';
     
     return commands;
 };

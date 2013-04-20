@@ -28,5 +28,11 @@
         "en": "{old_user} and their aliases have been merged into {new_user}.",
         "na'vi": "{old_user} ulte stxo alahe {new_user} lu set.",
         "nl": "{old_user} en zijn aliassen zijn samengevoegd met {new_user}."
+    },
+    "alias_exists": {
+        "en": "Alias {alias} already exists."
+    },
+    "alias_added": {
+        "en": "Alias {alias} added to {user}."
     }
 }
