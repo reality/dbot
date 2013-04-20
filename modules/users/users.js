@@ -79,7 +79,7 @@ var users = function(dbot) {
                     }.bind(this));
                 } else {
                     if(!_.include(user.channels, event.channel.name)) { // User not yet channel user
-                        users.channels.push(event.channel.name);
+                        user.channels.push(event.channel.name);
                         this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
                     }
 
@@ -114,7 +114,6 @@ var users = function(dbot) {
     this.onLoad = function() {
         dbot.instance.addListener('366', 'users', function(event) {
             this.api.getChannel(event.server, event.channel.name, function(channel) {
-
                 var checkChannelUsers = function(channel) {
                     _.each(event.channel.nicks, function(nick) {
                         var nick = nick.name;
