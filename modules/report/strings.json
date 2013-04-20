@@ -1,18 +1,22 @@
 {
     "report": {
         "en": "Attention: {reporter} has reported {reported} in {channel}. The reason given was: \"{reason}.\"",
-        "na'vi": "{reporter}ìl fpìl futa {reported} fe' lu taluna {reason}."
+        "na'vi": "{reporter}ìl fpìl futa {reported} fe' lu taluna {reason}.",
+        "nl": "Waarschuwing: {reporter} heeft {reported} aangegeven in {channel}. De reden die gegeven werd was: \"{reason}.\""
     },
     "reported": {
         "en": "Thank you, {reported} has been reported to the channel administrators.",
-        "na'vi": "Irayo si ngari, fìtsengìri ayeyktan omum teri {reported}it set."
+        "na'vi": "Irayo si ngari, fìtsengìri ayeyktan omum teri {reported}it set.",
+        "nl": "Bedankt, {reported} is aangegeven bij de administrators."
     },
     "user_not_found": {
         "en": "{reported} isn't a known user in {channel}.",
-        "na'vi": "Oel ke omum {reported}it mì {channel}."
+        "na'vi": "Oel ke omum {reported}it mì {channel}.",
+        "nl": "{reported} is geen bestaande gebruiker in {channel}."
     },
     "not_in_channel": {
         "en": "I am not present in {channel}.",
-        "na'vi": "Oel {channel}it ke tok."
+        "na'vi": "Oel {channel}it ke tok.",
+        "nl": "Ik ben niet aanwezig in {channel}."
     }
 }

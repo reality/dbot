@@ -3,83 +3,102 @@
         "en": "{user}: Usage: ~ignore [module]. Modules you can ignore are: {modules}.",
         "es": "{user}: Modo de empleo: ~ignore [módulo]. Módulos que tú puedes ignorar son: {modules}.",
         "na'vi": "{user}: Sar: ~ignore ['u]. U, nga ke tìng mikyun: {modules}.",
-        "cy": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}."
+        "cy": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}.",
+        "nl": "{user}: Gebruik: ~ignore [module]. Modules die negeert kunnen worden zijn: {modules}."
     },
     "already_ignoring": {
         "en": "{user}: You're already ignoring that module.",
         "es": "{user}: Ya ignoras este módulo.",
         "na'vi": "{user}: 'uri nga ke tìng mikyun srekrr.",
-        "cy": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod."
+        "cy": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod.",
+        "nl": "{user}: Je negeert deze module al."
     },
     "ignored": {
         "en": "{user}: Now ignoring {module}.",
         "es": "{user}: Estás ignorando {module}.",
         "na'vi": "{user}: Nga ke terìng mikyun {module}ne set.",
-        "cy": "{user}: Nawr yn anwybyddu {module}"
+        "cy": "{user}: Nawr yn anwybyddu {module}",
+        "nl": "{user}: {module} wordt nu genegeerd."
     },
     "invalid_ignore": {
         "en": "{user}: That isn't a valid module name.",
         "es": "{user}: Ese no es un nombre de un módulo valido.",
         "na'vi": "{user}: Tsatstxo eyawr ke lu.",
-        "cy": "{user}: Nid oedd hwna'n modiwl dilys"
+        "cy": "{user}: Nid oedd hwna'n modiwl dilys",
+        "nl": "{user}: Dat is geen geldige modulenaam."
     },
     "unignore_usage": {
         "en": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
         "es": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}.",
         "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}.",
-        "cy": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}"
+        "cy": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}",
+        "nl": "{user}: Gebruik: ~unignore [module]. Modules die momenteel worden genegeerd: {modules}."
     },
     "invalid_unignore": {
         "en": "{user}: You're not ignoring that module or it doesn't exist.",
         "es": "{user}: No ignoras este módulo o no existe.",
         "na'vi":"{user}: Nga terìng mikyun fu fì'ul fìtsengit ke tok.",
-        "cy": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli"
+        "cy": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli",
+        "nl": "{user}: Deze module bestaat niet of wordt niet genegeerd."
     },
     "unignored": {
         "en": "{user}: No longer ignoring {module}.",
         "es": "{user}: Ya no ignoras {module}.",
         "na'vi": "{user}: Nga terìng mikyun {module}ne set",
-        "cy": "{user}: Ddim yn anwybyddu {module} bellach"
+        "cy": "{user}: Ddim yn anwybyddu {module} bellach",
+        "nl": "{user}: {module} wordt niet langer genegeerd."
     },
     "ban_usage": {
-        "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands."
+        "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands.",
+        "nl": "{user}: Gebruik: ~ban [gebruiker] [module/commando]. Gebruik * voor alle modules en alle commandos."
     },
     "already_banned": {
-        "en": "{user}: {banned} is already banned from that module."
+        "en": "{user}: {banned} is already banned from that module.",
+        "nl": "{user}: {banned} is al geband van deze module."
     },
     "banned_success": {
-        "en": "{user}: {banned} is now banned from {module}."
+        "en": "{user}: {banned} is now banned from {module}.",
+        "nl": "{user}: {banned} mag {module} nu niet meer gebruiken."
     },
     "invalid_ban": {
-        "en": "{user}: That isn't a valid module name."
+        "en": "{user}: That isn't a valid module name.",
+        "nl": "{user}: Dat is geen geldige modulenaam."
     },
     "unban_usage": {
-        "en": "{user}: Usage: ~unban [user] [module]."
+        "en": "{user}: Usage: ~unban [user] [module].",
+        "nl": "{user}: Gebruik: ~unban [gebruiker] [module]."
     },
     "invalid_unban": {
-        "en": "{user}: {banned} is not banned from that module or it doesn't exist."
+        "en": "{user}: {banned} is not banned from that module or it doesn't exist.",
+        "nl": "{user}: {banned} is niet geband van die module of de module bestaat niet."
     },
     "unbanned_success": {
-        "en": "{user}: {banned} is no longer banned from {module}."
+        "en": "{user}: {banned} is no longer banned from {module}.",
+        "nl": "{user}: {banned} mag {module} weer gebruiken."
     },
     "ignoring_channel": {
-        "en": "Now ignoring {module} in {channel}",
-        "na'vi": "Oe ke stayawm {module}ur mì {channel}"
+        "en": "Now ignoring {module} in {channel}.",
+        "na'vi": "Oe ke stayawm {module}ur mì {channel}",
+        "nl": "{module} wordt nu genegeerd in {channel}."
     },
     "already_ignoring_channel": {
-        "en": "Already ignoring {module} in {channel}",
-        "na'vi": "Oe ke stayawm {module}ur mì {channel} li"
+        "en": "Already ignoring {module} in {channel}.",
+        "na'vi": "Oe ke stayawm {module}ur mì {channel} li",
+        "nl": "{module} wordt al genegeerd in {channel}."
     },
     "module_not_exist": {
         "en": "{module} isn't loaded or doesn't exist.",
-        "na'vi": "Oel ke omum teri {module}it fu {module} ke fkeytok"
+        "na'vi": "Oel ke omum teri {module}it fu {module} ke fkeytok",
+        "nl": "{module} is niet geladen of bestaat niet."
     },
     "unignoring_channel": {
-        "en": "No longer ignoring {module} in {channel}",
-        "na'vi": "Oel stayawm {module}ur mì {channel} set."
+        "en": "No longer ignoring {module} in {channel}.",
+        "na'vi": "Oel stayawm {module}ur mì {channel} set.",
+        "nl": "{module} wordt niet meer genegeerd in {channel}."
     },
     "not_ignoring_channel": {
-        "en": "{module} wasn't being ignored in {channel}",
-        "na'vi": "Oel stayawm {module}ur mì {channel} li."
+        "en": "{module} wasn't being ignored in {channel}.",
+        "na'vi": "Oel stayawm {module}ur mì {channel} li.",
+        "nl": "{module} werd niet genegeerd in {channel}."
     }
 }

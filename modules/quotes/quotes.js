@@ -110,9 +110,6 @@ var quotes = function(dbot) {
             }.bind(this));
         }
     };
-
-    this.api['getQuoteCategory'].external = true;
-    this.api['getQuoteCategory'].extMap = [ 'name' ];
    
     this.listener = function(event) {
         if(event.action == 'PRIVMSG') {
@@ -128,7 +125,7 @@ var quotes = function(dbot) {
                 });
            }
         } else if(event.action == 'JOIN') {
-            var userQuote = this.api.addQuote(event.user, function(quote) {
+            var userQuote = this.api.getQuote(event.user, function(quote) {
                 if(quote) {
                     event.reply(event.user + ': ' + quote);
                 }

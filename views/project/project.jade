@@ -1,0 +1,63 @@
+!!!
+html(lang='#{curr839}')
+  head
+    meta(charset='utf-8')
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js")
+    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Source+Sans+Pro")
+    link(rel="stylesheet", type="text/css", href="/bootstrap/css/bootstrap.min.css")   
+    link(rel='stylesheet', type='text/css', href='/styles.css')    
+    link(rel="stylesheet", href="/project.css")
+    title #{pagetitle}
+    - var mstone = "milestone"
+    style(type="text/css")
+       each milestone in milestones
+         - current = mstone+milestone.number
+         - wdth = ((milestone.open_issues/(milestone.open_issues + milestone.closed_issues))*100)
+         .current { width: wdth% }
+  body  
+    div.container
+      div#page
+        div#title #{pagetitle}
+        div.container#main
+          p.intro
+            #{dquote}
+          section#git
+           h3 #{development} 
+           p.center
+             #{revnum}
+           pre#gitdiff
+             #{diff}
+           h4 #{milestoneprog} 
+           table#milestones.center
+             tr
+               th #{milestonename}
+               th #{milestoneprog}
+               th #{openmilestone}
+               th #{closedmilestone}
+             each milestone in milestones
+               - var mstone = "milestone"
+               - var wd = "width:"
+               - var pc = "%"
+               - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
+               tr(id=mstone+milestone.number)
+                 td
+                   a(href=milestone.url)
+                     #{milestone.title}
+                 td 
+                   div.progress(class=milestone.state)
+                     div.progress-inner(style=wd+wdth+pc)(class=milestone.state)
+                       &nbsp;
+                 td #{milestone.open_issues}
+                 td #{milestone.closed_issues}
+          section#config
+             h3 #{config}
+             ul
+               li #{currlang}
+               li #{debugmode}
+             h4 #{loadmod}
+             ul#modules 
+               each module in modules
+                 li #{module}
+          section#footer
+            p
+              #{currver}

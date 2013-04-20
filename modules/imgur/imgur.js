@@ -7,14 +7,14 @@ var _ = require('underscore')._,
     request = require('request');
 
 var imgur = function(dbot) {
+    this.db = dbot.db.imgur;
     this.internalAPI = {
         'infoString': function(imgData) {
-            info = null;
+            info = '';
             if(imgData && _.has(imgData, 'data')) {
                 imgData = imgData.data;
-                info = '[';
                 if(imgData.title) {
-                    info += imgData.title + ' is ';
+                    info += imgData.title + ' - ';
                 }
                 if(imgData.type) {
                     if(imgData.animated) {
@@ -26,11 +26,11 @@ var imgur = function(dbot) {
                     info += 'an image with ';
                 }
                 info += imgData.views + ' views (';
-                info += imgData.width + 'x' + imgData.height + ')].';
+                info += imgData.width + 'x' + imgData.height + ')';
             }
 
             return info;
-        }
+        }.bind(this)
     };
 
     this.api = { 
@@ -45,9 +45,11 @@ var imgur = function(dbot) {
             var testUrl = 'http://i.imgur.com/' + 
                 testSlug +
                 '.' + ext[_.random(0, ext.length - 1)];
+            this.db.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
+                    this.db.totalImages += 1;
                     callback(testUrl, testSlug);
                 } else {
                     this.api.getRandomImage(callback);
@@ -55,27 +57,36 @@ var imgur = function(dbot) {
             }.bind(this)); 
         },
 
+        'getImageInfoString': function(slug, callback) {
+            this.api.getImageInfo(slug, function(imgData) {
+                callback(this.internalAPI.infoString(imgData));
+            }.bind(this));
+        },
+
         'getImageInfo': function(slug, callback) {
             request.get({
                 'url': 'https://api.imgur.com/3/image/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID 86fd3a8da348b65'
+                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
                 }
             }, function(err, response, body) {
+                this.db.totalApiRequests += 1;
                 callback(body);
-            });
+            }.bind(this));
         }
     };
     this.api['getRandomImage'].external = true;
     this.api['getRandomImage'].extMap = [ 'callback' ];
+    this.api['getImageInfoString'].external = true;
+    this.api['getImageInfoString'].extMap = [ 'slug', 'callback' ];
 
     this.commands = {
         '~ri': function(event) {
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    event.reply(event.user + ': ' + link + ' ' + info);
+                    event.reply(event.user + ': ' + link + ' [' + info + ']');
                 }.bind(this));
             }.bind(this));
         }
@@ -86,12 +97,15 @@ var imgur = function(dbot) {
             if(matches[1]) { 
                 this.api.getImageInfo(matches[1], function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    if(info) event.reply(info);
+                    if(info) event.reply('[' + info + ']');
                 }.bind(this));
             }
         }.bind(this);
         dbot.api.link.addHandler(this.name, /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
         dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
+        if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
+        if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
+        if(!_.has(dbot.db.imgur, 'totalImages')) dbot.db.imgur.totalImages = 0;
     }.bind(this);
 };
 

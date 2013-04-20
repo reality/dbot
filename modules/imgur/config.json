@@ -1,0 +1,8 @@
+{
+    "dbKeys": [ "imgur" ],
+    "dependencies": [ "web", "api" ],
+    "imagelength": 5,
+    "nsfwwarn": true,
+    "apikey": "86fd3a8da348b65",
+    "highscore": "ricount"
+}
