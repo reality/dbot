@@ -1,6 +1,6 @@
 {
     "ignorable": false,
-    "dbKeys": [ "profiles" ],
+    "dbType": "memory",
     "help": "https://github.com/reality/depressionbot/blob/master/modules/profile/README.md",
     "schema": {
         "profile": {

@@ -5,23 +5,10 @@ var commands = function(dbot){
 
         "~getprop": function(event){
             if(event.params[1]){
-                var primary = dbot.api.users.resolveUser(event.server, event.user);
-                var res = dbot.db.profiles[event.server][primary.toLowerCase()].profile[event.params[1]];
-                if(res){
-                    event.reply(res);
-                }
-                else{
-                    event.reply("Nope.");
-                }
-            }
-        },
-
-        "~setprop": function(event){
-            if(event.input[1] && event.input[2]){
-                if(_.has(this.config.schema.profile, event.input[1])){
-                    var primary = dbot.api.users.resolveUser(event.server, event.user);
-                    dbot.db.profiles[event.server][primary.toLowerCase()].profile[event.input[1]] = event.input[2];
-                    event.reply("Property set, maybe?");
+                if(_.has(this.config.schema.profile, event.params[1])){
+                    this.api.getProperty(event.server, event.user, event.params[1], function(reply){
+                        event.reply(reply);
+                    });
                 }
                 else{
                     event.reply("Invalid property. Go home.");
@@ -29,23 +16,18 @@ var commands = function(dbot){
             }
         },
 
-        "~profile": function(event){
-            if(event.params[1]){
-                var primary = dbot.api.users.resolveUser(event.server, event.params[1]);
-                if(_.has(dbot.db.profiles[event.server], primary.toLowerCase())){
-                    event.reply(dbot.api.web.getUrl("profile/"+event.server+"/"+primary.toLowerCase()));
+        "~setprop": function(event){
+            if(event.input[1] && event.input[2]){
+                if(_.has(this.config.schema.profile, event.input[1])){
+                    this.api.setProperty(event.server, event.user, event.input[1], event.input[2], function(reply){
+                        event.reply(reply);
+                    });
                 }
                 else{
-                    event.reply("No profile found for "+event.params[1]);
+                    event.reply("Invalid property. Go home.");
                 }
             }
-            else{
-                event.message = '~profile ' + event.user;
-                event.action = 'PRIVMSG';
-                event.params = event.message.split(' ');
-                dbot.instance.emit(event);
-            }
-        }
+        },
     };
     commands['~setprop'].regex = [/~setprop ([^ ]+) (.+)/, 3];
 

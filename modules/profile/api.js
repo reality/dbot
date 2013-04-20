@@ -4,64 +4,77 @@ var api = function(dbot) {
     return {
 
         /**
-         * Create a profile for a new primary user on a given server.
-         * If the server does not already exist, create it.
+         * Create a new profile for a given "databanked" user.
+         * Typically only called as a hook to the new_user emit event.
+         * TODO(@samstudio8) Migrate to internalAPI
          */
-        "createProfile": function(server, primary){
-            var primaryLower = primary.toLowerCase();
-
-            if(!_.has(this.profiles, server)){
-                this.profiles[server] = {};
-            }
-            if(!_.has(this.profiles[server], primaryLower)){
-                this.profiles[server][primaryLower] = {
-                    "profile": {},
-                    "preferences": {}
-                };
-                this.profiles[server][primaryLower].profile.primary = primary;
-            }
-
-            // Ensure all profiles have the keys specified by config.json
-            //TODO(samstudio8) Currently only handles "top-level"
-            _.defaults(this.profiles[server][primaryLower].profile, this.config.schema.profile);
-            _.defaults(this.profiles[server][primaryLower].preferences, this.config.schema.preferences);
-        },
-
-        /**
-         * Given a server and "new" alias, resolve this alias to the user's 
-         * new primary name and move profile data pertaining to the alias to 
-         * the new primary name.
-         */
-        'renameProfile': function(server, alias){
-            if(!_.has(this.profiles, server)) return;
-            var profiles = dbot.db.profiles[server];
-
-            if(_.has(profiles, alias)){
-                var primary = dbot.api.users.resolveUser(server, alias, true);
-                var primaryLower = primary.toLowerCase();
-                alias = alias.trim().toLowerCase();
-
-                profiles[primaryLower] = profiles[alias];
-                profiles[primaryLower].profile.primary = primary;
-                delete profiles[alias];
+        "createProfile": function(user, callback){
+            if(user){
+                this.db.create('profiles', user.id, {
+                    'id': user.id,
+                    'profile': dbot.config.profile.schema.profile,
+                    'preferences': dbot.config.profile.schema.preferences
+                }, function(err, result){
+                    if(err){
+                        console.log(err);
+                    }
+                });
             }
         },
+  
+        //TODO(samstudio8) Merge Profiles
+        'mergeProfile': function(server, nick, callback){
+            console.log("mergeProfile not implemented");
+        },
 
-        /**
-         * Given a server and a primary username which has been converted to a
-         * secondary alias find and remove the profile for the alias.
-         */
-        'mergeProfile': function(server, mergeFromPrimary){
-            if(!_.has(this.profiles, server)) return;
-            var profiles = dbot.db.profiles[server];
+        'getProfile': function(server, nick, callback){
+            dbot.api.users.resolveUser(server, nick, function(user){
+                if(user){
+                    this.db.read('profiles', user.id, function(err, profile){
+                        callback(false, user, profile);
+                    });
+                }
+                else{
+                    callback(true, null, null);
+                }
+            }.bind(this));
+        },
 
-            mergeFromPrimary = mergeFromPrimary.toLowerCase();
-            var mergeToPrimary = dbot.api.users.resolveUser(server, mergeFromPrimary, true).toLowerCase();
-            if(!_.has(profiles, mergeToPrimary)
-                    || !_.has(profiles, mergeFromPrimary)) return;
+        'getAllProfiles': function(callback){
+            var profiles = [];
+            this.db.scan('profiles', function(profile){
+                profiles.push(profile);
+            }, function(err){
+                if(!err){
+                    callback(profiles);
+                }
+                else{
+                    console.log(err);
+                }
+            });
+        },
 
-            // Remove the profile of the alias
-            delete profiles[mergeFromPrimary];
+        'setProperty': function(server, nick, field, value, callback){
+            this.api.getProfile(server, nick, function(err, user, profile){
+                if(!err){
+                    profile.profile[field] = value;
+                    this.db.save('profiles', user.id, profile, function(err){
+                        if(!err){
+                            callback("Ok!");
+                        }
+                    });
+                }
+            }.bind(this));
+        },
+
+        'getProperty': function(server, nick, field, callback){
+            this.api.getProfile(server, nick, function(err, user, profile){
+                if(!err){
+                    if(profile.profile[field]){
+                        callback(profile.profile[field]);
+                    }
+                }
+            }.bind(this));
         },
     }
 };
