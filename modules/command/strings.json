@@ -3,31 +3,38 @@
         "en": "{user} is banned from using this command. Commence incineration.",
         "es": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
         "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu.",
-        "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad"
+        "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad",
+        "nl": "{user} mag dit commando niet meer gebruiken. Bereid het verbrandingsritueel voor."
     },
     "syntax_error": { 
         "en": "Invalid syntax. Initiate incineration.",
         "es": "Sintaxis no válida. Iniciar incineración.",
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
-        "cy": "Cystrawen annilys. Cychwyn orfflosgiad"
+        "cy": "Cystrawen annilys. Cychwyn orfflosgiad",
+        "nl": "Ongeldige syntax. Bereid het verbrandingsritueel voor."
     },
     "usage": {
         "en": "Usage for {command}: {usage}.",
-        "na'vi": "Nga tsun sivar ìlä {command}: {usage}."
+        "na'vi": "Nga tsun sivar ìlä {command}: {usage}.",
+        "nl": "{command} wordt op de volgende manier gebruikt: {usage}."
     },
     "no_usage_info": {
         "en": "No usage information found for {command}.",
-        "na'vi": "Oel ke tsun sivar {comamnd}it"
+        "na'vi": "Oel ke tsun sivar {comamnd}it",
+        "nl": "Geen gebruiksinformatie gevonden voor {command}."
     },
     "help_link": {
         "en": "Help for {module}: {link}",
-        "na'vi": "{module}ä srungìl {link} it tok"
+        "na'vi": "{module}ä srungìl {link} it tok",
+        "nl": "Hulp voor {module}: {link}"
     },
     "no_help": {
         "en": "No help found for {module}.",
-        "na'vi": "Fì{module}ìri oel ke tsun run srungit"
+        "na'vi": "Fì{module}ìri oel ke tsun run srungit",
+        "nl": "Geen hulp gevonden voor {module}."
     },
     "loaded_modules_with_help": {
-        "en": "Loaded modules with help information: {modules}."
+        "en": "Loaded modules with help information: {modules}.",
+        "nl": "Geladen modules die hulpinformatie bevatten: {modules}."
     }
 }

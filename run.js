@@ -212,6 +212,15 @@ DBot.prototype.reloadModules = function() {
                 }
             }, this);
 
+            // Load string data for the module
+            _.each([ 'usage', 'strings' ], function(property) {
+                var propertyData = {};
+                try {
+                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
+                } catch(err) {};
+                _.extend(this[property], propertyData);
+            }, this);
+
             // Load the module itself
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
@@ -262,16 +271,7 @@ DBot.prototype.reloadModules = function() {
                     this.instance.addListener(on, module.name, module.listener);
                 }, this);
             }
-
-            // Load string data for the module
-            _.each([ 'usage', 'strings' ], function(property) {
-                var propertyData = {};
-                try {
-                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
-                } catch(err) {};
-                _.extend(this[property], propertyData);
-            }, this);
-
+           
             // Provide toString for module name
             module.toString = function() {
                 return this.name;

@@ -1,13 +1,15 @@
 {
     "title_not_found": {
         "en": "No page title found.",
-        "na'vi": "Oel ke tsun run 'upxare atxin."
+        "na'vi": "Oel ke tsun run 'upxare atxin.",
+        "nl": "Er is geen paginatitel gevonden."
     },
     "xkcd": {
         "en": "xkcd {num}: {title} https://xkcd.com/{num}"
     },
     "no-hits": {
         "en": "No hits.",
-        "na'vi": "Oel ke tsun rivum ayuoti."
+        "na'vi": "Oel ke tsun rivum ayuoti.",
+        "nl": "Geen resultaten."
     }
 }
