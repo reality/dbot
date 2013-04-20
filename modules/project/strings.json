@@ -66,6 +66,9 @@
         "it": "spagnolo",
         "nl": "Spaans"
     },
+    "nl": {
+        "en": "Dutch"
+    },
     "revnum": {
         "en": "{name} is at revision {rev}",
         "fr": "{name} est à révision {rev}",
@@ -99,6 +102,9 @@
         "de": "Debug ausgeschaltet",
         "it": "debug spento",
         "nl": "Debug uitgeschakeld"
+    },
+    "milestones": {
+        "en": "Milestones"
     },
     "milestoneprog": {
         "en": "Progress",
@@ -134,5 +140,29 @@
         "de": "Entwicklung",
         "it": "Sviluppo",
         "nl": "Ontwikkeling"
+    },
+    "dent-account": {
+        "en": "Submitting dents to @{username}"
+    },
+    "dent-push": {
+        "en": "Pushing quotes to identi.ca"
+    },
+    "quote-rmlimit": {
+        "en": "Quote removal throttle set to {limit}"
+    },
+    "report-notifyvoice": {
+        "en": "Voiced users are being notified of reports"
+    },
+    "web-port": {
+        "en": "Web is listening on {port}"
+    },
+    "propaganda": {
+        "en": "Contribute to the code on Github!"
+    },
+    "branch": {
+        "en": "{branch}"
+    },
+    "git": {
+        "en": "version control"
     }
 }

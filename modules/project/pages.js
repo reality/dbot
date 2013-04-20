@@ -1,21 +1,27 @@
 var exec = require('child_process').exec,
-    request = require('request');
+    request = require('request'),
+    _ = require('underscore');
 
 var pages = function(dbot) {
     var quoteCat = dbot.db.quoteArrs[dbot.config.name],
-        rev, diff;
+        rev, diff, branch;
 
-    exec("git rev-list --all | wc -l", function(a, b, c) {
-        rev = b
+    exec("git rev-list --all | wc -l", function(error, stdout, stderr) {
+        rev = stdout
     });
-    exec("git log -1", function(a, b, c) {
-        diff = b
+
+    exec("git rev-parse --abbrev-ref HEAD", function(error, stdout, stderr) {
+        branch = stdout
     });
-    
+
+    exec("git log -1", function(error, stdout, stderr) {
+        diff = stdout
+    });   
+
     /* TODO: merge back into github module */
     var milestones;
-    request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=open", function(e, r, b){
-        milestones = JSON.parse(b);
+    request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=open", function(error, response, body){
+        milestones = JSON.parse(body);
     });
 
 
@@ -27,11 +33,16 @@ var pages = function(dbot) {
             }
 
             res.render('project', {
+                "configList": dbot.modules.project.api.configList(), // what variable do I put here
                 "name": dbot.config.name,
                 "intro": dbot.t("dbotintro", {
                     "botname": dbot.config.name
                 }),
                 "curr839": dbot.config.language,
+                "repo": dbot.config.github.defaultrepo,
+                "branch": dbot.t("branch",{
+                    "branch": branch
+                }),
                 "currver": dbot.config.version,
                 "currlang": dbot.t("dbotspeaks",{
                     "lang839": dbot.config.language,
@@ -42,8 +53,7 @@ var pages = function(dbot) {
                 "projectstatus": dbot.t("projectstatus"),
                 "revnum": dbot.t("revnum",{
                     "name": dbot.config.name,
-                    "rev": rev,
-                    "ver": "abcdef" // TODO, obviously
+                    "rev": rev
                 }),
                 "modules": dbot.config.moduleNames,
                 "loadmod": dbot.t("loadedmodules"),
@@ -59,7 +69,10 @@ var pages = function(dbot) {
                 "diff": diff,
                 "pagetitle": dbot.t("pagetitle", {
                     "botname": dbot.config.name
-                })
+                }),
+                "git": dbot.t("git"),
+                "milestonehead": dbot.t("milestones"),
+                "propaganda": dbot.t("propaganda")
            });
         },
     };

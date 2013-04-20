@@ -31,11 +31,15 @@ div.progress.open {
 div.progress {
     margin-top:auto;
     margin-bottom:auto;
+    text-align:left;
+    font-size:50%;
+    color:gray;
 }
 div.progress-inner.open {
-    width:20%;
     background-color: #3fff3f;
     background-image: linear-gradient(to bottom,#3fff3f,#7fff7f); 
+    float:left;
+    margin-right:2px;
 }
 div.progress.closed { 
     background-color: #fff5f5;
@@ -44,7 +48,6 @@ div.progress.closed {
 div.progress-inner.closed {
     background-color: #ff3f3f;
     background-image: linear-gradient(to bottom,#ff3f3f,#ff7f7f);
-    width:20%;
 }
 
 #config  {
@@ -52,6 +55,11 @@ div.progress-inner.closed {
     text-transform:lowercase;
 }
 
+ul {
+    text-align:center;
+    margin-left:0;
+    margin-bottom:5px;
+}
 li {
     background-image: linear-gradient(to bottom, #f5ebe2, #f5e6d8);
     border:1px solid #f5dcc5;
