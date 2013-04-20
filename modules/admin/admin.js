@@ -36,6 +36,25 @@ var admin = function(dbot) {
             }
         }.bind(this)
     };
+
+    this.onLoad = function() {
+        var configMap = dbot.config;
+        this.db.scan('config', function(config) {
+            if(config) {
+                var currentPath = configMap,
+                    key = config.key.split('.'),
+                    value = config.value;
+
+                for(var i=0;i<key.length-1;i++) {
+                    if(_.has(currentPath, key[i])) {
+                        currentPath = currentPath[key[i]];
+                    }
+                }
+
+                currentPath[key[i]] = value;
+            }
+        }, function(err) { });
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {

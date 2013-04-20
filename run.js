@@ -131,12 +131,8 @@ DBot.prototype.reloadModules = function() {
     this.modules = {};
     this.commands = {};
     this.api = {};
-    this.commandMap = {}; // Map of which commands belong to which modules
     this.usage = {};
     
-    // Load config changes
-    _.extend(this.config, this.db.config);
-
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -157,7 +153,6 @@ DBot.prototype.reloadModules = function() {
     require('./snippets');
 
     this.instance.removeListeners();
-
     _.each(moduleNames, function(name) {
         this.status[name] = true;
         var moduleDir = './modules/' + name + '/';
@@ -207,13 +202,29 @@ DBot.prototype.reloadModules = function() {
         }
         this.config[name] = config;
 
-        var loadModule = function(db) {
+        // Groovy funky database shit
+        if(!_.has(config, 'dbType') || config.dbType == 'olde') {
+            // Generate missing DB keys
+            _.each(config.dbKeys, function(dbKey) {
+                if(!_.has(this.db, dbKey)) {
+                    this.db[dbKey] = {};
+                }
+            }, this);
+        } else {
+            // Just use the name of the module for now, add dbKey iteration later
+            this.ddb.createDB(name, config.dbType, {}, function(db) {});
+        }
+    }.bind(this));
+
+    process.nextTick(function() {
+        _.each(moduleNames, function(name) {
+            var moduleDir = './modules/' + name + '/';
             var rawModule = require(moduleDir + name);
             var module = rawModule.fetch(this);
             this.rawModules.push(rawModule);
 
             module.name = name;
-            module.db = db;
+            module.db = this.ddb.databanks[name];
             module.config = this.config[name];
 
             // Load the module data
@@ -276,44 +287,25 @@ DBot.prototype.reloadModules = function() {
             }
 
             this.modules[module.name] = module;
-
-            if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
-            
-            _.each(this.modules, function(module, name) {
-                if(module.onLoad) {
-                    try {
-                        module.onLoad();
-                    } catch(err) {
-                        this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
-                        console.log('MODULE ONLOAD ERROR (' + name + '): ' + err );
-                    }
-                }
-            }, this);
-        }.bind(this);
-
-        // Groovy funky database shit
-        if(!_.has(config, 'dbType') || config.dbType == 'olde') {
-            // Generate missing DB keys
-            _.each(config.dbKeys, function(dbKey) {
-                if(!_.has(this.db, dbKey)) {
-                    this.db[dbKey] = {};
-                }
-            }, this);
-            loadModule(this.db);
-        } else {
-            // Just use the name of the module for now, add dbKey iteration later
-            this.ddb.createDB(name, config.dbType, {}, function(db) {
-                loadModule(db);
-            });
-        }
+        }.bind(this));
     }.bind(this));
-            
+
+    process.nextTick(function() {
+        if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
+        _.each(this.modules, function(module, name) {
+            if(module.onLoad) {
+                try {
+                    module.onLoad();
+                } catch(err) {
+                    this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
+                    console.log('MODULE ONLOAD ERROR (' + name + '): ' + err );
+                }
+            }
+        }, this);
+    }.bind(this));
+
     this.save();
 };
-
-// Load the module itself
-DBot.prototype.loadModule = function(name, db) {
-    }
 
 DBot.prototype.cleanNick = function(key) {
     key = key.toLowerCase();

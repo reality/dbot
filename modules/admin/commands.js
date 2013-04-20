@@ -164,7 +164,10 @@ var commands = function(dbot) {
 
                         event.reply(configPath + ": " + config + " -> " + newOption);
                         config = newOption;
-                        this.db.save('config', configPath, { 'value': config }, function(err) {
+                        this.db.save('config', configPath, { 
+                            'key': configPath,
+                            'value': config
+                        }, function(err) {
                             dbot.reloadModules();
                         });
                     } else {
@@ -186,7 +189,10 @@ var commands = function(dbot) {
                         if(_.isArray(config)) {
                             event.reply(configPath + ": " + config + " << " + newOption);
                             config.push(newOption);
-                            this.db.save('config', configPath, { 'value': config }, function(err) {
+                            this.db.save('config', configPath, { 
+                                'key': configPath, 
+                                'value': config 
+                            }, function(err) {
                                 dbot.reloadModules();
                             });
                         } else {
