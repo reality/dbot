@@ -27,7 +27,7 @@ var api = function(dbot) {
 
         // Return a user record given a UUID
         'getUser': function(uuid, callback) {
-            this.db.get('users', uuid, function(err, user) {
+            this.db.read('users', uuid, function(err, user) {
                 if(err) user = false;
                 callback(user);
             });
