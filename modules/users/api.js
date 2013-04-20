@@ -145,6 +145,9 @@ var api = function(dbot) {
     api['getChannel'].external = true;
     api['getChannel'].extMap = [ 'server', 'channel', 'callback' ];
 
+    api['getAllUsers'].external = true;
+    api['getAllUsers'].extMap = [ 'callback' ];
+
     return api;
 };
 
