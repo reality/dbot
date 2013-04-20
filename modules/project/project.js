@@ -4,7 +4,8 @@
  * the dbot.
  */
 
-_ = require('underscore');
+_ = require('underscore'),
+  exec = require('child_process').exec;
 
 var project = function(dbot) {
 
@@ -16,7 +17,7 @@ var project = function(dbot) {
                     "username": dbot.config.dent.username
                 }));
             }
-            if(dbot.config.dent.dentQuotes) {
+            if(_.has(dbot.config.dent.dentQuotes)) {
                 list.push(dbot.t("dent-push"));
             }
             if(_.has(dbot.modules,'link')){
@@ -40,10 +41,17 @@ var project = function(dbot) {
                 }));
             }
             return list;
+        },
+        'getAuthors': function(callback) {
+            var foo = ['a','b','c']; 
+            exec("git rev-list --all | wc -l", function(error, stdout, stderr){ 
+                foo.push(stdout);
+            });
+            callback(foo);
         }
-    };
-}   
-        
+    }   
+}        
+
 exports.fetch = function(dbot){
     return new project(dbot);
 }

@@ -33,7 +33,10 @@ var pages = function(dbot) {
             }
 
             res.render('project', {
-                "configList": dbot.modules.project.api.configList(), // what variable do I put here
+                "configList": dbot.modules.project.api.configList(), 
+                "authors": dbot.modules.project.api.getAuthors(),
+                "credits": dbot.t("credits"),
+                "thanks": dbot.t("thanks"),
                 "name": dbot.config.name,
                 "intro": dbot.t("dbotintro", {
                     "botname": dbot.config.name
