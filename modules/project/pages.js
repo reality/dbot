@@ -9,45 +9,15 @@ var pages = function(dbot) {
     exec("git rev-list --all | wc -l", function(error, stdout, stderr) {
         rev = stdout
     });
+
     exec("git rev-parse --abbrev-ref HEAD", function(error, stdout, stderr) {
         branch = stdout
     });
+
     exec("git log -1", function(error, stdout, stderr) {
         diff = stdout
-    });
-    var configList = [];
-    if(_.has(dbot.modules,'dent')){
-        configList.push(dbot.t("dent-account", {
-            "username": dbot.config.dent.username
-        }));
-        if(dbot.config.dent.dentQuotes) {
-            configList.push(dbot.t("dent-push"));
-        }
-    }
-    if(_.has(dbot.modules,'link')){
-        if(dbot.config.link.autoTitle){
-            configList.push(dbot.t("link-autotitle"));
-        }
-    }
-    if(_.has(dbot.modules,'quotes')){
-        configList.push(dbot.t("quote-rmlimit", {
-            "limit": dbot.config.quotes.rmLimit
-        }));
-    }
-    if(_.has(dbot.modules,'report')){
-        if(dbot.config.report.notifyVoice){
-            configList.push(dbot.t("report-notifyvoice"));
-        }
-    } 
-    if(_.has(dbot.modules,'web')){
-        configList.push(dbot.t("web-port", {
-            "port": dbot.config.web.webPort
-        }));
-    }
-       
-        
-               
-   
+    });   
+
     /* TODO: merge back into github module */
     var milestones;
     request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=open", function(error, response, body){
@@ -63,7 +33,7 @@ var pages = function(dbot) {
             }
 
             res.render('project', {
-                "configList": configList,
+                "configList": "", // what variable do I put here
                 "name": dbot.config.name,
                 "intro": dbot.t("dbotintro", {
                     "botname": dbot.config.name
