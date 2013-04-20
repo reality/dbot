@@ -1,0 +1,168 @@
+{
+    "dbotintro": {
+        "en": "{botname} lorem ipsum dolor sit amet"
+    },
+    "dbotspeaks": {
+            "en": "{name} speaks {lang}",
+            "de": "{name} spricht {lang} ({langen})",
+            "fr": "{name} parle {lang} ({langen})",
+            "it": "{name} parla {lang} ({langen})",
+            "nl": "{name} spreekt {lang} ({langen})"
+    },
+    "pagetitle": {
+        "en": "{botname} web interface",
+        "fr": "{botname} interface réseau",
+        "de": "{botname} Web-Interface",
+        "it": "{botname} interfaccia web"
+    },
+    "en": {
+        "en": "English",
+        "fr": "anglais",
+        "de": "Englisch",
+        "it": "inglese",
+        "cy": "saesneg",
+        "nl": "Engels"
+    },
+    "fr": {
+        "en": "French",
+        "fr": "français",
+        "de": "Französisch",
+        "it": "francese",
+        "nl": "Frans"
+    },
+    "de": {
+        "en": "German",
+        "fr": "allemande",
+        "de": "Deutsch",
+        "it": "tedesco",
+        "nl": "Duits"
+    },
+    "it": {
+        "en": "Italian",
+        "fr": "italien",
+        "de": "Italiener",
+        "it": "italiano",
+        "nl": "Italiaans"
+    },
+    "cy": {
+        "en": "Welsh",
+        "fr": "gallois",
+        "de": "Walisisch",
+        "it": "gallese",
+        "cy": "cymraeg",
+        "nl": "Welsh"
+    },
+    "na'vi": {
+        "en": "Na'vi",
+        "fr": "na'vi",
+        "de": "Na'vi",
+        "it": "Na'vi",
+        "nl": "Na'vi"
+    },
+    "es": {
+        "en": "Spanish",
+        "fr": "espagnole",
+        "de": "Spanisch",
+        "it": "spagnolo",
+        "nl": "Spaans"
+    },
+    "nl": {
+        "en": "Dutch"
+    },
+    "revnum": {
+        "en": "{name} is at revision {rev}",
+        "fr": "{name} est à révision {rev}",
+        "de": "{name} ist in der Revision {rev}",
+        "it": "{name} il numero di revisione {rev}",
+        "nl": "{name} is bij revisie {rev}"
+    },
+    "loadedmodules": {
+        "en": "loaded modules",
+        "fr": "modules chargés",
+        "it": "moduli caricati",
+        "nl": "geladen modules"
+    },
+    "configoptions": {
+        "en": "Configuration",
+        "fr": "Configuration",
+        "de": "Konfiguration",
+        "it": "Configuazione",
+        "nl": "Configuratie"
+    },
+    "debugmode-true": {
+        "en": "Debug mode active",
+        "fr": "debug actif",
+        "de": "Debug aktiv",
+        "it": "debug attivo",
+        "nl": "Debug actief"
+    },
+    "debugmode-false": {
+        "en": "Debug off",
+        "fr": "debug éteint",
+        "de": "Debug ausgeschaltet",
+        "it": "debug spento",
+        "nl": "Debug uitgeschakeld"
+    },
+    "milestones": {
+        "en": "Milestones"
+    },
+    "milestoneprog": {
+        "en": "Progress",
+        "fr": "Progression",
+        "de": "Fortschritt",
+        "it": "sviluppo",
+        "nl": "Voortgang"
+    },
+    "openmilestone": {
+        "en": "Open",
+        "fr": "Ouvert",
+        "de": "Offen",
+        "it": "Aperto",
+        "nl": "Open"
+    },
+    "closedmilestone": {
+        "en": "Closed",
+        "fr": "Fermé",
+        "de": "Gesperrt",
+        "it": "Chiuso",
+        "nl": "Gesloten"
+    },
+    "milestonename": {
+        "en": "Name",
+        "fr": "Nom",
+        "de": "Name",
+        "it": "Nome",
+        "nl": "Naam"
+    },
+    "development": {
+        "en": "Development",
+        "fr": "Développement",
+        "de": "Entwicklung",
+        "it": "Sviluppo",
+        "nl": "Ontwikkeling"
+    },
+    "dent-account": {
+        "en": "Submitting dents to @{username}"
+    },
+    "dent-push": {
+        "en": "Pushing quotes to identi.ca"
+    },
+    "quote-rmlimit": {
+        "en": "Quote removal throttle set to {limit}"
+    },
+    "report-notifyvoice": {
+        "en": "Voiced users are being notified of reports"
+    },
+    "web-port": {
+        "en": "Web is listening on {port}"
+    },
+    "propaganda": {
+        "en": "Contribute to the code on Github!"
+    },
+    "branch": {
+        "en": "{branch}"
+    },
+    "git": {
+        "en": "version control"
+    }
+}
