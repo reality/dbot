@@ -13,7 +13,7 @@
     },
     "admins": [ "batman" ],
     "moderators": [ "whatever" ],
-    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "youare", "stats", "users", "link" ],
+    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "youare", "timers", "stats", "users", "link" ],
     "language": "en",
     "debugMode": true,
     "version": "Depressionbot IRC bot 0.4-dev - Lovingly crafted by The DepressionBot Foundation (a charity arm of the Official Aberystwyth Open Source International Development League)."
