@@ -5,45 +5,7 @@ var fs = require('fs'),
 
 var commands = function(dbot) {
     var noChangeConfig = [ 'servers', 'name', 'moduleNames' ];
-
-    var getCurrentConfig = function(configKey) {
-        var defaultConfigPath = dbot.config;
-        var userConfigPath = dbot.db.config;
-
-        if(configKey) {
-            var configKey = configKey.split('.');
-            for(var i=0;i<configKey.length-1;i++) {
-                if(_.has(defaultConfigPath, configKey[i])) {
-                    if(!_.has(userConfigPath, configKey[i])) {
-                        userConfigPath[configKey[i]] = {};
-                    }
-                    userConfigPath = userConfigPath[configKey[i]];
-                    defaultConfigPath = defaultConfigPath[configKey[i]];
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        var currentOption;
-        if(configKey && configKey.length != 1) {
-            configKey = _.last(configKey);
-            if(_.has(userConfigPath, configKey) && !_.isUndefined(userConfigPath[configKey])) {
-                currentOption = userConfigPath[configKey];
-            } else if(_.has(defaultConfigPath, configKey)) {
-                currentOption = defaultConfigPath[configKey];
-            }
-        } else {
-            currentOption = defaultConfigPath[configKey];
-        }
-
-        return { 
-            'user': userConfigPath,
-            'default': defaultConfigPath,
-            'value': currentOption
-        };
-   };
-
+    
     var commands = {
         // Join a channel
         'join': function(event) {
@@ -189,82 +151,76 @@ var commands = function(dbot) {
         /*** Config options ***/
 
         'setconfig': function(event) {
-            var configPathString = event.params[1],
-                configKey = _.last(configPathString.split('.')),
-                newOption = event.params[2];
+            var configPath = event.input[1],
+                newOption = event.input[2];
 
-            if(!_.include(noChangeConfig, configKey)) {
-                var configPath = getCurrentConfig(configPathString);
+            if(!_.include(noChangeConfig, configPath)) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config) {
+                        // Convert to boolean type if config item boolean
+                        if(_.isBoolean(config)) {
+                            newOption = (newOption == "true");
+                        }
 
-                if(configPath == false || _.isUndefined(configPath.value)) {
-                    event.reply("Config key doesn't exist bro");
-                    return;
-                }
-                var currentOption = configPath.value;
-
-                // Convert to boolean type if config item boolean
-                if(_.isBoolean(currentOption)) {
-                    newOption = (newOption == "true");
-                }
-
-                if(_.isArray(currentOption)) {
-                    event.reply("Config option is an array. Try 'pushconfig'.");
-                }
-                
-                event.reply(configPathString + ": " + currentOption + " -> " + newOption);
-                configPath['user'][configKey] = newOption;
-                dbot.reloadModules();
+                        event.reply(configPath + ": " + config + " -> " + newOption);
+                        config = newOption;
+                        this.db.save('config', configPath, { 'value': config }, function(err) {
+                            dbot.reloadModules();
+                        });
+                    } else {
+                        event.reply('Config path doesn\'t exist, bro.');
+                    }
+                }.bind(this));
             } else {
                 event.reply("This config option cannot be altered while the bot is running.");
             }
         },
 
         'pushconfig': function(event) {
-            var configPathString = event.params[1],
-                configKey = _.last(configPathString.split('.')),
-                newOption = event.params[2];
+            var configPath = event.input[1],
+                newOption = event.input[2];
 
-            if(!_.include(noChangeConfig, configKey)) {
-                var configPath = getCurrentConfig(configPathString);
-                if(configPath == false || _.isUndefined(configPath.value)) {
-                    event.reply("Config key doesn't exist bro");
-                    return;
-                }
-                var currentArray = configPath.value;
-
-                if(!_.isArray(currentArray)) {
-                    event.reply("Config option is not an array. Try 'setconfig'.");
-                    return
-                }
-
-                event.reply(configPathString + ": " + currentArray + " << " + newOption);
-                currentArray.push(newOption);
-                dbot.reloadModules(); 
+            if(!_.include(noChangeConfig, configPath)) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config) {
+                        if(_.isArray(config)) {
+                            event.reply(configPath + ": " + config + " << " + newOption);
+                            config.push(newOption);
+                            this.db.save('config', configPath, { 'value': config }, function(err) {
+                                dbot.reloadModules();
+                            });
+                        } else {
+                            event.reply("Config option is not an array. Try 'setconfig'.");
+                        }
+                    } else {
+                        event.reply('Config path doesn\'t exist, bro.');
+                    }
+                }.bind(this));
+            } else {
+                event.reply("This config option cannot be altered while the bot is running.");
             }
         },
 
         'showconfig': function(event) {
-            var configPathString = event.params[1];
-            var configPath = getCurrentConfig(configPathString);
-            
-            if(configPathString) {
-                var configKey = _.last(configPathString.split('.'));
-                if(configKey == false) {
-                    event.reply("Config path doesn't exist");
-                    return;
-                }
-
-                if(_.isArray(configPath.value)) {
-                    event.reply(configKey + ': ' + configPath.value);
-                } else if(_.isObject(configPath.value)) {
-                    event.reply('Config keys in ' + configPathString + ': ' + Object.keys(configPath.value));
-                } else {
-                    event.reply(configKey + ': ' + configPath.value);
-                }
+            var configPath = event.params[1];
+            if(configPath) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config) {
+                        if(_.isArray(config)) {
+                            event.reply('Config keys in ' + configPath + ': ' + config);
+                        } else if(_.isObject(config)) {
+                            event.reply('Config keys in ' + configPath + ': ' + _.keys(config));
+                        } else {
+                            event.reply(configPath + ': ' + config);
+                        }
+                    } else {
+                        event.reply('Config path doesn\'t exist, bro.');
+                    }
+                });
             } else {
-                event.reply('Config keys in root: ' + Object.keys(configPath['default']));
+                event.reply('Config keys in root: ' + _.keys(dbot.config));
             }
-        }
+        } 
     };
 
     _.each(commands, function(command) {
@@ -276,6 +232,9 @@ var commands = function(dbot) {
     commands['part'].access = 'moderator';
     commands['opme'].access = 'moderator';
     commands['say'].access = 'moderator';
+
+    commands['pushconfig'].regex = [/pushconfig ([^ ]+) ([^ ]+)/, 3];
+    commands['setconfig'].regex = [/setconfig ([^ ]+) ([^ ]+)/, 3];
 
     return commands;
 };

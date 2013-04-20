@@ -1,5 +1,6 @@
 {
     "ignorable": false,
+    "dbType": "redis",
     "dependencies": [ "command" ],
     "help": "http://github.com/reality/depressionbot/blob/master/modules/admin/README.md"
 }
