@@ -9,11 +9,11 @@ div#main {
 h2,h3,h4,h5,h6,.center {
     text-transform:lowercase;
 }
-table#milestones {
+table {
     margin:auto;
     width:80%;
 }
-table#milestones td {
+table td {
     padding:5px;
 }
 p.intro {
@@ -31,6 +31,7 @@ div.progress {
     text-align:left;
     font-size:50%;
     color:gray;
+    min-width:200px;
 }
 div.progress-inner.open {
     background-color: #3fff3f;

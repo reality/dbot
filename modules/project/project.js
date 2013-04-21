@@ -43,7 +43,7 @@ var project = function(dbot) {
             return list;
         },
         'translationProgress' : function(callback){
-            var translation = [];
+            var translation = [] ;
             var str = _.values(dbot.strings);
             for (var i = 0; i < str.length; i++){
                var cur = _.keys(str[i]);
@@ -51,22 +51,20 @@ var project = function(dbot) {
                    translation = translation.concat(cur[j]);
                }
             }
-            // optimise this, someone who isn't me
-            var t = [];
+            var t = {};
             for (var k = 0; k < str.length; k++) {
                 var curr = translation[k];
                 if (t[curr]) {
                     t[curr]["count"] += 1;
                 } else {
-                    t[curr] = [];
-         //           t[curr]["839"] = curr;
+                    t[curr] = {};
+                    t[curr]["iso"] = curr;
                     t[curr]["count"] = 1;
                     t[curr]["own"] = dbot.strings[curr][curr];
                     t[curr]["local"] = dbot.t(curr);
                     t[curr]["english"] = dbot.strings[curr]["en"];
                 }
             }
-            _.compact(t);
             console.log(t);
             return t;
         }

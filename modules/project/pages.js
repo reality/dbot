@@ -15,16 +15,6 @@ var pages = function(dbot) {
         }
     });
 
-    var trans = [];
-    // THIS IS TOTALLY LEGIT AND OPTIMISED CODE
- /*   for (var j = 0; j < Object.keys(dbot.strings).length; j++) {
-        var str = dbot.strings.j;
-        for (var k = 0; k < Object.keys(dbot.strings.str).length; k++) {
-            var lang = str.lang;
-            trans[lang]++;
-        }
-    } */
-
     exec("git rev-list --all | wc -l", function(error, stdout, stderr) {
        rev = stdout;
     });
@@ -55,7 +45,7 @@ var pages = function(dbot) {
             res.render('project', {
                 "translation": dbot.modules.project.api.translationProgress(),
                 "configList": dbot.modules.project.api.configList(), 
-                "authors": authors, //dbot.modules.project.api.getAuthors(),
+                "authors": authors,
                 "credits": dbot.t("credits"),
                 "thanks": dbot.t("thanks"),
                 "name": dbot.config.name,
