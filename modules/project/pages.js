@@ -92,7 +92,8 @@ var pages = function(dbot) {
                 "languageeng": dbot.t("en"),
                 "languageprog": dbot.t("langhead-progress"),
                 "languagetrans": dbot.t("langhead-translations"),
-                "languagetranshead": dbot.t("translations")
+                "languagetranshead": dbot.t("translations"),
+                "pullreqs": dbot.t("outstanding-pullreq")
            });
         },
     };

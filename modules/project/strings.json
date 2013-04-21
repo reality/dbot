@@ -190,5 +190,11 @@
     },
     "langhead-native": {
         "en": "Native"
+    },
+    "outstanding-pullreq": {
+        "en": "There are outstanding pull requests"
+    },
+    "oaosidl": {
+        "en": "The Official Aberystwyth Open Source International Development League"
     }
 }
