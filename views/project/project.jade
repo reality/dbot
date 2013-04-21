@@ -35,9 +35,6 @@ html(lang='#{curr839}')
                 th #{openmilestone}
                 th #{closedmilestone}
               each milestone in milestones
-                - var mstone = "milestone"
-                - var wd = "width:"
-                - var pc = "%"
                 - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
                 tr(id=mstone+milestone.number)
                   td
@@ -45,8 +42,9 @@ html(lang='#{curr839}')
                       #{milestone.title}
                   td 
                     div.progress(class=milestone.state)
-                      div.progress-inner(style=wd+wdth+pc)(class=milestone.state)
+                      div.progress-inner(style="width:"+wdth+"%")(class=milestone.state)
                         &nbsp;
+                      print #{Math.round(wdth)+"%"}
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
             h4 #{languagetranshead} 
@@ -54,7 +52,8 @@ html(lang='#{curr839}')
               tr
                 th #{languagecurr}
                 th #{languagenati}
-                th #{languageeng}
+                unless (curr839 == "en")
+                  th #{languageeng}
                 th #{languageprog}
                 th #{languagetrans}
               each language in translation
@@ -62,16 +61,19 @@ html(lang='#{curr839}')
                 tr
                   td #{language.local}
                   td #{language.own}
-                  td #{language.english}
+                  unless (curr839 == "en")
+                    td #{language.english}
                   td.prog
                     unless (language.iso == curr839)
                         div.progress(class="open")
                           div.progress-inner(style="width:"+w+"%")(class="open")
                             &nbsp;
+                          print #{Math.round(w)+"%"}  
                       else
                         div.progress(class="closed")
                           div.progress-inner(style="width:"+w+"%")(class="closed")
                             &nbsp;
+                          print #{Math.round(w)+"%"}
                   td #{language.count} / #{translation.en.count}
             h4 #{credits}
             #{thanks}
