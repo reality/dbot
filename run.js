@@ -153,9 +153,13 @@ DBot.prototype.reloadModules = function() {
     require('./snippets');
 
     this.instance.removeListeners();
-    _.each(moduleNames, function(name) {
+
+    var name, moduleDir, config;
+    for(i=0;i<moduleNames.length;i++) {
+        name = moduleNames[i];
+        console.log('iterating ' + name);
         this.status[name] = true;
-        var moduleDir = './modules/' + name + '/';
+        moduleDir = './modules/' + name + '/';
         try {
             var cacheKey = require.resolve(moduleDir + name);
             delete require.cache[cacheKey];
@@ -172,7 +176,7 @@ DBot.prototype.reloadModules = function() {
         }
 
         // Load the module config data
-        var config = {};
+        config = {};
         
         if(_.has(this.db.config, name)) {
             config = _.clone(this.db.config[name]); 
@@ -214,7 +218,7 @@ DBot.prototype.reloadModules = function() {
             // Just use the name of the module for now, add dbKey iteration later
             this.ddb.createDB(name, config.dbType, {}, function(db) {});
         }
-    }.bind(this));
+    }
 
     process.nextTick(function() {
         _.each(moduleNames, function(name) {
