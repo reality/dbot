@@ -52,7 +52,7 @@ var project = function(dbot) {
                }
             }
             var t = {};
-            for (var k = 0; k < str.length; k++) {
+            for (var k = 0; k < translation.length; k++) {
                 var curr = translation[k];
                 if (t[curr]) {
                     t[curr]["count"] += 1;
