@@ -121,7 +121,7 @@ var commands = function(dbot) {
             if(_.has(dbot.status, moduleName)) {
                 var status = dbot.status[moduleName];
                 if(status === true) {
-                    event.reply(moduleName + ' status: Shit looks good.');
+                    event.reply(moduleName + ' status: Nominal.');
                 } else {
                     event.reply(moduleName + ' status: Failed to load: ' + status); 
                 }
