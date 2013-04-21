@@ -196,5 +196,8 @@
     },
     "oaosidl": {
         "en": "The Official Aberystwyth Open Source International Development League"
+    },
+    "link-autotitle": {
+        "en": "Automatically titling links in channels"
     }
 }
