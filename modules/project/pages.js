@@ -4,15 +4,25 @@ var exec = require('child_process').exec,
 
 var pages = function(dbot) {
     var quoteCat = dbot.db.quoteArrs[dbot.config.name],
-        rev, diff, branch;
+        rev, diff, branch, credit, authors = [];
+    exec("git log --format='%cN¬' | sort -u | tr -d '\n'", function (error, stdout, sderr) {
+        var credit = stdout.split("¬"); // nobody uses ¬, do they?
+        for (var i = 0; i < credit.length; i++) {     
+            if ((credit[i].split(" ").length) == 2){ 
+                console.log(credit[i]);
+                authors.push(credit[i]);          
+            }                                    
+        }
+    });
 
     exec("git rev-list --all | wc -l", function(error, stdout, stderr) {
-        rev = stdout
+       rev = stdout;
     });
 
     exec("git rev-parse --abbrev-ref HEAD", function(error, stdout, stderr) {
         branch = stdout
     });
+
 
     exec("git log -1", function(error, stdout, stderr) {
         diff = stdout
@@ -33,7 +43,10 @@ var pages = function(dbot) {
             }
 
             res.render('project', {
-                "configList": dbot.modules.project.api.configList(), // what variable do I put here
+                "configList": dbot.modules.project.api.configList(), 
+                "authors": authors, //dbot.modules.project.api.getAuthors(),
+                "credits": dbot.t("credits"),
+                "thanks": dbot.t("thanks"),
                 "name": dbot.config.name,
                 "intro": dbot.t("dbotintro", {
                     "botname": dbot.config.name
