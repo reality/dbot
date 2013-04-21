@@ -2,24 +2,20 @@ pre#gitdiff {
     text-align:left;
     width:80;
     margin:auto;
+    text-transform:none;
 }
 div#main {
-    text-align:inherit;
     font-size:18px;
-}
-h2,h3,h4,h5,h6,.center {
-    text-align:center;
     text-transform:lowercase;
 }
-table#milestones {
+table {
     margin:auto;
     width:80%;
 }
-table#milestones td {
+table td {
     padding:5px;
 }
 p.intro {
-    text-align:center;
     border:1px solid #ccc;
     padding:20px;
     border-radius:4px;
@@ -34,6 +30,7 @@ div.progress {
     text-align:left;
     font-size:50%;
     color:gray;
+    min-width:200px;
 }
 div.progress-inner.open {
     background-color: #3fff3f;
@@ -50,13 +47,7 @@ div.progress-inner.closed {
     background-image: linear-gradient(to bottom,#ff3f3f,#ff7f7f);
 }
 
-#config  {
-    text-align:center;
-    text-transform:lowercase;
-}
-
 ul {
-    text-align:center;
     margin-left:0;
     margin-bottom:5px;
     font-size:80%;
