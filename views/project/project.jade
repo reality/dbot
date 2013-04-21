@@ -22,12 +22,12 @@ html(lang='#{curr839}')
           p.intro
             #{dquote}
           section#git
-            h3 #{development} 
+            h2 #{development} 
             p.center
               #{revnum}
             pre#gitdiff
               #{diff}
-            h4 #{milestoneprog} 
+            h3 #{milestonehead} 
             table#milestones.center
               tr
                 th #{milestonename}
@@ -38,7 +38,7 @@ html(lang='#{curr839}')
                 - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
                 tr(id=mstone+milestone.number)
                   td
-                    a(href=milestone.url)
+                    a(href="https://github.com/"+repo+"/issues?milestone="+milestone.number)
                       #{milestone.title}
                   td 
                     div.progress(class=milestone.state)
@@ -47,8 +47,10 @@ html(lang='#{curr839}')
                       print #{Math.round(wdth)+"%"}
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
-            h4 #{languagetranshead} 
-            table
+            a(#href="https://github.com/"+repo+"/")
+              #{propaganda}
+            h3 #{languagetranshead} 
+            table#translations
               tr
                 th #{languagecurr}
                 th #{languagenati}
@@ -75,21 +77,23 @@ html(lang='#{curr839}')
                             &nbsp;
                           print #{Math.round(w)+"%"}
                   td #{language.count} / #{translation.en.count}
-            h4 #{credits}
+            h3 #{credits}
             #{thanks}
             ul
               each author in authors
                 li
                   #{author}
           section#config
-             h3 #{config}
-             ul
-               li #{currlang}
-               li #{debugmode}
-             h4 #{loadmod}
-             ul#modules 
-               each module in modules
-                 li #{module}
+            h2 #{config}
+            ul
+              li #{currlang}
+              li #{debugmode}
+              each config in configList
+                li #{config}
+            h3 #{loadmod}
+            ul#modules 
+              each module in modules
+                li #{module}
           section#footer
             p
               #{currver}
