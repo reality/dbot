@@ -1,7 +1,4 @@
 {
-    "dbotintro": {
-        "en": "{botname} lorem ipsum dolor sit amet"
-    },
     "dbotspeaks": {
             "en": "{name} speaks {lang}",
             "de": "{name} spricht {lang} ({langen})",
@@ -10,10 +7,12 @@
             "nl": "{name} spreekt {lang} ({langen})"
     },
     "thanks": {
-        "en": "With thanks to:"
+        "en": "With thanks to:",
+        "fr": "Merci à:"
     },
     "credits": {
-        "en": "Authors"
+        "en": "Authors",
+        "fr": "Développeurs"
     },
     "pagetitle": {
         "en": "{botname} web interface",
@@ -174,22 +173,32 @@
         "en": "{branch}"
     },
     "git": {
-        "en": "version control"
+        "en": "version control",
+        "de": "Versionsverwaltung",
+        "es": "Control de versiones",
+        "fr": "Festion de versions",
+        "it": "Controllo versione",
+        "nl": "Versiebeheersysteem"
     },
     "langhead-current": {
-        "en": "Current"
+        "en": "Current",
+        "fr": "Courant"
     },
     "langhead-translations": {
-        "en": "Completion"
+        "en": "Completion",
+        "fr": "Achèvement"
     },
     "translations": {
-        "en": "Translations"
+        "en": "Translations",
+        "fr": "Traductions"
     },
     "langhead-progress": {
-        "en": "Translation Progress"
+        "en": "Translation Progress",
+        "fr": "Avancement de la Traduction"
     },
     "langhead-native": {
-        "en": "Native"
+        "en": "Native",
+        "fr": "Natale"
     },
     "outstanding-pullreq": {
         "en": "There are outstanding pull requests"
