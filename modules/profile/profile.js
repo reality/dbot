@@ -3,14 +3,27 @@ var _ = require('underscore')._;
 var profile = function(dbot) {
 
     this.onLoad = function(){
-        var api = this.api;
         var schema = this.config.schema;
 
+        // Ensure all users have a profile
+        dbot.api.users.getAllUsers(function(users){
+            if(users){ 
+                _.each(users, function(user){
+                    this.api.getProfileByUUID(user.id, function(err, uuid, profile){
+                        // If function returns an error and uuid, create a new profile
+                        if(err && uuid){
+                            this.api.createProfile(user);
+                        }
+                    }.bind(this));
+                }.bind(this));
+            }
+        }.bind(this));
+
         // Add API Hooks
-        dbot.api.command.addHook('~setaliasparent', this.api.renameProfile);
+        dbot.api.event.addHook('new_user', this.api.createProfile);
+
         //TODO(@samstudio8) Profile Merging
         //dbot.api.command.addHook('~mergeusers', this.api.mergeProfile);
-        dbot.api.event.addHook('new_user', this.api.createProfile);
     };
 };
 
