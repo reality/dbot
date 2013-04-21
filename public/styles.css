@@ -44,7 +44,7 @@ div#backlink {
 div#title {
     font-size: 42px;
     font-weight: bold;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px 10px;
     color: #444;
 }
 

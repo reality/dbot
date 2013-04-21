@@ -2,24 +2,20 @@ pre#gitdiff {
     text-align:left;
     width:80;
     margin:auto;
+    text-transform:none;
 }
 div#main {
-    text-align:inherit;
     font-size:18px;
-}
-h2,h3,h4,h5,h6,.center {
-    text-align:center;
     text-transform:lowercase;
 }
-table#milestones {
+table {
     margin:auto;
     width:80%;
 }
-table#milestones td {
+table td {
     padding:5px;
 }
 p.intro {
-    text-align:center;
     border:1px solid #ccc;
     padding:20px;
     border-radius:4px;
@@ -31,11 +27,16 @@ div.progress.open {
 div.progress {
     margin-top:auto;
     margin-bottom:auto;
+    text-align:left;
+    font-size:50%;
+    color:gray;
+    min-width:200px;
 }
 div.progress-inner.open {
-    width:20%;
     background-color: #3fff3f;
     background-image: linear-gradient(to bottom,#3fff3f,#7fff7f); 
+    float:left;
+    margin-right:2px;
 }
 div.progress.closed { 
     background-color: #fff5f5;
@@ -44,14 +45,13 @@ div.progress.closed {
 div.progress-inner.closed {
     background-color: #ff3f3f;
     background-image: linear-gradient(to bottom,#ff3f3f,#ff7f7f);
-    width:20%;
 }
 
-#config  {
-    text-align:center;
-    text-transform:lowercase;
+ul {
+    margin-left:0;
+    margin-bottom:5px;
+    font-size:80%;
 }
-
 li {
     background-image: linear-gradient(to bottom, #f5ebe2, #f5e6d8);
     border:1px solid #f5dcc5;

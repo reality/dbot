@@ -9,11 +9,17 @@
             "it": "{name} parla {lang} ({langen})",
             "nl": "{name} spreekt {lang} ({langen})"
     },
+    "thanks": {
+        "en": "With thanks to:"
+    },
+    "credits": {
+        "en": "Authors"
+    },
     "pagetitle": {
         "en": "{botname} web interface",
         "fr": "{botname} interface réseau",
         "de": "{botname} Web-Interface",
-        "it": "{botname} interfaccia web",
+        "it": "{botname} interfaccia web"
     },
     "en": {
         "en": "English",
@@ -57,14 +63,21 @@
         "fr": "na'vi",
         "de": "Na'vi",
         "it": "Na'vi",
-        "nl": "Na'vi"
+        "nl": "Na'vi",
+        "na'vi": "Na'vi"
+
     },
     "es": {
         "en": "Spanish",
         "fr": "espagnole",
         "de": "Spanisch",
         "it": "spagnolo",
-        "nl": "Spaans"
+        "nl": "Spaans",
+        "es": "Español"
+    },
+    "nl": {
+        "en": "Dutch",
+        "nl": "Nederlands"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
@@ -100,6 +113,9 @@
         "it": "debug spento",
         "nl": "Debug uitgeschakeld"
     },
+    "milestones": {
+        "en": "Milestones"
+    },
     "milestoneprog": {
         "en": "Progress",
         "fr": "Progression",
@@ -134,5 +150,44 @@
         "de": "Entwicklung",
         "it": "Sviluppo",
         "nl": "Ontwikkeling"
+    },
+    "dent-account": {
+        "en": "Submitting dents to @{username}"
+    },
+    "dent-push": {
+        "en": "Pushing quotes to identi.ca"
+    },
+    "quote-rmlimit": {
+        "en": "Quote removal throttle set to {limit}"
+    },
+    "report-notifyvoice": {
+        "en": "Voiced users are being notified of reports"
+    },
+    "web-port": {
+        "en": "Web is listening on {port}"
+    },
+    "propaganda": {
+        "en": "Contribute to the code on Github!"
+    },
+    "branch": {
+        "en": "{branch}"
+    },
+    "git": {
+        "en": "version control"
+    },
+    "langhead-current": {
+        "en": "Current"
+    },
+    "langhead-translations": {
+        "en": "Completion"
+    },
+    "translations": {
+        "en": "Translations"
+    },
+    "langhead-progress": {
+        "en": "Translation Progress"
+    },
+    "langhead-native": {
+        "en": "Native"
     }
 }
