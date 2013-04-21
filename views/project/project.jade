@@ -8,12 +8,13 @@ html(lang='#{curr839}')
     link(rel='stylesheet', type='text/css', href='/styles.css')    
     link(rel="stylesheet", href="/project.css")
     title #{pagetitle}
-    - var mstone = "milestone"
-    style(type="text/css")
-       each milestone in milestones
-         - current = mstone+milestone.number
-         - wdth = ((milestone.open_issues/(milestone.open_issues + milestone.closed_issues))*100)
-         .current { width: wdth% }
+    script
+      $(document).ready(function() {
+          $.get("https://api.github.com/repos/#{repo}/pulls", function(data) {
+          if ($.parseJSON(data).length) { $("#pullreq").show();}
+        }); 
+      }); 
+
   body  
     div.container
       div#page
@@ -23,7 +24,9 @@ html(lang='#{curr839}')
             #{dquote}
           section#git
             h2 #{development} 
-            p.center
+            p#pullreq
+              a(href="https://github.com/"+repo+"/pulls") #{pullreqs}
+            p#revnum
               #{revnum}
             pre#gitdiff
               #{diff}
@@ -36,7 +39,7 @@ html(lang='#{curr839}')
                 th #{closedmilestone}
               each milestone in milestones
                 - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
-                tr(id=mstone+milestone.number)
+                tr(id="milestone"+milestone.number)
                   td
                     a(href="https://github.com/"+repo+"/issues?milestone="+milestone.number)
                       #{milestone.title}
@@ -79,7 +82,7 @@ html(lang='#{curr839}')
                   td #{language.count} / #{translation.en.count}
             h3 #{credits}
             #{thanks}
-            ul
+            ul#credits
               each author in authors
                 li
                   #{author}
