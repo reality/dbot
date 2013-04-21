@@ -63,3 +63,14 @@ li {
 #footer {
     font-size:80%;
 }
+h2 {
+    margin-top:40px;
+    margin-bottom:30px;
+}
+h3 {
+    margin-top:30px;
+    margin-bottom:20px;
+}
+#translations td {
+    text-transform:none;
+}
