@@ -20,8 +20,6 @@ html(lang='#{curr839}')
         div#title #{pagetitle}
         div.container#main
           p.intro
-
-          p.intro
             #{dquote}
           section#git
             h3 #{development} 
@@ -51,14 +49,14 @@ html(lang='#{curr839}')
                         &nbsp;
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
-            h4 Translations
+            h4 #{languagetranshead} 
             table
               tr
-                th Current
-                th Native
-                th English
-                th Progress
-                th Translations
+                th #{languagecurr}
+                th #{languagenati}
+                th #{languageeng}
+                th #{languageprog}
+                th #{languagetrans}
               each language in translation
                 - var w = ((language.count/translation.en.count)*100)
                 tr
@@ -66,13 +64,14 @@ html(lang='#{curr839}')
                   td #{language.own}
                   td #{language.english}
                   td.prog
-                    div.progress(class="open")
-                      unless (language.iso == curr839)
-                        div.progress-inner(style="width:"+w+"%")(class="open")
-                          &nbsp;
+                    unless (language.iso == curr839)
+                        div.progress(class="open")
+                          div.progress-inner(style="width:"+w+"%")(class="open")
+                            &nbsp;
                       else
-                        div.progress-inner(style="width:"+w+"%")(class="closed")
-                          &nbsp;
+                        div.progress(class="closed")
+                          div.progress-inner(style="width:"+w+"%")(class="closed")
+                            &nbsp;
                   td #{language.count} / #{translation.en.count}
             h4 #{credits}
             #{thanks}

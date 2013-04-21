@@ -174,5 +174,20 @@
     },
     "git": {
         "en": "version control"
+    },
+    "langhead-current": {
+        "en": "Current"
+    },
+    "langhead-translations": {
+        "en": "Completion"
+    },
+    "translations": {
+        "en": "Translations"
+    },
+    "langhead-progress": {
+        "en": "Translation Progress"
+    },
+    "langhead-native": {
+        "en": "Native"
     }
 }

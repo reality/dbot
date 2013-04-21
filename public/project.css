@@ -2,11 +2,10 @@ pre#gitdiff {
     text-align:left;
     width:80;
     margin:auto;
+    text-transform:none;
 }
 div#main {
     font-size:18px;
-}
-h2,h3,h4,h5,h6,.center {
     text-transform:lowercase;
 }
 table {
@@ -48,10 +47,6 @@ div.progress-inner.closed {
     background-image: linear-gradient(to bottom,#ff3f3f,#ff7f7f);
 }
 
-#config  {
-    text-transform:lowercase;
-}
-
 ul {
     margin-left:0;
     margin-bottom:5px;
@@ -67,29 +62,4 @@ li {
 
 #footer {
     font-size:80%;
-}
-/* testing stuff */
-.en {
-    background-color:red;
-    background-image:none;
-}
-.fr {
-    background-color:blue;
-    background-image:none;
-}
-.de {
-    background-color:yellow;
-    background-image:none;
-}
-.nl {
-    background-color:darkorange;
-    background-image:none;
-}
-.cy {
-    background-image:palevioletred;
-    background-image:none;
-}
-.es {
-    background-image:none;
-    background-color:orchid;
 }
