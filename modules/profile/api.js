@@ -35,7 +35,7 @@ var api = function(dbot) {
                             callback(false, user, profile);
                         }
                         else{
-                            callback(true, null, null);
+                            callback(true, user, null);
                         }
                     });
                 }
@@ -43,6 +43,22 @@ var api = function(dbot) {
                     callback(true, null, null);
                 }
             }.bind(this));
+        },
+
+        'getProfileByUUID': function(uuid, callback){
+            if(uuid){
+                this.db.read('profiles', uuid, function(err, profile){
+                    if(!err){
+                        callback(false, uuid, profile);
+                    }
+                    else{
+                        callback(true, uuid, null);
+                    }
+                });
+            }
+            else{
+                callback(true, null, null);
+            }
         },
 
         'getAllProfiles': function(callback){
