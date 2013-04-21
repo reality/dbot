@@ -63,17 +63,21 @@
         "fr": "na'vi",
         "de": "Na'vi",
         "it": "Na'vi",
-        "nl": "Na'vi"
+        "nl": "Na'vi",
+        "na'vi": "Na'vi"
+
     },
     "es": {
         "en": "Spanish",
         "fr": "espagnole",
         "de": "Spanisch",
         "it": "spagnolo",
-        "nl": "Spaans"
+        "nl": "Spaans",
+        "es": "Español"
     },
     "nl": {
-        "en": "Dutch"
+        "en": "Dutch",
+        "nl": "Nederlands"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",

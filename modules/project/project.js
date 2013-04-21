@@ -42,16 +42,38 @@ var project = function(dbot) {
             }
             return list;
         },
-        'getAuthors': function(callback) {
-            var foo = ['a','b','c']; 
-            exec("git rev-list --all | wc -l", function(error, stdout, stderr){ 
-                foo.push(stdout);
-            });
-            callback(foo);
+        'translationProgress' : function(callback){
+            var translation = [];
+            var str = _.values(dbot.strings);
+            for (var i = 0; i < str.length; i++){
+               var cur = _.keys(str[i]);
+               for (var j = 0; j < cur.length; j++) {
+                   translation = translation.concat(cur[j]);
+               }
+            }
+            // optimise this, someone who isn't me
+            var t = [];
+            for (var k = 0; k < str.length; k++) {
+                var curr = translation[k];
+                if (t[curr]) {
+                    t[curr]["count"] += 1;
+                } else {
+                    t[curr] = [];
+         //           t[curr]["839"] = curr;
+                    t[curr]["count"] = 1;
+                    t[curr]["own"] = dbot.strings[curr][curr];
+                    t[curr]["local"] = dbot.t(curr);
+                    t[curr]["english"] = dbot.strings[curr]["en"];
+                }
+            }
+            _.compact(t);
+            console.log(t);
+            return t;
         }
-    }   
-}        
+    };   
+    this.api['translationProgress'].external = true;
+};        
 
 exports.fetch = function(dbot){
     return new project(dbot);
-}
+};

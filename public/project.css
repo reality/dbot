@@ -4,11 +4,9 @@ pre#gitdiff {
     margin:auto;
 }
 div#main {
-    text-align:inherit;
     font-size:18px;
 }
 h2,h3,h4,h5,h6,.center {
-    text-align:center;
     text-transform:lowercase;
 }
 table#milestones {
@@ -19,7 +17,6 @@ table#milestones td {
     padding:5px;
 }
 p.intro {
-    text-align:center;
     border:1px solid #ccc;
     padding:20px;
     border-radius:4px;
@@ -51,12 +48,10 @@ div.progress-inner.closed {
 }
 
 #config  {
-    text-align:center;
     text-transform:lowercase;
 }
 
 ul {
-    text-align:center;
     margin-left:0;
     margin-bottom:5px;
     font-size:80%;
@@ -71,4 +66,29 @@ li {
 
 #footer {
     font-size:80%;
+}
+/* testing stuff */
+.en {
+    background-color:red;
+    background-image:none;
+}
+.fr {
+    background-color:blue;
+    background-image:none;
+}
+.de {
+    background-color:yellow;
+    background-image:none;
+}
+.nl {
+    background-color:darkorange;
+    background-image:none;
+}
+.cy {
+    background-image:palevioletred;
+    background-image:none;
+}
+.es {
+    background-image:none;
+    background-color:orchid;
 }
