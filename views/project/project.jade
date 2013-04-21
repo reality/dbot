@@ -16,36 +16,43 @@ html(lang='#{curr839}')
           p.intro
             #{dquote}
           section#development
-           h3 #{development} 
-           h4 #{git}
-           p.center
-             #{revnum}
-           ul
-             li #{branch}
-           pre#gitdiff
-             #{diff}
-           h4 #{milestonehead} 
-           table#milestones.center
-             tr
-               th #{milestonename}
-               th #{milestoneprog}
-               th #{openmilestone}
-               th #{closedmilestone}
-             each milestone in milestones
-               - var width = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
-               tr(id="milestone"+milestone.number)
-                 td
-                   a(href="https://github.com/"+repo+"/issues?milestone="+milestone.number)
-                     #{milestone.title}
-                 td 
-                   div.progress(class=milestone.state)
-                     div.progress-inner(style="width:"+width+"%")(class=milestone.state)
-                       &nbsp;
-                     print #{Math.round(width)+"%"}
-                 td #{milestone.open_issues}
-                 td #{milestone.closed_issues}
-          p.center
-            a(href="https://github.com/"+repo) #{propaganda}
+            h3 #{development} 
+            h4 #{git}
+            p.center
+              #{revnum}
+            ul
+              li #{branch}
+            pre#gitdiff
+              #{diff}
+            h4 #{milestonehead} 
+            table#milestones.center
+              tr
+                th #{milestonename}
+                th #{milestoneprog}
+                th #{openmilestone}
+                th #{closedmilestone}
+              each milestone in milestones
+                - var width = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
+                tr(id="milestone"+milestone.number)
+                  td
+                    a(href="https://github.com/"+repo+"/issues?milestone="+milestone.number)
+                    #{milestone.title}
+                  td 
+                    div.progress(class=milestone.state)
+                      div.progress-inner(style="width:"+width+"%")(class=milestone.state)
+                        &nbsp;
+                      print #{Math.round(width)+"%"}
+                  td #{milestone.open_issues}
+                  td #{milestone.closed_issues}
+             p.center
+               a(href="https://github.com/"+repo) #{propaganda}
+             h4
+              #{credits}
+             p.center
+               #{thanks}
+             ul#credits
+               each author in authors
+                 li #{author}            
           section#config
              h3 #{config}
              ul
