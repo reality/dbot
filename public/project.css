@@ -59,6 +59,7 @@ ul {
     text-align:center;
     margin-left:0;
     margin-bottom:5px;
+    font-size:80%;
 }
 li {
     background-image: linear-gradient(to bottom, #f5ebe2, #f5e6d8);
