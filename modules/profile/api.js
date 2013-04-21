@@ -31,7 +31,12 @@ var api = function(dbot) {
             dbot.api.users.resolveUser(server, nick, function(user){
                 if(user){
                     this.db.read('profiles', user.id, function(err, profile){
-                        callback(false, user, profile);
+                        if(!err){
+                            callback(false, user, profile);
+                        }
+                        else{
+                            callback(true, null, null);
+                        }
                     });
                 }
                 else{
