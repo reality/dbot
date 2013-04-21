@@ -43,8 +43,9 @@ var pages = function(dbot) {
             }
 
             res.render('project', {
+                "translation": dbot.modules.project.api.translationProgress(),
                 "configList": dbot.modules.project.api.configList(), 
-                "authors": authors, //dbot.modules.project.api.getAuthors(),
+                "authors": authors,
                 "credits": dbot.t("credits"),
                 "thanks": dbot.t("thanks"),
                 "name": dbot.config.name,
@@ -85,7 +86,13 @@ var pages = function(dbot) {
                 }),
                 "git": dbot.t("git"),
                 "milestonehead": dbot.t("milestones"),
-                "propaganda": dbot.t("propaganda")
+                "propaganda": dbot.t("propaganda"),
+                "languagecurr": dbot.t(dbot.config.language),
+                "languagenati": dbot.t("langhead-native"),
+                "languageeng": dbot.t("en"),
+                "languageprog": dbot.t("langhead-progress"),
+                "languagetrans": dbot.t("langhead-translations"),
+                "languagetranshead": dbot.t("translations")
            });
         },
     };
