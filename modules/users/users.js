@@ -123,8 +123,10 @@ var users = function(dbot) {
                                     channel.users.push(result.id);
                                 }.bind(this));
                             } else {
-                                if(!_.include(user.channels, event.channel)) {
+                                if(!_.include(user.channels, event.channel.name)) {
                                     channel.users.push(user.id);
+                                    user.channels.push(event.channel.name);
+                                    this.db.save('users', user.id, user, function(err) { });
                                 }
                             }
                         }.bind(this));
