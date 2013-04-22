@@ -3,7 +3,7 @@
     "dbType": "redis",
     "dbKeys": [ "polls" ],
     "ignorable": true,
-    "dependencies": [ "users", "command" ],
+    "dependencies": [ "users", "web" ],
     "schema": {
         "poll": {
             "pkey": "name",
