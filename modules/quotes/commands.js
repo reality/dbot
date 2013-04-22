@@ -12,11 +12,15 @@ var commands = function(dbot) {
                 quote = event.input[2];
 
             this.api.addQuote(key, quote, event.user, function(newCount) {
-                dbot.api.event.emit('~qadd', [ key, quote ]);
-                event.reply(dbot.t('quote_saved', {
-                    'category': key, 
-                    'count': newCount
-                }));
+                if(newCount) {
+                    dbot.api.event.emit('~qadd', [ key, quote ]);
+                    event.reply(dbot.t('quote_saved', {
+                        'category': key, 
+                        'count': newCount
+                    }));
+                } else {
+                    event.reply(dbot.t('quote_exists'));
+                }
             });
         },
 

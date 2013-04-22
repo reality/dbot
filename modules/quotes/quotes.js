@@ -76,11 +76,15 @@ var quotes = function(dbot) {
                     };
                 } 
 
-                newCount = category.quotes.push(quote);
-                this.db.save('quote_category', category.id, category, function(err) {
-                    this.rmAllowed = true;
-                    callback(newCount);
-                }.bind(this));
+                if(_.include(category.quotes, quote)) {
+                    callback(false);
+                } else {
+                    newCount = category.quotes.push(quote);
+                    this.db.save('quote_category', category.id, category, function(err) {
+                        this.rmAllowed = true;
+                        callback(newCount);
+                    }.bind(this));
+                }
             }.bind(this));
 
         }, 
