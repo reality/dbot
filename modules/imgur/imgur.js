@@ -7,7 +7,6 @@ var _ = require('underscore')._,
     request = require('request');
 
 var imgur = function(dbot) {
-    this.db = dbot.db.imgur;
     this.internalAPI = {
         'infoString': function(imgData) {
             info = '';
@@ -45,11 +44,11 @@ var imgur = function(dbot) {
             var testUrl = 'http://i.imgur.com/' + 
                 testSlug +
                 '.' + ext[_.random(0, ext.length - 1)];
-            this.db.totalHttpRequests += 1;
+            dbot.db.imgur.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
-                    this.db.totalImages += 1;
+                    dbot.db.imgur.totalImages += 1;
                     callback(testUrl, testSlug);
                 } else {
                     this.api.getRandomImage(callback);
@@ -71,7 +70,7 @@ var imgur = function(dbot) {
                     'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
                 }
             }, function(err, response, body) {
-                this.db.totalApiRequests += 1;
+                dbot.db.imgur.totalApiRequests += 1;
                 callback(body);
             }.bind(this));
         }
