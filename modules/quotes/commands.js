@@ -12,10 +12,7 @@ var commands = function(dbot) {
                 quote = event.input[2];
 
             this.api.addQuote(key, quote, event.user, function(newCount) {
-                dbot.api.event.emit('~qadd', {
-                    'key': key,
-                    'text': quote
-                });
+                dbot.api.event.emit('~qadd', [ key, quote ]);
                 event.reply(dbot.t('quote_saved', {
                     'category': key, 
                     'count': newCount
@@ -47,7 +44,9 @@ var commands = function(dbot) {
         '~rq': function(event) {
             var categories = []; 
             this.db.scan('quote_category', function(result) {
-                categories.push(result);
+                if(result) {
+                    categories.push(result);
+                }
             }, function(err) {
                 var cIndex = _.random(0, _.size(categories) -1); 
                 var qIndex = _.random(0, categories[cIndex].quotes.length - 1); 
@@ -89,17 +88,6 @@ var commands = function(dbot) {
             rmCache.length = 0;
             event.reply(dbot.t('quote_cache_reinstated', 
                 { 'count': rmCacheCount }));
-        },
-
-        // Retrieve quote from a category in the database.
-        '~q': function(event) { 
-            var key = event.input[1].trim().toLowerCase();
-            var quote = this.api.getQuote(event, event.input[1]);
-            if(quote) {
-                event.reply(key + ': ' + quote);
-            } else {
-                event.reply(dbot.t('category_not_found', {'category': key}));
-            }
         },
 
         '~rmlast': function(event) {

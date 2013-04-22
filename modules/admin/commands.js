@@ -94,9 +94,9 @@ var commands = function(dbot) {
 
         // Reload DB, translations and modules.
         'reload': function(event) {
+            event.reply(dbot.t('reload'));
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             dbot.reloadModules();
-            event.reply(dbot.t('reload'));
         },
 
         // Say something in a channel

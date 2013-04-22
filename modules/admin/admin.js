@@ -12,6 +12,7 @@ var admin = function(dbot) {
             if(configKey) {
                 this.db.read('config', configKey, function(err, cRecord) {
                     if(cRecord) {
+                        console.log('record found');
                         callback(cRecord.value)
                     } else {
                         var configPath = dbot.config;

@@ -106,7 +106,11 @@ var quotes = function(dbot) {
             key = key.trim().toLowerCase(),
 
             this.api.getQuote(key, function(quote) {
-                this.internalAPI.interpolatedQuote(server, channel, key, quote, callback); 
+                if(quote) {
+                    this.internalAPI.interpolatedQuote(server, channel, key, quote, callback); 
+                } else {
+                    callback(quote);
+                }
             }.bind(this));
         }
     };

@@ -281,8 +281,8 @@ DBot.prototype.reloadModules = function() {
                 var propertyData = {};
                 try {
                     propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
-            } catch(err) {};
-            _.extend(this[property], propertyData);
+                } catch(err) {};
+                _.extend(this[property], propertyData);
             }, this);
 
             // Provide toString for module name

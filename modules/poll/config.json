@@ -1,6 +1,6 @@
 {
     "help": "http://github.com/reality/depressionbot/blob/master/modules/poll/README.md",
-    "dbType": "disk",
+    "dbType": "redis",
     "dbKeys": [ "polls" ],
     "ignorable": true,
     "dependencies": [ "users", "command" ],

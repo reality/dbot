@@ -58,7 +58,7 @@ var dent = function(dbot) {
 
     this.onLoad = function() {
         if(dbot.config.dent.dentQuotes === true && _.has(dbot.modules, 'quotes')) {
-            dbot.api.command.addHook('~qadd', function(key, text) {
+            dbot.api.event.addHook('~qadd', function(key, text) {
                 if(text.indexOf('~~') == -1) {
                     this.api.post(key + ': ' + text);
                 }
