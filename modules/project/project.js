@@ -16,9 +16,9 @@ var project = function(dbot) {
                  list.push(dbot.t("dent-account", {
                     "username": dbot.config.dent.username
                 }));
-            }
-            if(_.has(dbot.config.dent.dentQuotes)) {
-                list.push(dbot.t("dent-push"));
+                if(_.has(dbot.config.dent.dentQuotes)) {
+                    list.push(dbot.t("dent-push"));
+                }
             }
             if(_.has(dbot.modules,'link')){
                 if(dbot.config.link.autoTitle){

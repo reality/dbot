@@ -8,12 +8,13 @@ html(lang='#{curr839}')
     link(rel='stylesheet', type='text/css', href='/styles.css')    
     link(rel="stylesheet", href="/project.css")
     title #{pagetitle}
-    - var mstone = "milestone"
-    style(type="text/css")
-       each milestone in milestones
-         - current = mstone+milestone.number
-         - wdth = ((milestone.open_issues/(milestone.open_issues + milestone.closed_issues))*100)
-         .current { width: wdth% }
+    script
+      $(document).ready(function() {
+          $.get("https://api.github.com/repos/#{repo}/pulls", function(data) {
+          if ($.parseJSON(data).length) { $("#pullreq").show();}
+        }); 
+      }); 
+
   body  
     div.container
       div#page
@@ -22,12 +23,14 @@ html(lang='#{curr839}')
           p.intro
             #{dquote}
           section#git
-            h3 #{development} 
-            p.center
+            h2 #{development} 
+            p#pullreq
+              a(href="https://github.com/"+repo+"/pulls") #{pullreqs}
+            p#revnum
               #{revnum}
             pre#gitdiff
               #{diff}
-            h4 #{milestoneprog} 
+            h3 #{milestonehead} 
             table#milestones.center
               tr
                 th #{milestonename}
@@ -36,9 +39,9 @@ html(lang='#{curr839}')
                 th #{closedmilestone}
               each milestone in milestones
                 - var wdth = ((milestone.closed_issues/(milestone.open_issues + milestone.closed_issues))*100) 
-                tr(id=mstone+milestone.number)
+                tr(id="milestone"+milestone.number)
                   td
-                    a(href=milestone.url)
+                    a(href="https://github.com/"+repo+"/issues?milestone="+milestone.number)
                       #{milestone.title}
                   td 
                     div.progress(class=milestone.state)
@@ -47,8 +50,10 @@ html(lang='#{curr839}')
                       print #{Math.round(wdth)+"%"}
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
-            h4 #{languagetranshead} 
-            table
+            a(#href="https://github.com/"+repo+"/")
+              #{propaganda}
+            h3 #{languagetranshead} 
+            table#translations
               tr
                 th #{languagecurr}
                 th #{languagenati}
@@ -75,21 +80,23 @@ html(lang='#{curr839}')
                             &nbsp;
                           print #{Math.round(w)+"%"}
                   td #{language.count} / #{translation.en.count}
-            h4 #{credits}
+            h3 #{credits}
             #{thanks}
-            ul
+            ul#credits
               each author in authors
                 li
                   #{author}
           section#config
-             h3 #{config}
-             ul
-               li #{currlang}
-               li #{debugmode}
-             h4 #{loadmod}
-             ul#modules 
-               each module in modules
-                 li #{module}
+            h2 #{config}
+            ul
+              li #{currlang}
+              li #{debugmode}
+              each config in configList
+                li #{config}
+            h3 #{loadmod}
+            ul#modules 
+              each module in modules
+                li #{module}
           section#footer
             p
               #{currver}

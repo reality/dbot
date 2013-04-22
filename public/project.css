@@ -3,6 +3,10 @@ pre#gitdiff {
     width:80;
     margin:auto;
     text-transform:none;
+    clear:both;
+}
+ul#credits {
+    text-transform:capitalize;
 }
 div#main {
     font-size:18px;
@@ -19,6 +23,7 @@ p.intro {
     border:1px solid #ccc;
     padding:20px;
     border-radius:4px;
+    text-transform:none;
 }
 div.progress.open {
     background-color: #f4fff4;
@@ -62,4 +67,40 @@ li {
 
 #footer {
     font-size:80%;
+}
+h2 {
+    margin-top:40px;
+    margin-bottom:30px;
+}
+h3 {
+    margin-top:30px;
+    margin-bottom:20px;
+}
+#translations td {
+    text-transform:none;
+}
+p#pullreq {
+    float:right;
+    border-left:1px solid #ccc;
+    border-top:1px solid #ccc;
+    border-top-left-radius:5px;
+    padding:10px;
+    margin:5px;
+    display:none;
+}
+p#revnum {
+    float:left;
+    border-right:1px solid #ccc;
+    border-top:1px solid #ccc;
+    border-top-right-radius: 5px;
+    margin:5px;
+    padding:10px;
+    margin-bottom:0px;
+}
+h2 {
+    border-bottom: 1px solid #ccc;
+    border-top:1px solid #ccc;
+    margin-left:auto;
+    margin-right:auto;
+    width:40%;
 }
