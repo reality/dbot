@@ -156,7 +156,7 @@ var commands = function(dbot) {
 
             if(!_.include(noChangeConfig, configPath)) {
                 this.internalAPI.getCurrentConfig(configPath, function(config) {
-                    if(config) {
+                    if(config !== null) {
                         // Convert to boolean type if config item boolean
                         if(_.isBoolean(config)) {
                             newOption = (newOption == "true");
@@ -185,7 +185,7 @@ var commands = function(dbot) {
 
             if(!_.include(noChangeConfig, configPath)) {
                 this.internalAPI.getCurrentConfig(configPath, function(config) {
-                    if(config) {
+                    if(config !== null) {
                         if(_.isArray(config)) {
                             event.reply(configPath + ": " + config + " << " + newOption);
                             config.push(newOption);
@@ -211,7 +211,7 @@ var commands = function(dbot) {
             var configPath = event.params[1];
             if(configPath) {
                 this.internalAPI.getCurrentConfig(configPath, function(config) {
-                    if(config) {
+                    if(config !== null) {
                         if(_.isArray(config)) {
                             event.reply('Config keys in ' + configPath + ': ' + config);
                         } else if(_.isObject(config)) {
