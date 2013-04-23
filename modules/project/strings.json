@@ -114,7 +114,8 @@
         "nl": "Debug uitgeschakeld"
     },
     "milestones": {
-        "en": "Milestones"
+        "en": "Milestones",
+        "fr": "étapes"
     },
     "milestoneprog": {
         "en": "Progress",
