@@ -90,12 +90,7 @@ var quotes = function(dbot) {
         }, 
 
         'getQuote': function(key, callback) {
-            var category = false,
-                key = key.trim().toLowerCase();
-
-            this.db.search('quote_category', { 'name': key }, function(result) {
-                category = result;
-            }, function(err) {
+            this.api.getQuoteCategory(key, function(category) {
                 if(category) {
                     var quotes = category.quotes;
                     var index = _.random(0, quotes.length - 1); 
@@ -116,6 +111,26 @@ var quotes = function(dbot) {
                     callback(quote);
                 }
             }.bind(this));
+        },
+
+        'getQuoteCategory': function(key, callback) {
+            var category = false, 
+                key = key.trim().toLowerCase();
+
+            this.db.search('quote_category', { 'name': key }, function(result) {
+                category = result;
+            }, function(err) {
+                callback(category);
+            });
+        },
+
+        'getCategoryKeys': function(callback) {
+            var keys = [];
+            this.db.scan('quote_category', function(result) {
+                if(result) keys.push(result.name);
+            }, function(err) {
+                callback(keys);
+            });
         }
     };
    
