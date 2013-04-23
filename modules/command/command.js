@@ -20,41 +20,44 @@ var command = function(dbot) {
                 return;
             }
         } 
-        
+
         if(this.api.isBanned(event.user, commandName)) {
             event.reply(dbot.t('command_ban', {'user': event.user})); 
         } else {
-            if(!this.api.isIgnoring(event.user, commandName) && 
-                    !this.api.isIgnoring(event.channel, commandName) &&
-                    this.api.hasAccess(event.user, commandName) &&
-                    dbot.commands[commandName].disabled !== true) {
-                if(this.api.applyRegex(commandName, event)) {
-                    try {
-                        var command = dbot.commands[commandName];
-                        var results = command.apply(dbot.modules[command.module], [event]);
-                        if(_.has(command, 'hooks') && results !== false) {
-                            _.each(command['hooks'], function(hook) {
-                                hook.apply(hook.module, _.values(results)); 
-                            }, this);
-                        }
-                    } catch(err) {
-                        if(dbot.config.debugMode == true) {
-                            event.reply('- Error in ' + commandName + ':');
-                            event.reply('- Message: ' + err);
-                            event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
-                        }
-                    }
-                    dbot.save();
-                } else {
-                    if(commandName !== '~') {
-                        if(_.has(dbot.usage, commandName)) {
-                            event.reply('Usage: ' + dbot.usage[commandName]);
+            this.api.hasAccess(event.server, event.user, commandName, function(result) {
+                if(result) {
+                    if(!this.api.isIgnoring(event.user, commandName) && 
+                            !this.api.isIgnoring(event.channel, commandName) &&
+                            dbot.commands[commandName].disabled !== true) {
+                        if(this.api.applyRegex(commandName, event)) {
+                            try {
+                                var command = dbot.commands[commandName];
+                                var results = command.apply(dbot.modules[command.module], [event]);
+                                if(_.has(command, 'hooks') && results !== false) {
+                                    _.each(command['hooks'], function(hook) {
+                                        hook.apply(hook.module, _.values(results)); 
+                                    }, this);
+                                }
+                            } catch(err) {
+                                if(dbot.config.debugMode == true) {
+                                    event.reply('- Error in ' + commandName + ':');
+                                    event.reply('- Message: ' + err);
+                                    event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
+                                }
+                            }
+                            dbot.save();
                         } else {
-                            event.reply(dbot.t('syntax_error'));
+                            if(commandName !== '~') {
+                                if(_.has(dbot.usage, commandName)) {
+                                    event.reply('Usage: ' + dbot.usage[commandName]);
+                                } else {
+                                    event.reply(dbot.t('syntax_error'));
+                                }
+                            }
                         }
                     }
                 }
-            }
+            }.bind(this));
         }
     }.bind(this);
     this.on = 'PRIVMSG';
