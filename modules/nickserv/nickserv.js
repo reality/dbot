@@ -18,7 +18,6 @@ var nickserv = function(dbot) {
             statusRegex = this.config.servers[event.server].matcher,
             acceptableState = this.config.servers[event.server].acceptableState;
 
-
         if(event.user == nickserv) {
             var info = event.params.match(statusRegex);
             if(info && _.has(this.authStack, event.server)) {
