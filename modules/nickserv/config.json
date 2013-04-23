@@ -1,0 +1,9 @@
+{
+    "servers": {
+        "nc": {
+            "matcher": "STATUS ([^ ]+) (\\d)$",
+            "acceptableState": 3,
+            "infoCommand": "status"
+        }
+    }
+}
