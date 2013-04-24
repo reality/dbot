@@ -1,5 +1,6 @@
 {
     "ignorable": false,
     "help": "http://github.com/reality/depressionbot/blob/master/modules/command/README.md",
-    "dependencies": [ "ignore", "users" ]
+    "dependencies": [ "ignore", "users" ],
+    "useNickserv": false
 }

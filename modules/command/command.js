@@ -5,9 +5,8 @@
  * ignoring that command.
  */
 var _ = require('underscore')._;
+
 var command = function(dbot) {
-    this.dbot = dbot;
-    
     /**
      * Run the appropriate command given the input.
      */
@@ -21,40 +20,42 @@ var command = function(dbot) {
             }
         } 
        
-        dbot.api.ignore.isUserIgnoring(event.server, event.user, commandName, function(isIgnoring) {
-            dbot.api.ignore.isUserBanned(event.server, event.user, commandName, function(isBanned) {
-                if(isBanned) {
-                    event.reply(dbot.t('command_ban', {'user': event.user})); 
-                } else if(!isIgnoring && 
-                        this.api.hasAccess(event.user, commandName) && 
-                        dbot.commands[commandName].disabled !== true) {
-                    if(this.api.applyRegex(commandName, event)) {
-                        try {
-                            var command = dbot.commands[commandName];
-                            var results = command.apply(dbot.modules[command.module], [event]);
-                            if(_.has(command, 'hooks') && results !== false) {
-                                _.each(command['hooks'], function(hook) {
-                                    hook.apply(hook.module, _.values(results)); 
-                                }, this);
+        this.api.hasAccess(event.server, event.user, commandName, function(hasAccess) {
+            dbot.api.ignore.isUserIgnoring(event.server, event.user, commandName, function(isIgnoring) {
+                dbot.api.ignore.isUserBanned(event.server, event.user, commandName, function(isBanned) {
+                    if(isBanned) {
+                        event.reply(dbot.t('command_ban', {'user': event.user})); 
+                    } else if(!isIgnoring && 
+                            hasAccess && 
+                            dbot.commands[commandName].disabled !== true) {
+                        if(this.api.applyRegex(commandName, event)) {
+                            try {
+                                var command = dbot.commands[commandName];
+                                var results = command.apply(dbot.modules[command.module], [event]);
+                                if(_.has(command, 'hooks') && results !== false) {
+                                    _.each(command['hooks'], function(hook) {
+                                        hook.apply(hook.module, _.values(results)); 
+                                    }, this);
+                                }
+                            } catch(err) {
+                                if(dbot.config.debugMode == true) {
+                                    event.reply('- Error in ' + commandName + ':');
+                                    event.reply('- Message: ' + err);
+                                    event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
+                                }
                             }
-                        } catch(err) {
-                            if(dbot.config.debugMode == true) {
-                                event.reply('- Error in ' + commandName + ':');
-                                event.reply('- Message: ' + err);
-                                event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
-                            }
-                        }
-                        dbot.save();
-                    } else {
-                        if(commandName !== '~') {
-                            if(_.has(dbot.usage, commandName)) {
-                                event.reply('Usage: ' + dbot.usage[commandName]);
-                            } else {
-                                event.reply(dbot.t('syntax_error'));
+                            dbot.save();
+                        } else {
+                            if(commandName !== '~') {
+                                if(_.has(dbot.usage, commandName)) {
+                                    event.reply('Usage: ' + dbot.usage[commandName]);
+                                } else {
+                                    event.reply(dbot.t('syntax_error'));
+                                }
                             }
                         }
                     }
-                }
+                }.bind(this));
             }.bind(this));
         }.bind(this));
     }.bind(this);

@@ -222,10 +222,14 @@ DBot.prototype.reloadModules = function() {
 
     process.nextTick(function() {
         _.each(moduleNames, function(name) {
-            var moduleDir = './modules/' + name + '/';
-            var rawModule = require(moduleDir + name);
-            var module = rawModule.fetch(this);
-            this.rawModules.push(rawModule);
+            try {
+                var moduleDir = './modules/' + name + '/';
+                var rawModule = require(moduleDir + name);
+                var module = rawModule.fetch(this);
+                this.rawModules.push(rawModule);
+            } catch(err) {
+                console.log(err);
+            }
 
             module.name = name;
             module.db = this.ddb.databanks[name];
