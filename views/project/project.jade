@@ -7,14 +7,7 @@ html(lang='#{curr839}')
     link(rel="stylesheet", type="text/css", href="/bootstrap/css/bootstrap.min.css")   
     link(rel='stylesheet', type='text/css', href='/styles.css')    
     link(rel="stylesheet", href="/project.css")
-    title #{pagetitle}
-    script
-      $(document).ready(function() {
-          $.get("https://api.github.com/repos/#{repo}/pulls", function(data) {
-          if ($.parseJSON(data).length) { $("#pullreq").show();}
-        }); 
-      }); 
-
+    script(src="../project.js")
   body  
     div.container
       div#page
@@ -30,6 +23,8 @@ html(lang='#{curr839}')
               #{revnum}
             pre#gitdiff
               #{diff}
+            p#branch
+              #{branch}
             h3 #{milestonehead} 
             table#milestones.center
               tr
@@ -50,7 +45,7 @@ html(lang='#{curr839}')
                       print #{Math.round(wdth)+"%"}
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
-            a(#href="https://github.com/"+repo+"/")
+            a(href="https://github.com/"+repo+"/")
               #{propaganda}
             h3 #{languagetranshead} 
             table#translations

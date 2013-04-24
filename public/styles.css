@@ -223,3 +223,18 @@ div.imgwrap > img {
 .thumbnail:hover > div.imgwrap > span.nicks {
   display: inline;
 }
+
+/* footer */
+#footer {
+    margin-top:5px;
+    margin-right:10px;
+    margin-left:10px;
+}
+#footer a {
+    float:right;
+    padding-left:2px;
+    padding-right:2px;
+    background-color:#f5f5f5;
+    border-radius:3px;
+}
+
