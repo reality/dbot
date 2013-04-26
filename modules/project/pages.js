@@ -30,7 +30,7 @@ var pages = function(dbot) {
 
     /* TODO: merge back into github module */
     var milestones;
-    request("https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=open", function(error, response, body){
+    request({"url":"https://api.github.com/repos/" + dbot.config.github.defaultrepo + "/milestones?state=open","headers":{"User-Agent":"reality/depressionbot (project module)"}}, function(error, response, body){
         milestones = JSON.parse(body);
     });
 
