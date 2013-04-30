@@ -13,7 +13,7 @@ var quotes = function(dbot) {
         'interpolatedQuote': function(server, channel, key, quote, callback) {
             var quoteRefs = quote.match(/~~([\d\w\s-]*)~~/g);
             if(quoteRefs) {
-                var ref = dbot.cleanNick(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
+                var ref = this.internalAPI.cleanRef(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
                 if(ref === '-nicks-') {
                     dbot.api.users.getRandomChannelUser(server, channel, function(user) {
                         quote = quote.replace('~~' + ref + '~~', randomNick);
@@ -32,6 +32,14 @@ var quotes = function(dbot) {
                 callback(quote);
             }
         }.bind(this),
+
+        'cleanRef': function(key) {
+            key = key.toLowerCase();
+            while(key.endsWith("_")) {
+                key = key.substring(0, key.length-1);
+            }
+            return key;
+        },
 
         'resetRemoveTimer': function(event, key, quote) {
             this.rmAllowed = false;

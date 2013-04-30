@@ -315,15 +315,4 @@ DBot.prototype.reloadModules = function() {
     this.save();
 };
 
-DBot.prototype.cleanNick = function(key) {
-    key = key.toLowerCase();
-    while(key.endsWith("_")) {
-        if(_.has(this.db.quoteArrs, key)) {
-            return key;
-        }
-        key = key.substring(0, key.length-1);
-    }
-    return key;
-}
-
 new DBot();
