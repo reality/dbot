@@ -2,6 +2,5 @@ extends layout
 
 block content
   #modulelinks
-    a.module(href='/quotes') Quotes  
-    a.module(href='/polls') Polls
-    a.module(href='/connections') Users
+    - for(var i=0;i<routes.length;i++)
+        a.module(href='/'+routes[i]) #{routes[i]}

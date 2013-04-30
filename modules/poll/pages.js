@@ -30,12 +30,12 @@ var pages = function(dbot) {
         },
 
         // Lists all of the polls
-        '/polls': function(req, res) {
+        '/poll': function(req, res) {
             res.render('polllist', { 
                 'name': dbot.config.name, 
                 'polllist': Object.keys(dbot.db.polls) 
             });
-        },
+        }
     };
     return pages;
 };
