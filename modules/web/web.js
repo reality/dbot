@@ -8,10 +8,6 @@ var webInterface = function(dbot) {
 
     this.app.use(express.static(this.pub));
     this.app.set('view engine', 'jade');
-
-    this.app.get('/', function(req, res) {
-        res.render('index', { 'name': dbot.config.name });
-    });
    
     var server = this.app.listen(dbot.config.web.webPort);
 
@@ -33,6 +29,29 @@ var webInterface = function(dbot) {
                 }).bind(func));
             }
         }
+    }.bind(this);
+
+    this.onLoad = function() {
+        var routes = _.pluck(dbot.modules.web.app.routes.get, 'path');
+        var moduleNames = _.keys(dbot.modules);
+        var indexModules = [];
+
+        _.each(moduleNames, function(moduleName) {
+            var modulePath = '/' + moduleName;
+            if(_.include(routes, modulePath)) {
+                indexModules.push(moduleName);
+            }
+        });
+
+        console.log(indexModules);
+
+        // TODO: get list of loaded modules
+        this.app.get('/', function(req, res) {
+            res.render('index', { 
+                'name': dbot.config.name,
+                'routes': indexModules
+            });
+        });
     }.bind(this);
 
     this.onDestroy = function() {

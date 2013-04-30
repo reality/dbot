@@ -3,7 +3,7 @@ var pages = function(dbot) {
     var connections = dbot.instance.connections;
 
     return {
-        '/connections': function(req, res) {
+        '/users': function(req, res) {
             var connections = Object.keys(dbot.instance.connections);
             res.render('connections', { 'name': dbot.config.name, 'connections': connections });
         },
