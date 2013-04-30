@@ -50,6 +50,11 @@ channel was found from the given parameters.
 Get a list of all users the bot currently knows about. Callback is called with
 one argument, a list of user records.
 
+#### isOnline
+Is the given nick on the given server currently in the given channel. Callback
+is called with one argument, a boolean as to whether the nick is currently in
+the specified place. 
+
 ### Data 
 
 #### User Object

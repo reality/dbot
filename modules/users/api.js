@@ -79,42 +79,6 @@ var api = function(dbot) {
             });
         },
 
-        'isKnownUser': function(server, nick, callback) {
-            this.api.resolveUser(server, nick, function(isKnown) {
-                if(isKnown == false) {
-                    callback(false);
-                } else {
-                    callback(true);
-                }
-            });
-        },
-
-        'isPrimaryUser': function(server, nick, callback) {
-            var isPrimaryUser = false; 
-            this.db.search('users', {
-                'server': server,
-                'primaryNick': nick 
-            }, function(user) {
-                isPrimaryUser = true;
-            }, function(err) {
-                if(!err) {
-                    callback(isPrimaryUser);
-                }
-            });
-        },
-
-        'getAliases': function(server, nick, callback) {
-            var aliases;
-            this.db.search('users', { 
-                'server': server,
-                'primaryNick': nick
-            }, function(result) {
-                aliases = result.aliases; 
-            }, function(err) {
-                callback(aliases); 
-            });
-        },
-
         'isOnline': function(server, nick, channel, callback) {
             this.api.resolveUser(server, nick, function(user) {
                 var possiNicks = [user].concat(user.aliases);
@@ -129,13 +93,6 @@ var api = function(dbot) {
                     callback(isOnline);
                 }
             });
-        },
-
-        'isChannelUser': function(server, nick, channel, callback) {
-            this.api.resolveUser(server, nick, function(user) {
-                var isChannelUser = _.include(user.channels, channel);
-                callback(isChannelUser);
-            }); 
         }
     };
 
