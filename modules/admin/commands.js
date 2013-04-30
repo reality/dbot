@@ -72,7 +72,7 @@ var commands = function(dbot) {
                     event.reply(stdout);
                 }
                 else{
-                    event.reply("No version information or queried module not loaded");
+                    event.reply(dbot.t("no_version"));
                 }
             }.bind(this));
         },
@@ -83,12 +83,12 @@ var commands = function(dbot) {
             if(_.has(dbot.status, moduleName)) {
                 var status = dbot.status[moduleName];
                 if(status === true) {
-                    event.reply(moduleName + ' status: Shit looks good.');
+                    event.reply(dbot.t("status_good",{"module":moduleName, "reason": status}));
                 } else {
-                    event.reply(moduleName + ' status: Failed to load: ' + status); 
+                    event.reply(dbot.t("status_bad",{"module":moduleName, "reason": status}));
                 }
             } else {
-                event.reply('Either that module wasn\'t on the roster or shit is totally fucked.');
+                event.reply(dbot.t("status_unloaded"));
             }
         },
 
@@ -103,7 +103,7 @@ var commands = function(dbot) {
         'say': function(event) {
             var channel = event.params[1];
             if(event.params[1] === "@") {
-                var channel = event.channel.name;
+                channel = event.channel.name;
             }             
             var message = event.params.slice(2).join(' ');
             dbot.say(event.server, channel, message);
@@ -118,7 +118,7 @@ var commands = function(dbot) {
                 if(dbot.status[moduleName] === true) {
                     event.reply(dbot.t('load_module', {'moduleName': moduleName}));
                 } else {
-                    event.reply('Failed to load ' + moduleName + '. See \'status ' + moduleName + '\'.');
+                    event.reply(dbot.t("load_failed",{"module": moduleName}));
                 }
             } else {
                 if(moduleName == 'web') {
@@ -162,6 +162,10 @@ var commands = function(dbot) {
                             newOption = (newOption == "true");
                         }
 
+                        if(_.isArray(currentOption)) {
+                            event.reply(dbot.t("config_array",{"alternate": "pushconfig"}));
+                        }
+
                         event.reply(configPath + ": " + config + " -> " + newOption);
                         config = newOption;
                         this.db.save('config', configPath, { 
@@ -171,11 +175,11 @@ var commands = function(dbot) {
                             dbot.reloadModules();
                         });
                     } else {
-                        event.reply('Config path doesn\'t exist, bro.');
+                        event.reply(dbot.t("no_config_key"));
                     }
                 }.bind(this));
             } else {
-                event.reply("This config option cannot be altered while the bot is running.");
+                event.reply(dbot.t("config_lock"));
             }
         },
 
@@ -196,14 +200,14 @@ var commands = function(dbot) {
                                 dbot.reloadModules();
                             });
                         } else {
-                            event.reply("Config option is not an array. Try 'setconfig'.");
+                            event.reply(dbot.t("config_array", { "alternate": "setconfig" }));
                         }
                     } else {
-                        event.reply('Config path doesn\'t exist, bro.');
+                        event.reply(dbot.t("no_config_key"));
                     }
                 }.bind(this));
             } else {
-                event.reply("This config option cannot be altered while the bot is running.");
+                event.reply(dbot.t("config_lock"));
             }
         },
 
@@ -213,18 +217,30 @@ var commands = function(dbot) {
                 this.internalAPI.getCurrentConfig(configPath, function(config) {
                     if(config !== null) {
                         if(_.isArray(config)) {
-                            event.reply('Config keys in ' + configPath + ': ' + config);
+                            event.reply(dbot.t("config_keys_location", {
+                                "path": configPath,
+                                "value": config
+                            }));
                         } else if(_.isObject(config)) {
-                            event.reply('Config keys in ' + configPath + ': ' + _.keys(config));
+                            event.reply(dbot.t("config_keys_location", {
+                                "path": configPath,
+                                "value": _.keys(config)
+                            }));
                         } else {
-                            event.reply(configPath + ': ' + config);
+                            event.reply(dbot.t("config_keys_location", {
+                                "path": configPath,
+                                "value": config
+                            }));
                         }
                     } else {
-                        event.reply('Config path doesn\'t exist, bro.');
+                        event.reply(dbot.t("no_config_key"));
                     }
                 });
             } else {
-                event.reply('Config keys in root: ' + _.keys(dbot.config));
+                event.reply(dbot.t("config_keys_location", {
+                    "path": "root",
+                    "value": _.keys(dbot.config)
+                }));
             }
         } 
     };
