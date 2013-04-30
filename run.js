@@ -279,7 +279,7 @@ DBot.prototype.reloadModules = function() {
 
             this.modules[module.name] = module;
         } catch(err) {
-            console.log(this.t('module_load_error', {'moduleName': name}));
+            console.log(this.t('module_load_error', { 'moduleName': name }));
             this.status[name] = err + ' - ' + err.stack.split('\n')[1].trim();
             if(this.config.debugMode) {
                 console.log('MODULE ERROR (' + name + '): ' + err.stack );

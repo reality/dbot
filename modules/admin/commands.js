@@ -115,7 +115,6 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
-
         'status': function(event) {
             var moduleName = event.params[1];
             if(_.has(dbot.status, moduleName)) {
@@ -205,6 +204,11 @@ var commands = function(dbot) {
                 // Convert to boolean type if config item boolean
                 if(_.isBoolean(currentOption)) {
                     newOption = (newOption == "true");
+                }
+
+                // Convert to integer type is config item integer
+                if(_.isNumber(currentOption)) {
+                    newOption = parseInt(newOption);
                 }
 
                 if(_.isArray(currentOption)) {
