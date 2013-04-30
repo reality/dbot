@@ -16,5 +16,6 @@
     "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "youare", "timers", "stats", "users", "link" ],
     "language": "en",
     "debugMode": false,
+    "debugLevel": 1,
     "version": "Depressionbot IRC bot 0.4-dev - Lovingly crafted by The DepressionBot Foundation (a charity arm of the Official Aberystwyth Open Source International Development League)."
 }

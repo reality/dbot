@@ -295,7 +295,19 @@ DBot.prototype.reloadModules = function() {
             }
 
             this.modules[module.name] = module;
+<<<<<<< HEAD
         }.bind(this));
+=======
+        } catch(err) {
+            console.log(this.t('module_load_error', { 'moduleName': name }));
+            this.status[name] = err + ' - ' + err.stack.split('\n')[1].trim();
+            if(this.config.debugMode) {
+                console.log('MODULE ERROR (' + name + '): ' + err.stack );
+            } else {
+                console.log('MODULE ERROR (' + name + '): ' + err );
+            }
+        }
+>>>>>>> 2afb1c6ba37eb92f875124c754453bb063f42277
     }.bind(this));
 
     process.nextTick(function() {

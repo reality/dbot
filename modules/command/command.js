@@ -39,9 +39,15 @@ var command = function(dbot) {
                                 }
                             } catch(err) {
                                 if(dbot.config.debugMode == true) {
+                                    var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
+
                                     event.reply('- Error in ' + commandName + ':');
                                     event.reply('- Message: ' + err);
-                                    event.reply('- Top of stack: ' + err.stack.split('\n')[1].trim());
+
+                                    _.each(stack, function(stackLine, index) {
+                                        event.reply('- Stack[' + index + ']: ' +
+                                            stackLine.trim());
+                                    });
                                 }
                             }
                             dbot.save();

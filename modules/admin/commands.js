@@ -77,7 +77,6 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
-
         'status': function(event) {
             var moduleName = event.params[1];
             if(_.has(dbot.status, moduleName)) {
@@ -162,8 +161,13 @@ var commands = function(dbot) {
                             newOption = (newOption == "true");
                         }
 
+                        // Convert to integer type is config item integer
+                        if(_.isNumber(currentOption)) {
+                            newOption = parseInt(newOption);
+                        }
+
                         if(_.isArray(currentOption)) {
-                            event.reply(dbot.t("config_array",{"alternate": "pushconfig"}));
+                            event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
                         }
 
                         event.reply(configPath + ": " + config + " -> " + newOption);
