@@ -95,5 +95,35 @@
         "en": "{moduleName} is already loaded.",
         "na'vi": "Oel omum teri {moduleName}it li.",
         "nl": "{moduleName} is al geladen."
+    },
+    "no_version": {
+        "en": "No version information or queried module not loaded."
+    },
+    "status_good": {
+        "en": "{module} status: Shit looks good"
+    },
+    "status_bad": {
+        "en": "{module} status: Failed to load: {reason}"
+    },
+    "status_unloaded": {
+        "en": "Either thata module wasn't on the roster or shit is totally fucked."
+    },
+    "load_failed": {
+        "en": "Failed to load {module}. See 'status {module}'."
+    },
+    "no_config_key": {
+        "en": "Config key doesn't exist bro"
+    },
+    "config_array": {
+        "en": "Config option is an array. Try '{alternate}'."
+    },
+    "config_lock": {
+        "en": "This config option cannot be altered while the bot is running."
+    },
+    "no_config_path": {
+        "en": "Config path doesn't exist bro"
+    },
+    "config_keys_location": {
+        "en": "Config keys in {path}: {value}"
     }
 }
