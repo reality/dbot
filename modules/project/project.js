@@ -16,9 +16,9 @@ var project = function(dbot) {
                  list.push(dbot.t("dent-account", {
                     "username": dbot.config.dent.username
                 }));
-            }
-            if(_.has(dbot.config.dent.dentQuotes)) {
-                list.push(dbot.t("dent-push"));
+                if(_.has(dbot.config.dent.dentQuotes)) {
+                    list.push(dbot.t("dent-push"));
+                }
             }
             if(_.has(dbot.modules,'link')){
                 if(dbot.config.link.autoTitle){
@@ -52,7 +52,7 @@ var project = function(dbot) {
                }
             }
             var t = {};
-            for (var k = 0; k < str.length; k++) {
+            for (var k = 0; k < translation.length; k++) {
                 var curr = translation[k];
                 if (t[curr]) {
                     t[curr]["count"] += 1;
