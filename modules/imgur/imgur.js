@@ -4,7 +4,8 @@
  */
 
 var _ = require('underscore')._,
-    request = require('request');
+    request = require('request'),
+    crypto = require('crypto');
 
 var imgur = function(dbot) {
     this.db = dbot.db.imgur;
@@ -50,7 +51,8 @@ var imgur = function(dbot) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
                     this.db.totalImages += 1;
-                    callback(testUrl, testSlug);
+                    var hash = crypto.createHash('md5').update(body).digest("hex");
+                    callback(testUrl, testSlug,hash);
                 } else {
                     this.api.getRandomImage(callback);
                 }
