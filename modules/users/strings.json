@@ -5,7 +5,7 @@
         "nl": "{alias} is een alias van {user}"
     }, 
     "primary": {
-        "en": "{user} ({currentNick}) is a primary user with {count} aliases, ",
+        "en": "{user} (currently {currentNick}) is a primary user with {count} aliases, ",
         "na'vi": "{user} ({currentNick}) lu txin ulte {count}a stxo lu poru, ",
         "nl": "{user} ({currentNick})  is een primaire gebruiker met {count} aliassen, "
     },

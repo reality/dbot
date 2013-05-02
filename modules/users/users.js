@@ -73,22 +73,34 @@ var users = function(dbot) {
     this.listener = function(event) {
         if(event.action == 'JOIN' && event.user != dbot.config.name) {
             this.api.resolveUser(event.server, event.user, function(user) {
-                if(!user) { // User does not yet exist 
-                    this.internalAPI.createUser(event.server, event.user, event.channel.name, function(result) {
-                        this.internalAPI.addChannelUser(result, event.channel.name, function(err) { });
-                    }.bind(this));
-                } else {
-                    if(!_.include(user.channels, event.channel.name)) { // User not yet channel user
-                        user.channels.push(event.channel.name);
-                        this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
-                    }
+                var needsUpdating = false;
 
+                if(!user) { // User does not yet exist 
+                    user = {
+                        'id': uuid.v4(),
+                        'primaryNick': event.user,
+                        'currentNick': event.user,
+                        'server': event.server,
+                        'channels': [],
+                        'aliases': []
+                    };
+                    this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
+                    needsUpdating = true;
+                }
+
+                if(!_.include(user.channels, event.channel.name)) { // User not yet channel user
+                    user.channels.push(event.channel.name);
+                    this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
+                    needsUpdating = true;
+                }
+
+                if(user.currentNick != event.user) {
                     user.currentNick = event.user;
-                    this.db.save('users', user.id, user, function(err) {
-                        if(err) { 
-                            // QQ
-                        }
-                    });
+                    needsUpdating = true;
+                }
+
+                if(needsUpdating == true) {
+                    this.db.save('users', user.id, user, function(err) { });
                 }
             }.bind(this));
         } else if(event.action == 'NICK') {

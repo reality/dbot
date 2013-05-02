@@ -93,6 +93,16 @@ var api = function(dbot) {
                     callback(isOnline);
                 }
             });
+        },
+
+        'isKnownUser': function(server, nick, callback) {
+            this.api.resolveUser(server, nick, function(isKnown) {
+                if(isKnown == false) {
+                    callback(false);
+                } else {
+                    callback(true);
+                }
+            });
         }
     };
 
