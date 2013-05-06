@@ -1,10 +1,9 @@
 var _ = require('underscore')._;
 
 var pages = function(dbot) {
-    var polls = dbot.db.polls;
     var pages = {
         // Shows the results of a poll
-        '/polls/:key': function(req, res) {
+        '/poll/:key': function(req, res) {
             var key = req.params.key.toLowerCase();
             if(_.has(dbot.db.polls, key)) {
                 var totalVotes = _.reduce(dbot.db.polls[key].votes, 
@@ -31,9 +30,15 @@ var pages = function(dbot) {
 
         // Lists all of the polls
         '/poll': function(req, res) {
-            res.render('polllist', { 
-                'name': dbot.config.name, 
-                'polllist': Object.keys(dbot.db.polls) 
+            var pollKeys = [];
+            this.db.scan('poll', function(result) {
+                if(result) pollKeys.push(result.name);
+            }, function(err) {
+                console.log(pollKeys);
+                res.render('polllist', { 
+                    'name': dbot.config.name, 
+                    'polllist': pollKeys
+                });
             });
         }
     };
