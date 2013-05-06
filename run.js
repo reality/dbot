@@ -157,7 +157,6 @@ DBot.prototype.reloadModules = function() {
     var name, moduleDir, config;
     for(i=0;i<moduleNames.length;i++) {
         name = moduleNames[i];
-        console.log('iterating ' + name);
         this.status[name] = true;
         moduleDir = './modules/' + name + '/';
         try {
@@ -165,14 +164,7 @@ DBot.prototype.reloadModules = function() {
             delete require.cache[cacheKey];
         } catch(err) {
             this.status[name] = 'Error loading module: ' + err + ' ' + err.stack.split('\n')[2].trim();
-            return;
-        }
-
-        try {
-            var webKey = require.resolve(moduleDir + 'web');
-        } catch(err) { }
-        if(webKey) {
-            delete require.cache[webKey];
+            continue;
         }
 
         // Load the module config data
@@ -228,7 +220,10 @@ DBot.prototype.reloadModules = function() {
                 var module = rawModule.fetch(this);
                 this.rawModules.push(rawModule);
             } catch(err) {
-                console.log(err);
+                var stack = err.stack.split('\n')[2].trim();
+                this.status[name] = 'Error loading module: ' + err + ' ' + stack;
+                console.log('Error loading module: ' + err + ' ' + stack);
+                return;
             }
 
             module.name = name;
