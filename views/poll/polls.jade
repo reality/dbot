@@ -2,7 +2,7 @@ extends ../layout
 
 block content
     div#backlink 
-        a(href='/polls/') &laquo; Poll list
+        a(href='/poll/') &laquo; Poll list
     h2 #{description}
     p Voters (#{locals.totalVotes}): 
         -each voter in votees
