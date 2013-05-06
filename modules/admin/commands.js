@@ -82,9 +82,15 @@ var commands = function(dbot) {
             if(_.has(dbot.status, moduleName)) {
                 var status = dbot.status[moduleName];
                 if(status === true) {
-                    event.reply(dbot.t("status_good",{"module":moduleName, "reason": status}));
+                    event.reply(dbot.t('status_good', {
+                        'module': moduleName, 
+                        'reason': status
+                    }));
                 } else {
-                    event.reply(dbot.t("status_bad",{"module":moduleName, "reason": status}));
+                    event.reply(dbot.t('status_bad', { 
+                        'module': moduleName, 
+                        'reason': status
+                    }));
                 }
             } else {
                 event.reply(dbot.t("status_unloaded"));
@@ -93,9 +99,11 @@ var commands = function(dbot) {
 
         // Reload DB, translations and modules.
         'reload': function(event) {
-            event.reply(dbot.t('reload'));
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             dbot.reloadModules();
+            process.nextTick(function() {
+                event.reply(dbot.t('reload'));
+            });
         },
 
         // Say something in a channel
@@ -114,16 +122,18 @@ var commands = function(dbot) {
             if(!_.include(dbot.config.moduleNames, moduleName)) {
                 dbot.config.moduleNames.push(moduleName);
                 dbot.reloadModules();
-                if(dbot.status[moduleName] === true) {
-                    event.reply(dbot.t('load_module', {'moduleName': moduleName}));
-                } else {
-                    event.reply(dbot.t("load_failed",{"module": moduleName}));
-                }
+                process.nextTick(function() {
+                    if(dbot.status[moduleName] === true) {
+                        event.reply(dbot.t('load_module', { 'moduleName': moduleName }));
+                    } else {
+                        event.reply(dbot.t('load_failed', { 'module': moduleName }));
+                    }
+                });
             } else {
                 if(moduleName == 'web') {
                     event.reply(dbot.t('already_loaded_web'));
                 } else {
-                    event.reply(dbot.t('already_loaded', {'moduleName': moduleName}));
+                    event.reply(dbot.t('already_loaded', { 'moduleName': moduleName }));
                 }
             }
         },
@@ -141,9 +151,11 @@ var commands = function(dbot) {
                 dbot.config.moduleNames = _.without(dbot.config.moduleNames, moduleName);
                 dbot.reloadModules();
 
-                event.reply(dbot.t('unload_module', {'moduleName': moduleName}));
+                process.nextTick(function() {
+                    event.reply(dbot.t('unload_module', { 'moduleName': moduleName }));
+                });
             } else {
-                event.reply(dbot.t('unload_error', {'moduleName': moduleName}));
+                event.reply(dbot.t('unload_error', { 'moduleName': moduleName }));
             }
         },
 
