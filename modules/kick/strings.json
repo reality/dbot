@@ -17,4 +17,7 @@
         "cy": "Ni ddylech cicio {botname}",
         "nl": "Gij zult {botname} niet kicken"
     }
+    "nbanned": {
+        "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\""
+    }
 }

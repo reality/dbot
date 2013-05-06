@@ -1,6 +1,9 @@
+var _ = require('underscore')._;
+
 var commands = function(dbot) {
     var commands = {
         /*** Kick Management ***/
+
         '~ckick': function(event) {
             var server = event.server,
                 kicker = event.user,
@@ -9,10 +12,85 @@ var commands = function(dbot) {
                 reason = event.input[3];
 
             this.api.kick(server, kickee, channel, reason + ' (requested by ' + kicker + ')'); 
-            dbot.api.report.notify(server, channel, kicker, kickee, dbot.t('ckicked', {
+
+            dbot.api.report.notify(server, channel, dbot.t('ckicked', {
                 'kicker': kicker,
                 'kickee': kickee,
                 'channel': channel,
+                'reason': reason
+            }));
+        },
+
+        '~cban': function(event) {
+            var server = event.server,
+                banner = event.user,
+                banee = event.input[2],
+                channel = event.input[1],
+                reason = event.input[3];
+
+            this.api.ban(server, banee, channel);
+            this.api.kick(server, kickee, channel, reason + ' (requested by ' + banner + ')');
+
+            dbot.api.report.notify(server, channel, dbot.t('cbanned', {
+                'banner': banner,
+                'banee': banee,
+                'channel': channel,
+                'reason': reason
+            }));
+        },
+
+        '~cquiet': function(event) {
+            var server = event.server,
+                quieter = event.user,
+                quietee = event.input[2],
+                channel = event.input[1],
+                reason = event.input[3];
+
+            this.api.quiet(server, quietee, channel);
+
+            dbot.api.report(server, channel, dbot.t('cquieted', {
+                'quieter': quieter,
+                'quietee': quietee,
+                'channel': channel,
+                'reason': reason
+            }));
+        },
+
+        '~nquiet': function(event) {
+            var server = event.server,
+                quieter = event.user,
+                quietee = event.input[1],
+                channels = dbot.config.servers[server].channels,
+                reason = event.input[2];
+
+            _.each(channels, function(channel) {
+                this.api.quiet(server, quietee, channel);
+            }, this);
+
+            dbot.api.report(server, channel, dbot.t('nquieted', {
+                'quieter': quieter,
+                'quietee': quietee,
+                'reason': reason
+            }));
+        },
+
+        // Kick and ban from all channels on the network.
+        '~nban': function(event) {
+            var server = event.server,
+                banner = event.user,
+                banee = event.input[1],
+                reason = event.input[2],
+                channels = dbot.config.servers[server].channels;
+
+            _.each(channels, function(channel) {
+                this.api.ban(server, banee, channel);
+                this.api.kick(server, banee, channel, reason + 
+                    ' (network-wide ban requested by ' + banner + ')');
+            }, this);
+
+            dbot.api.report.notify(server, this.config.admin_channels[event.server], dbot.t('nbanned', {
+                'banner': banner,
+                'banee': banee,
                 'reason': reason
             }));
         },
@@ -67,8 +145,12 @@ var commands = function(dbot) {
         }
     };
 
-    commands['~ckick'].access = 'moderator';
+    _.each(commands, function(command) {
+        command.access = 'moderator'; 
+    });
+
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
+    commands['~nban'].regex = [/^~nban ([^ ]+) (.+)$/, 3];
 
     return commands;
 };

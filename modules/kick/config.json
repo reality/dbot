@@ -4,5 +4,8 @@
     "help": "http://github.com/reality/depressionbot/blob/master/modules/kick/README.md",
     "ignorable": true,
     "countSilently": true,
+    "admin_channels": {
+        "aberwiki": "#fishbox"
+    },
     "chanserv": "ChanServ"
 }
