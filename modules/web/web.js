@@ -60,12 +60,10 @@ var webInterface = function(dbot) {
 
     this.api = {
         'getUrl': function(path) {
-            console.log(path);
+            if(path.charAt(0) == '/') path = path.substr(1);
             if(this.config.externalPath) {
-                console.log('external');
                 return this.config.externalPath + '/' + path;
             } else {
-                console.log('internal');
                 return 'http://' + this.config.webHost + ':' + this.config.webPort + '/' + path;
             }
         }
