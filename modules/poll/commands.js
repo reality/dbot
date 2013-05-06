@@ -70,38 +70,39 @@ var commands = function(dbot) {
                         }
                     }
                 }.bind(this));
-            });
+            }.bind(this));
         },
 
         '~rmoption': function(event) {
             var name = event.input[1].toLowerCase(),
-                option = event.input[2].toLowerCase(),
-                user = dbot.api.users.resolveUser(event.server, event.user);
-            
-            this.db.read('poll', name, function(err, poll) {
-                if(!err) {
-                    if(poll.owner === user) {
-                        if(_.has(poll.votes, option)) {
-                            delete poll.votes[option];
+                option = event.input[2].toLowerCase();
 
-                            this.db.save('poll', name, poll, function(err) {
-                                event.reply(dbot.t('option_removed', {
-                                    'user': event.user,
-                                    'name': name, 
-                                    'option': option
-                                }));
-                            }.bind(this));
+            dbot.api.users.resolveUser(event.server, event.user, function(user) {
+                this.db.read('poll', name, function(err, poll) {
+                    if(!err) {
+                        if(poll.owner === user.id) {
+                            if(_.has(poll.votes, option)) {
+                                delete poll.votes[option];
+
+                                this.db.save('poll', name, poll, function(err) {
+                                    event.reply(dbot.t('option_removed', {
+                                        'user': event.user,
+                                        'name': name, 
+                                        'option': option
+                                    }));
+                                }.bind(this));
+                            } else {
+                                event.reply(dbot.t('invalid_vote', { 'vote': option }));
+                            }
                         } else {
-                            event.reply(dbot.t('invalid_vote', { 'vote': option }));
+                            event.reply(dbot.t('not_poll_owner', { 'name': name }));
                         }
                     } else {
-                        event.reply(dbot.t('not_poll_owner', { 'name': name }));
+                        if(err instanceof NoSuchThingError) {
+                            event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                        }
                     }
-                } else {
-                    if(err instanceof NoSuchThingError) {
-                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
-                    }
-                }
+                }.bind(this));
             }.bind(this));
         },
 
