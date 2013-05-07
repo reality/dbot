@@ -39,7 +39,7 @@ var commands = function(dbot) {
             }));
         },
 
-        '~cquiet': function(event) {
+        /*'~cquiet': function(event) {
             var server = event.server,
                 quieter = event.user,
                 quietee = event.input[2],
@@ -72,7 +72,7 @@ var commands = function(dbot) {
                 'quietee': quietee,
                 'reason': reason
             }));
-        },
+        },*/
 
         // Kick and ban from all channels on the network.
         '~nban': function(event) {
@@ -88,11 +88,26 @@ var commands = function(dbot) {
                     ' (network-wide ban requested by ' + banner + ')');
             }, this);
 
-            dbot.api.report.notify(server, this.config.admin_channels[event.server], dbot.t('nbanned', {
+            var notifyString = dbot.t('nbanned', {
                 'banner': banner,
                 'banee': banee,
                 'reason': reason
-            }));
+            });
+
+            // TODO: When this is merged into database branch, have it use the
+            //   api.quotes.addQuote function
+            if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
+                dbot.db.quoteArrs['ban_' + banee] = [ dbot.t('nban_quote', {
+                    'banee': banee,
+                    'banner': banner,
+                    'time': new Date().toUTCString(),
+                    'reason': reason
+                }) ];
+                
+                notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
+            }
+
+            dbot.api.report.notify(server, this.config.admin_channels[event.server], notifyString);
         },
 
         /*** Kick Stats ***/
