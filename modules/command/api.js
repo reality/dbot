@@ -9,7 +9,10 @@ var api = function(dbot) {
             var accessNeeded = dbot.commands[command].access;
 
             if(accessNeeded == 'admin' || accessNeeded == 'moderator') {
-                if(!_.include(dbot.config[accessNeeded + 's'], user)) { // lol
+                var allowedNicks = dbot.config.admins;
+                if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
+
+                if(!_.include(allowedNicks, user)) {
                     callback(false);
                 } else {
                     if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {

@@ -2,7 +2,7 @@ var _ = require('underscore')._;
 
 var report = function(dbot) {
     this.api = {
-        'notify': function(server, channel, reporter, reported, message) {
+        'notify': function(server, channel, message) {
             var channel = dbot.instance.connections[server].channels[channel]; 
             var ops = _.filter(channel.nicks, function(user) {
                 if(this.config.notifyVoice) {
@@ -27,7 +27,7 @@ var report = function(dbot) {
             if(_.has(event.allChannels, channelName)) {
                 if(dbot.api.users.isChannelUser(event.server, nick, channelName, true)) {
                     nick = dbot.api.users.resolveUser(event.server, nick, true);
-                    this.api.notify(event.server, channelName, event.user, nick, dbot.t('report', {
+                    this.api.notify(event.server, channelName, dbot.t('report', {
                         'reporter': event.user,
                         'reported': nick,
                         'channel': channelName,

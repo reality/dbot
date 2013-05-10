@@ -13,8 +13,17 @@
         "cy": "Ni ddylech cicio {botname}"
     },
     "ckicked": {
-        "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\""
+        "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
         "cy": "Ni ddylech cicio {botname}",
         "nl": "Gij zult {botname} niet kicken"
+    },
+    "nbanned": {
+        "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\""
+    },
+    "nban_quote": {
+        "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\""
+    },
+    "quote_recorded": {
+        "en": "This has been recorded in ~ban_{user}."
     }
 }
