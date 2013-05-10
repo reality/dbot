@@ -258,7 +258,17 @@ var commands = function(dbot) {
                     "value": _.keys(dbot.config)
                 }));
             }
-        } 
+        },
+
+        'savemodules': function(event) {
+            fs.readFile('config.json', 'utf-8', function(err, config) {
+                config = JSON.parse(config);
+                config.moduleNames = _.keys(dbot.modules);
+                fs.writeFile('config.json', JSON.stringify(config, null, '    '), function() {
+                    event.reply(dbot.t('modules_saved', { 'modules': _.keys(dbot.modules) }));
+                });
+            });
+        }
     };
 
     _.each(commands, function(command) {

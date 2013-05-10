@@ -125,5 +125,8 @@
     },
     "config_keys_location": {
         "en": "Config keys in {path}: {value}"
+    },
+    "modules_saved": {
+        "en": "Currently loaded modules now default: {modules}"
     }
 }
