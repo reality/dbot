@@ -33,8 +33,8 @@
         "na'vi": "Fì{module}ìri oel ke tsun run srungit",
         "nl": "Geen hulp gevonden voor {module}."
     },
-    "loaded_modules_with_help": {
-        "en": "Loaded modules with help information: {modules}.",
-        "nl": "Geladen modules die hulpinformatie bevatten: {modules}."
+    "loaded_modules": {
+        "en": "Loaded modules: {modules}.",
+        "nl": "Geladen modules: {modules}."
     }
 }
