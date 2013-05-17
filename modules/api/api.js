@@ -17,7 +17,7 @@ var api = function(dbot) {
                 });
             });
 
-            res.render('api', { 'name': dbot.config.name, 'api': externalApi });
+            res.render('api/api', { 'name': dbot.config.name, 'api': externalApi });
         });
 
         dbot.modules.web.app.get('/api/:module/:method', function(req, res) {
