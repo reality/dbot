@@ -174,11 +174,11 @@ var commands = function(dbot) {
                         }
 
                         // Convert to integer type is config item integer
-                        if(_.isNumber(currentOption)) {
+                        if(_.isNumber(config)) {
                             newOption = parseInt(newOption);
                         }
 
-                        if(_.isArray(currentOption)) {
+                        if(_.isArray(config)) {
                             event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
                         }
 
