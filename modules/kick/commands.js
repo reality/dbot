@@ -39,41 +39,6 @@ var commands = function(dbot) {
             }));
         },
 
-        /*'~cquiet': function(event) {
-            var server = event.server,
-                quieter = event.user,
-                quietee = event.input[2],
-                channel = event.input[1],
-                reason = event.input[3];
-
-            this.api.quiet(server, quietee, channel);
-
-            dbot.api.report(server, channel, dbot.t('cquieted', {
-                'quieter': quieter,
-                'quietee': quietee,
-                'channel': channel,
-                'reason': reason
-            }));
-        },
-
-        '~nquiet': function(event) {
-            var server = event.server,
-                quieter = event.user,
-                quietee = event.input[1],
-                channels = dbot.config.servers[server].channels,
-                reason = event.input[2];
-
-            _.each(channels, function(channel) {
-                this.api.quiet(server, quietee, channel);
-            }, this);
-
-            dbot.api.report(server, channel, dbot.t('nquieted', {
-                'quieter': quieter,
-                'quietee': quietee,
-                'reason': reason
-            }));
-        },*/
-
         // Kick and ban from all channels on the network.
         '~nban': function(event) {
             var server = event.server,
