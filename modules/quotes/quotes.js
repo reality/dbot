@@ -156,11 +156,13 @@ var quotes = function(dbot) {
                 });
            }
         } else if(event.action == 'JOIN') {
-            var userQuote = this.api.getQuote(event.user, function(quote) {
-                if(quote) {
-                    event.reply(event.user + ': ' + quote);
-                }
-            });
+            if(this.config.quotesOnJoin == true) {
+                this.api.getQuote(event.user, function(quote) {
+                    if(quote) {
+                        event.reply(event.user + ': ' + quote);
+                    }
+                });
+            }
         }
     }.bind(this);
     this.on = ['PRIVMSG', 'JOIN'];

@@ -2,5 +2,6 @@
     "dbType": "redis",
     "dependencies": [ "users", "event" ],
     "rmLimit": 10,
-    "ignorable": true
+    "ignorable": true,
+    "quotesOnJoin": false
 }

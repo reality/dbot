@@ -1,4 +1,5 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    request = require('request');
 
 var commands = function(dbot) {
     return {
@@ -18,41 +19,27 @@ var commands = function(dbot) {
 
         '~help': function(event) {
             var moduleName = event.params[1];
-            if(!moduleName) {
-                helpfulModules = _.filter(dbot.modules, function(element, index, array) {
-                    return _.has(dbot.config[element], 'help');
-                });
-                
+            if(!moduleName || !_.has(dbot.modules, moduleName)) {
                 event.reply(dbot.t('usage', {
                     'command': '~help',
                     'usage': '~help [module]'
                 }));
-                event.reply(dbot.t('loaded_modules_with_help', {
-                    'modules': helpfulModules.join(', ')
-                }));
-                return;
-            }
-            
-            if(!_.has(dbot.modules, moduleName)) {
-                if(_.has(dbot.commands, moduleName)) {
-                    var moduleName = dbot.commands[moduleName].module; 
-                } else {
-                    var moduleName = undefined;
-                }
-            }
-
-            if(moduleName && _.has(dbot.config[moduleName], 'help')) {
-                var help = dbot.config[moduleName].help;
-                event.reply(dbot.t('help_link', {
-                    'module': moduleName,
-                    'link': help
+                event.reply(dbot.t('loaded_modules', {
+                    'modules': _.keys(dbot.modules).join(', ')
                 }));
             } else {
-                if(!moduleName) {
-                    moduleName = event.params[1];
+                var helpLink = dbot.config.repoRoot + 
+                    'blob/master/modules/' + moduleName + '/README.md';
+                if(dbot.config[moduleName].help) {
+                    helpLink = dbot.config[moduleName].help;
                 }
-                event.reply(dbot.t('no_help', { 'module': moduleName }))
-            }
+
+                // TODO: Check it exists
+                event.reply(dbot.t('help_link', {
+                    'module': moduleName,
+                    'link': helpLink
+                }));
+           }
         }
     };
 };
