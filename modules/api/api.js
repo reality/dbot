@@ -6,7 +6,7 @@ var _ = require('underscore')._;
 
 var api = function(dbot) {
     this.onLoad = function() {
-        dbot.modules.web.app.get('/api': function(req, res) {
+        dbot.modules.web.app.get('/api', function(req, res) {
             var externalApi = {};
             _.each(dbot.api, function(moduleApi, moduleName) {
                 externalApi[moduleName] = {};
