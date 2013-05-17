@@ -112,11 +112,13 @@ var quotes = function(dbot) {
                 event.action = 'PRIVMSG';
                 event.params = event.message.split(' ');
                 dbot.instance.emit(event);
-           }
+            }
         } else if(event.action == 'JOIN') {
-            var userQuote = this.api.getQuote(event, event.user)
-            if(userQuote) {
-                event.reply(event.user + ': ' + this.api.getQuote(event, event.user));
+            if(this.config.quotesOnJoin == true) {
+                var userQuote = this.api.getQuote(event, event.user)
+                if(userQuote) {
+                    event.reply(event.user + ': ' + this.api.getQuote(event, event.user));
+                }
             }
         }
     }.bind(this);

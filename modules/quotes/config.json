@@ -3,5 +3,6 @@
     "dependencies": [ "command", "users" ],
     "rmLimit": 10,
     "ignorable": true,
+    "quotesOnJoin": false,
     "help": "http://github.com/reality/depressionbot/blob/master/modules/quotes/README.md"
 }
