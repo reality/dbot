@@ -5,8 +5,8 @@
 var _ = require('underscore')._;
 
 var api = function(dbot) {
-    this.pages = {
-        '/api': function(req, res) {
+    this.onLoad = function() {
+        dbot.modules.web.app.get('/api', function(req, res) {
             var externalApi = {};
             _.each(dbot.api, function(moduleApi, moduleName) {
                 externalApi[moduleName] = {};
@@ -17,11 +17,9 @@ var api = function(dbot) {
                 });
             });
 
-            res.render('api', { 'name': dbot.config.name, 'api': externalApi });
-        }
-    };
+            res.render('api/api', { 'name': dbot.config.name, 'api': externalApi });
+        });
 
-    this.onLoad = function() {
         dbot.modules.web.app.get('/api/:module/:method', function(req, res) {
             var module = req.params.module,
                 method = req.params.method,
