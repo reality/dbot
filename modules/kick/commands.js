@@ -168,6 +168,9 @@ var commands = function(dbot) {
         command.access = 'moderator'; 
     });
 
+    commands['~kickcount'].access = 'regular';
+    commands['~kickstats'].access = 'regular';
+
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = [/^~nban ([^ ]+) (.+)$/, 3];
 
