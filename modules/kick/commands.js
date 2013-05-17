@@ -39,41 +39,6 @@ var commands = function(dbot) {
             }));
         },
 
-        /*'~cquiet': function(event) {
-            var server = event.server,
-                quieter = event.user,
-                quietee = event.input[2],
-                channel = event.input[1],
-                reason = event.input[3];
-
-            this.api.quiet(server, quietee, channel);
-
-            dbot.api.report(server, channel, dbot.t('cquieted', {
-                'quieter': quieter,
-                'quietee': quietee,
-                'channel': channel,
-                'reason': reason
-            }));
-        },
-
-        '~nquiet': function(event) {
-            var server = event.server,
-                quieter = event.user,
-                quietee = event.input[1],
-                channels = dbot.config.servers[server].channels,
-                reason = event.input[2];
-
-            _.each(channels, function(channel) {
-                this.api.quiet(server, quietee, channel);
-            }, this);
-
-            dbot.api.report(server, channel, dbot.t('nquieted', {
-                'quieter': quieter,
-                'quietee': quietee,
-                'reason': reason
-            }));
-        },*/
-
         // Kick and ban from all channels on the network.
         '~nban': function(event) {
             var server = event.server,
@@ -107,7 +72,11 @@ var commands = function(dbot) {
                 notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
             }
 
-            dbot.api.report.notify(server, this.config.admin_channels[event.server], notifyString);
+            var notifyChannel = event.channel.name;
+            if(this.config.admin_channels[event.server]) {
+                notifyChannel = this.config.admin_channels[event.server]; 
+            }
+            dbot.api.report.notify(server, notifyChannel, notifyString);
         },
 
         /*** Kick Stats ***/
@@ -163,6 +132,9 @@ var commands = function(dbot) {
     _.each(commands, function(command) {
         command.access = 'moderator'; 
     });
+
+    commands['~kickcount'].access = 'regular';
+    commands['~kickstats'].access = 'regular';
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = [/^~nban ([^ ]+) (.+)$/, 3];

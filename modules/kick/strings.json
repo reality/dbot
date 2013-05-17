@@ -10,12 +10,14 @@
         "en": "Thou shalt not kick {botname}",
         "es": "No expulsás {botname}",
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
-        "cy": "Ni ddylech cicio {botname}"
+        "cy": "Ni ddylech cicio {botname}",
+        "nl": "Gij zult {botname} niet kicken"
     },
     "ckicked": {
         "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
-        "cy": "Ni ddylech cicio {botname}",
-        "nl": "Gij zult {botname} niet kicken"
+    },
+    "cbanned": {
+        "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}.\""
     },
     "nbanned": {
         "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\""

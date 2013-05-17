@@ -143,7 +143,7 @@ DBot.prototype.reloadModules = function() {
 
     // Enforce having command. it can still be reloaded, but dbot _will not_ 
     //  function without it, so not having it should be impossible
-    if(!moduleNames.include("command")) {
+    if(!_.include(moduleNames, 'command')) {
         moduleNames.push("command");
     }
 

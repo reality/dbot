@@ -252,6 +252,7 @@ var commands = function(dbot) {
                         event.reply(dbot.t("no_config_key"));
                     }
                 });
+
             } else {
                 event.reply(dbot.t("config_keys_location", {
                     "path": "root",

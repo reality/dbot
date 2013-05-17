@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+    div#backlink
+        a(href='/') &laquo; Home
+    div#row
+      h4 External API Functions
+    div#row
+        table.tabe.table-hover.data
+          thead
+            tr
+              th Module
+              th Path
+              th Arguments
+            tbody
+              -each module,moduleName in api
+                -each func,funcName in api[moduleName]
+                  tr
+                    td #{moduleName}
+                    td /api/#{moduleName}/#{funcName}
+                    td #{func}
