@@ -24,13 +24,6 @@ String.prototype.format = function() { // format takes either multiple indexed a
     return targetStr;
 };
 
-/*** Integer ***/
-
-Number.prototype.chanceIn = function(x, y) {
-    var num = Math.floor(Math.random() * (y + 1)) / x;
-    return num == 1;
-};
-
 /*** Regex ***/
 RegExp.prototype.url_regex = function() {
     var reg = new RegExp(
