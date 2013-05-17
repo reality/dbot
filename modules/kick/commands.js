@@ -107,7 +107,11 @@ var commands = function(dbot) {
                 notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
             }
 
-            dbot.api.report.notify(server, this.config.admin_channels[event.server], notifyString);
+            var notifyChannel = event.channel.name;
+            if(this.config.admin_channels[event.server]) {
+                notifyChannel = this.config.admin_channels[event.server]; 
+            }
+            dbot.api.report.notify(server, notifyChannel, notifyString);
         },
 
         /*** Kick Stats ***/
