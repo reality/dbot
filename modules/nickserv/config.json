@@ -1,6 +1,6 @@
 {
     "servers": {
-        "nc": {
+        "aberwiki": {
             "matcher": "STATUS ([^ ]+) (\\d)$",
             "acceptableState": 3,
             "infoCommand": "status"
