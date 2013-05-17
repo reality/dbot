@@ -2,6 +2,5 @@
     "ignorable": false,
     "dependencies": [ "event" ],
     "dbKeys": [ "knownUsers" ],
-    "help": "https://github.com/reality/depressionbot/blob/master/modules/users/README.md",
     "dbType": "redis"
 }

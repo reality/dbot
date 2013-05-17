@@ -1,5 +1,4 @@
 {
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/poll/README.md",
     "dbType": "redis",
     "dbKeys": [ "polls" ],
     "ignorable": true,

@@ -1,7 +1,6 @@
 {
     "dbKeys": [ "kicks", "kickers" ],
     "dependencies": [ "command", "report", "users" ],
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/kick/README.md",
     "ignorable": true,
     "countSilently": true,
     "admin_channels": {
