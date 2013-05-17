@@ -253,7 +253,7 @@ var commands = function(dbot) {
             
             if(configPathString) {
                 var configKey = _.last(configPathString.split('.'));
-                if(configKey) {
+                if(!configKey) {
                     event.reply(dbot.t("no_config_path"));
                     return;
                 }
