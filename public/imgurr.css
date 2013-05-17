@@ -106,3 +106,15 @@ html,body {
     overflow:auto;
     padding:0;
 }
+#count2 {
+    bottom:25px;
+    position:absolute;
+    border-radius:5px;
+    display:none;
+    margin;5px;
+    padding:5px; 
+    right:25px;
+    background-color:#3b5998;
+    color:white;
+    font-family:'Freight Sans Bold','Lucida Grande',verdana,arial,sans-serif;
+}
