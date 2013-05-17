@@ -52,6 +52,14 @@ var imgur = function(dbot) {
                 if(!error && response.statusCode == 200 && body.length != 492) {
                     this.db.totalImages += 1;
                     var hash = crypto.createHash('md5').update(body).digest("hex");
+                    if((hash == "e49e686582ce3f60cb51d00c10924861") && _.has(dbot.modules, 'quotes')){
+                        var qdb = dbot.db.quoteArrs["facebookman"];
+                        if (_.include(qdb, testUrl)){
+                            // do something
+                        } else {
+                            qdb.push(testUrl);
+                        }
+                    }
                     callback(testUrl, testSlug,hash);
                 } else {
                     this.api.getRandomImage(callback);
