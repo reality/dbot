@@ -72,13 +72,20 @@ Merge two quote categories into one.
 #### ~link [category]
 Show a link to the page on the web interface which shows this category's quotes.
 
-### Admin-only Commands
-
-
 ### API
 
-#### getQuote(event, category)
-Returns a random quote from the given category.
+#### addQuote(key, quote, user, callback)
+Add the given quote to the category stored under the given key. If it's a new
+quote category, then the owner of the category will be recorded as the given
+user. The callback is called with one argument, the new quote count of the given
+category.
+
+#### getQuote (key, callback)
+Get a random quote from the given category. Callback is called with one
+argument, either a random quote under the given key, or false if the category
+doesn't exist. This getQuote function does not require a server argument, and as
+such does not run the quote through the interpolation function (does not parse
+~~category~~ etc).
 
 ### Removal Spam Protection
 
