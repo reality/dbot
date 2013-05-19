@@ -11,7 +11,7 @@ var imgur = function(dbot) {
     this.internalAPI = {
         'infoString': function(imgData) {
             info = '';
-            if(imgData && _.has(imgData, 'data')) {
+            if(imgData && _.has(imgData, 'data') && !_.isUndefined(imgData.type)) {
                 imgData = imgData.data;
                 if(imgData.title) {
                     info += imgData.title + ' - ';
