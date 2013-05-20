@@ -51,6 +51,17 @@ var imgur = function(dbot) {
                 if(!error && response.statusCode == 200 && body.length != 492) {
                     dbot.db.imgur.totalImages += 1;
                     var hash = crypto.createHash('md5').update(body).digest("hex");
+                    if(_.has(dbot.modules, 'quotes')){
+                        // autoadd: {"abcdef": "facebookman"}
+                        if(_.has(dbot.config.imgur.autoadd,hash)){
+                            var category = dbot.config.imgur.autoadd[hash];
+                            if (_.contains(category, testUrl)){
+                                // there's probably less than 62^5 chance of this happening
+                            } else {
+                                dbot.db.quoteArrs[category].push(testUrl);
+                            }
+                        }
+                    }
                     callback(testUrl, testSlug,hash);
                 } else {
                     this.api.getRandomImage(callback);

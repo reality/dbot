@@ -4,5 +4,9 @@
     "imagelength": 5,
     "nsfwwarn": true,
     "apikey": "86fd3a8da348b65",
-    "highscore": "ricount"
+    "highscore": "ricount",
+    "autoadd": {
+        "e49e686582ce3f60cb51d00c10924861": "facebookman",
+        "b11b634c74562bcd4e5d17b0d90987be": "raffleguy"
+    }
 }

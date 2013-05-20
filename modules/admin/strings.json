@@ -106,7 +106,7 @@
         "en": "{module} status: Failed to load: {reason}"
     },
     "status_unloaded": {
-        "en": "Either thata module wasn't on the roster or shit is totally fucked."
+        "en": "Either that module wasn't on the roster or shit is totally fucked."
     },
     "load_failed": {
         "en": "Failed to load {module}. See 'status {module}'."
