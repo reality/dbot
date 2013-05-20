@@ -11,33 +11,34 @@ var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
     this.links = {}; 
     this.handlers = [];
-    this.fetchTitle = function(event, link) {
-        var limit = 1000000,
-        size = 0,
-        page = request(link.replace('https', 'http'), function(error, response, body) {
-            if(!error && response.statusCode == 200) {
-                body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
-                var title = body.valMatch(/<title>(.*)<\/title>/, 2);
-                if(title && title.length < 140) {
-                    event.reply(ent.decode(title[1]).trim());
-                }
-            }
-        });
-
-        page.on('data', function(chunk) {
-            size += chunk.length;
-            if(size > limit) {
-                page.abort();
-            }
-        });
-    };
-
+ 
     this.api = {
         'addHandler': function(name, regex, handler) {
             this.handlers.push({ 
                 'name': name, 
                 'regex': regex, 
                 'callback': handler 
+            });
+        },
+
+        'getTitle': function(link, callback) {
+            var limit = 1000000,
+            size = 0,
+            page = request(link.replace('https', 'http'), function(error, response, body) {
+                if(!error && response.statusCode == 200) {
+                    body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
+                    var title = body.valMatch(/<title>(.*)<\/title>/, 2);
+                    if(title && title.length < 140) {
+                        callback(ent.decode(title[1]).trim());
+                    }
+                }
+            });
+
+            page.on('data', function(chunk) {
+                size += chunk.length;
+                if(size > limit) {
+                    page.abort();
+                }
             });
         }
     };
@@ -51,7 +52,9 @@ var link = function(dbot) {
                     link = urlMatches[0];
                 }
             }
-            this.fetchTitle(event, link);
+            this.fetchTitle(link, function(title) {
+                event.reply(title);
+            });
         },
         
         '~xkcd': function(event) {
@@ -119,7 +122,11 @@ var link = function(dbot) {
                         handlerFound = true; break;
                     }
                 }
-                if(!handlerFound) this.fetchTitle(event, urlMatches[0]);
+                if(!handlerFound) {
+                    this.fetchTitle(urlMatches[0], function(title) {
+                        event.reply(title); 
+                    });
+                }
             }
         }
     }.bind(this);
