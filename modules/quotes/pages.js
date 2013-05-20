@@ -30,6 +30,13 @@ var pages = function(dbot) {
                 });
             });
         },
+
+        '/quoteremovals': function(req, res) {
+            res.render('quotes', {
+                'name': dbot.config.name,
+                'quotes': _.pluck(this.rmCache, 'quote')
+            });
+        }
     }
 };
 

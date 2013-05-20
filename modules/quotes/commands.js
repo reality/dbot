@@ -87,7 +87,7 @@ var commands = function(dbot) {
             
             _.each(rmCache, function(quote, index) {
                 this.api.addQuote(quote.key, quote.quote, event.user, function(newCount) { });
-            });
+            }.bind(this));
 
             rmCache.length = 0;
             event.reply(dbot.t('quote_cache_reinstated', 
