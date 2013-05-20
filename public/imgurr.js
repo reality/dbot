@@ -49,6 +49,7 @@ function getNewImage() {
 
 $(getNewImage());
 
+var t;
 $(document).on('keydown', function(e){
     switch(e.which){
         case 82: // r
@@ -72,5 +73,21 @@ $(document).on('keydown', function(e){
     case 83: // s
         $('body').toggleClass('crop');
         giveMessage("Toggled scrollbars.")
+        break;
+    case 190: // .
+        if(!t){
+            giveMessage("Automation on.");
+            $('#loading').css("font-style", "italic");
+            $('#loading').css("color","#BF2527");
+            t = setInterval(function(){
+                getNewImage();
+            },5000);
+        } else {
+            giveMessage("Automation off.");
+            $('#loading').css("font-style","normal");
+            $('#loading').css("color","#85BF25");
+            clearTimeout(t);
+            t = undefined;
+        }
     };
 });
