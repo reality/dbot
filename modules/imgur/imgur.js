@@ -58,6 +58,7 @@ var imgur = function(dbot) {
                             if (_.contains(category, testUrl)){
                                 // there's probably less than 62^5 chance of this happening
                             } else {
+                                if(!_.has(dbot.db.quoteArrs, category)) dbot.db.quoteArrs[category] = [];
                                 dbot.db.quoteArrs[category].push(testUrl);
                             }
                         }
