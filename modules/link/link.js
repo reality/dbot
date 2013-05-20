@@ -52,7 +52,7 @@ var link = function(dbot) {
                     link = urlMatches[0];
                 }
             }
-            this.fetchTitle(link, function(title) {
+            this.api.getTitle(link, function(title) {
                 event.reply(title);
             });
         },
@@ -123,7 +123,7 @@ var link = function(dbot) {
                     }
                 }
                 if(!handlerFound) {
-                    this.fetchTitle(urlMatches[0], function(title) {
+                    this.api.getTitle(urlMatches[0], function(title) {
                         event.reply(title); 
                     });
                 }
