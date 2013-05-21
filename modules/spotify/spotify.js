@@ -29,7 +29,6 @@ var spotify = function(dbot) {
             if(!error && response.statusCode == 200) {
                 if(_.has(body, 'track')) {
                     event.reply(dbot.t('track', {
-                        's': this.spotifyText, 
                         'artist': _.map(body.track.artists, 
                             function(a) { return a.name }).join(', '), 
                         'album': body.track.album.name, 
@@ -37,13 +36,11 @@ var spotify = function(dbot) {
                     }));
                 } else if(_.has(body, 'album')) {
                     event.reply(dbot.t('album', {
-                        's': this.spotifyText, 
                         'artist': body.album.artist, 
                         'album': body.album.name
                     }));
                 } else if(_.has(body, 'artist')) {
                     event.reply(dbot.t('artist', {
-                        's': this.spotifyText, 
                         'artist': body.artist.name
                     }));
                 }
@@ -78,7 +75,6 @@ var spotify = function(dbot) {
             this.api.spotifySearch(query, function(body, t) {
                 if(body) {
                     event.reply(dbot.t('found', {
-                        's': this.spotifyText, 
                         'artist': _.map(body.tracks[0].artists, function(a) { 
                                 return a.name }).join(', '), 
                         'album': body.tracks[0].album.name, 
@@ -86,7 +82,7 @@ var spotify = function(dbot) {
                         'url': t
                     }));
                 } else {
-                    event.reply(dbot.t('not-found', { 's': this.spotifyText }));
+                    event.reply(dbot.t('not-found'));
                 }
             }.bind(this));
         },
@@ -103,7 +99,6 @@ var spotify = function(dbot) {
                     this.api.spotifySearch(name, function(body, t) {
                         if(body) {
                             event.reply(dbot.t('found', {
-                                's': this.spotifyText, 
                                 'artist': _.map(body.tracks[0].artists, 
                                     function(a) { return a.name }).join(', '), 
                                 'album': body.tracks[0].album.name, 
@@ -111,7 +106,7 @@ var spotify = function(dbot) {
                                 'url': t
                             }));
                         } else {
-                            event.reply('No results');
+                            event.reply(dbot.t('not-found'));
                         }
                     }.bind(this));
                 }.bind(this));

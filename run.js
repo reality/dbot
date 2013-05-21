@@ -95,7 +95,12 @@ DBot.prototype.t = function(string, formatData) {
         }
 
         if(_.has(this.strings[string], lang)) {
+            var module = this.stringMap[string];
             formattedString = this.strings[string][lang].format(formatData);
+            if(this.config[module].outputPrefix) {
+                formattedString = '[' + this.config[module].outputPrefix + '] ' +
+                    formattedString;
+            }
         }
     }
     
@@ -127,7 +132,7 @@ DBot.prototype.reloadModules = function() {
     this.modules = {};
     this.commands = {};
     this.api = {};
-    this.commandMap = {}; // Map of which commands belong to which modules
+    this.stringMap = {};
     this.usage = {};
     
     // Load config changes
@@ -219,6 +224,11 @@ DBot.prototype.reloadModules = function() {
                     propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
                 } catch(err) {};
                 _.extend(this[property], propertyData);
+                if(property == 'strings') {
+                    _.each(_.keys(propertyData), function(string) {
+                        this.stringMap[string] = name;
+                    }.bind(this));
+                }
             }, this);
 
             // Load the module itself
