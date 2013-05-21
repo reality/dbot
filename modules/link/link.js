@@ -53,7 +53,7 @@ var link = function(dbot) {
                 }
             }
             this.api.getTitle(link, function(title) {
-                event.reply(title);
+                event.reply(dbot.t('link', { 'link': title} ));
             });
         },
         
@@ -80,7 +80,7 @@ var link = function(dbot) {
                     try {
                         if (response.statusCode == "200") {
                             data = JSON.parse(body);
-                            event.reply(dbot.t("xkcd",data));
+                            event.reply(dbot.t("xkcd", data));
                         } else {
                             event.reply(dbot.t("no-hits"));
                         }

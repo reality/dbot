@@ -11,5 +11,8 @@
         "en": "No hits.",
         "na'vi": "Oel ke tsun rivum ayuoti.",
         "nl": "Geen resultaten."
+    },
+    "link": {
+        "en": "{link}"
     }
 }
