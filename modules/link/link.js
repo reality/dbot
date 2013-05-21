@@ -124,7 +124,7 @@ var link = function(dbot) {
                 }
                 if(!handlerFound) {
                     this.api.getTitle(urlMatches[0], function(title) {
-                        event.reply(title); 
+                        event.reply(dbot.t('link', { 'link': title } ));
                     });
                 }
             }
