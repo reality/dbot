@@ -79,6 +79,17 @@ var api = function(dbot) {
             });
         },
 
+        'getAllChannels': function(callback) {
+            var channels = [];
+            this.db.scan('channel_users', function(channel) {
+                channels.push(channel);
+            }, function(err) {
+                if(!err) {
+                    callback(channels);
+                }
+            });
+        },
+
         'isOnline': function(server, nick, channel, callback) {
             this.api.resolveUser(server, nick, function(user) {
                 var possiNicks = [user].concat(user.aliases);
@@ -114,6 +125,9 @@ var api = function(dbot) {
 
     api['getAllUsers'].external = true;
     api['getAllUsers'].extMap = [ 'callback' ];
+
+    api['getAllChannels'].external = true;
+    api['getAllChannels'].extMap = [ 'callback' ];
 
     return api;
 };

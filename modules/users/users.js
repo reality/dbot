@@ -84,7 +84,6 @@ var users = function(dbot) {
                         'channels': [],
                         'aliases': []
                     };
-                    this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
                     needsUpdating = true;
                 }
 
@@ -127,26 +126,31 @@ var users = function(dbot) {
         dbot.instance.addListener('366', 'users', function(event) {
             this.api.getChannel(event.server, event.channel.name, function(channel) {
                 var checkChannelUsers = function(channel) {
-                    _.each(event.channel.nicks, function(nick) {
-                        var nick = nick.name;
+                    var i = 0;
+                    var checkChannelNicks = function(chanicks) {
+                        if(i == chanicks.length) return;
+                        var nick = chanicks[i]; i++;
                         this.api.resolveUser(event.server, nick, function(user) {
                             if(!user) {
                                 this.internalAPI.createUser(event.server, nick, event.channel.name, function(result) {
-                                    channel.users.push(result.id);
+                                    this.internalAPI.addChannelUser(result, event.channel.name, function(err) { 
+                                        checkChannelNicks(chanicks);
+                                    });
                                 }.bind(this));
                             } else {
                                 if(!_.include(user.channels, event.channel.name)) {
-                                    channel.users.push(user.id);
+                                    this.internalAPI.addChannelUser(user, event.channel.name, function(err) { 
+                                        checkChannelNicks(chanicks);
+                                    });
                                     user.channels.push(event.channel.name);
                                     this.db.save('users', user.id, user, function(err) { });
+                                } else {
+                                    checkChannelNicks(chanicks);
                                 }
                             }
                         }.bind(this));
-                    }, this);
-
-                    process.nextTick(function() {
-                        this.db.save('channel_users', channel.id, channel, function(err) { });
-                    }.bind(this));
+                    }.bind(this);
+                    checkChannelNicks(_.keys(event.channel.nicks));
                 }.bind(this);
 
                 if(!channel) { // Channel does not yet exist
