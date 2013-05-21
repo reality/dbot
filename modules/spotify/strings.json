@@ -1,19 +1,19 @@
 {
   "artist": {
-    "en": "{s} [artist] {artist}"
+    "en": "[artist] {artist}"
   },
   "album": {
-    "en": "{s} [album] {artist} – {album}"
+    "en": "[album] {artist} – {album}"
   },
   "track": {
-    "en": "{s} [track] {artist} – {track} (from {album})"
+    "en": "[track] {artist} – {track} (from {album})"
   },
   "found": {
-    "en": "{s} [{url}] {artist} – {track} (from {album})"
+    "en": "[{url}] {artist} – {track} (from {album})"
   },
   "not-found": {
-    "en": "{s} No results.",
-    "na'vi": "{s}, Oel ke tsun rivum ayuoti.",
-    "nl": "{s} Geen resultaten."
+    "en": "No results.",
+    "na'vi": "Oel ke tsun rivum ayuoti.",
+    "nl": "Geen resultaten."
   }
 }

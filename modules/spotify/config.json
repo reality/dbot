@@ -1,4 +1,5 @@
 {
   "dependencies": [ "link" ],
-  "ignorable": true
+  "ignorable": true,
+  "outputPrefix": "\u00039spotify\u000f"
 }

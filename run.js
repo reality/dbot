@@ -99,7 +99,12 @@ DBot.prototype.t = function(string, formatData) {
         }
 
         if(_.has(this.strings[string], lang)) {
+            var module = this.stringMap[string];
             formattedString = this.strings[string][lang].format(formatData);
+            if(this.config[module].outputPrefix) {
+                formattedString = '[' + this.config[module].outputPrefix + '] ' +
+                    formattedString;
+            }
         }
     }
     
@@ -131,6 +136,10 @@ DBot.prototype.reloadModules = function() {
     this.modules = {};
     this.commands = {};
     this.api = {};
+<<<<<<< HEAD
+=======
+    this.stringMap = {};
+>>>>>>> 36d40f65a309f6911bae95bf0428d332c32a496a
     this.usage = {};
     
     try {
@@ -212,6 +221,7 @@ DBot.prototype.reloadModules = function() {
         }
     }
 
+<<<<<<< HEAD
     process.nextTick(function() {
         _.each(moduleNames, function(name) {
             try {
@@ -225,6 +235,21 @@ DBot.prototype.reloadModules = function() {
                 console.log('Error loading module: ' + err + ' ' + stack);
                 return;
             }
+=======
+            // Load string data for the module
+            _.each([ 'usage', 'strings' ], function(property) {
+                var propertyData = {};
+                try {
+                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
+                } catch(err) {};
+                _.extend(this[property], propertyData);
+                if(property == 'strings') {
+                    _.each(_.keys(propertyData), function(string) {
+                        this.stringMap[string] = name;
+                    }.bind(this));
+                }
+            }, this);
+>>>>>>> 36d40f65a309f6911bae95bf0428d332c32a496a
 
             module.name = name;
             module.db = this.ddb.databanks[name];
