@@ -79,8 +79,14 @@ the specified place.
 
 ### Events
 
-#### nick_changed(server, newNick)
-This is executed when a new alias is added for a user.
+#### new_user(user)
+This is executed when a new user is added to the known users DB.
 
-#### new_user(server, nick)
-This is executed when a new primary user is added to the known users DB.
+#### new_user_alias(user, newNick)
+When a new user alias is added.
+
+#### new_channel(channel)
+Executed when DBot creates a new channel object.
+
+#### new_channel_user(user, channel)
+Executed when DBot creates a new channel object.
