@@ -3,5 +3,8 @@
         "en": "might be NSFW",
         "na'vi": "kxawm ke wivìntxu evengur",
         "nl": "bevat mogelijk gevoelige beelden"
+    },
+    "imgurinfo": {
+        "en": "[{info}]"
     }
 }

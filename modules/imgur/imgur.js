@@ -111,7 +111,7 @@ var imgur = function(dbot) {
             if(matches[1]) { 
                 this.api.getImageInfo(matches[1], function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    if(info) event.reply('[' + info + ']');
+                    if(info) event.reply(dbot.t('imgurinfo', { 'info': info });
                 }.bind(this));
             }
         }.bind(this);
