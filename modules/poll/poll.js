@@ -15,8 +15,8 @@ var poll = function(dbot) {
     };
 
     this.onLoad = function() {
-        dbot.api.command.addHook('~setaliasparent', this.internalAPI.updatePollNicks);
-        dbot.api.command.addHook('~mergeusers', this.internalAPI.updatePollNicks);
+       // dbot.api.command.addHook('~setaliasparent', this.internalAPI.updatePollNicks);
+       // dbot.api.command.addHook('~mergeusers', this.internalAPI.updatePollNicks);
     }.bind(this);
 };
 

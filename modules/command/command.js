@@ -32,11 +32,6 @@ var command = function(dbot) {
                             try {
                                 var command = dbot.commands[commandName];
                                 var results = command.apply(dbot.modules[command.module], [event]);
-                                if(_.has(command, 'hooks') && results !== false) {
-                                    _.each(command['hooks'], function(hook) {
-                                        hook.apply(hook.module, _.values(results)); 
-                                    }, this);
-                                }
                             } catch(err) {
                                 if(dbot.config.debugMode == true) {
                                     var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
