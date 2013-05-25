@@ -50,6 +50,7 @@ var command = function(dbot) {
                                     });
                                 }
                             }
+                            dbot.api.event.emit('command', [ event ]);
                             dbot.save();
                         } else {
                             if(commandName !== '~') {

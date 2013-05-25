@@ -1,0 +1,7 @@
+{
+    "logChannel": {
+        "aberwiki": "#dbot"
+    },
+    "ignorable": false,
+    "dependencies": [ "event", "command" ]
+}

@@ -1,0 +1,5 @@
+{
+    "log_message": {
+        "en": "[{time}] {user}: {command}"
+    }
+}
