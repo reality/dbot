@@ -30,6 +30,37 @@ var imgur = function(dbot) {
             }
 
             return info;
+        }.bind(this),
+
+        'albumInfoString': function(albumData) {
+            var info = '';
+            if(albumData && _.has(albumData, 'data') && !_.isUndefined(albumData.data.id)) {
+                albumData = albumData.data;
+                if(albumData.title) {
+                    info += albumData.title + ' - ';
+                }
+                if(albumData.description) {
+                    info += albumData.description + ' is ';
+                }
+                info += 'an album with ' + albumData.images_count + ' images ';
+                info += 'and ' + albumData.views + ' views';
+                if(albumData.nsfw) {
+                    info += ' - NSFW';
+                }
+            }
+            return info;
+        }.bind(this),
+
+        'galleryInfoString': function(galData) {
+            var info = '';
+            if(galData && _.has(galData, 'data') && !_.isUndefined(galData.data.is_album)) {
+                if(galData.data.is_album === true) {
+                    info = this.internalAPI.albumInfoString(galData);
+                } else {
+                    info = this.internalAPI.infoString(galData);
+                }
+            }
+            return info;
         }.bind(this)
     };
 
@@ -87,6 +118,32 @@ var imgur = function(dbot) {
                 dbot.db.imgur.totalApiRequests += 1;
                 callback(body);
             }.bind(this));
+        },
+
+        'getAlbumInfo': function(slug, callback) {
+            request.get({
+                'url': 'https://api.imgur.com/3/album/' + slug + '.json',
+                'json': true,
+                'headers': {
+                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                }
+            }, function(err, response, body) {
+                this.db.totalApiRequests += 1;
+                callback(body);
+            }.bind(this));
+        },
+
+        'getGalleryInfo': function(slug, callback) {
+            request.get({
+                'url': 'https://api.imgur.com/3/gallery/' + slug + '.json',
+                'json': true,
+                'headers': {
+                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                }
+            }, function(err, response, body) {
+                this.db.totalApiRequests += 1;
+                callback(body);
+            }.bind(this));
         }
     };
     this.api['getRandomImage'].external = true;
@@ -107,15 +164,35 @@ var imgur = function(dbot) {
 
     this.onLoad = function() {
         var imgurHandler = function(event, matches, name) {
-            if(matches[1]) { 
-                this.api.getImageInfo(matches[1], function(imgData) {
-                    var info = this.internalAPI.infoString(imgData);
+            if(matches[1]) {
+                var dataCallback = function(data) {
+                    var info;
+                    if(name == 'imgurimage') { 
+                        info = this.internalAPI.infoString(data);
+                    } else if(name == 'imguralbum') {
+                        info = this.internalAPI.albumInfoString(data);
+                    } else if(name == 'imgurgallery') {
+                        info = this.internalAPI.galleryInfoString(data);
+                    }
+
                     if(info) event.reply(dbot.t('imgurinfo', { 'info': info }));
-                }.bind(this));
+                }.bind(this);
+
+                if(name == 'imgurimage') { 
+                    this.api.getImageInfo(matches[1], dataCallback);
+                } else if(name == 'imguralbum') {
+                    this.api.getAlbumInfo(matches[1], dataCallback);
+                } else if(name == 'imgurgallery') {
+                    this.api.getGalleryInfo(matches[1], dataCallback);
+                }
             }
         }.bind(this);
-        dbot.api.link.addHandler(this.name, /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
-        dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
+
+        dbot.api.link.addHandler('imguralbum', /https?:\/\/imgur\.com\/a\/([a-zA-Z0-9]+)/, imgurHandler);
+        dbot.api.link.addHandler('imgurgallery', /https?:\/\/imgur\.com\/gallery\/([a-zA-Z0-9]+)/, imgurHandler);
+        dbot.api.link.addHandler('imgurimage', /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
+        dbot.api.link.addHandler('imgurimage', /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
+
         if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
         if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
         if(!_.has(dbot.db.imgur, 'totalImages')) dbot.db.imgur.totalImages = 0;

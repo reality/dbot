@@ -101,7 +101,7 @@ DBot.prototype.t = function(string, formatData) {
         if(_.has(this.strings[string], lang)) {
             var module = this.stringMap[string];
             formattedString = this.strings[string][lang].format(formatData);
-            if(this.config[module].outputPrefix) {
+            if(this.config[module] && this.config[module].outputPrefix) {
                 formattedString = '[' + this.config[module].outputPrefix + '] ' +
                     formattedString;
             }
