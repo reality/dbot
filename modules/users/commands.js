@@ -98,7 +98,7 @@ var commands = function(dbot) {
                         if(secondaryUser) {
                             user.aliases.push(oldUser.primaryNick);
                             user.aliases.concat(oldUser.aliases);
-                            this.internalAPI.mergeChannelUsers(event.server, oldUser, primaryUser);
+                            this.internalAPI.mergeChannelUsers(event.server, oldUser, user);
                             this.db.del('users', oldUser.id, function(err) {
                                 if(!err) {
                                     this.db.save('users', user.id, user, function(err) {
@@ -108,10 +108,11 @@ var commands = function(dbot) {
                                                 'old_user': secondaryUser,
                                                 'new_user': primaryUser
                                             }));
-                                            dbot.api.event.emit('~mergeusers', {
-                                                'server': event.server,
-                                                'secondary': secondaryUser
-                                            });
+                                            dbot.api.event.emit('~mergeusers', [
+                                                event.server,
+                                                oldUser,
+                                                user
+                                            ]);
                                         }
                                     }.bind(this));
                                 }

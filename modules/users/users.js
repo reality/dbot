@@ -84,9 +84,9 @@ var users = function(dbot) {
                             // QQ
                         }
                     });
-                });
+                }.bind(this));
             }, this);
-        }
+        }.bind(this)
     };
 
     this.listener = function(event) {
