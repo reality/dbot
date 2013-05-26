@@ -11,18 +11,11 @@ given I started it rather a long time after I began development of the project.
 Please don't judge me too harshly for this as I am, in fact, mildly allergic to
 writing documentation.
 
-Requirements: 
+## Getting Started
 
-- Node JS
-- [JSBot](http://github.com/reality/JSBot "JSBot"), a Javascript library which
-  handles the IRC protocol
-- Underscore JS library
-- Various modules have their own requirements also.
+You can install DBot's dependencies, configure and run the bot for the first
+time with the following command:
 
-### External Modules
-
-JSBot and externally developed modules can be imported by running the following 
-commands in the cloned repository:
-	
-	git submodule init
-	git submodule update
+```
+sh install.sh
+```
