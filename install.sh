@@ -14,7 +14,7 @@ then
     exit 1
 fi
 
-npm install underscore request sandbox express moment jade@0.25
+npm install node-uuid underscore request sandbox express moment jade databank databank-redis ent
 
 cd public/
 wget http://twitter.github.com/bootstrap/assets/bootstrap.zip
