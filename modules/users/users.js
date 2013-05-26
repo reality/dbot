@@ -67,7 +67,26 @@ var users = function(dbot) {
                     // QQ
                 }
             });
-        }.bind(this)
+        }.bind(this),
+
+        'mergeChannelUsers': function(server, oldUser, newUser) {
+            newUser.channels = _.union(oldUser.channels, newUser.channels);
+            _.each(newUser.channels, function(name) {
+                this.api.getChannel(server, name, function(channel) {
+                    if(_.include(channel.users, oldUser.id)) {
+                        channel.users = _.without(channel.users, oldUser.id);
+                    }
+                    if(!_.include(channel.users, newUser.id)) {
+                        channel.users.push(newUser.id);
+                    }
+                    this.db.save('channel_users', channel.id, channel, function(err) {
+                        if(err) {
+                            // QQ
+                        }
+                    });
+                });
+            }, this);
+        }
     };
 
     this.listener = function(event) {

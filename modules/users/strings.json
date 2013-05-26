@@ -20,7 +20,7 @@
         "nl": "{newParent} is nu de bovenliggende gebruiker, en {newAlias} is een alias."
     },
     "unprimary_error": {
-        "en": "One of those users isn't currently recorded as a primary user.",
+        "en": "{nick} isn't recorded as a primary user.",
         "na'vi": "fo sute txin ke lu.",
         "nl": "Een van deze gebruikers is nog niet bekend als een primaire gebruiker."
     },

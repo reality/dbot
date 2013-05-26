@@ -83,7 +83,7 @@ var commands = function(dbot) {
                         } 
                     });
                 } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimary }));
+                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimarj }));
                 }
             }.bind(this));
         },
@@ -94,15 +94,16 @@ var commands = function(dbot) {
 
             this.api.resolveUser(event.server, primaryUser, function(user) {
                 if(user) {
-                    this.api.resolveUser(event.server, secondaryUser, function(secondaryUser) {
+                    this.api.resolveUser(event.server, secondaryUser, function(oldUser) {
                         if(secondaryUser) {
-                            user.aliases.push(secondaryUser.primaryNick);
-                            user.aliases.concat(secondaryUser.aliases);
-                            this.db.del('users', secondaryUser.id, function(err) {
+                            user.aliases.push(oldUser.primaryNick);
+                            user.aliases.concat(oldUser.aliases);
+                            this.internalAPI.mergeChannelUsers(event.server, oldUser, primaryUser);
+                            this.db.del('users', oldUser.id, function(err) {
                                 if(!err) {
                                     this.db.save('users', user.id, user, function(err) {
                                         if(!err) {
-                                            this.updateChannels(event, secondaryUser, primaryUser);
+                                            this.internalAPI.mergeChannelUsers(event.server, secondaryUser, primaryUser);
                                             event.reply(dbot.t('merged_users', { 
                                                 'old_user': secondaryUser,
                                                 'new_user': primaryUser
@@ -116,11 +117,11 @@ var commands = function(dbot) {
                                 }
                             }.bind(this));
                         } else {
-                            event.reply(dbot.t('unprimary_error'));
+                            event.reply(dbot.t('unprimary_error', { 'nick': secondaryUser }));
                         }
                     }.bind(this));
                 } else {
-                    event.reply(dbot.t('unprimary_error'));
+                    event.reply(dbot.t('unprimary_error', { 'nick': primaryUser }));
                 }
             }.bind(this));
         }
