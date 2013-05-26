@@ -50,6 +50,18 @@ var imgur = function(dbot) {
                 }
             }
             return info;
+        }.bind(this),
+
+        'galleryInfoString': function(galData) {
+            var info = '';
+            if(galData && _.has(galData, 'data') && !_.isUndefined(galData.data.is_album)) {
+                if(galData.data.is_album === true) {
+                    info = this.internalAPI.albumInfoString(galData);
+                } else {
+                    info = this.internalAPI.infoString(galData);
+                }
+            }
+            return info;
         }.bind(this)
     };
 
@@ -120,6 +132,19 @@ var imgur = function(dbot) {
                 this.db.totalApiRequests += 1;
                 callback(body);
             }.bind(this));
+        },
+
+        'getGalleryInfo': function(slug, callback) {
+            request.get({
+                'url': 'https://api.imgur.com/3/gallery/' + slug + '.json',
+                'json': true,
+                'headers': {
+                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                }
+            }, function(err, response, body) {
+                this.db.totalApiRequests += 1;
+                callback(body);
+            }.bind(this));
         }
     };
     this.api['getRandomImage'].external = true;
@@ -140,7 +165,6 @@ var imgur = function(dbot) {
 
     this.onLoad = function() {
         var imgurImageHandler = function(event, matches, name) {
-            event.reply(matches[1]);
             if(matches[1]) { 
                 this.api.getImageInfo(matches[1], function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
@@ -156,8 +180,17 @@ var imgur = function(dbot) {
                 }.bind(this));
             }
         }.bind(this);
+        var imgurGalleryHandler = function(event, matches, name) {
+            if(matches[1]) {
+                this.api.getGalleryInfo(matches[1], function(galData) {
+                    var info = this.internalAPI.galleryInfoString(galData);
+                    if(info) event.reply(dbot.t('imgurinfo', { 'info': info }));
+                }.bind(this));
+            }
+        }.bind(this);
 
         dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/a\/([a-zA-Z0-9]+)/, imgurAlbumHandler);
+        dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/gallery\/([a-zA-Z0-9]+)/, imgurGalleryHandler);
         dbot.api.link.addHandler(this.name, /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurImageHandler);
         dbot.api.link.addHandler(this.name, /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurImageHandler);
 
