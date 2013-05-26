@@ -95,9 +95,9 @@ var commands = function(dbot) {
             this.api.resolveUser(event.server, primaryUser, function(user) {
                 if(user) {
                     this.api.resolveUser(event.server, secondaryUser, function(oldUser) {
-                        if(secondaryUser) {
+                        if(oldUser) {
                             user.aliases.push(oldUser.primaryNick);
-                            user.aliases.concat(oldUser.aliases);
+                            user.aliases = _.union(user.aliases, oldUser.aliases);
                             this.internalAPI.mergeChannelUsers(event.server, oldUser, user);
                             this.db.del('users', oldUser.id, function(err) {
                                 if(!err) {
