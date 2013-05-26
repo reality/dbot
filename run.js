@@ -186,7 +186,7 @@ DBot.prototype.reloadModules = function() {
                 defaultConfig = JSON.parse(defaultConfig);
             } catch(err) { // syntax error
                 this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
-                return;
+                continue;
             }
             config = _.defaults(config, defaultConfig);
         } catch(err) {
@@ -220,87 +220,89 @@ DBot.prototype.reloadModules = function() {
 
     process.nextTick(function() {
         _.each(moduleNames, function(name) {
-            try {
-                var moduleDir = './modules/' + name + '/';
-                var rawModule = require(moduleDir + name);
-                var module = rawModule.fetch(this);
-                this.rawModules.push(rawModule);
-            } catch(err) {
-                var stack = err.stack.split('\n')[2].trim();
-                this.status[name] = 'Error loading module: ' + err + ' ' + stack;
-                console.log('Error loading module: ' + err + ' ' + stack);
-                return;
-            }
-
-            module.name = name;
-            module.db = this.ddb.databanks[name];
-            module.config = this.config[name];
-
-            // Load the module data
-            _.each([ 'commands', 'pages', 'api' ], function(property) {
-                var propertyObj = {};
-
-                if(fs.existsSync(moduleDir + property + '.js')) {
-                    try {
-                        var propertyKey = require.resolve(moduleDir + property);
-                        if(propertyKey) delete require.cache[propertyKey];
-                        propertyObj = require(moduleDir + property).fetch(this);
-                    } catch(err) {
-                        this.status[name] = 'Error loading ' + propertyKey + 
-                            ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
-                        console.log('Module error (' + module.name + ') in ' + 
-                            property + ': ' + err);
-                    } 
-                }
-
-                if(!_.has(module, property)) module[property] = {};
-                _.extend(module[property], propertyObj);
-                _.each(module[property], function(item, itemName) {
-                    item.module = name; 
-                    if(_.has(module.config, property) && _.has(module.config[property], itemName)) {
-                        _.extend(item, module.config[property][itemName]);
-                    }
-                    module[property][itemName] = _.bind(item, module);
-                    _.extend(module[property][itemName], item);
-                }, this);
-
-                if(property == 'api') {
-                    this[property][name] = module[property];
-                } else {
-                    _.extend(this[property], module[property]);
-                }
-            }, this);
-
-            // Load the module listener
-            if(module.listener) {
-                if(!_.isArray(module.on)) {
-                    module.on = [ module.on ];
-                }
-                _.each(module.on, function(on) {
-                    this.instance.addListener(on, module.name, module.listener);
-                }, this);
-            }
-
-            // Load string data for the module
-            _.each([ 'usage', 'strings' ], function(property) {
-                var propertyData = {};
+            if(this.status[name] === true) {
                 try {
-                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
-                } catch(err) {};
-                _.extend(this[property], propertyData);
-                if(property == 'strings') {
-                    _.each(_.keys(propertyData), function(string) {
-                        this.stringMap[string] = name;
-                    }.bind(this));
+                    var moduleDir = './modules/' + name + '/';
+                    var rawModule = require(moduleDir + name);
+                    var module = rawModule.fetch(this);
+                    this.rawModules.push(rawModule);
+                } catch(err) {
+                    var stack = err.stack.split('\n')[2].trim();
+                    this.status[name] = 'Error loading module: ' + err + ' ' + stack;
+                    console.log('Error loading module: ' + err + ' ' + stack);
+                    return;
                 }
-            }, this);
 
-            // Provide toString for module name
-            module.toString = function() {
-                return this.name;
+                module.name = name;
+                module.db = this.ddb.databanks[name];
+                module.config = this.config[name];
+
+                // Load the module data
+                _.each([ 'commands', 'pages', 'api' ], function(property) {
+                    var propertyObj = {};
+
+                    if(fs.existsSync(moduleDir + property + '.js')) {
+                        try {
+                            var propertyKey = require.resolve(moduleDir + property);
+                            if(propertyKey) delete require.cache[propertyKey];
+                            propertyObj = require(moduleDir + property).fetch(this);
+                        } catch(err) {
+                            this.status[name] = 'Error loading ' + propertyKey + 
+                                ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
+                            console.log('Module error (' + module.name + ') in ' + 
+                                property + ': ' + err);
+                        } 
+                    }
+
+                    if(!_.has(module, property)) module[property] = {};
+                    _.extend(module[property], propertyObj);
+                    _.each(module[property], function(item, itemName) {
+                        item.module = name; 
+                        if(_.has(module.config, property) && _.has(module.config[property], itemName)) {
+                            _.extend(item, module.config[property][itemName]);
+                        }
+                        module[property][itemName] = _.bind(item, module);
+                        _.extend(module[property][itemName], item);
+                    }, this);
+
+                    if(property == 'api') {
+                        this[property][name] = module[property];
+                    } else {
+                        _.extend(this[property], module[property]);
+                    }
+                }, this);
+
+                // Load the module listener
+                if(module.listener) {
+                    if(!_.isArray(module.on)) {
+                        module.on = [ module.on ];
+                    }
+                    _.each(module.on, function(on) {
+                        this.instance.addListener(on, module.name, module.listener);
+                    }, this);
+                }
+
+                // Load string data for the module
+                _.each([ 'usage', 'strings' ], function(property) {
+                    var propertyData = {};
+                    try {
+                        propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
+                    } catch(err) {};
+                    _.extend(this[property], propertyData);
+                    if(property == 'strings') {
+                        _.each(_.keys(propertyData), function(string) {
+                            this.stringMap[string] = name;
+                        }.bind(this));
+                    }
+                }, this);
+
+                // Provide toString for module name
+                module.toString = function() {
+                    return this.name;
+                }
+
+                this.modules[module.name] = module;
             }
-
-            this.modules[module.name] = module;
         }.bind(this));
     }.bind(this));
 
