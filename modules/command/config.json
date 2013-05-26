@@ -1,5 +1,6 @@
 {
     "ignorable": false,
     "dependencies": [ "event", "ignore", "users" ],
-    "useNickserv": false
+    "useNickserv": false,
+    "accessOutput": false
 }

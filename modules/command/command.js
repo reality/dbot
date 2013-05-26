@@ -25,9 +25,11 @@ var command = function(dbot) {
                 dbot.api.ignore.isUserBanned(event.server, event.user, commandName, function(isBanned) {
                     if(isBanned) {
                         event.reply(dbot.t('command_ban', {'user': event.user})); 
-                    } else if(!isIgnoring && 
-                            hasAccess && 
-                            dbot.commands[commandName].disabled !== true) {
+                    } else if(!hasAccess) {
+                        if(this.config.accessOutput) {
+                            event.reply(dbot.t('access_denied', { 'user': event.user }));
+                        }
+                    } else if(!isIgnoring && !dbot.commands[commandName].disabled) {
                         if(this.api.applyRegex(commandName, event)) {
                             try {
                                 var command = dbot.commands[commandName];
@@ -45,7 +47,7 @@ var command = function(dbot) {
                                     });
                                 }
                             }
-                            if(commandName != 'reload') dbot.api.event.emit('command', [ event ]);
+                            if(_.include(commandName, ['reload', 'load', 'unload'])) dbot.api.event.emit('command', [ event ]);
                             dbot.save();
                         } else {
                             if(commandName !== '~') {

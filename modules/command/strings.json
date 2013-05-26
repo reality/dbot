@@ -36,5 +36,8 @@
     "loaded_modules": {
         "en": "Loaded modules: {modules}.",
         "nl": "Geladen modules: {modules}."
+    },
+    "access_denied": {
+        "en": "{user}: You don't have the access level to run this command."
     }
 }
