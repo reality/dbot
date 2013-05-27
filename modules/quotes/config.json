@@ -3,5 +3,6 @@
     "dependencies": [ "users", "event" ],
     "rmLimit": 10,
     "ignorable": true,
-    "quotesOnJoin": false
+    "quotesOnJoin": false,
+    "udFallback": false
 }
