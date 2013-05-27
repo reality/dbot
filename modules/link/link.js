@@ -40,6 +40,23 @@ var link = function(dbot) {
                     page.abort();
                 }
             });
+        },
+
+        'udLookup': function(query, callback) {
+            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + 
+                    encodeURI(query); 
+
+            request(reqUrl, function(error, response, body) {
+                try {
+                    var result = JSON.parse(body);
+                    if(_.has(result, 'result_type') && result.result_type != 'no_results') {
+                        callback(result.list[0].word, result.list[0].definition.split('\n')[0]);
+                    } else {
+                        callback(false);
+                    }
+                } catch(err) { callback(false); }
+            });
+
         }
     };
                 
@@ -92,17 +109,13 @@ var link = function(dbot) {
         
         '~ud': function(event) {
             var query = event.input[1];
-            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + encodeURI(query); 
 
-            request(reqUrl, function(error, response, body) {
-                try {
-                    var result = JSON.parse(body);
-                    if(_.has(result, 'result_type') && result.result_type != 'no_results') {
-                        event.reply(result.list[0].word + ': ' + result.list[0].definition.split('\n')[0]);
-                    } else {
-                        event.reply(event.user + ': No definition found.');
-                    }
-                } catch(err) { }
+            this.api.udLookup(query, function(word, definition) {
+                if(word) {
+                    event.reply(word + ': ' + definition);
+                } else {
+                    event.reply(event.user + ': No definition found.');
+                }
             });
         }
     };
