@@ -157,7 +157,7 @@
     },
     "web_not_configured": {
         "en": "Cannot link to category. Web module is either not loaded or misconfigured.",
-        "cy": "Ni all gysylltu â gategori. Modiwl we yn naill ai nid lwytho neu wedi ei camffurfweddu."
+        "cy": "Ni all gysylltu â gategori. Modiwl we yn naill ai nid lwytho neu wedi ei camffurfweddu.",
         "nl": "De categorie kan niet gelinkt worden. De web module is niet geladen of onjuist geconfigureerd."
     }
 }
