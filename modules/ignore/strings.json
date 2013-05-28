@@ -31,7 +31,7 @@
         "en": "{user}: Usage: ~unignore [module]. Modules you are currently ignoring: {modules}.",
         "es": "{user}: Modo de empleo: ~unignore [módulo]. Módulos que ignoras ahora mismo: {modules}.",
         "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}.",
-        "cy": "{user}: Defnydd ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}",
+        "cy": "{user}: Defnydd: ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}",
         "nl": "{user}: Gebruik: ~unignore [module]. Modules die momenteel worden genegeerd: {modules}."
     },
     "invalid_unignore": {
@@ -50,55 +50,67 @@
     },
     "ban_usage": {
         "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands.",
+        "cy": "{user}: Defnydd: ~ban [defnyddiwr] [modiwl/gorchymyn]. Defnyddio * am pob modiwlau a gorchmynion."
         "nl": "{user}: Gebruik: ~ban [gebruiker] [module/commando]. Gebruik * voor alle modules en alle commandos."
     },
     "already_banned": {
         "en": "{user}: {banned} is already banned from that module.",
+        "cy": "{user}: {banned} eisoes wedi ei wahardd o'r modiwl.",
         "nl": "{user}: {banned} is al geband van deze module."
     },
     "banned_success": {
         "en": "{user}: {banned} is now banned from {module}.",
+        "cy": "{user}: {banned} ei wahardd yn awr am {module}.",
         "nl": "{user}: {banned} mag {module} nu niet meer gebruiken."
     },
     "invalid_ban": {
         "en": "{user}: That isn't a valid module name.",
+        "cy": "{user}: Nid oedd hwna'n modiwl dilys",
         "nl": "{user}: Dat is geen geldige modulenaam."
     },
     "unban_usage": {
         "en": "{user}: Usage: ~unban [user] [module].",
+        "cy": "{user}: Defnydd: ~unban [defnyddiwr] [modiwl].",
         "nl": "{user}: Gebruik: ~unban [gebruiker] [module]."
     },
     "invalid_unban": {
         "en": "{user}: {banned} is not banned from that module or it doesn't exist.",
+        "cy": "{user}: Nid oedd {banned} wedi ei wahardd o'r modiwl, neu nid yw'n bodoli.",
         "nl": "{user}: {banned} is niet geband van die module of de module bestaat niet."
     },
     "unbanned_success": {
         "en": "{user}: {banned} is no longer banned from {module}.",
+        "cy": "{user}: Nid yw {banned} yn cael ei wahardd mwyach.",
         "nl": "{user}: {banned} mag {module} weer gebruiken."
     },
     "ignoring_channel": {
         "en": "Now ignoring {module} in {channel}.",
         "na'vi": "Oe ke stayawm {module}ur mì {channel}",
+        "cy": "Bellach yn anwybyddu {module} yn {channel}.",
         "nl": "{module} wordt nu genegeerd in {channel}."
     },
     "already_ignoring_channel": {
         "en": "Already ignoring {module} in {channel}.",
         "na'vi": "Oe ke stayawm {module}ur mì {channel} li",
+        "cy": "Eisoes anwybyddu {module} yn {channel}",
         "nl": "{module} wordt al genegeerd in {channel}."
     },
     "module_not_exist": {
         "en": "{module} isn't loaded or doesn't exist.",
         "na'vi": "Oel ke omum teri {module}it fu {module} ke fkeytok",
+        "cy": "Dydy {module} ddim yn lwythodd, neu ddim yn bodoli.",
         "nl": "{module} is niet geladen of bestaat niet."
     },
     "unignoring_channel": {
         "en": "No longer ignoring {module} in {channel}.",
         "na'vi": "Oel stayawm {module}ur mì {channel} set.",
+        "cy": "Nid anwybyddu {module} yn {channel} mwyach.",
         "nl": "{module} wordt niet meer genegeerd in {channel}."
     },
     "not_ignoring_channel": {
         "en": "{module} wasn't being ignored in {channel}.",
         "na'vi": "Oel stayawm {module}ur mì {channel} li.",
+        "cy": "Nid yw {module} yn cael ei anwybyddu yn {channel}.",
         "nl": "{module} werd niet genegeerd in {channel}."
     }
 }
