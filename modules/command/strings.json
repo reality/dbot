@@ -16,25 +16,30 @@
     "usage": {
         "en": "Usage for {command}: {usage}.",
         "na'vi": "Nga tsun sivar ìlä {command}: {usage}.",
+        "cy": "Defnydd o {command}: {usage}.",
         "nl": "{command} wordt op de volgende manier gebruikt: {usage}."
     },
     "no_usage_info": {
         "en": "No usage information found for {command}.",
         "na'vi": "Oel ke tsun sivar {comamnd}it",
+        "cy": "Ni chanfuwyd gwybodaeth am ddefnydd o {command}",
         "nl": "Geen gebruiksinformatie gevonden voor {command}."
     },
     "help_link": {
         "en": "Help for {module}: {link}",
         "na'vi": "{module}ä srungìl {link} it tok",
+        "cy": "Cymorth am {module}: {link}",
         "nl": "Hulp voor {module}: {link}"
     },
     "no_help": {
         "en": "No help found for {module}.",
         "na'vi": "Fì{module}ìri oel ke tsun run srungit",
+        "cy": "Ni chanfuwyd cymorth am {module}",
         "nl": "Geen hulp gevonden voor {module}."
     },
     "loaded_modules": {
         "en": "Loaded modules: {modules}.",
+        "cy": "Modiwlau sy'n lwythodd: {modules}.",
         "nl": "Geladen modules: {modules}."
     }
 }
