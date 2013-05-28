@@ -196,6 +196,7 @@ var imgur = function(dbot) {
         if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
         if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
         if(!_.has(dbot.db.imgur, 'totalImages')) dbot.db.imgur.totalImages = 0;
+        this.db = dbot.db.imgur;
     }.bind(this);
 };
 
