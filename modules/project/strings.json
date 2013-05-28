@@ -4,21 +4,25 @@
             "de": "{name} spricht {lang} ({langen})",
             "fr": "{name} parle {lang} ({langen})",
             "it": "{name} parla {lang} ({langen})",
+            "cy": "{name} yn siarad {lang} ({langen})",
             "nl": "{name} spreekt {lang} ({langen})"
     },
     "thanks": {
         "en": "With thanks to:",
-        "fr": "Merci à:"
+        "fr": "Merci à:",
+        "cy": "Gyda diolch i:"
     },
     "credits": {
         "en": "Authors",
-        "fr": "Développeurs"
+        "fr": "Développeurs",
+        "cy": "Datblygwyr"
     },
     "pagetitle": {
         "en": "{botname} web interface",
         "fr": "{botname} interface réseau",
         "de": "{botname} Web-Interface",
-        "it": "{botname} interfaccia web"
+        "it": "{botname} interfaccia web",
+        "cy": "{botname} rhyngwyneb gwe"
     },
     "en": {
         "en": "English",
@@ -33,6 +37,7 @@
         "fr": "français",
         "de": "Französisch",
         "it": "francese",
+        "cy": "Ffrangeg",
         "nl": "Frans"
     },
     "de": {
@@ -40,6 +45,7 @@
         "fr": "allemande",
         "de": "Deutsch",
         "it": "tedesco",
+        "cy": "Almaeneg",
         "nl": "Duits"
     },
     "it": {
@@ -47,6 +53,7 @@
         "fr": "italien",
         "de": "Italiener",
         "it": "italiano",
+        "cy": "Eidaleg",
         "nl": "Italiaans"
     },
     "cy": {
@@ -71,11 +78,13 @@
         "fr": "espagnole",
         "de": "Spanisch",
         "it": "spagnolo",
+        "cy": "Sbaeneg",
         "nl": "Spaans",
         "es": "Español"
     },
     "nl": {
         "en": "Dutch",
+        "cy": "Iseldireg",
         "nl": "Nederlands"
     },
     "revnum": {
@@ -83,12 +92,14 @@
         "fr": "{name} est à révision {rev}",
         "de": "{name} ist in der Revision {rev}",
         "it": "{name} il numero di revisione {rev}",
+        "cy": "{name} ar diwygiad {rev}",
         "nl": "{name} is bij revisie {rev}"
     },
     "loadedmodules": {
         "en": "loaded modules",
         "fr": "modules chargés",
         "it": "moduli caricati",
+        "cy": "modiwlau sy'n lwytho",
         "nl": "geladen modules"
     },
     "configoptions": {
@@ -96,6 +107,7 @@
         "fr": "Configuration",
         "de": "Konfiguration",
         "it": "Configuazione",
+        "cy": "Cyfluniad",
         "nl": "Configuratie"
     },
     "debugmode-true": {
@@ -103,6 +115,7 @@
         "fr": "debug actif",
         "de": "Debug aktiv",
         "it": "debug attivo",
+        "cy": "Modd dadfygio gweithredol",
         "nl": "Debug actief"
     },
     "debugmode-false": {
@@ -110,17 +123,20 @@
         "fr": "debug éteint",
         "de": "Debug ausgeschaltet",
         "it": "debug spento",
+        "cy": "Modd dadfygio wedi'i ddiffodd",
         "nl": "Debug uitgeschakeld"
     },
     "milestones": {
         "en": "Milestones",
-        "fr": "étapes"
+        "fr": "étapes",
+        "cy": "Cerrig milltir"
     },
     "milestoneprog": {
         "en": "Progress",
         "fr": "Progression",
         "de": "Fortschritt",
         "it": "sviluppo",
+        "cy": "Cynnydd",
         "nl": "Voortgang"
     },
     "openmilestone": {
@@ -128,6 +144,7 @@
         "fr": "Ouvert",
         "de": "Offen",
         "it": "Aperto",
+        "cy": "Agor",
         "nl": "Open"
     },
     "closedmilestone": {
@@ -135,6 +152,7 @@
         "fr": "Fermé",
         "de": "Gesperrt",
         "it": "Chiuso",
+        "cy": "Ar Gau",
         "nl": "Gesloten"
     },
     "milestonename": {
@@ -142,6 +160,7 @@
         "fr": "Nom",
         "de": "Name",
         "it": "Nome",
+        "cy": "Enw",
         "nl": "Naam"
     },
     "development": {
@@ -149,25 +168,32 @@
         "fr": "Développement",
         "de": "Entwicklung",
         "it": "Sviluppo",
+        "cy": "Datblygu",
         "nl": "Ontwikkeling"
     },
     "dent-account": {
-        "en": "Submitting dents to @{username}"
+        "en": "Submitting dents to @{username}",
+        "cy": "Cyflwyno 'dents' i'w @{username}"
     },
     "dent-push": {
-        "en": "Pushing quotes to identi.ca"
+        "en": "Pushing quotes to identi.ca",
+        "cy": "Gwthio dyfyniadau i identi.ca"
     },
     "quote-rmlimit": {
-        "en": "Quote removal throttle set to {limit}"
+        "en": "Quote removal throttle set to {limit}",
+        "cy": "Trothwy ar dileu dyfyniadau gosod i {limit}"
     },
     "report-notifyvoice": {
-        "en": "Voiced users are being notified of reports"
+        "en": "Voiced users are being notified of reports",
+        "cy": "Defnyddwyr leisiwyd yn cael eu hysbysu o adroddiadau"
     },
     "web-port": {
-        "en": "Web is listening on {port}"
+        "en": "Web is listening on {port}",
+        "cy": "We yn gwrando ar {port}"
     },
     "propaganda": {
-        "en": "Contribute to the code on Github!"
+        "en": "Contribute to the code on Github!",
+        "cy": "Cyfrannu at ay cod ar Github!"
     },
     "branch": {
         "en": "{branch}"
@@ -178,35 +204,43 @@
         "es": "Control de versiones",
         "fr": "Festion de versions",
         "it": "Controllo versione",
+        "cy": "Rheoli fersiwn",
         "nl": "Versiebeheersysteem"
     },
     "langhead-current": {
         "en": "Current",
-        "fr": "Courant"
+        "fr": "Courant",
+        "cy": "Ar hyn o bryd"
     },
     "langhead-translations": {
         "en": "Completion",
-        "fr": "Achèvement"
+        "fr": "Achèvement",
+        "cy": "Cwblhad"
     },
     "translations": {
         "en": "Translations",
-        "fr": "Traductions"
+        "fr": "Traductions",
+        "cy": "Cyfieithiadau"
     },
     "langhead-progress": {
         "en": "Translation Progress",
-        "fr": "Avancement de la Traduction"
+        "fr": "Avancement de la Traduction",
+        "cy": "Cynnydd Cyfieithu"
     },
     "langhead-native": {
         "en": "Native",
-        "fr": "Natale"
+        "fr": "Natale",
+        "cy": "Brodorol"
     },
     "outstanding-pullreq": {
-        "en": "There are outstanding pull requests"
+        "en": "There are outstanding pull requests",
+        "cy": "Mae disgwyl ceisiadau tynnu"
     },
     "oaosidl": {
         "en": "The Official Aberystwyth Open Source International Development League"
     },
     "link-autotitle": {
-        "en": "Automatically titling links in channels"
+        "en": "Automatically titling links in channels",
+        "cy": "Teitlo awtomatig cysylltiadau mewn sianelau"
     }
 }

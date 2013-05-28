@@ -15,17 +15,22 @@
     },
     "ckicked": {
         "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
+        "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\""
     },
     "cbanned": {
-        "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}.\""
+        "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}.\"",
+        "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\""
     },
     "nbanned": {
-        "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\""
+        "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\"",
+        "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\""
     },
     "nban_quote": {
-        "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\""
+        "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\"",
+        "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\""
     },
     "quote_recorded": {
-        "en": "This has been recorded in ~ban_{user}."
+        "en": "This has been recorded in ~ban_{user}.",
+        "cy": "Mae hyn wedi cael ei gofnodi yn ~ban_{user}."
     }
 }
