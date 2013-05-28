@@ -2,6 +2,7 @@
     "title_not_found": {
         "en": "No page title found.",
         "na'vi": "Oel ke tsun run 'upxare atxin.",
+        "cy": "Ni chanfuwyd teitl y dudalen",
         "nl": "Er is geen paginatitel gevonden."
     },
     "xkcd": {
@@ -10,6 +11,7 @@
     "no-hits": {
         "en": "No hits.",
         "na'vi": "Oel ke tsun rivum ayuoti.",
+        "cy": "Dim canlyniadau.",
         "nl": "Geen resultaten."
     },
     "link": {
