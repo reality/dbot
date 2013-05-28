@@ -106,7 +106,7 @@
     },
     "status_good": {
         "en": "{module} status: Shit looks good",
-        "cy": "{module} statws: Cachu yn edrych yn dda",
+        "cy": "{module} statws: Cachu yn edrych yn dda"
     },
     "status_bad": {
         "en": "{module} status: Failed to load: {reason}",
