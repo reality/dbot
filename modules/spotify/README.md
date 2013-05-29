@@ -1,0 +1,2 @@
+#spotify
+dbot spotify module
