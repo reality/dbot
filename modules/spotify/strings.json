@@ -9,7 +9,7 @@
   },
   "track": {
     "en": "[track] {artist} – {track} (from {album})",
-    "cy": "[trac] {artist} - {track} (o'r albwm: {album})
+    "cy": "[trac] {artist} - {track} (o'r albwm: {album})"
   },
   "found": {
     "en": "[{url}] {artist} – {track} (from {album})",
