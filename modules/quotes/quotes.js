@@ -11,7 +11,7 @@ var quotes = function(dbot) {
     this.internalAPI = {
         // Retrieve a random quote from a given category, interpolating any quote
         // references (~~QUOTE CATEGORY~~) within it
-        'interpolatedQuote': function(server, channel, key, quoteTree) {
+        'interpolatedQuote': function(server, channel, user, key, quoteTree) {
             if(!_.isUndefined(quoteTree) && quoteTree.indexOf(key) != -1) { 
                 return ''; 
             } else if(_.isUndefined(quoteTree)) { 
@@ -31,10 +31,13 @@ var quotes = function(dbot) {
                     var randomNick = dbot.api.users.getRandomChannelUser(server, channel);
                     quoteString = quoteString.replace("~~" + cleanRef + "~~", randomNick);
                     quoteTree.pop();
+                } else if(cleanRef === '-user-') {
+                    quoteString = quoteString.replace("~~" + cleanRef + "~~", user);
+                    quoteTree.pop();
                 } else if(_.has(this.quotes, cleanRef)) {
                     quoteTree.push(key);
                     quoteString = quoteString.replace("~~" + cleanRef + "~~", 
-                            this.internalAPI.interpolatedQuote(server, channel, cleanRef, quoteTree.slice()));
+                            this.internalAPI.interpolatedQuote(server, channel, user, cleanRef, quoteTree.slice()));
                     quoteTree.pop();
                 }
             }
@@ -76,9 +79,9 @@ var quotes = function(dbot) {
 
             if(key.charAt(0) !== '_') { // lol
                 if(_.has(this.quotes, key)) {
-                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, key);
+                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, event.user, key);
                 } else if(_.has(this.quotes, altKey)) {
-                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, altKey);
+                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, event.user, altKey);
                 } else {
                     return false;
                 }
