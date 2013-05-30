@@ -174,8 +174,8 @@ var commands = function(dbot) {
         },
 
         '~qadd': function(event) {
-            var key = event.input[1].toLowerCase();
-            var text = event.input[2];
+            var key = event.input[1].toLowerCase().trim();
+            var text = event.input[2].trim();
             if(!_.isArray(quotes[key])) {
                 quotes[key] = [];
             } 
