@@ -198,7 +198,8 @@ var commands = function(dbot) {
         '~rq': function(event) {
             if(_.keys(quotes).length > 0) {
                 var category = _.keys(quotes)[_.random(0, _.size(quotes) -1)];
-                event.reply(category + ': ' + this.internalAPI.interpolatedQuote(event.server, event.channel.name, category));
+                event.reply(category + ': ' +
+                this.internalAPI.interpolatedQuote(event.server, event.channel.name, event.user, category));
             } else {
                 event.reply(dbot.t('no_results'));
             }
