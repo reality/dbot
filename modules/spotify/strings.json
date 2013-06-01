@@ -1,24 +1,29 @@
 {
   "artist": {
     "en": "[artist] {artist}",
-    "cy": "[cyfansoddwr] {artist}"
+    "cy": "[cyfansoddwr] {artist}",
+    "de": "[Interpret] {artist}"
   },
   "album": {
     "en": "[album] {artist} – {album}",
-    "cy": "[albwm] {artist} - {album}"
+    "cy": "[albwm] {artist} - {album}",
+    "de": "[Album] {artist} – {album}"
   },
   "track": {
     "en": "[track] {artist} – {track} (from {album})",
-    "cy": "[trac] {artist} - {track} (o'r albwm: {album})"
+    "cy": "[trac] {artist} - {track} (o'r albwm: {album})",
+    "de": "[Track] {artist} – {track} (aus dem Album {album})"
   },
   "found": {
     "en": "[{url}] {artist} – {track} (from {album})",
-    "cy": "[{url}] {artist} - {track} (o'r albwm: {album})"
+    "cy": "[{url}] {artist} - {track} (o'r albwm: {album})",
+    "de": "[{url}] {artist} – {track} (aus dem Album {album})"
   },
   "not-found": {
-    "en": "{No results.",
+    "en": "No results.",
     "na'vi": "{s}, Oel ke tsun rivum ayuoti.",
     "cy": "Dim canlyniadau.",
-    "nl": "Geen resultaten."
+    "nl": "Geen resultaten.",
+    "de": "Kein Ergebnis."
   }
 }

@@ -3,12 +3,14 @@
         "en": "Did you mean: ",
         "es": "¿Querías decir: ",
         "na'vi": "Srake sweylu nga pamrel sivi: ",
-        "cy": "A oeddech chi'n feddwl: "
+        "cy": "A oeddech chi'n feddwl: ",
+        "de": "Meintest du: "
     },
     "module_load_error": {
         "en": "Failed to load module: {moduleName}",
         "es": "No se pudó cargar el módulo: {moduleName}",
         "na'vi": "Oeru Oel {moduleName}it sung.",
-        "cy": "Wedi methu a llwytho modiwl: {moduleName}"
+        "cy": "Wedi methu a llwytho modiwl: {moduleName}",
+        "de": "Konnte {moduleName} nicht laden"
     }
 }

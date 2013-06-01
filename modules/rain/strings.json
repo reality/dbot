@@ -3,83 +3,97 @@
         "en" : "It's not raining in {place}.",
         "na'vi": "tompa ke zup {place}ur.",
         "cy": "Dyw hi ddim yn bwrw glaw yn {place}.",
-        "nl": "Het regent niet in {place}."
+        "nl": "Het regent niet in {place}.",
+        "de": "Es ist trocken in {place}."
     },
     "rain-1": {
         "en" : "It's raining in {place}.",
         "na'vi":"tompa zup {place}ur.",
         "cy": "Mae'n bwrw glaw yn {place}.",
-        "nl": "Het regent in {place}."
+        "nl": "Het regent in {place}.",
+        "de": "Es regnet in {place}."
     },
     "rain-2": {
         "en" : "It's raining rather a lot in {place}.",
         "na'vi":"tompa zup {place}ur nìhawng.",
         "cy": "Mae'n bwrw glaw cryn dipyn yn {place}.",
-        "nl": "Het regent tamelijk hard in {place}."
+        "nl": "Het regent tamelijk hard in {place}.",
+        "de": "Es regnet relativ viel in {place}."
     },
     "rain-3": { 
         "en" : "It's raining shitloads.",
         "na'vi":"tompa zup {place}ur nìhawng.",
         "cy": "Mae'n bwrw glaw yn uffern o lawer yn {place}.",
-        "nl": "Het regent nu toch wel erg hard."
+        "nl": "Het regent nu toch wel erg hard.",
+        "de": "Es regnet stark."
     },
     "rain-4": {
         "en" : "It's raining fucktons.",
         "na'vi": "tompa zup {place}ur nìhawng.",
         "cy": "Mae'n bwrw glaw yn drwm iawn yn {place}.",
-        "nl": "De regen komt verdorie met bakken uit de lucht."
+        "nl": "De regen komt verdorie met bakken uit de lucht.",
+        "de": "Es regnet extrem stark."
     },
     "rain-5": { 
         "en" : "It's raining whales (in {place})!",
         "na'vi": "payoang zup {place}ur",
         "cy": "Mae'n bwrw glaw cathod a chŵn yn {place}.",
-        "nl": "Een punker krijgt z'n hanekam niet meer omhoog gehouden."
+        "nl": "Een punker krijgt z'n hanekam niet meer omhoog gehouden.",
+        "de": "Es regnet unglaublich stark (in {place})!"
     },
     "rain-6": { 
         "en" : "IT'S SO FUCKING WET OUT HERE MAN",
         "na'vi" : "pey lu oeru nìhawng taluna tok fìtengeti",
         "cy": "MAE'N WIR GWLYB TU ALLAN.",
-        "nl": "Dit is dus een inloopdouche."
+        "nl": "Dit is dus een inloopdouche.",
+        "de": "ES IST SO VERDAMMT NASS HIER MANN."
     },
     "rain-7": { 
         "en" : "I AM SO MOIST RIGHT NOW",
         "na'vi":"pey lu oeru nìhawng taluna tok fìtengeti",
         "cy": "RYDW I'N LLAITH IAWN AR HYN O BRYD",
-        "nl": "IK VOEL ME NU TOCH ANDERS WEL BEHOORLIJK ONDER GEZEKEN."
+        "nl": "IK VOEL ME NU TOCH ANDERS WEL BEHOORLIJK ONDER GEZEKEN.",
+        "de": "ICH BIN SO EINGENÄSST."
     },
     "rain-8": {
         "en" : "You used a #3 pencil instead of #2, didn't you?",
         "na'vi": "Nga pamrel sami hu pencìl a#3 ulte ke pamrel sami pencìl a#2 kefyak?",
         "cy": "Rydych yn defnyddio #2 pensil yn hytrach na #3 pensil, ie?",
-        "nl": "PROOST."
+        "nl": "PROOST.",
+        "de": "Jemand muss dich hassen"
     },
     "rain-9": { 
         "en" : "WELCOME TO ATLANTIS",
         "na'vi": "ziva'u nìprrte atlantisftu.",
         "cy": "CROESO I ATLANTIS!",
-        "nl": "HAD IK GEVRAAGD OM EEN OMMETJE ATLANTIS?!"
+        "nl": "HAD IK GEVRAAGD OM EEN OMMETJE ATLANTIS?!",
+        "de": "WILLKOMMEN IN ATLANTIS"
     },
     "rain-10": { 
         "en" : "GET INSIDE",
         "na'vi": "Sweylu txo nga livatam futa ngal fìtsengeti tok",
-        "nl": "SCHUIL, BITCH! SCHUIL!"
+        "nl": "SCHUIL, BITCH! SCHUIL!",
+        "de": "REIN MIT DIR"
     },
     "rain-11": {
         "en" : "LOL U PROBABLY DIED",
         "na'vi": "hrh kxawm nga tolerkup.",
         "cy": "EWCH I MEWN",
-        "nl": "HA, NU BEN JE TOCH ZEKER VERZOPEN?!"
+        "nl": "HA, NU BEN JE TOCH ZEKER VERZOPEN?!",
+        "de": "LOL DU MIST VERMUTLICH TOT"
     },
     "rain-e": {
         "en" : "Unable to fetch weather data.",
         "na'vi":"Oel ke tsun rivum sänumeti teriyafkeyk.",
         "cy": "Nid gallu nôl data tywydd.",
-        "nl": "Geen weerinformatie beschikbaar."
+        "nl": "Geen weerinformatie beschikbaar.",
+        "de": "Keine Wetterdaten vorhanden."
     },
     "rain-u": {
         "en": "Location too ambiguous to process.",
         "na'vi":"tsengeri, yayayr lu oeru.",
         "cy": "Lleoliad yn rhy amwys i brosesu.",
-        "nl": "Deze locatie is te onduidelijk."
+        "nl": "Deze locatie is te onduidelijk.",
+        "de": "Wähle den nächst größeren Ort."
     }
 }
