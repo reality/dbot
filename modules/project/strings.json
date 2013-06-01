@@ -10,12 +10,14 @@
     "thanks": {
         "en": "With thanks to:",
         "fr": "Merci à:",
-        "cy": "Gyda diolch i:"
+        "cy": "Gyda diolch i:",
+        "de": "Dankeschön geht an:"
     },
     "credits": {
         "en": "Authors",
         "fr": "Développeurs",
-        "cy": "Datblygwyr"
+        "cy": "Datblygwyr",
+        "de": "Urheber"
     },
     "pagetitle": {
         "en": "{botname} web interface",
@@ -100,7 +102,8 @@
         "fr": "modules chargés",
         "it": "moduli caricati",
         "cy": "modiwlau sy'n lwytho",
-        "nl": "geladen modules"
+        "nl": "geladen modules",
+        "de": "Module geladen"
     },
     "configoptions": {
         "en": "Configuration",
@@ -113,7 +116,7 @@
     "debugmode-true": {
         "en": "Debug mode active",
         "fr": "debug actif",
-        "de": "Debug aktiv",
+        "de": "Debug-Modus aktiviert",
         "it": "debug attivo",
         "cy": "Modd dadfygio gweithredol",
         "nl": "Debug actief"
@@ -121,7 +124,7 @@
     "debugmode-false": {
         "en": "Debug off",
         "fr": "debug éteint",
-        "de": "Debug ausgeschaltet",
+        "de": "Debug-Modus ausgeschaltet",
         "it": "debug spento",
         "cy": "Modd dadfygio wedi'i ddiffodd",
         "nl": "Debug uitgeschakeld"
@@ -129,7 +132,8 @@
     "milestones": {
         "en": "Milestones",
         "fr": "étapes",
-        "cy": "Cerrig milltir"
+        "cy": "Cerrig milltir",
+        "de": "Zwischenziel"
     },
     "milestoneprog": {
         "en": "Progress",
@@ -210,7 +214,8 @@
     "langhead-current": {
         "en": "Current",
         "fr": "Courant",
-        "cy": "Ar hyn o bryd"
+        "cy": "Ar hyn o bryd",
+        "de": "Jetzige"
     },
     "langhead-translations": {
         "en": "Completion",
@@ -220,12 +225,14 @@
     "translations": {
         "en": "Translations",
         "fr": "Traductions",
-        "cy": "Cyfieithiadau"
+        "cy": "Cyfieithiadau",
+        "de": "Übersetzungen"
     },
     "langhead-progress": {
         "en": "Translation Progress",
         "fr": "Avancement de la Traduction",
-        "cy": "Cynnydd Cyfieithu"
+        "cy": "Cynnydd Cyfieithu",
+        "de": "Übersetzungsfortschritt"
     },
     "langhead-native": {
         "en": "Native",

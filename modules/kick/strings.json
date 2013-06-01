@@ -4,33 +4,40 @@
         "es": "Se ha expulsado {user} {kicks} veces y {user} ha expulsado personas {kicked} veces.",
         "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan.",
         "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith.",
-        "nl": "{user} is {kicks} keer gekickt en heeft anderen {kicked} keer gekickt."
+        "nl": "{user} is {kicks} keer gekickt en heeft anderen {kicked} keer gekickt.",
+        "de": "{user} wurde {kicks} mal gekickt und hat {kicked} mal andere Benutzer gekickt."
     },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
         "es": "No expulsás {botname}",
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
         "cy": "Ni ddylech cicio {botname}",
-        "nl": "Gij zult {botname} niet kicken"
+        "nl": "Gij zult {botname} niet kicken",
+        "de": "Du sollst {botname} nicht kicken"
     },
     "ckicked": {
         "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
-        "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\""
+        "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
+        "de": "Achtung: {kicker} hat {kickee} von {channel} verwiesen. Grund: \"{reason}.\""
     },
     "cbanned": {
         "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}.\"",
-        "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\""
+        "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
+        "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}.\""
     },
     "nbanned": {
         "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\"",
-        "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\""
+        "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\"",
+        "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}.\""
     },
     "nban_quote": {
         "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\"",
-        "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\""
+        "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\"",
+        "de": "{banee} wurde von {banner} auf dem gesamten Netzwerk um {time} gebannt. Grund: \"{reason}.\""
     },
     "quote_recorded": {
         "en": "This has been recorded in ~ban_{user}.",
-        "cy": "Mae hyn wedi cael ei gofnodi yn ~ban_{user}."
+        "cy": "Mae hyn wedi cael ei gofnodi yn ~ban_{user}.",
+        "de": "Dies wurde in ~ban_{user} aufgenommen."
     }
 }

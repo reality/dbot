@@ -3,7 +3,8 @@
         "en": "No page title found.",
         "na'vi": "Oel ke tsun run 'upxare atxin.",
         "cy": "Ni chanfuwyd teitl y dudalen",
-        "nl": "Er is geen paginatitel gevonden."
+        "nl": "Er is geen paginatitel gevonden.",
+        "de": "Kein Seitenname gefunden."
     },
     "xkcd": {
         "en": "xkcd {num}: {title} https://xkcd.com/{num}"
@@ -12,7 +13,8 @@
         "en": "No hits.",
         "na'vi": "Oel ke tsun rivum ayuoti.",
         "cy": "Dim canlyniadau.",
-        "nl": "Geen resultaten."
+        "nl": "Geen resultaten.",
+        "de": "Keine Treffer."
     },
     "link": {
         "en": "{link}"
