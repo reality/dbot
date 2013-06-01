@@ -19,12 +19,9 @@ html(lang='#{curr839}')
             h2 #{development} 
             p#pullreq
               a(href="https://github.com/"+repo+"/pulls") #{pullreqs}
-            p#revnum
-              #{revnum}
-            pre#gitdiff
-              #{diff}
-            p#branch
-              #{branch}
+            p#revnum #{revnum}
+            pre#gitdiff #{diff}
+            p#branch #{branch}
             h3 #{milestonehead} 
             table#milestones.center
               tr
