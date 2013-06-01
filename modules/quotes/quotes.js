@@ -9,6 +9,7 @@ var quotes = function(dbot) {
     this.rmTimer;
 
     this.internalAPI = {
+<<<<<<< HEAD
         // Parse quote interpolations
         'interpolatedQuote': function(server, channel, key, quote, callback) {
             var quoteRefs = quote.match(/~~([\d\w\s-]*)~~/g);

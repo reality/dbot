@@ -66,7 +66,7 @@
         "en": "{user} wasn't banned from that command, fool.",
         "es": "{user} no fue prohibido de esta instrucción, tont@.",
         "na'vi": "{user} fìtsu'oti tamung srekrr, nga skxawng lu.",
-        "cy": "Nid oedd {user} wedi ei wahardd o'r gyrchymun yna, fŵl",
+        "cy": "Nid oedd {user} wedi ei wahardd o'r gorchymyn yna, twpsyn",
         "nl": "{user} mag dat commando sowieso al gebruiken, mafketel."
     },
     "qlock": {
@@ -79,52 +79,66 @@
     "already_in_channel": {
         "en": "I'm already in {channel}",
         "na'vi": "Oel {channel}it tok li",
+        "cy": "Rydw i eisoes yn {channel}",
         "nl": "Ik ben al in {channel}"
     },
     "not_in_channel": {
         "en": "I'm not in {channel}",
         "na'vi": "Oel {channel}it ke tok",
+        "cy": "Rydw i ddim yn {channel}",
         "nl": "Ik ben niet aanwezig in {channel}"
     },
     "already_loaded_web": {
         "en": "WHY CAN'T I LOAD ALL THIS WEB? (web already loaded)",
         "na'vi": "PELUN OEL KE TSUN OMUM FÌWETIT NÌWOTX (wetìri oe omum li)",
+        "cy": "PAM ALLA I DDIM YN LWYTHO POB Y WE? (We eisoes yn lwytho)",
         "nl": "AL DIT WEB WORDT ME TOCH EEN BEETJE TE VEEL! (web is al geladen)"
     },
     "already_loaded": {
         "en": "{moduleName} is already loaded.",
         "na'vi": "Oel omum teri {moduleName}it li.",
+        "cy": "{moduleName} eisoes yn lwytho",
         "nl": "{moduleName} is al geladen."
     },
     "no_version": {
-        "en": "No version information or queried module not loaded."
+        "en": "No version information or queried module not loaded.",
+        "cy": "Dim gwybodaeth fersiwn neu modiwl holodd dim yn lwytho"
     },
     "status_good": {
-        "en": "{module} status: Shit looks good"
+        "en": "{module} status: Shit looks good",
+        "cy": "{module} statws: Cachu yn edrych yn dda"
     },
     "status_bad": {
-        "en": "{module} status: Failed to load: {reason}"
+        "en": "{module} status: Failed to load: {reason}",
+        "cy": "{module} statws: Methu i lwytho: {reason}"
     },
     "status_unloaded": {
-        "en": "Either that module wasn't on the roster or shit is totally fucked."
+        "en": "Either that module wasn't on the roster or shit is totally fucked.",
+        "cy": "Naill ai heb fod modiwl oedd ar y rhestr, neu cachu yn gwbl torrodd"
     },
     "load_failed": {
-        "en": "Failed to load {module}. See 'status {module}'."
+        "en": "Failed to load {module}. See 'status {module}'.",
+        "cy": "Methu i lwytho {module}. Gwelwch 'status {module}'."
     },
     "no_config_key": {
-        "en": "Config key doesn't exist bro"
+        "en": "Config key doesn't exist bro",
+        "cy": "Nid yw allwedd cyfluniad yn bodoli, fy mrawd"
     },
     "config_array": {
-        "en": "Config option is an array. Try '{alternate}'."
+        "en": "Config option is an array. Try '{alternate}'.",
+        "cy": "Opsiwn cyfluniad ydy'r amrywiaeth. Rhowch gynnig ar '{alternate}'."
     },
     "config_lock": {
-        "en": "This config option cannot be altered while the bot is running."
+        "en": "This config option cannot be altered while the bot is running.",
+        "cy": "Ni all yr opsiwn cyfluniad yn cael ei newid tra bod y bot yn rhedeg."
     },
     "no_config_path": {
-        "en": "Config path doesn't exist bro"
+        "en": "Config path doesn't exist bro",
+        "cy": "Nid yw llwybr cyfluniad yn bodoli, fy mrawd"
     },
     "config_keys_location": {
-        "en": "Config keys in {path}: {value}"
+        "en": "Config keys in {path}: {value}",
+        "cy": "Allweddi cyfluniad yn {path}: {value}"
     },
     "modules_saved": {
         "en": "Currently loaded modules now default: {modules}"
