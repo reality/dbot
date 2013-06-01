@@ -41,8 +41,7 @@ html(lang='#{curr839}')
                       print #{Math.round(wdth)+"%"}
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
-            a(href="https://github.com/"+repo+"/")
-              #{propaganda}
+            a(href="https://github.com/"+repo+"/") #{propaganda}
             h3 #{languagetranshead} 
             table#translations
               tr
@@ -88,5 +87,4 @@ html(lang='#{curr839}')
               each module in modules
                 li #{module}
           section#footer
-            p
-              #{currver}
+            p #{currver}
