@@ -43,9 +43,29 @@ var report = function(dbot) {
             } else {
                 event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
             }
+        },
+
+        '~notify': function(event) {
+            var channelName = event.input[1];
+            var message = event.input[2];
+
+            if(_.has(event.allChannels, channelName)) {
+                this.api.notify(event.server, channelName, dbot.t('notify', {
+                    'channel': channelName,
+                    'notifier': event.user,
+                    'message': message
+                }));
+                event.reply(dbot.t('notified', {
+                    'user': event.user,
+                    'channel': channelName
+                }));
+            } else {
+                event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
+            }
         }
     };
     commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
+    commands['~notify'].regex = [/^~notify ([^ ]+) (.+)$/, 3];
     this.commands = commands;
 };
 
