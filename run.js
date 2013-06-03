@@ -19,37 +19,10 @@ var DBot = function() {
         this.db = {};
     }
 
-    if(!_.has(this.db, 'config')) {
-        this.db.config = {};
-    }
-
     /*** Load the fancy DB ***/
     this.ddb = new DatabaseDriver();
 
-    /*** Load the Config ***/
-
-    if(!fs.existsSync('config.json')) {
-        console.log('Error: config.json file does not exist. Stopping');
-        process.exit();
-    }
-    
-    this.config = _.clone(this.db.config);
-    try {
-        _.defaults(this.config, JSON.parse(fs.readFileSync('config.json', 'utf-8')));
-    } catch(err) {
-        console.log('Config file is invalid. Stopping: ' + err);
-        process.exit();
-    }
-
-    try {
-        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
-    } catch(err) {
-        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
-        process.exit();
-    }
-
-    // Load missing config directives from sample file
-    _.defaults(this.config, defaultConfig);
+    this.reloadConfig();
 
     /*** Load main strings ***/
 
@@ -81,6 +54,33 @@ var DBot = function() {
     // Load the modules and connect to the server
     this.reloadModules();
     this.instance.connectAll();
+};
+
+DBot.prototype.reloadConfig = function() {
+    this.config = {};
+
+    if(!fs.existsSync('config.json')) {
+        console.log('Error: config.json file does not exist. Stopping');
+        process.exit();
+    }
+    
+    try {
+        this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+    } catch(err) {
+        console.log('Config file is invalid. Stopping: ' + err);
+        process.exit();
+    }
+
+    try {
+        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
+    } catch(err) {
+        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
+        process.exit();
+    }
+
+    // Load missing config directives from sample file
+    if(!_.has(this.config, 'modules')) this.config.modules = {};
+    _.defaults(this.config, defaultConfig);
 };
 
 // Say something in a channel
@@ -138,6 +138,7 @@ DBot.prototype.reloadModules = function() {
     this.api = {};
     this.stringMap = {};
     this.usage = {};
+    this.reloadConfig();
     
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
@@ -173,25 +174,17 @@ DBot.prototype.reloadModules = function() {
             continue;
         }
 
-        // Load the module config data
-        config = {};
-        
-        if(_.has(this.db.config, name)) {
-            config = _.clone(this.db.config[name]); 
-        }
-
-        try {
-            var defaultConfig = fs.readFileSync(moduleDir + 'config.json', 'utf-8');
+        if(!_.has(this.config.modules, name)) this.config.modules[name] = {};
+        if(fs.existsSync(moduleDir + 'config.json')) {
             try {
-                defaultConfig = JSON.parse(defaultConfig);
-            } catch(err) { // syntax error
+                var defaultConfig = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'));
+            } catch(err) { // Syntax error
                 this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
                 continue;
             }
-            config = _.defaults(config, defaultConfig);
-        } catch(err) {
-            // Invalid or no config data
+            this.config.modules[name] = _.defaults(this.config.modules[name], defaultConfig);
         }
+        var config = this.config.modules[name];
 
         // Don't shit out if dependencies not met
         if(_.has(config, 'dependencies')) {
@@ -202,7 +195,6 @@ DBot.prototype.reloadModules = function() {
                 }
             }, this);
         }
-        this.config[name] = config;
 
         // Groovy funky database shit
         if(!_.has(config, 'dbType') || config.dbType == 'olde') {
@@ -235,7 +227,7 @@ DBot.prototype.reloadModules = function() {
 
                 module.name = name;
                 module.db = this.ddb.databanks[name];
-                module.config = this.config[name];
+                module.config = this.config.modules[name];
 
                 // Load the module data
                 _.each([ 'commands', 'pages', 'api' ], function(property) {

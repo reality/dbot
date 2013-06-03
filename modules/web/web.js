@@ -3,13 +3,14 @@ var express = require('express'),
     fs = require('fs');
 
 var webInterface = function(dbot) {
+    this.config = dbot.config.modules.web;
     this.pub = 'public';
     this.app = express();
 
     this.app.use(express.static(this.pub));
     this.app.set('view engine', 'jade');
-   
-    var server = this.app.listen(dbot.config.web.webPort);
+
+    var server = this.app.listen(this.config.webPort);
 
     this.reloadPages = function() {
         var pages = dbot.pages;

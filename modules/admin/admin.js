@@ -38,7 +38,7 @@ var admin = function(dbot) {
     };
 
     this.onLoad = function() {
-        var configMap = dbot.config;
+        /*var configMap = dbot.config;
         this.db.scan('config', function(config) {
             if(config) {
                 var currentPath = configMap,
@@ -53,7 +53,7 @@ var admin = function(dbot) {
 
                 currentPath[key[i]] = value;
             }
-        }, function(err) { });
+        }, function(err) { });*/
     }.bind(this);
 };
 

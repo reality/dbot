@@ -14,30 +14,30 @@ var project = function(dbot) {
             var list = [];
             if(_.has(dbot.modules,'dent')){
                  list.push(dbot.t("dent-account", {
-                    "username": dbot.config.dent.username
+                    "username": dbot.config.modules.dent.username
                 }));
-                if(_.has(dbot.config.dent.dentQuotes)) {
+                if(_.has(dbot.config.modules.dent.dentQuotes)) {
                     list.push(dbot.t("dent-push"));
                 }
             }
             if(_.has(dbot.modules,'link')){
-                if(dbot.config.link.autoTitle){
+                if(dbot.config.modules.link.autoTitle){
                     list.push(dbot.t("link-autotitle"));
                 }
             }
             if(_.has(dbot.modules,'quotes')){
                 list.push(dbot.t("quote-rmlimit", {
-                    "limit": dbot.config.quotes.rmLimit
+                    "limit": dbot.config.modules.quotes.rmLimit
                 }));
             }
             if(_.has(dbot.modules,'report')){
-                if(dbot.config.report.notifyVoice){
+                if(dbot.config.modules.report.notifyVoice){
                     list.push(dbot.t("report-notifyvoice"));
                 }
             } 
             if(_.has(dbot.modules,'web')){
                 list.push(dbot.t("web-port", {
-                    "port": dbot.config.web.webPort
+                    "port": dbot.config.modules.web.webPort
                 }));
             }
             return list;
