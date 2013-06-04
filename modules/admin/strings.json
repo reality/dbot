@@ -141,9 +141,9 @@
         "de": "Konnte {module} nicht laden. Siehe 'status {module}'."
     },
     "no_config_key": {
-        "en": "Config key doesn't exist bro",
-        "cy": "Nid yw allwedd cyfluniad yn bodoli, fy mrawd",
-        "de": "Einstellung existiert nicht, Bruder"
+        "en": "{path} doesn't exist bro",
+        "cy": "{path} cyfluniad yn bodoli, fy mrawd",
+        "de": "{path} existiert nicht, Bruder"
     },
     "config_array": {
         "en": "Config option is an array. Try '{alternate}'.",

@@ -9,52 +9,21 @@ var fs = require('fs'),
 var admin = function(dbot) {
     this.internalAPI = {
         'getCurrentConfig': function(configKey, callback) {
-            if(configKey) {
-                this.db.read('config', configKey, function(err, cRecord) {
-                    if(cRecord) {
-                        callback(cRecord.value)
-                    } else {
-                        var configPath = dbot.config;
-                        configKey = configKey.split('.');  
+            var configPath = dbot.config;
+            configKey = configKey.split('.');  
 
-                        for(var i=0;i<configKey.length;i++) {
-                            if(_.has(configPath, configKey[i])) {
-                                configPath = configPath[configKey[i]]; 
-                            } else {
-                                callback(null);
-                                break;
-                            }
-                        }
-
-                        process.nextTick(function() {
-                            callback(configPath);
-                        });
-                    }
-                });
-            } else {
-                callback(dbot.config);
-            }
-        }.bind(this)
-    };
-
-    this.onLoad = function() {
-        /*var configMap = dbot.config;
-        this.db.scan('config', function(config) {
-            if(config) {
-                var currentPath = configMap,
-                    key = config.key.split('.'),
-                    value = config.value;
-
-                for(var i=0;i<key.length-1;i++) {
-                    if(_.has(currentPath, key[i])) {
-                        currentPath = currentPath[key[i]];
-                    }
+            for(var i=0;i<configKey.length;i++) {
+                if(_.has(configPath, configKey[i])) {
+                    configPath = configPath[configKey[i]]; 
+                } else {
+                    configPath = null;
+                    break;
                 }
-
-                currentPath[key[i]] = value;
             }
-        }, function(err) { });*/
-    }.bind(this);
+
+            callback(configPath);
+        }
+    };
 };
 
 exports.fetch = function(dbot) {

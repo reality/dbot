@@ -191,7 +191,7 @@ var commands = function(dbot) {
                             dbot.reloadModules();
                         });
                     } else {
-                        event.reply(dbot.t("no_config_key"));
+                        event.reply(dbot.t("no_config_key", {'path': configPath}));
                     }
                 }.bind(this));
             } else {
@@ -249,9 +249,13 @@ var commands = function(dbot) {
                             }));
                         }
                     } else {
-                        event.reply(dbot.t("no_config_key"));
+                        event.reply(dbot.t("no_config_key", {'path': configPath}));
+                        configPath = configPath.split('.');
+                        configPath.pop();
+                        event.params[1] = configPath.join('.');
+                        this.commands['showconfig'](event);
                     }
-                });
+                }.bind(this));
 
             } else {
                 event.reply(dbot.t("config_keys_location", {
