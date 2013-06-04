@@ -126,7 +126,7 @@ var link = function(dbot) {
         var urlMatches = event.message.match(this.urlRegex);
         if(urlMatches !== null) {
             this.links[event.channel.name] = urlMatches[0];
-            if(dbot.config.link.autoTitle == true) {
+            if(this.config.autoTitle == true) {
                 var handlerFound = false;
                 for(var i=0;i<this.handlers.length;i++) {
                     var matches = this.handlers[i].regex.exec(urlMatches[0]);     
