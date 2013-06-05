@@ -17,3 +17,7 @@ will be that all of the users which are currently marked as operators in the
 reporting channel will receive a PM telling them a user has been reported, by
 whom, in which channel and why. If there is an administrative channel for the
 reporting channel (e.g. ##channel), the report will be posted there as well.
+
+#### ~notify [#channel] [message]
+Notify staff of a channel of a message. This can be run in either PM or in the
+channel. If notifyVoice is set, voiced users will also receive notifications.

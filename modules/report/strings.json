@@ -26,5 +26,11 @@
         "cy": "Dydw i ddim yn bresennol yn {channel}.",
         "nl": "Ik ben niet aanwezig in {channel}.",
         "de": "Ich bin nicht in {channel} aktiv."
+    },
+    "notify": {
+        "en": "Attention {channel}: {notifier}: {message}"
+    },
+    "notified": {
+        "en": "{user}: {channel} staff notified."
     }
 }
