@@ -7,7 +7,6 @@ require('./snippets');
 var DBot = function() {
     
     /*** Load the DB ***/
-
     if(fs.existsSync('db.json')) {
         try {
             this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
@@ -25,7 +24,6 @@ var DBot = function() {
     this.reloadConfig();
 
     /*** Load main strings ***/
-
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -65,7 +63,9 @@ DBot.prototype.reloadConfig = function() {
     }
     
     try {
-        this.config = JSON.parse(fs.readFileSync('config.json', 'utf-8'));
+        var configFile = fs.readFileSync('config.json', 'utf-8');
+        this.config = JSON.parse(configFile);
+        this.customConfig = JSON.parse(configFile);
     } catch(err) {
         console.log('Config file is invalid. Stopping: ' + err);
         process.exit();
@@ -79,7 +79,10 @@ DBot.prototype.reloadConfig = function() {
     }
 
     // Load missing config directives from sample file
-    if(!_.has(this.config, 'modules')) this.config.modules = {};
+    if(!_.has(this.customConfig, 'modules')) {
+        this.customConfig.modules = {};
+        this.config.modules = {};
+    }
     _.defaults(this.config, defaultConfig);
 };
 

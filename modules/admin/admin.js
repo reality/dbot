@@ -35,6 +35,11 @@ var admin = function(dbot) {
                     return;
                 }
             }
+        },
+
+        'saveConfig': function() {
+            var config = dbot.customConfig;
+            fs.writeFileSync('config.json', JSON.stringify(config, null, '    '));
         }
     };
 };
