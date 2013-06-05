@@ -54,7 +54,7 @@ var commands = function(dbot) {
                 this.api.ban(server, banee, channel);
                 this.api.kick(server, banee, channel, reason + 
                     ' (network-wide ban requested by ' + banner + ')');
-                setTimeout(function(channels) {
+                setTimeout(function() {
                     i++;  banChannel(channels);
                 }, 1000);
             }.bind(this);
