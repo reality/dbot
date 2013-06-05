@@ -42,7 +42,7 @@ var admin = function(dbot) {
             configPath[configKey[i]] = newOption;
             
             this.internalAPI.saveConfig();
-            dbot.reloadConfig();
+            dbot.reloadModules();
             callback(null, oldOption);
         }.bind(this),
 
