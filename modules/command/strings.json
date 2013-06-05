@@ -48,5 +48,8 @@
         "cy": "Modiwlau sy'n lwythodd: {modules}.",
         "nl": "Geladen modules: {modules}.",
         "de": "Module geladen: {modules}."
+    },
+    "module_commands": {
+        "en": "Commands in {module}: {commands}."
     }
 }

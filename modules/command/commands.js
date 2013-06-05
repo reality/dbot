@@ -17,6 +17,24 @@ var commands = function(dbot) {
             }
         },
 
+        '~commands': function(event) {
+            var name = event.params[1];
+            if(_.has(dbot.modules, name)) {
+                var commands = _.keys(dbot.commands);
+                commands = _.filter(commands, function(cName) {
+                    return dbot.commands[cName].module == name; 
+                });
+                event.reply(dbot.t('module_commands', {
+                    'module': name,
+                    'commands': commands.join(', ')
+                }));
+            } else {
+                event.reply(dbot.t('loaded_modules', {
+                    'modules': _.keys(dbot.modules).join(', ')
+                }));
+            }
+        },
+
         '~help': function(event) {
             var moduleName = event.params[1];
             if(!moduleName || !_.has(dbot.modules, moduleName)) {
