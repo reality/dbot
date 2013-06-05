@@ -57,7 +57,7 @@ var commands = function(dbot) {
                 setTimeout(function(channels) {
                     i++;  banChannel(channels);
                 }, 1000);
-            }
+            }.bind(this);
             banChannel(channels);
 
             var notifyString = dbot.t('nbanned', {
