@@ -184,18 +184,14 @@ var commands = function(dbot) {
                         if(_.isArray(config)) {
                             event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
                         }
-
-                        event.reply(configPath + ": " + config + " -> " + newOption);
-                        config = newOption;
-                        this.db.save('config', configPath, { 
-                            'key': configPath,
-                            'value': config
-                        }, function(err) {
-                            dbot.reloadModules();
-                        });
                     } else {
-                        event.reply(dbot.t("no_config_key", {'path': configPath}));
+                        event.reply(dbot.t('new_config_key', { 'key': configPath }));
+                        config = null;
                     }
+
+                    this.internalAPI.setConfig(configPath, newOption, function(err) { 
+                        event.reply(configPath + ": " + config + " -> " + newOption);
+                    });
                 }.bind(this));
             } else {
                 event.reply(dbot.t("config_lock"));

@@ -160,6 +160,9 @@
         "cy": "Nid yw llwybr cyfluniad yn bodoli, fy mrawd",
         "de": "Konfigurationspfad nicht vorhanden, Bruder"
     },
+    "new_config_key": {
+        "en": "Warning: Creating new config key: {key}."
+    },
     "config_keys_location": {
         "en": "Config keys in {path}: {value}",
         "cy": "Allweddi cyfluniad yn {path}: {value}",
