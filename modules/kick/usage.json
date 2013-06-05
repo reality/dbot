@@ -1,0 +1,7 @@
+{
+    "~ckick": "~ckick [#channel] [username] [reason]",
+    "~cban": "~cban [#channel] [username] [reason]",
+    "~nban": "~nban [username] [reason]",
+    "~kickstats": "~kickstats",
+    "~kickcount": "~kickcount [user]"
+}
