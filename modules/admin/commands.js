@@ -208,17 +208,12 @@ var commands = function(dbot) {
                         if(_.isArray(config)) {
                             event.reply(configPath + ": " + config + " << " + newOption);
                             config.push(newOption);
-                            this.db.save('config', configPath, { 
-                                'key': configPath, 
-                                'value': config 
-                            }, function(err) {
-                                dbot.reloadModules();
-                            });
+                            this.internalAPI.setConfig(configPath, config, function(err) {});
                         } else {
                             event.reply(dbot.t("config_array", { "alternate": "setconfig" }));
                         }
                     } else {
-                        event.reply(dbot.t("no_config_key"));
+                        event.reply(dbot.t("no_config_key", { 'path': configPath }));
                     }
                 }.bind(this));
             } else {
