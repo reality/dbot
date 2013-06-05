@@ -47,13 +47,18 @@ var commands = function(dbot) {
                 reason = event.input[2],
                 channels = dbot.config.servers[server].channels;
 
-            _.each(channels, function(channel) {
-                setTimeout(function(channel) {
-                    this.api.ban(server, banee, channel);
-                    this.api.kick(server, banee, channel, reason + 
-                        ' (network-wide ban requested by ' + banner + ')');
-                }.bind(this), 1000);
-            }, this);
+            var i = 0;
+            var banChannel = function(channels) {
+                if(i >= channels.length) return;
+                var channel = channels[i];
+                this.api.ban(server, banee, channel);
+                this.api.kick(server, banee, channel, reason + 
+                    ' (network-wide ban requested by ' + banner + ')');
+                setTimeout(function(channels) {
+                    i++;  banChannel(channels);
+                }, 1000);
+            }
+            banChannel(channels);
 
             var notifyString = dbot.t('nbanned', {
                 'banner': banner,
