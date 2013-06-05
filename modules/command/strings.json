@@ -19,7 +19,7 @@
         "en": "Usage for {command}: {usage}.",
         "na'vi": "Nga tsun sivar ìlä {command}: {usage}.",
         "cy": "Defnydd o {command}: {usage}.",
-        "nl": "{command} wordt op de volgende manier gebruikt: {usage}.".
+        "nl": "{command} wordt op de volgende manier gebruikt: {usage}.",
         "de": "Benutzung von {command}: [usage}."
     },
     "no_usage_info": {
