@@ -52,7 +52,7 @@ var commands = function(dbot) {
                     this.api.ban(server, banee, channel);
                     this.api.kick(server, banee, channel, reason + 
                         ' (network-wide ban requested by ' + banner + ')');
-                }, 1000);
+                }.bind(this), 1000);
             }, this);
 
             var notifyString = dbot.t('nbanned', {
