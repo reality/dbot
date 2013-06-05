@@ -120,7 +120,8 @@ var commands = function(dbot) {
         'load': function(event) {
             var moduleName = event.params[1];
             if(!_.include(dbot.config.moduleNames, moduleName)) {
-                dbot.config.moduleNames.push(moduleName);
+                dbot.customConfig.moduleNames.push(moduleName);
+                this.internalAPI.saveConfig();
                 dbot.reloadModules();
                 process.nextTick(function() {
                     if(dbot.status[moduleName] === true) {
@@ -148,7 +149,9 @@ var commands = function(dbot) {
                     var cacheKey = require.resolve(moduleDir + moduleName);
                     delete require.cache[cacheKey];
                 } catch(err) { }
-                dbot.config.moduleNames = _.without(dbot.config.moduleNames, moduleName);
+
+                dbot.customConfig.moduleNames = _.without(dbot.config.moduleNames, moduleName);
+                this.internalAPI.saveConfig();
                 dbot.reloadModules();
 
                 process.nextTick(function() {

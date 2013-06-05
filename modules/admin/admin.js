@@ -25,7 +25,7 @@ var admin = function(dbot) {
         },
 
         'setConfig': function(configKey, newOption, callback) {
-            var configPath = dbot.config;
+            var configPath = dbot.customConfig;
             configKey = configKey.split('.');
 
             for(var i=0;i<configKey.length-1;i++) {
@@ -35,6 +35,10 @@ var admin = function(dbot) {
                     return;
                 }
             }
+            
+            this.internalAPI.saveConfig();
+            dbot.reloadConfig();
+            callback(true);
         },
 
         'saveConfig': function() {
