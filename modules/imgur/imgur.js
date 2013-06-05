@@ -84,7 +84,7 @@ var imgur = function(dbot) {
                     var hash = crypto.createHash('md5').update(body).digest("hex");
                     if(_.has(dbot.modules, 'quotes')){
                         // autoadd: {"abcdef": "facebookman"}
-                        if(_.has(dbot.config.imgur.autoadd,hash)){
+                        if(_.has(dbot.config.modules.imgur.autoadd,hash)){
                             var category = dbot.config.imgur.autoadd[hash];
                             if (_.contains(category, testUrl)){
                                 // there's probably less than 62^5 chance of this happening
@@ -112,7 +112,7 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/image/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                    'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
                 dbot.db.imgur.totalApiRequests += 1;
@@ -125,7 +125,7 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/album/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                    'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
                 this.db.totalApiRequests += 1;
@@ -138,7 +138,7 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/gallery/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                    'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
                 this.db.totalApiRequests += 1;

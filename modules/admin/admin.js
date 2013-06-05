@@ -22,6 +22,19 @@ var admin = function(dbot) {
             }
 
             callback(configPath);
+        },
+
+        'setConfig': function(configKey, newOption, callback) {
+            var configPath = dbot.config;
+            configKey = configKey.split('.');
+
+            for(var i=0;i<configKey.length-1;i++) {
+                if(_.has(configPath, configKey[i])) {
+                    configPath = configPath[configKey[i]];
+                } else {
+                    return;
+                }
+            }
         }
     };
 };
