@@ -45,20 +45,8 @@ var commands = function(dbot) {
                 banner = event.user,
                 banee = event.input[1],
                 reason = event.input[2],
+                adminChannel = this.config.admin_channels[event.server];
                 channels = dbot.config.servers[server].channels;
-
-            var i = 0;
-            var banChannel = function(channels) {
-                if(i >= channels.length) return;
-                var channel = channels[i];
-                this.api.ban(server, banee, channel);
-                this.api.kick(server, banee, channel, reason + 
-                    ' (network-wide ban requested by ' + banner + ')');
-                setTimeout(function() {
-                    i++;  banChannel(channels);
-                }, 1000);
-            }.bind(this);
-            banChannel(channels);
 
             var notifyString = dbot.t('nbanned', {
                 'banner': banner,
@@ -79,11 +67,27 @@ var commands = function(dbot) {
                 notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
             }
 
-            var notifyChannel = event.channel.name;
+            // Notify moderators, banee
             if(this.config.admin_channels[event.server]) {
                 notifyChannel = this.config.admin_channels[event.server]; 
+                channels = _.without(channels, notifyChannel);
+                dbot.api.report.notify(server, adminChannel, notifyString);
+                dbot.say(event.server, adminChannel, notifyString);
             }
-            dbot.api.report.notify(server, notifyChannel, notifyString);
+
+            // Ban the user from all channels
+            var i = 0;
+            var banChannel = function(channels) {
+                if(i >= channels.length) return;
+                var channel = channels[i];
+                this.api.ban(server, banee, channel);
+                this.api.kick(server, banee, channel, reason + 
+                    ' (network-wide ban requested by ' + banner + ')');
+                setTimeout(function() {
+                    i++; banChannel(channels);
+                }, 1000);
+            }.bind(this);
+            banChannel(channels);
         },
 
         /*** Kick Stats ***/
