@@ -30,6 +30,9 @@
         "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\"",
         "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}.\""
     },
+    "nbanned_notify": {
+        "en": "You have been banned from the {network} network by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban."
+    },
     "nban_quote": {
         "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\"",
         "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\"",

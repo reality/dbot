@@ -45,7 +45,7 @@ var commands = function(dbot) {
                 banner = event.user,
                 banee = event.input[1],
                 reason = event.input[2],
-                adminChannel = this.config.admin_channels[event.server];
+                adminChannel = this.config.admin_channel[event.server];
                 channels = dbot.config.servers[server].channels;
 
             var notifyString = dbot.t('nbanned', {
@@ -68,11 +68,21 @@ var commands = function(dbot) {
             }
 
             // Notify moderators, banee
-            if(this.config.admin_channels[event.server]) {
-                notifyChannel = this.config.admin_channels[event.server]; 
-                channels = _.without(channels, notifyChannel);
+            if(adminChannel) {
+                channels = _.without(channels, adminChannel);
+
                 dbot.api.report.notify(server, adminChannel, notifyString);
                 dbot.say(event.server, adminChannel, notifyString);
+
+                var network = this.config.network_name[event.server];
+                if(!network) network = event.server;
+
+                dbot.say(event.server, banee, dbot.t('nbanned_notify', {
+                    'network': network,
+                    'banner': banner,
+                    'reason': reason,
+                    'admin_channel': adminChannel 
+                }));
             }
 
             // Ban the user from all channels
