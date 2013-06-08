@@ -68,14 +68,16 @@ var commands = function(dbot) {
             }
 
             // Notify moderators, banee
-            if(adminChannel) {
+            if(this.config.admin_channel[event.server]) {
                 channels = _.without(channels, adminChannel);
 
                 dbot.api.report.notify(server, adminChannel, notifyString);
                 dbot.say(event.server, adminChannel, notifyString);
 
-                var network = this.config.network_name[event.server];
-                if(!network) network = event.server;
+                var network = event.server;
+                if(this.config.network_name[event.server]) {
+                    network = this.config.network_name[event.server];
+                }
 
                 dbot.say(event.server, banee, dbot.t('nbanned_notify', {
                     'network': network,
