@@ -1,6 +1,7 @@
 var _ = require('underscore')._;
 
 var kick = function(dbot) {
+    this.hosts = dbot.db.hosts;
     
     this.api = {
         'ban': function(server, user, channel) {

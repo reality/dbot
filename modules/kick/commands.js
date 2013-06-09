@@ -48,58 +48,65 @@ var commands = function(dbot) {
                 adminChannel = this.config.admin_channel[event.server];
                 channels = dbot.config.servers[server].channels;
 
-            var notifyString = dbot.t('nbanned', {
-                'banner': banner,
-                'banee': banee,
-                'reason': reason
-            });
+            dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
+                // Add host record entry
+                if(!_.has(this.hosts, event.server)) this.hosts[event.server] = {};
+                this.hosts[event.server][banee] = host;
 
-            // TODO: When this is merged into database branch, have it use the
-            //   api.quotes.addQuote function
-            if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
-                dbot.db.quoteArrs['ban_' + banee.toLowerCase()] = [ dbot.t('nban_quote', {
-                    'banee': banee,
+                // Create notify string
+                var notifyString = dbot.t('nbanned', {
                     'banner': banner,
-                    'time': new Date().toUTCString(),
+                    'banee': banee,
                     'reason': reason
-                }) ];
-                
-                notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
-            }
+                });
 
-            // Notify moderators, banee
-            if(this.config.admin_channel[event.server]) {
-                channels = _.without(channels, adminChannel);
-
-                dbot.api.report.notify(server, adminChannel, notifyString);
-                dbot.say(event.server, adminChannel, notifyString);
-
-                var network = event.server;
-                if(this.config.network_name[event.server]) {
-                    network = this.config.network_name[event.server];
+                // TODO: When this is merged into database branch, have it use the
+                //   api.quotes.addQuote function
+                if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
+                    dbot.db.quoteArrs['ban_' + banee.toLowerCase()] = [ dbot.t('nban_quote', {
+                        'banee': banee,
+                        'banner': banner,
+                        'time': new Date().toUTCString(),
+                        'reason': reason
+                    }) ];
+                    
+                    notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
                 }
 
-                dbot.say(event.server, banee, dbot.t('nbanned_notify', {
-                    'network': network,
-                    'banner': banner,
-                    'reason': reason,
-                    'admin_channel': adminChannel 
-                }));
-            }
+                // Notify moderators, banee
+                if(this.config.admin_channel[event.server]) {
+                    channels = _.without(channels, adminChannel);
 
-            // Ban the user from all channels
-            var i = 0;
-            var banChannel = function(channels) {
-                if(i >= channels.length) return;
-                var channel = channels[i];
-                this.api.ban(server, banee, channel);
-                this.api.kick(server, banee, channel, reason + 
-                    ' (network-wide ban requested by ' + banner + ')');
-                setTimeout(function() {
-                    i++; banChannel(channels);
-                }, 1000);
-            }.bind(this);
-            banChannel(channels);
+                    dbot.api.report.notify(server, adminChannel, notifyString);
+                    dbot.say(event.server, adminChannel, notifyString);
+
+                    var network = event.server;
+                    if(this.config.network_name[event.server]) {
+                        network = this.config.network_name[event.server];
+                    }
+
+                    dbot.say(event.server, banee, dbot.t('nbanned_notify', {
+                        'network': network,
+                        'banner': banner,
+                        'reason': reason,
+                        'admin_channel': adminChannel 
+                    }));
+                }
+
+                // Ban the user from all channels
+                var i = 0;
+                var banChannel = function(channels) {
+                    if(i >= channels.length) return;
+                    var channel = channels[i];
+                    this.api.ban(server, banee, channel);
+                    this.api.kick(server, banee, channel, reason + 
+                        ' (network-wide ban requested by ' + banner + ')');
+                    setTimeout(function() {
+                        i++; banChannel(channels);
+                    }, 1000);
+                }.bind(this);
+                banChannel(channels);
+            }.bind(this));
         },
 
         /*** Kick Stats ***/
