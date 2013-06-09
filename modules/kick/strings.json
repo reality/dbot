@@ -26,7 +26,7 @@
         "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}.\""
     },
     "nbanned": {
-        "en": "Attention: {banner} has banned {banee} network-wide. The reason given was \"{reason}.\"",
+        "en": "Attention: {banner} has banned {banee} from the {network} network. The reason given was \"{reason}.\"",
         "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\"",
         "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}.\""
     },
@@ -37,6 +37,15 @@
         "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\"",
         "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\"",
         "de": "{banee} wurde von {banner} auf dem gesamten Netzwerk um {time} gebannt. Grund: \"{reason}.\""
+    },
+    "nunbanned": {
+        "en": "Attention: {unbanee} has been unbanned from the {network} network by {unbanner}."
+    },
+    "nunban_notify": {
+        "en": "You have been unbanned from the {network} network by {unbanner}."
+    },
+    "nunban_error": {
+        "en": "It appears {unbanee} was not banned using the ~nban command."
     },
     "quote_recorded": {
         "en": "This has been recorded in ~ban_{user}.",

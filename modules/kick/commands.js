@@ -46,7 +46,12 @@ var commands = function(dbot) {
                 banee = event.input[1],
                 reason = event.input[2],
                 adminChannel = this.config.admin_channel[event.server];
-                channels = dbot.config.servers[server].channels;
+                channels = dbot.config.servers[server].channels,
+                network = event.server;
+
+            if(this.config.network_name[event.server]) {
+                network = this.config.network_name[event.server];
+            }
 
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
                 // Add host record entry
@@ -55,6 +60,7 @@ var commands = function(dbot) {
 
                 // Create notify string
                 var notifyString = dbot.t('nbanned', {
+                    'network': network,
                     'banner': banner,
                     'banee': banee,
                     'reason': reason
@@ -80,11 +86,6 @@ var commands = function(dbot) {
                     dbot.api.report.notify(server, adminChannel, notifyString);
                     dbot.say(event.server, adminChannel, notifyString);
 
-                    var network = event.server;
-                    if(this.config.network_name[event.server]) {
-                        network = this.config.network_name[event.server];
-                    }
-
                     dbot.say(event.server, banee, dbot.t('nbanned_notify', {
                         'network': network,
                         'banner': banner,
@@ -107,6 +108,52 @@ var commands = function(dbot) {
                 }.bind(this);
                 banChannel(channels);
             }.bind(this));
+        },
+
+        '~nunban': function(event) {
+            var unbanee = event.params[1],
+                unbanner = event.user,
+                adminChannel = this.config.admin_channel[event.server],
+                channels = dbot.config.servers[event.server].channels,
+                network = event.server;
+
+            if(this.config.network_name[event.server]) {
+                network = this.config.network_name[event.server];
+            }
+
+            if(_.has(this.hosts, event.server) && _.has(this.hosts[event.server], unbanee)) {
+                var host = this.hosts[event.server][unbanee];
+
+                var notifyString = dbot.t('nunbanned', {
+                    'network': network,
+                    'unbanee': unbanee,
+                    'unbanner': unbanner
+                });
+
+                if(this.config.admin_channel[event.server]) {
+                    dbot.api.report.notify(event.server, adminChannel, notifyString);
+                    dbot.say(event.server, adminChannel, notifyString);
+                }
+
+                dbot.say(event.server, unbanee, dbot.t('nunban_notify', {
+                    'network': network,
+                    'unbanee': unbanee,
+                    'unbanner': unbanner
+                }));
+
+                var i = 0;
+                var unbanChannel = function(channels) {
+                    if(i >= channels.length) return;
+                    var channel = channels[i];
+                    this.api.unban(event.server, host, channel);
+                    setTimeout(function() {
+                        i++; unbanChannel(channels);
+                    }, 1000);
+                }.bind(this);
+                unbanChannel(channels);
+            } else {
+                event.reply(dbot.t('nunban_error', { 'unbanee': unbanee })); 
+            }
         },
 
         /*** Kick Stats ***/

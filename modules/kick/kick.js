@@ -5,15 +5,19 @@ var kick = function(dbot) {
     
     this.api = {
         'ban': function(server, user, channel) {
-            dbot.say(server, this.config.chanserv, 'ban ' + channel + ' ' + user)
+            dbot.say(server, this.config.chanserv, 'ban ' + channel + ' ' + user);
         },
 
         'quiet': function(server, user, channel) {
-            dbot.say(server, this.config.chanserv, 'quiet ' + channel + ' ' + user)
+            dbot.say(server, this.config.chanserv, 'quiet ' + channel + ' ' + user);
         },
 
         'kick': function(server, user, channel, msg) {
             dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
+        },
+
+        'unban': function(server, host, channel) {
+            dbot.say(server, this.config.chanserv, 'unban ' + channel + ' *!*@' + host);
         }
     };
     
