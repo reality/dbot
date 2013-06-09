@@ -15,7 +15,7 @@ var nickserv = function(dbot) {
         'getUserHost': function(server, nick, callback) {
             if(!_.has(this.userStack, server)) this.userStack[server] = {};
             this.userStack[server][nick] = callback;
-            dbot.instance.connections.send('USERHOST ' + nick);
+            dbot.instance.connections[server].send('USERHOST ' + nick);
         }
     };
 
