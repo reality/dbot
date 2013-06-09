@@ -57,7 +57,7 @@ var commands = function(dbot) {
             // TODO: When this is merged into database branch, have it use the
             //   api.quotes.addQuote function
             if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
-                dbot.db.quoteArrs['ban_' + banee] = [ dbot.t('nban_quote', {
+                dbot.db.quoteArrs['ban_' + banee.toLowerCase()] = [ dbot.t('nban_quote', {
                     'banee': banee,
                     'banner': banner,
                     'time': new Date().toUTCString(),
