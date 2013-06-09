@@ -39,9 +39,9 @@ var nickserv = function(dbot) {
             }
         } else if(event.action == '302') {
             var match = event.params.match(/:(.+)=([^@]+)@(.+)$/);
-            console.log(match);
+
+            if(match[1]) match[1] = match[1].replace('\*', '');
             if(match && _.has(this.userStack, event.server) && _.has(this.userStack[event.server], match[1])) {
-                match[1] = match[1].replace('\*', '');
                 this.userStack[event.server][match[1]](match[3].trim());
             }
         }
