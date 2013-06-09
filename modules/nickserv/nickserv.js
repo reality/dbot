@@ -1,3 +1,5 @@
+var _ = require('underscore')._;
+
 var nickserv = function(dbot) {
     this.authStack = {};
     this.userStack = {};
@@ -36,8 +38,10 @@ var nickserv = function(dbot) {
                 }
             }
         } else if(event.action == '302') {
-            console.log('caught');
-            console.log(event.params);
+            var match = event.params.match(/:(.*)=([^@]+)@(.+)$/);
+            if(match && _.has(this.userStack, event.server) && _.has(this.userStack[event.server], match[1])) {
+                this.userStack[event.server][match[1]](match[3].trim());
+            }
         }
     }.bind(this);
     this.on = ['NOTICE', '302'];
