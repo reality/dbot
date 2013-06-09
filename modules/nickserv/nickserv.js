@@ -36,6 +36,7 @@ var nickserv = function(dbot) {
                 }
             }
         } else if(event.action == '302') {
+            console.log('caught');
             console.log(event.params);
         }
     }.bind(this);
