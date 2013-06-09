@@ -40,7 +40,7 @@ var nickserv = function(dbot) {
             console.log(event.params);
         }
     }.bind(this);
-    this.on = 'NOTICE';
+    this.on = ['NOTICE', '302'];
 };
 
 exports.fetch = function(dbot) {
