@@ -37,7 +37,7 @@ var timers = function(dbot) {
         },
 
         'addTimeout': function(date, callback, params) {
-            var now = new Date().getTime()
+            var now = new Date().getTime(),
                 timeout = date.getTime() - now;
             this.runningTimeouts.push(setTimeout(function() {
                 try {
