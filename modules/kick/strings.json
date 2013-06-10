@@ -38,6 +38,9 @@
         "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\"",
         "de": "{banee} wurde von {banner} auf dem gesamten Netzwerk um {time} gebannt. Grund: \"{reason}.\""
     },
+    "no_user": {
+        "en": "{user} doesn't seem to be online on this server."
+    },
     "nunbanned": {
         "en": "Attention: {unbanee} has been unbanned from the {network} network by {unbanner}."
     },

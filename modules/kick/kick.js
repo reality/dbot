@@ -2,6 +2,7 @@ var _ = require('underscore')._;
 
 var kick = function(dbot) {
     this.hosts = dbot.db.hosts;
+    this.tempBans = dbot.db.tempBans;
     
     this.api = {
         'ban': function(server, user, channel) {
@@ -18,6 +19,67 @@ var kick = function(dbot) {
 
         'unban': function(server, host, channel) {
             dbot.say(server, this.config.chanserv, 'unban ' + channel + ' *!*@' + host);
+        },
+
+        'networkUnban': function(server, unbanee, unbanner, callback) {
+            var channels = dbot.config.servers[server].channels,
+                network = this.config.network_name[server] || server,
+                adminChannel = this.config.admin_channel[server];
+
+            if(_.has(this.hosts, server) && _.has(this.hosts[server], unbanee)) {
+                var host = this.hosts[server][unbanee];
+
+                // Notify Staff
+                if(!_.isUndefined(adminChannel)) {
+                    var notifyString = dbot.t('nunbanned', {
+                        'network': network,
+                        'unbanee': unbanee,
+                        'unbanner': unbanner
+                    });
+                    dbot.api.report.notify(server, adminChannel, notifyString);
+                    dbot.say(server, adminChannel, notifyString);
+                }
+
+                // Notify Unbanee
+                dbot.say(server, unbanee, dbot.t('nunban_notify', {
+                    'network': network,
+                    'unbanee': unbanee,
+                    'unbanner': unbanner
+                }));
+
+                // Unban
+                var i = 0;
+                var unbanChannel = function(channels) {
+                    if(i >= channels.length) return;
+                    var channel = channels[i];
+                    this.api.unban(server, host, channel);
+                    setTimeout(function() {
+                        i++; unbanChannel(channels);
+                    }, 1000);
+                }.bind(this);
+                unbanChannel(channels);
+                
+                callback(null); // Success
+            } else {
+                // Attempt to look up the host on-the-fly
+                dbot.api.nickserv.getUserHost(server, unbanee, function(host) {
+                    if(host) {
+                        if(!_.has(this.hosts, server)) this.hosts[server] = {};
+                        this.hosts[server][unbanee] = host;
+                        this.api.networkUnban(server, unbanee, unbanner);
+                    } else {
+                        callback(true); // No host could be found
+                    }
+                });
+            }
+        }
+    };
+
+    this.internalAPI = {
+        'addTempBan': function(server, banee, timeout) {
+            dbot.api.timers.addTimeout(timeout, function() {
+            
+            });  
         }
     };
     
