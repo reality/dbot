@@ -18,6 +18,9 @@ var nickserv = function(dbot) {
             if(!_.has(this.userStack, server)) this.userStack[server] = {};
             this.userStack[server][nick] = callback;
             dbot.instance.connections[server].send('USERHOST ' + nick);
+            setTimeout(function() {
+                if(_.has(this.userStack[server], nick)) callback(false); 
+            }.bind(this), 3000);
         }
     };
 
@@ -43,6 +46,7 @@ var nickserv = function(dbot) {
             if(match[1]) match[1] = match[1].replace('\*', '');
             if(match && _.has(this.userStack, event.server) && _.has(this.userStack[event.server], match[1])) {
                 this.userStack[event.server][match[1]](match[3].trim());
+                delete this.userStack[event.server][match[1]];
             }
         }
     }.bind(this);
