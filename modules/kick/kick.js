@@ -111,6 +111,14 @@ var kick = function(dbot) {
         }
     }.bind(this);
     this.on = 'KICK';
+
+    this.onLoad = function() {
+        _.each(this.tempBans, function(bans, server) {
+            _.each(bans, function(timeout, nick) {
+                this.internalAPI.addTempBan(server, nick, timeout); 
+            }, this);
+        }, this);
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {
