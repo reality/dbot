@@ -25,6 +25,12 @@
         "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
         "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}.\""
     },
+    "tbanned": {
+        "en": "Attention: {banner} has banned {banee} from the {network} network for {hours} hours. The reason given was \"{reason}.\""
+    },
+    "tbanned_notify": {
+        "en": "You have been banned from the {network} network for {hours} hours by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban."
+    },
     "nbanned": {
         "en": "Attention: {banner} has banned {banee} from the {network} network. The reason given was \"{reason}.\"",
         "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\"",

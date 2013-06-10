@@ -66,12 +66,29 @@ var commands = function(dbot) {
                     this.hosts[event.server][banee] = host;
 
                     // Create notify string
-                    /*if(!_.isUndefined(timeout)) {
-                        timeout = new Date(new Date().getTime() + (timeout * 3600000));
+                    if(!_.isUndefined(timeout)) {
+                        timeout = parseFloat(timeout.trim());
+                        
+                        var msTimeout = new Date(new Date().getTime() + (timeout * 3600000));
                         if(!_.has(this.tempBans, event.server)) this.tempBans[event.server] = {};
-                        this.tempBans[event.server][banee] = timeout;
-                        this.internalAPI.addTempBan(event.server, banee, timeout);
-                    } else {*/
+                        this.tempBans[event.server][banee] = msTimeout;
+                        this.internalAPI.addTempBan(event.server, banee, msTimeout);
+
+                        var notifyString = dbot.t('tbanned', {
+                            'network': network,
+                            'banner': banner,
+                            'banee': banee,
+                            'hours': timeout,
+                            'reason': reason
+                        });
+                        var quoteString = dbot.t('tban_quote', {
+                            'banee': banee,
+                            'banner': banner,
+                            'hours': timeout,
+                            'time': new Date().toUTCString(),
+                            'reason': reason
+                        });
+                    } else {
                         var notifyString = dbot.t('nbanned', {
                             'network': network,
                             'banner': banner,
@@ -84,8 +101,7 @@ var commands = function(dbot) {
                             'time': new Date().toUTCString(),
                             'reason': reason
                         });
-                    //}
-                    console.log(notifyString);
+                    }
 
                     // Add qutoe category documenting ban
                     if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
@@ -100,12 +116,23 @@ var commands = function(dbot) {
                         dbot.api.report.notify(server, adminChannel, notifyString);
                         dbot.say(event.server, adminChannel, notifyString);
 
-                        dbot.say(event.server, banee, dbot.t('nbanned_notify', {
-                            'network': network,
-                            'banner': banner,
-                            'reason': reason,
-                            'admin_channel': adminChannel 
-                        }));
+                        if(!_.isUndefined(timeout)) {
+                            dbot.say(event.server, banee, dbot.t('tbanned_notify', {
+                                'network': network,
+                                'banner': banner,
+                                'reason': reason,
+                                'hours': timeout,
+                                'admin_channel': adminChannel 
+                            }));
+                        } else {
+                            dbot.say(event.server, banee, dbot.t('nbanned_notify', {
+                                'network': network,
+                                'banner': banner,
+                                'reason': reason,
+                                'hours': timeout,
+                                'admin_channel': adminChannel 
+                            }));
+                        }
                     }
 
                     // Ban the user from all channels
@@ -196,7 +223,7 @@ var commands = function(dbot) {
     commands['~kickstats'].access = 'regular';
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
-    commands['~nban'].regex = /^~nban ([\d^ ]+)?([^ ]+) (.+)$/;
+    commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
 
     return commands;
 };

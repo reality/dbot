@@ -78,9 +78,9 @@ var kick = function(dbot) {
     this.internalAPI = {
         'addTempBan': function(server, banee, timeout) {
             dbot.api.timers.addTimeout(timeout, function() {
-            
-            });  
-        }
+                this.api.networkUnban(server, banee, dbot.config.name, function(err) {});
+            }.bind(this));  
+        }.bind(this)
     };
     
     this.listener = function(event) {
