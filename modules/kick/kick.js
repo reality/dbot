@@ -115,6 +115,7 @@ var kick = function(dbot) {
     this.onLoad = function() {
         _.each(this.tempBans, function(bans, server) {
             _.each(bans, function(timeout, nick) {
+                timeout = new Date(timeout);
                 this.internalAPI.addTempBan(server, nick, timeout); 
             }, this);
         }, this);
