@@ -14,7 +14,7 @@ then
     exit 1
 fi
 
-npm install ent underscore request sandbox express moment jade@0.25
+npm install wordnik ent underscore request sandbox express moment jade@0.25
 
 cd public/
 wget http://twitter.github.com/bootstrap/assets/bootstrap.zip
