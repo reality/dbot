@@ -12,8 +12,8 @@ var api = function(dbot) {
             if(user){
                 this.db.create('profiles', user.id, {
                     'id': user.id,
-                    'profile': dbot.config.profile.schema.profile,
-                    'preferences': dbot.config.profile.schema.preferences
+                    'profile': this.config.schema.profile,
+                    'preferences': this.config.schema.preferences
                 }, function(err, result){
                     if(err){
                         console.log(err);
