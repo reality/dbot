@@ -51,5 +51,8 @@
     },
     "access_denied": {
         "en": "{user}: You don't have the access level to run this command."
+    },
+    "module_commands": {
+        "en": "Commands in {module}: {commands}."
     }
 }

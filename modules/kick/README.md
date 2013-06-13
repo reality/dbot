@@ -15,3 +15,15 @@ people.
 
 #### ~kickstats
 Show a list of top kickers and kickees.
+
+#### ~ckick [#channel] [username] [reason]
+Kick a user from a channel.
+
+#### ~cban [#channel] [username] [reason]
+Ban a user from a channel.
+
+#### ~nban {optional: Duration in Hours} [username] [reason]
+Ban a user from the network.
+
+#### ~nunban [username] [reason]
+Unban a user from the network.

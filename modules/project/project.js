@@ -44,7 +44,10 @@ var project = function(dbot) {
         },
         'translationProgress' : function(callback){
             var translation = [] ;
-            var str = _.values(dbot.strings);
+            var str = _.filter(dbot.strings, function(strings, key) {
+                return _.include(this.config.string_exceptions, key) != true;
+            }, this);
+            str = _.values(str);
             for (var i = 0; i < str.length; i++){
                var cur = _.keys(str[i]);
                for (var j = 0; j < cur.length; j++) {

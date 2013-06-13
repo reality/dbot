@@ -41,49 +41,128 @@ var commands = function(dbot) {
 
         // Kick and ban from all channels on the network.
         '~nban': function(event) {
+            if(!event.input) return;
+
             var server = event.server,
                 banner = event.user,
-                banee = event.input[1],
-                reason = event.input[2],
-                channels = dbot.config.servers[server].channels;
+                timeout = event.input[1],
+                banee = event.input[2],
+                reason = event.input[3],
+                adminChannel = this.config.admin_channel[event.server];
+                channels = dbot.config.servers[server].channels,
+                network = event.server;
 
-            var i = 0;
-            var banChannel = function(channels) {
-                if(i >= channels.length) return;
-                var channel = channels[i];
-                this.api.ban(server, banee, channel);
-                this.api.kick(server, banee, channel, reason + 
-                    ' (network-wide ban requested by ' + banner + ')');
-                setTimeout(function() {
-                    i++;  banChannel(channels);
-                }, 1000);
-            }.bind(this);
-            banChannel(channels);
+            if(this.config.network_name[event.server]) {
+                network = this.config.network_name[event.server];
+            }
+            console.log(timeout);
+            console.log(banee);
+            console.log(reason);
 
-            var notifyString = dbot.t('nbanned', {
-                'banner': banner,
-                'banee': banee,
-                'reason': reason
+            dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
+                // Add host record entry
+                if(host) {
+                    if(!_.has(this.hosts, event.server)) this.hosts[event.server] = {};
+                    this.hosts[event.server][banee] = host;
+
+                    // Create notify string
+                    if(!_.isUndefined(timeout)) {
+                        timeout = parseFloat(timeout.trim());
+                        
+                        var msTimeout = new Date(new Date().getTime() + (timeout * 3600000));
+                        if(!_.has(this.tempBans, event.server)) this.tempBans[event.server] = {};
+                        this.tempBans[event.server][banee] = msTimeout;
+                        this.internalAPI.addTempBan(event.server, banee, msTimeout);
+
+                        var notifyString = dbot.t('tbanned', {
+                            'network': network,
+                            'banner': banner,
+                            'banee': banee,
+                            'hours': timeout,
+                            'reason': reason
+                        });
+                        var quoteString = dbot.t('tban_quote', {
+                            'banee': banee,
+                            'banner': banner,
+                            'hours': timeout,
+                            'time': new Date().toUTCString(),
+                            'reason': reason
+                        });
+                    } else {
+                        var notifyString = dbot.t('nbanned', {
+                            'network': network,
+                            'banner': banner,
+                            'banee': banee,
+                            'reason': reason
+                        });
+                        var quoteString = dbot.t('nban_quote', {
+                            'banee': banee,
+                            'banner': banner,
+                            'time': new Date().toUTCString(),
+                            'reason': reason
+                        });
+                    }
+
+                    // Add qutoe category documenting ban
+                    if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
+                        dbot.db.quoteArrs['ban_' + banee.toLowerCase()] = [ quoteString ];
+                        notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
+                    }
+
+                    // Notify moderators, banee
+                    if(this.config.admin_channel[event.server]) {
+                        channels = _.without(channels, adminChannel);
+
+                        dbot.api.report.notify(server, adminChannel, notifyString);
+                        dbot.say(event.server, adminChannel, notifyString);
+
+                        if(!_.isUndefined(timeout)) {
+                            dbot.say(event.server, banee, dbot.t('tbanned_notify', {
+                                'network': network,
+                                'banner': banner,
+                                'reason': reason,
+                                'hours': timeout,
+                                'admin_channel': adminChannel 
+                            }));
+                        } else {
+                            dbot.say(event.server, banee, dbot.t('nbanned_notify', {
+                                'network': network,
+                                'banner': banner,
+                                'reason': reason,
+                                'hours': timeout,
+                                'admin_channel': adminChannel 
+                            }));
+                        }
+                    }
+
+                    // Ban the user from all channels
+                    var i = 0;
+                    var banChannel = function(channels) {
+                        if(i >= channels.length) return;
+                        var channel = channels[i];
+                        this.api.ban(server, banee, channel);
+                        this.api.kick(server, banee, channel, reason + 
+                            ' (network-wide ban requested by ' + banner + ')');
+                        setTimeout(function() {
+                            i++; banChannel(channels);
+                        }, 1000);
+                    }.bind(this);
+                    banChannel(channels);
+                } else {
+                    event.reply(dbot.t('no_user', { 'user': banee }));
+                }
+            }.bind(this));
+        },
+
+        '~nunban': function(event) {
+            var unbanee = event.params[1],
+                unbanner = event.user;
+
+            this.api.networkUnban(event.server, unbanee, unbanner, function(err) {
+                if(err) {
+                    event.reply(dbot.t('nunban_error', { 'unbanee': unbanee })); 
+                }
             });
-
-            // TODO: When this is merged into database branch, have it use the
-            //   api.quotes.addQuote function
-            if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
-                dbot.db.quoteArrs['ban_' + banee] = [ dbot.t('nban_quote', {
-                    'banee': banee,
-                    'banner': banner,
-                    'time': new Date().toUTCString(),
-                    'reason': reason
-                }) ];
-                
-                notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
-            }
-
-            var notifyChannel = event.channel.name;
-            if(this.config.admin_channels[event.server]) {
-                notifyChannel = this.config.admin_channels[event.server]; 
-            }
-            dbot.api.report.notify(server, notifyChannel, notifyString);
         },
 
         /*** Kick Stats ***/
@@ -144,7 +223,7 @@ var commands = function(dbot) {
     commands['~kickstats'].access = 'regular';
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
-    commands['~nban'].regex = [/^~nban ([^ ]+) (.+)$/, 3];
+    commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
 
     return commands;
 };

@@ -14,7 +14,7 @@ then
     exit 1
 fi
 
-npm install node-uuid underscore request sandbox express moment jade databank databank-redis ent
+npm install wordnik node-uuid underscore request sandbox express moment jade databank databank-redis ent
 
 cd public/
 wget http://twitter.github.com/bootstrap/assets/bootstrap.zip

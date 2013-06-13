@@ -1,3 +1,13 @@
 {
-    "dependencies": [ "web", "quotes", "github" ]
+    "dependencies": ["web", "quotes", "github"],
+    "string_exceptions": [
+        "rdns",
+        "imgurinfo",
+        "xkcd",
+        "link",
+        "log_message",
+        "poll_describe",
+        "branch",
+        "oaosidl"
+    ]
 }
