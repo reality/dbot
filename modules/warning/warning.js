@@ -26,7 +26,7 @@ var warning = function(dbot) {
                 'warner': warner,
                 'warnee': warnee,
                 'reason': reason,
-                'url': dbot.api.web.getUrl('warnings/' + server + '/' + warnee)
+                'url': dbot.api.web.getUrl('warning/' + server + '/' + warnee)
             });
             if(!_.isUndefined(adminChannel)) {
                 adminChannel = event.channel.name; 
@@ -44,7 +44,7 @@ var warning = function(dbot) {
                 event.reply(dbot.t('warning_info', {
                     'user': warnee,
                     'num': this.warnings[server][warnee].length,
-                    'url': dbot.api.web.getUrl('warnings/' + server + '/' + warnee)
+                    'url': dbot.api.web.getUrl('warning/' + server + '/' + warnee)
                 })); 
             } else {
                 event.reply(dbot.t('no_warnings', { 'user': warnee }));
