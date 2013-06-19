@@ -46,7 +46,7 @@ var commands = function(dbot) {
 
     var commands = {
         // Join a channel
-        'join': function(event) {
+        '~join': function(event) {
             var channel = event.params[1];
             if(_.has(event.allChannels, channel)) {
                 event.reply(dbot.t('already_in_channel', {'channel': channel}));
@@ -57,7 +57,7 @@ var commands = function(dbot) {
         },
 
         // Leave a channel
-        'part': function(event) {
+        '~part': function(event) {
             var channel = event.params[1];
             if(!_.has(event.allChannels, channel)) {
                 event.reply(dbot.t('not_in_channel', {'channel': channel}));
@@ -68,7 +68,7 @@ var commands = function(dbot) {
         },
 
         // Op admin caller in given channel
-        'opme': function(event) {
+        '~opme': function(event) {
             var channel = event.params[1];
 
             // If given channel isn't valid just op in current one.
@@ -79,12 +79,12 @@ var commands = function(dbot) {
         },
 
         // Do a git pull and reload
-        'greload': function(event) {
+        '~greload': function(event) {
             exec("git pull", function (error, stdout, stderr) {
                 exec("git submodule update", function (error, stdout, stderr) {
                     event.reply(dbot.t('gpull'));
-                    commands.reload(event);
-                    event.message = 'version';
+                    commands['~reload'](event);
+                    event.message = '~version';
                     event.action = 'PRIVMSG';                                       
                     event.params = event.message.split(' ');                        
                     dbot.instance.emit(event);  
@@ -93,7 +93,7 @@ var commands = function(dbot) {
         },
 
         // Display commit information for part of dbot
-        'version': function(event){
+        '~version': function(event){
             var cmd = "git log --pretty=format:'%h (%s): %ar' -n 1 -- ";
             if(event.params[1]){
                 var input = event.params[1].trim();
@@ -115,7 +115,7 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
-        'status': function(event) {
+        '~status': function(event) {
             var moduleName = event.params[1];
             if(_.has(dbot.status, moduleName)) {
                 var status = dbot.status[moduleName];
@@ -130,14 +130,14 @@ var commands = function(dbot) {
         },
 
         // Reload DB, translations and modules.
-        'reload': function(event) {
+        '~reload': function(event) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             dbot.reloadModules();
             event.reply(dbot.t('reload'));
         },
 
         // Say something in a channel
-        'say': function(event) {
+        '~say': function(event) {
             var channel = event.params[1];
             if(event.params[1] === "@") {
                 channel = event.channel.name;
@@ -147,7 +147,7 @@ var commands = function(dbot) {
         },
 
         // Load new module 
-        'load': function(event) {
+        '~load': function(event) {
             var moduleName = event.params[1];
             if(!_.include(dbot.config.moduleNames, moduleName)) {
                 dbot.config.moduleNames.push(moduleName);
@@ -167,7 +167,7 @@ var commands = function(dbot) {
         },
 
         // Unload a loaded module
-        'unload': function(event) {
+        '~unload': function(event) {
             var moduleNames = dbot.config.moduleNames;
             var moduleName = event.params[1];
             if(_.include(moduleNames, moduleName)) {
@@ -187,7 +187,7 @@ var commands = function(dbot) {
 
         /*** Config options ***/
 
-        'setconfig': function(event) {
+        '~setconfig': function(event) {
             var configPathString = event.params[1],
                 configKey = _.last(configPathString.split('.')),
                 newOption = event.params[2];
@@ -223,7 +223,7 @@ var commands = function(dbot) {
             }
         },
 
-        'pushconfig': function(event) {
+        '~pushconfig': function(event) {
             var configPathString = event.params[1],
                 configKey = _.last(configPathString.split('.')),
                 newOption = event.params[2];
@@ -247,7 +247,7 @@ var commands = function(dbot) {
             }
         },
 
-        'showconfig': function(event) {
+        '~showconfig': function(event) {
             var configPathString = event.params[1];
             var configPath = getCurrentConfig(configPathString);
             
@@ -275,11 +275,11 @@ var commands = function(dbot) {
         command.access = 'admin'; 
     });
 
-    commands['showconfig'].access = 'moderator';
-    commands['join'].access = 'moderator';
-    commands['part'].access = 'moderator';
-    commands['opme'].access = 'moderator';
-    commands['say'].access = 'moderator';
+    commands['~showconfig'].access = 'moderator';
+    commands['~join'].access = 'moderator';
+    commands['~part'].access = 'moderator';
+    commands['~opme'].access = 'moderator';
+    commands['~say'].access = 'moderator';
 
     return commands;
 };
