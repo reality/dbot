@@ -142,6 +142,15 @@ var users = function(dbot) {
     this.on =  ['JOIN', 'NICK'];
 
     this.onLoad = function() {
+        dbot.instance.addPreEmitHook(function(event, callback) {
+            if(event.user) {
+                this.api.resolveUser(event.server, event.user, function(user) {
+                    event.rUser = user;
+                    callback(false);
+                });
+            }
+        }.bind(this));
+
         dbot.instance.addListener('366', 'users', function(event) {
             this.api.getChannel(event.server, event.channel.name, function(channel) {
                 var checkChannelUsers = function(channel) {
