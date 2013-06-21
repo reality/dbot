@@ -150,6 +150,15 @@ var users = function(dbot) {
                 });
             }
         }.bind(this));
+        
+        dbot.instance.addPreEmitHook(function(event, callback) {
+            if(event.channel) {
+                this.api.getChannel(event.server, event.channel.name, function(channel) {
+                    event.rChannel = channel;
+                    callback(false);
+                });
+            }
+        }.bind(this));
 
         dbot.instance.addListener('366', 'users', function(event) {
             this.api.getChannel(event.server, event.channel.name, function(channel) {
