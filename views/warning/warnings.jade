@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  div#backlink
+    a(href='/warning/'+server) &laquo; Server Warnings
+  p
+  div#profile_datatable
+    table.table.table-hover.data
+      thead
+        tr
+          th Date
+          th Warner
+          th Reason
+      tbody
+        for warning, key in warnings
+          tr
+            td #{new Date(warning.time)}
+            td #{warning.warner}
+            td #{warning.reason}

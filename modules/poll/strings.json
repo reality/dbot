@@ -79,7 +79,7 @@
         "na'vi": "{user}: ngaru '{name}' sìpawm sna'o ke lu.",
         "cy": "{user}: Nid ydech chi'n berchen y pôl '{name}'.",
         "nl": "{user}: Je bent niet de eigenaar van de poll '{name}'.",
-        "de": "{user}: "Du darfst die Umfrage '{name}' nicht verändern."
+        "de": "{user}: Du darfst die Umfrage '{name}' nicht verändern."
     },
     "option_removed": {
         "en": "{user}: '{option}' removed from '{name}'",

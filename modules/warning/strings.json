@@ -1,0 +1,11 @@
+{
+    "no_warnings": {
+        "en": "No warnings found for {user}."
+    },
+    "warning_info": {
+        "en": "{user} has {num} warnings. More info can be found at {url}"
+    },
+    "warn_notify": {
+        "en": "Attention: {warner} has issued a warning to {warnee} for \"{reason}.\" More info can be found at {url}"
+    }
+}

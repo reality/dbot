@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h3 Users with warnings on #{server}
+    div#backlink
+        a(href='/warning') &laquo; Server List
+    ul#quotelist
+        -each user in users
+            a(href='/warning/'+server+'/'+user)
+              li.quotes #{user}

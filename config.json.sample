@@ -8,7 +8,8 @@
             "password": "lolturtles",
             "channels": [
                 "#realitest"
-            ]
+            ],
+            "admin_channel": "#realitest"
         }
     },
     "admins": [ "batman" ],

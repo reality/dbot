@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h3 Servers
+    div#backlink
+        a(href='/') &laquo; Home
+    ul#quotelist
+        -each server in servers
+          a(href='/warning/'+server) 
+            li.quotes #{server}
