@@ -3,7 +3,8 @@
  * Description: Track known users
  */
 var _ = require('underscore')._,
-    uuid = require('node-uuid');
+    uuid = require('node-uuid'),
+    async = require('async');
 
 var users = function(dbot) {
 
@@ -26,9 +27,8 @@ var users = function(dbot) {
         }.bind(this),
 
         'createChannel': function(server, name, callback) {
-            var id = uuid.v4();
             this.db.create('channel_users', id, {
-                'id': id,
+                'id': uuid.v4(),
                 'server': server,
                 'name': name,
                 'users': []
