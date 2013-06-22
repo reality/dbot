@@ -161,41 +161,25 @@ var users = function(dbot) {
         }.bind(this));
 
         dbot.instance.addListener('366', 'users', function(event) {
-            this.api.getChannel(event.server, event.channel.name, function(channel) {
-                var checkChannelUsers = function(channel) {
-                    var i = 0;
-                    var checkChannelNicks = function(chanicks) {
-                        if(i == chanicks.length) return;
-                        var nick = chanicks[i]; i++;
-                        this.api.resolveUser(event.server, nick, function(user) {
-                            if(!user) {
-                                this.internalAPI.createUser(event.server, nick, event.channel.name, function(result) {
-                                    this.internalAPI.addChannelUser(result, event.channel.name, function(err) { 
-                                        checkChannelNicks(chanicks);
-                                    });
-                                }.bind(this));
+            var checkChannel = function(channel) {
+                async.eachSeries(event.channel.nicks, function(nick, next) {
+                    this.api.resolveUser(event.server, nick, function(user) {
+                        var checkChannelUser = function(user) {
+                            if(!_.inlude(channel.users, user.id)) {
+                                this.internalAPI.addChannelUser(channel, user, next); 
                             } else {
-                                if(!_.include(user.channels, event.channel.name)) {
-                                    this.internalAPI.addChannelUser(user, event.channel.name, function(err) { 
-                                        checkChannelNicks(chanicks);
-                                    });
-                                    user.channels.push(event.channel.name);
-                                    this.db.save('users', user.id, user, function(err) { });
-                                } else {
-                                    checkChannelNicks(chanicks);
-                                }
+                                next();
                             }
-                        }.bind(this));
-                    }.bind(this);
-                    checkChannelNicks(_.keys(event.channel.nicks));
-                }.bind(this);
+                        }.bind(this);
 
-                if(!channel) { // Channel does not yet exist
-                    this.internalAPI.createChannel(event.server, event.channel.name, checkChannelUsers);
-                } else {
-                    checkChannelUsers(channel);
-                }
-            }.bind(this));
+                        if(user) {
+                            checkChannelUser(user); 
+                        } else {
+                            this.internalAPI.createUser(event.server, nick, channel.id, checkChannelUser);
+                        }
+                    }.bind(this));
+                });
+            };
         }.bind(this));
 
         var connections = dbot.instance.connections;
