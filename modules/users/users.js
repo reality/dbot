@@ -41,16 +41,20 @@ var users = function(dbot) {
             });
         }.bind(this),
 
-        'addChannelUser': function(user, channelName, callback) {
-            this.api.getChannel(user.server, channelName, function(channel) {
+        'addChannelUser': function(channel, user, callback) {
+            if(!_.include(channel.users, user.id)) {
                 channel.users.push(user.id);
+            }
+            if(!_.include(user.channels, channel.id) {
+                user.channels.push(channel.id);
+            }
+
+            this.db.save('users', user.id, user, function(err) {
                 this.db.save('channel_users', channel.id, channel, function(err) {
-                    if(!err) {
-                        dbot.api.event.emit('new_channel_user', [ user, channel ]);
-                        callback();
-                    }
+                    dbot.api.event.emit('new_channel_user', [ user, channel ]);
+                    callback(err);
                 });
-            }.bind(this));
+            });
         }.bind(this), 
 
         'updateChannelPrimaryUser': function(server, oldUser, newUser) {
@@ -90,52 +94,26 @@ var users = function(dbot) {
     };
 
     this.listener = function(event) {
+        // TODO: If user joins channel with alias
         if(event.action == 'JOIN' && event.user != dbot.config.name) {
-            this.api.resolveUser(event.server, event.user, function(user) {
-                var needsUpdating = false;
-
-                if(!user) { // User does not yet exist 
-                    user = {
-                        'id': uuid.v4(),
-                        'primaryNick': event.user,
-                        'currentNick': event.user,
-                        'server': event.server,
-                        'channels': [],
-                        'aliases': []
-                    };
-                    needsUpdating = true;
-                }
-
-                if(!_.include(user.channels, event.channel.name)) { // User not yet channel user
-                    user.channels.push(event.channel.name);
-                    this.internalAPI.addChannelUser(user, event.channel.name, function(err) { });
-                    needsUpdating = true;
-                }
-
-                if(user.currentNick != event.user) {
-                    user.currentNick = event.user;
-                    needsUpdating = true;
-                }
-
-                if(needsUpdating == true) {
-                    this.db.save('users', user.id, user, function(err) { });
-                }
-            }.bind(this));
+            if(!event.rUser) {
+                this.internalAPI.createUser(event.server, event.user, event.channel.name, function(user) {
+                    this.internalAPI.addChannelUser(channel, user, function() {}); 
+                });
+            } else if(!_.include(event.rUser.channels, event.rChannel.id)) {
+                this.internalAPI.addChannelUser(channel, user, function() {}); 
+            }
         } else if(event.action == 'NICK') {
-            this.api.resolveUser(event.server, event.user, function(user) {
-                this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
-                    user.currentNick = event.newNick;
+            this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
+                event.rUser.currentNick = event.newNick;
 
-                    if(!isKnown) {
-                        user.aliases.push(event.newNick);
-                    }
+                if(!isKnown) {
+                    event.rUser.aliases.push(event.newNick);
+                }
 
-                    this.db.save('users', user.id, user, function(err) {
-                        if(!err) {
-                            dbot.api.event.emit('new_user_alias', [ user, event.newNick ]);
-                        }
-                    });
-                }.bind(this));
+                this.db.save('users', event.rUser.id, event.rUser, function(err) {
+                    dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
+                });
             }.bind(this));
         }
     }.bind(this);
@@ -182,8 +160,7 @@ var users = function(dbot) {
             };
         }.bind(this));
 
-        var connections = dbot.instance.connections;
-        _.each(connections, function(connection) {
+        _.each(dbot.instance.connections, function(connection) {
             connection.updateNickLists(); 
         });
     };
