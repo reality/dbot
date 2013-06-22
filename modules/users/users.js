@@ -9,14 +9,13 @@ var users = function(dbot) {
 
     /*** Internal API ***/
     this.internalAPI = {
-        'createUser': function(server, nick, channel, callback) {
-            var id = uuid.v4();
+        'createUser': function(server, nick, callback) {
             this.db.create('users', id, {
-                'id': id,
+                'id': uuid.v4(),
                 'primaryNick': nick,
                 'currentNick': nick,
                 'server': server,
-                'channels': [ channel ],
+                'channels': [ ],
                 'aliases': []
             }, function(err, result) {
                 if(!err) {
@@ -97,7 +96,7 @@ var users = function(dbot) {
         // TODO: If user joins channel with alias
         if(event.action == 'JOIN' && event.user != dbot.config.name) {
             if(!event.rUser) {
-                this.internalAPI.createUser(event.server, event.user, event.channel.name, function(user) {
+                this.internalAPI.createUser(event.server, event.user, function(user) {
                     this.internalAPI.addChannelUser(channel, user, function() {}); 
                 });
             } else if(!_.include(event.rUser.channels, event.rChannel.id)) {
@@ -153,7 +152,7 @@ var users = function(dbot) {
                         if(user) {
                             checkChannelUser(user); 
                         } else {
-                            this.internalAPI.createUser(event.server, nick, channel.id, checkChannelUser);
+                            this.internalAPI.createUser(event.server, nick, checkChannelUser);
                         }
                     }.bind(this));
                 });
