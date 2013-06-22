@@ -247,7 +247,7 @@ var commands = function(dbot) {
                         configPath = configPath.split('.');
                         configPath.pop();
                         event.params[1] = configPath.join('.');
-                        this.commands['showconfig'](event);
+                        this.commands['~showconfig'](event);
                     }
                 }.bind(this));
             } else {
