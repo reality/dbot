@@ -11,8 +11,9 @@ var users = function(dbot) {
     /*** Internal API ***/
     this.internalAPI = {
         'createUser': function(server, nick, callback) {
+            var id = uuid.v4();
             this.db.create('users', id, {
-                'id': uuid.v4(),
+                'id': id,
                 'primaryNick': nick,
                 'currentNick': nick,
                 'server': server,
@@ -27,8 +28,9 @@ var users = function(dbot) {
         }.bind(this),
 
         'createChannel': function(server, name, callback) {
+            var id = uuid.v4();
             this.db.create('channel_users', id, {
-                'id': uuid.v4(),
+                'id': id,
                 'server': server,
                 'name': name,
                 'users': []
@@ -44,7 +46,7 @@ var users = function(dbot) {
             if(!_.include(channel.users, user.id)) {
                 channel.users.push(user.id);
             }
-            if(!_.include(user.channels, channel.id) {
+            if(!_.include(user.channels, channel.id)) {
                 user.channels.push(channel.id);
             }
 
@@ -53,7 +55,7 @@ var users = function(dbot) {
                     dbot.api.event.emit('new_channel_user', [ user, channel ]);
                     callback(err);
                 });
-            });
+            }.bind(this));
         }.bind(this), 
 
         'updateChannelPrimaryUser': function(server, oldUser, newUser) {
@@ -97,10 +99,10 @@ var users = function(dbot) {
         if(event.action == 'JOIN' && event.user != dbot.config.name) {
             if(!event.rUser) {
                 this.internalAPI.createUser(event.server, event.user, function(user) {
-                    this.internalAPI.addChannelUser(channel, user, function() {}); 
-                });
+                    this.internalAPI.addChannelUser(event.rChannel, user, function() {}); 
+                }.bind(this));
             } else if(!_.include(event.rUser.channels, event.rChannel.id)) {
-                this.internalAPI.addChannelUser(channel, user, function() {}); 
+                this.internalAPI.addChannelUser(event.rChannel, event.rUser, function() {}); 
             }
         } else if(event.action == 'NICK') {
             this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
@@ -116,7 +118,7 @@ var users = function(dbot) {
             }.bind(this));
         }
     }.bind(this);
-    this.on =  ['JOIN', 'NICK'];
+    this.on = ['JOIN', 'NICK'];
 
     this.onLoad = function() {
         dbot.instance.addPreEmitHook(function(event, callback) {
@@ -125,6 +127,8 @@ var users = function(dbot) {
                     event.rUser = user;
                     callback(false);
                 });
+            } else {
+                callback(false);
             }
         }.bind(this));
         
@@ -134,15 +138,17 @@ var users = function(dbot) {
                     event.rChannel = channel;
                     callback(false);
                 });
+            } else {
+                callback(false);
             }
         }.bind(this));
 
         dbot.instance.addListener('366', 'users', function(event) {
             var checkChannel = function(channel) {
-                async.eachSeries(event.channel.nicks, function(nick, next) {
+                async.eachSeries(_.keys(event.channel.nicks), function(nick, next) {
                     this.api.resolveUser(event.server, nick, function(user) {
                         var checkChannelUser = function(user) {
-                            if(!_.inlude(channel.users, user.id)) {
+                            if(!_.include(channel.users, user.id)) {
                                 this.internalAPI.addChannelUser(channel, user, next); 
                             } else {
                                 next();
@@ -155,8 +161,14 @@ var users = function(dbot) {
                             this.internalAPI.createUser(event.server, nick, checkChannelUser);
                         }
                     }.bind(this));
-                });
-            };
+                }.bind(this), function(err) {});
+            }.bind(this);
+
+            if(!event.rChannel) {
+                this.internalAPI.createChannel(event.server, event.channel.name, checkChannel);
+            } else {
+                checkChannel(event.rChannel);
+            }
         }.bind(this));
 
         _.each(dbot.instance.connections, function(connection) {
