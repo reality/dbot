@@ -57,7 +57,7 @@
     },
     "ban_usage": {
         "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands.",
-        "cy": "{user}: Defnydd: ~ban [defnyddiwr] [modiwl/gorchymyn]. Defnyddio * am pob modiwlau a gorchmynion."
+        "cy": "{user}: Defnydd: ~ban [defnyddiwr] [modiwl/gorchymyn]. Defnyddio * am pob modiwlau a gorchmynion.",
         "nl": "{user}: Gebruik: ~ban [gebruiker] [module/commando]. Gebruik * voor alle modules en alle commandos.",
         "de": "{user}: Benutzung ~ban [Benutzer] [module/Befehl]. Benutze * für alle Module und Befehle."
     },
