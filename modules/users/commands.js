@@ -3,7 +3,7 @@ var _ = require('underscore')._;
 var commands = function(dbot) {
     var commands = {
         '~alias': function(event) {
-            var nick = event.params[1].trim();
+            var nick = event.params[1].trim() || event.user;
             this.api.resolveUser(event.server, nick, function(user) {
                 if(user) {
                     if(nick == user.primaryNick) {
