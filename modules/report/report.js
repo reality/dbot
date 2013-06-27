@@ -20,34 +20,35 @@ var report = function(dbot) {
 
     var commands = {
         '~report': function(event) {
-            var channelName = event.input[1];
-            var nick = event.input[2];
-            var reason = event.input[3];
+            var channelName = event.input[1],
+                nick = event.input[2];
+                reason = event.input[3];
 
-            if(_.has(event.allChannels, channelName)) {
-                if(dbot.api.users.isChannelUser(event.server, nick, channelName, true)) {
-                    nick = dbot.api.users.resolveUser(event.server, nick, true);
-                    this.api.notify(event.server, channelName, dbot.t('report', {
-                        'reporter': event.user,
-                        'reported': nick,
-                        'channel': channelName,
-                        'reason': reason
-                    }));
-                    event.reply(dbot.t('reported', { 'reported': nick }));
+            dbot.api.users.resolveUser(event.server, nick, function(reportee) {
+                if(_.has(event.allChannels, channelName)) {
+                    if(reportee) {
+                        this.api.notify(event.server, channelName, dbot.t('report', {
+                            'reporter': event.user,
+                            'reported': nick,
+                            'channel': channelName,
+                            'reason': reason
+                        }));
+                        event.reply(dbot.t('reported', { 'reported': nick }));
+                    } else {
+                        event.reply(dbot.t('user_not_found', { 
+                            'reported': nick,
+                            'channel': channelName 
+                        }));
+                    }
                 } else {
-                    event.reply(dbot.t('user_not_found', { 
-                        'reported': nick,
-                        'channel': channelName 
-                    }));
-                } 
-            } else {
-                event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
-            }
+                    event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
+                }
+            }.bind(this));
         },
 
         '~notify': function(event) {
-            var channelName = event.input[1];
-            var message = event.input[2];
+            var channelName = event.input[1],
+                message = event.input[2];
 
             if(_.has(event.allChannels, channelName)) {
                 this.api.notify(event.server, channelName, dbot.t('notify', {
