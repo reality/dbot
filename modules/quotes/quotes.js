@@ -35,7 +35,7 @@ var quotes = function(dbot) {
 
         'cleanRef': function(key) {
             key = key.toLowerCase();
-            while(key.endsWith("_")) {
+            while(key.slice(-1) == '_') {
                 key = key.substring(0, key.length-1);
             }
             return key;
@@ -53,7 +53,7 @@ var quotes = function(dbot) {
             });
 
             clearTimeout(this.rmTimer);
-            if(this.rmCache.length < dbot.config.quotes.rmLimit) {
+            if(this.rmCache.length < this.config.rmLimit) {
                 this.rmTimer = setTimeout(function() {
                     this.rmCache.length = 0; // lol what
                 }.bind(this), 600000);
