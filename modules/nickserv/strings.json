@@ -1,0 +1,14 @@
+{
+    "authed": {
+        "en": "{nick} is authed with nickserv."
+    },
+    "not_authed": {
+        "en": "{nick} is not authed with nickserv."
+    },
+    "hostmask": {
+        "en": "Hostmask for {nick}: {host}"
+    },
+    "no_hostmask": {
+        "en": "No hostmask could be found for {nick}"   
+    }
+}

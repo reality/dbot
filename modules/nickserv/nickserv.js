@@ -24,6 +24,33 @@ var nickserv = function(dbot) {
         }
     };
 
+    this.commands = {
+        '~auth': function(event) {
+            var user = event.params[1] || event.user;
+            this.api.auth(event.server, user, function(isAuthed) {
+                if(isAuthed) {
+                    event.reply(dbot.t('authed', { 'nick': user })); 
+                } else {
+                    event.reply(dbot.t('not_authed', { 'nick': user })); 
+                }
+            });
+        },
+
+        '~hostmask': function(event) {
+            var user = event.params[1] || event.user;
+            this.api.getUserHost(event.server, user, function(host) {
+                if(host) {
+                    event.reply(dbot.t('hostmask', {
+                        'nick': user,
+                        'host': host
+                    }));
+                } else {
+                    event.reply(dbot.t('no_hostmask', { 'nick': user }));
+                }
+            });
+        }
+    };
+
     this.listener = function(event) {
         if(event.action == 'NOTICE') {
             var nickserv = dbot.config.servers[event.server].nickserv,
@@ -33,7 +60,7 @@ var nickserv = function(dbot) {
             if(event.user == nickserv) {
                 var info = event.params.match(statusRegex);
                 if(info && _.has(this.authStack, event.server)) {
-                    if(info[2] == acceptableState ) {
+                    if(info[2] == acceptableState) {
                         this.authStack[event.server][info[1]](true);
                     } else {
                         this.authStack[event.server][info[1]](false);
