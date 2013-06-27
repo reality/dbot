@@ -21,8 +21,8 @@ var command = function(dbot) {
         } 
        
         this.api.hasAccess(event.server, event.user, commandName, function(hasAccess) {
-            dbot.api.ignore.isUserIgnoring(event.server, event.user, commandName, function(isIgnoring) {
-                dbot.api.ignore.isUserBanned(event.server, event.user, commandName, function(isBanned) {
+            dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
+                dbot.api.ignore.isUserBanned(event.rUser, commandName, function(isBanned) {
                     if(isBanned) {
                         if(this.config.banOutput && commandName != '~') {
                             event.reply(dbot.t('command_ban', {'user': event.user})); 

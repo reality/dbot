@@ -39,6 +39,14 @@
         "nl": "{user}: Gebruik: ~unignore [module]. Modules die momenteel worden genegeerd: {modules}.",
         "de": "{user}: Benutzung: ~unignore [module]. Module, die im Moment ignoriert werden: {modules}."
     },
+    "empty_unignore_usage": {
+        "en": "{user}: Usage: ~unignore [module].",
+        "es": "{user}: Modo de empleo: ~unignore [módulo].",
+        "na'vi": "{user}: Sar: ~unignore ['u].",
+        "cy": "{user}: Defnydd: ~unignore [modiwl].",
+        "nl": "{user}: Gebruik: ~unignore [module].",
+        "de": "{user}: Benutzung: ~unignore [module]."
+    },
     "invalid_unignore": {
         "en": "{user}: You're not ignoring that module or it doesn't exist.",
         "es": "{user}: No ignoras este módulo o no existe.",
@@ -57,7 +65,7 @@
     },
     "ban_usage": {
         "en": "{user}: Usage: ~ban [user] [module/command]. Use * for all modules and commands.",
-        "cy": "{user}: Defnydd: ~ban [defnyddiwr] [modiwl/gorchymyn]. Defnyddio * am pob modiwlau a gorchmynion."
+        "cy": "{user}: Defnydd: ~ban [defnyddiwr] [modiwl/gorchymyn]. Defnyddio * am pob modiwlau a gorchmynion.",
         "nl": "{user}: Gebruik: ~ban [gebruiker] [module/commando]. Gebruik * voor alle modules en alle commandos.",
         "de": "{user}: Benutzung ~ban [Benutzer] [module/Befehl]. Benutze * für alle Module und Befehle."
     },
