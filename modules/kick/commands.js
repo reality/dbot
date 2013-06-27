@@ -55,9 +55,6 @@ var commands = function(dbot) {
             if(this.config.network_name[event.server]) {
                 network = this.config.network_name[event.server];
             }
-            console.log(timeout);
-            console.log(banee);
-            console.log(reason);
 
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
                 // Add host record entry

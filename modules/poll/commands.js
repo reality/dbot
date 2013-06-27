@@ -13,63 +13,59 @@ var commands = function(dbot) {
             _.each(options, function(item, index, list) { list[index] = [ item, 0 ]; })
             votes = _.object(options);
 
-            dbot.api.users.resolveUser(event.server, event.user, function(user) {
-                this.db.create('poll', name, {
-                    'name': name,
-                    'description': description,
-                    'owner': user.id,
-                    'votes': votes,
-                    'votees': {}
-                }, function(err, value) {
-                    if(!err) {
-                        event.reply(dbot.t('poll_created', {
-                            'name': name, 
-                            'description': description, 
-                            'url': dbot.api.web.getUrl('poll/' + name)     
-                        })); 
-                    } else if(err instanceof AlreadyExistsError) {
-                        event.reply(dbot.t('poll_exists', { 'name': name }));
-                    }
-                });
-            }.bind(this));
+            this.db.create('poll', name, {
+                'name': name,
+                'description': description,
+                'owner': event.rUser.id,
+                'votes': votes,
+                'votees': {}
+            }, function(err, value) {
+                if(!err) {
+                    event.reply(dbot.t('poll_created', {
+                        'name': name, 
+                        'description': description, 
+                        'url': dbot.api.web.getUrl('poll/' + name)     
+                    })); 
+                } else if(err instanceof AlreadyExistsError) {
+                    event.reply(dbot.t('poll_exists', { 'name': name }));
+                }
+            });
         },
 
         '~addoption': function(event) {
             var name = event.input[1].toLowerCase(),
                 option = event.input[2].toLowerCase();
             
-            dbot.api.users.resolveUser(event.server, event.user, function(user) {
-                this.db.read('poll', name, function(err, poll) {
-                    if(!err) {
-                        if(poll.owner === user.id) {
-                            if(!_.has(poll.votes, option)) {
-                                poll.votes[option] = 0;
-                                this.db.save('poll', name, poll, function(err) {
-                                    event.reply(dbot.t('option_added', {
-                                        'user': event.user, 
-                                        'name': name, 
-                                        'option': option
-                                    }));
-                                });
-                            } else {
-                                event.reply(dbot.t('option_exists', {
-                                    'option': option,
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    if(poll.owner === event.rUser.id) {
+                        if(!_.has(poll.votes, option)) {
+                            poll.votes[option] = 0;
+                            this.db.save('poll', name, poll, function(err) {
+                                event.reply(dbot.t('option_added', {
+                                    'user': event.user, 
                                     'name': name, 
-                                    'user': event.user
+                                    'option': option
                                 }));
-                            }
+                            });
                         } else {
-                            event.reply(dbot.t('not_poll_owner', {
-                                'user': event.user,
-                                'name': name
+                            event.reply(dbot.t('option_exists', {
+                                'option': option,
+                                'name': name, 
+                                'user': event.user
                             }));
                         }
                     } else {
-                        if(err instanceof NoSuchThingError) {
-                            event.reply(dbot.t('poll_unexistent', { 'name': name }));
-                        }
+                        event.reply(dbot.t('not_poll_owner', {
+                            'user': event.user,
+                            'name': name
+                        }));
                     }
-                }.bind(this));
+                } else {
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                    }
+                }
             }.bind(this));
         },
 
@@ -77,32 +73,30 @@ var commands = function(dbot) {
             var name = event.input[1].toLowerCase(),
                 option = event.input[2].toLowerCase();
 
-            dbot.api.users.resolveUser(event.server, event.user, function(user) {
-                this.db.read('poll', name, function(err, poll) {
-                    if(!err) {
-                        if(poll.owner === user.id) {
-                            if(_.has(poll.votes, option)) {
-                                delete poll.votes[option];
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    if(poll.owner === event.rUser.id) {
+                        if(_.has(poll.votes, option)) {
+                            delete poll.votes[option];
 
-                                this.db.save('poll', name, poll, function(err) {
-                                    event.reply(dbot.t('option_removed', {
-                                        'user': event.user,
-                                        'name': name, 
-                                        'option': option
-                                    }));
-                                }.bind(this));
-                            } else {
-                                event.reply(dbot.t('invalid_vote', { 'vote': option }));
-                            }
+                            this.db.save('poll', name, poll, function(err) {
+                                event.reply(dbot.t('option_removed', {
+                                    'user': event.user,
+                                    'name': name, 
+                                    'option': option
+                                }));
+                            }.bind(this));
                         } else {
-                            event.reply(dbot.t('not_poll_owner', { 'name': name }));
+                            event.reply(dbot.t('invalid_vote', { 'vote': option }));
                         }
                     } else {
-                        if(err instanceof NoSuchThingError) {
-                            event.reply(dbot.t('poll_unexistent', { 'name': name }));
-                        }
+                        event.reply(dbot.t('not_poll_owner', { 'name': name }));
                     }
-                }.bind(this));
+                } else {
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                    }
+                }
             }.bind(this));
         },
 
@@ -110,37 +104,35 @@ var commands = function(dbot) {
             var name = event.input[1].toLowerCase(),
                 vote = event.input[2].toLowerCase();
             
-            dbot.api.users.resolveUser(event.server, event.user, function(user) {
-                this.db.read('poll', name, function(err, poll) {
-                    if(!err) {
-                        if(_.has(poll.votes, vote)) {
-                            if(_.has(poll.votees, user.id)) {
-                                var oldVote = poll.votees[user.id];
-                                poll.votes[oldVote]--;
-                                poll.votes[vote]++;
-                                poll.votees[user.id] = vote;
-                            } else {
-                                poll.votes[vote]++;
-                                poll.votees[user.id] = vote;
-                            }
-
-                            this.db.save('poll', name, poll, function(err) {
-                                event.reply(dbot.t('voted', {
-                                    'vote': vote, 
-                                    'poll': name,
-                                    'count': poll.votes[vote], 
-                                    'user': event.user
-                                }));
-                            }.bind(this));
+            this.db.read('poll', name, function(err, poll) {
+                if(!err) {
+                    if(_.has(poll.votes, vote)) {
+                        if(_.has(poll.votees, event.rUser.id)) {
+                            var oldVote = poll.votees[event.rUser.id];
+                            poll.votes[oldVote]--;
+                            poll.votes[vote]++;
+                            poll.votees[event.rUser.id] = vote;
                         } else {
-                            event.reply(dbot.t('invalid_vote', { 'vote': vote }));
+                            poll.votes[vote]++;
+                            poll.votees[event.rUser.id] = vote;
                         }
+
+                        this.db.save('poll', name, poll, function(err) {
+                            event.reply(dbot.t('voted', {
+                                'vote': vote, 
+                                'poll': name,
+                                'count': poll.votes[vote], 
+                                'user': event.user
+                            }));
+                        }.bind(this));
                     } else {
-                        if(err instanceof NoSuchThingError) {
-                            event.reply(dbot.t('poll_unexistent', { 'name': name }));
-                        }
+                        event.reply(dbot.t('invalid_vote', { 'vote': vote }));
                     }
-                }.bind(this));
+                } else {
+                    if(err instanceof NoSuchThingError) {
+                        event.reply(dbot.t('poll_unexistent', { 'name': name }));
+                    }
+                }
             }.bind(this));
         },
 
