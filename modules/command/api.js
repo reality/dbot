@@ -5,18 +5,18 @@ var api = function(dbot) {
         /**
          * Does the user have the correct access level to use the command?
          */
-        'hasAccess': function(server, user, command, callback) {
+        'hasAccess': function(user, command, callback) {
             var accessNeeded = dbot.commands[command].access;
 
             if(accessNeeded == 'admin' || accessNeeded == 'moderator') {
                 var allowedNicks = dbot.config.admins;
                 if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
 
-                if(!_.include(allowedNicks, user)) {
+                if(!_.include(allowedNicks, user.primaryNick)) {
                     callback(false);
                 } else {
                     if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
-                        dbot.api.nickserv.auth(server, user, function(result) {
+                        dbot.api.nickserv.auth(user.server, user.currentNick, function(result) {
                             callback(result);
                         });
                     } else {
