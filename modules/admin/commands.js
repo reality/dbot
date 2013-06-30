@@ -244,8 +244,14 @@ var commands = function(dbot) {
                         }
                     } else {
                         event.reply(dbot.t("no_config_key", {'path': configPath}));
+
                         configPath = configPath.split('.');
-                        configPath.pop();
+                        if(_.has(dbot.config.modules, configPath[0])) {
+                            configPath.splice(0, 0, 'modules');
+                        } else {
+                            configPath.pop();
+                        }
+
                         event.params[1] = configPath.join('.');
                         this.commands['~showconfig'](event);
                     }
