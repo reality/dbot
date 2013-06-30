@@ -48,7 +48,7 @@ var commands = function(dbot) {
                 timeout = event.input[1],
                 banee = event.input[2],
                 reason = event.input[3],
-                adminChannel = this.config.admin_channel[event.server];
+                adminChannel = dbot.config.servers[server].admin_channel,
                 channels = dbot.config.servers[server].channels,
                 network = event.server;
 
@@ -107,29 +107,31 @@ var commands = function(dbot) {
                     }
 
                     // Notify moderators, banee
-                    if(this.config.admin_channel[event.server]) {
+                    if(!_.isUndefined(adminChannel)) {
                         channels = _.without(channels, adminChannel);
+                    } else {
+                        adminChannel = event.channel.name;
+                    }
 
-                        dbot.api.report.notify(server, adminChannel, notifyString);
-                        dbot.say(event.server, adminChannel, notifyString);
+                    dbot.api.report.notify(server, adminChannel, notifyString);
+                    dbot.say(event.server, adminChannel, notifyString);
 
-                        if(!_.isUndefined(timeout)) {
-                            dbot.say(event.server, banee, dbot.t('tbanned_notify', {
-                                'network': network,
-                                'banner': banner,
-                                'reason': reason,
-                                'hours': timeout,
-                                'admin_channel': adminChannel 
-                            }));
-                        } else {
-                            dbot.say(event.server, banee, dbot.t('nbanned_notify', {
-                                'network': network,
-                                'banner': banner,
-                                'reason': reason,
-                                'hours': timeout,
-                                'admin_channel': adminChannel 
-                            }));
-                        }
+                    if(!_.isUndefined(timeout)) {
+                        dbot.say(event.server, banee, dbot.t('tbanned_notify', {
+                            'network': network,
+                            'banner': banner,
+                            'reason': reason,
+                            'hours': timeout,
+                            'admin_channel': adminChannel 
+                        }));
+                    } else {
+                        dbot.say(event.server, banee, dbot.t('nbanned_notify', {
+                            'network': network,
+                            'banner': banner,
+                            'reason': reason,
+                            'hours': timeout,
+                            'admin_channel': adminChannel 
+                        }));
                     }
 
                     // Ban the user from all channels
