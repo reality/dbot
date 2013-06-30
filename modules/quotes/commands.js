@@ -8,7 +8,7 @@ var commands = function(dbot) {
 
         // Add a quote to a category
         '~qadd': function(event) {
-            var key = event.input[1].toLowerCase().trim();
+            var key = event.input[1].toLowerCase().trim(),
                 quote = event.input[2];
 
             this.api.addQuote(key, quote, event.user, function(newCount) {

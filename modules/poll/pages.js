@@ -33,8 +33,6 @@ var pages = function(dbot) {
                         });
                     });
                 } else {
-                    console.log(err);
-                    console.log("the thing the thing");
                     res.render('error', { 
                         'name': dbot.config.name, 
                         'message': 'No polls under that key.' 
