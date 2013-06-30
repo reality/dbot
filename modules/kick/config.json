@@ -3,9 +3,6 @@
     "dependencies": [ "command", "report", "users" ],
     "ignorable": true,
     "countSilently": true,
-    "admin_channel": {
-        "aberwiki": "#fishbox"
-    },
     "network_name": {
         "aberwiki": "OAOSIDL"
     },
