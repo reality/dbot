@@ -17,7 +17,7 @@ var commands = function(dbot) {
 
             if(!_.isUndefined(minutes)) {
                 minutes = parseFloat(minutes.trim());
-                var msTimeout = new Date(new Date().getTime() + (minutes * 3600000));
+                var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
                 dbot.api.timers.addTimeout(msTimeout, function() {
                     this.api.unquiet(server, quietee, channel);
                 }.bind(this));  
