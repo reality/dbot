@@ -13,6 +13,10 @@ var kick = function(dbot) {
             dbot.say(server, this.config.chanserv, 'quiet ' + channel + ' ' + user);
         },
 
+        'unquiet': function(server, user, channel) {
+            dbot.say(server, this.config.chanserv, 'unquiet ' + channel + ' ' + user);
+        },
+
         'kick': function(server, user, channel, msg) {
             dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
         },

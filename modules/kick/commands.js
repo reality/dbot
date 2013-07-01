@@ -19,6 +19,21 @@ var commands = function(dbot) {
             event.reply(dbot.t('quieted', { 'quietee': quietee }));
         },
 
+        '~unquiet': function(event) {
+            var server = event.server,
+                quieter = event.user,
+                channel = event.input[1],
+                quietee = event.input[2].trim();
+
+            if(_.isUndefined(channel)) {
+                channel = event.channel.name;
+            }
+            channel = channel.trim();
+
+            this.api.quiet(server, quietee, channel);
+            event.reply(dbot.t('unquieted', { 'quietee': quietee }));
+        },
+
         '~ckick': function(event) {
             var server = event.server,
                 kicker = event.user,
@@ -240,6 +255,7 @@ var commands = function(dbot) {
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
     commands['~quiet'].regex = /^~quiet (#[^ ]+ )?([^ ]+) ?$/;
+    commands['~unquiet'].regex = /^~unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;
 };
