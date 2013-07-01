@@ -10,9 +10,7 @@ var commands = function(dbot) {
                 channel = event.input[1],
                 quietee = event.input[2];
 
-            console.log(event.input);
-
-            if(!channel) {
+            if(_.isUndefined(channel)) {
                 channel = event.channel.name;
             }
 
