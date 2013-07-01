@@ -7,6 +7,9 @@
         "nl": "{user} is {kicks} keer gekickt en heeft anderen {kicked} keer gekickt.",
         "de": "{user} wurde {kicks} mal gekickt und hat {kicked} mal andere Benutzer gekickt."
     },
+    "quieted": {
+        "en": "Quieted {quietee}. Remember: don't be a coconut."
+    },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
         "es": "No expulsás {botname}",

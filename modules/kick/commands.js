@@ -4,6 +4,20 @@ var commands = function(dbot) {
     var commands = {
         /*** Kick Management ***/
 
+        '~quiet': function(event) {
+            var server = event.server,
+                quieter = event.user,
+                channel = event.input[1],
+                quietee = event.input[2];
+
+            if(!channel) {
+                channel = event.channel.name;
+            }
+
+            this.api.quiet(server, quietee, channel);
+            event.reply(dbot.t('quieted', { 'quietee': quietee }));
+        },
+
         '~ckick': function(event) {
             var server = event.server,
                 kicker = event.user,
