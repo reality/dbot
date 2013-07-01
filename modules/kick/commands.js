@@ -30,7 +30,7 @@ var commands = function(dbot) {
             }
             channel = channel.trim();
 
-            this.api.quiet(server, quietee, channel);
+            this.api.unquiet(server, quietee, channel);
             event.reply(dbot.t('unquieted', { 'quietee': quietee }));
         },
 
