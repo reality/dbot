@@ -3,20 +3,33 @@ var _ = require('underscore')._;
 var commands = function(dbot) {
     var commands = {
         /*** Kick Management ***/
-
         '~quiet': function(event) {
             var server = event.server,
                 quieter = event.user,
-                channel = event.input[1],
-                quietee = event.input[2].trim();
+                minutes = event.input[1],
+                channel = event.input[2],
+                quietee = event.input[3].trim();
 
             if(_.isUndefined(channel)) {
                 channel = event.channel.name;
             }
             channel = channel.trim();
 
+            if(!isUndefined(minutes)) {
+                minutes = parseFloat(minutes.trim());
+                var msTimeout = new Date(new Date().getTime() + (timeout * 3600000));
+                dbot.api.timers.addTimeout(msTimeout, function() {
+                    this.api.unquiet(server, quietee, channel);
+                }.bind(this));  
+                event.reply(dbot.t('tquieted', { 
+                    'quietee': quietee,
+                    'minutes': minutes
+                }));
+            } else {
+                event.reply(dbot.t('quieted', { 'quietee': quietee }));
+            }
+
             this.api.quiet(server, quietee, channel);
-            event.reply(dbot.t('quieted', { 'quietee': quietee }));
         },
 
         '~unquiet': function(event) {
@@ -254,7 +267,7 @@ var commands = function(dbot) {
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^~quiet (#[^ ]+ )?([^ ]+) ?$/;
+    commands['~quiet'].regex = /^~quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?$/;
     commands['~unquiet'].regex = /^~unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;

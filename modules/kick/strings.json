@@ -10,6 +10,9 @@
     "quieted": {
         "en": "Quieted {quietee}. Remember: don't be a coconut."
     },
+    "tquieted": {
+        "en": "Quieted {quietee} for {minutes} minutes. Remember: don't be a coconut."
+    },
     "unquieted": {
         "en": "Unquieted {quietee}. Remember: don't be a coconut."
     },
