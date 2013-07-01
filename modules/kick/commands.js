@@ -10,6 +10,8 @@ var commands = function(dbot) {
                 channel = event.input[1],
                 quietee = event.input[2];
 
+            console.log(event.input);
+
             if(!channel) {
                 channel = event.channel.name;
             }
@@ -238,7 +240,7 @@ var commands = function(dbot) {
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^~quiet ([^ ]+)?([^ ]+)$/;
+    commands['~quiet'].regex = /^~quiet (#[^ ]+ )?([^ ]+)$/;
 
     return commands;
 };
