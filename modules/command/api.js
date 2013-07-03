@@ -8,9 +8,10 @@ var api = function(dbot) {
         'hasAccess': function(user, command, callback) {
             var accessNeeded = dbot.commands[command].access;
 
-            if(accessNeeded == 'admin' || accessNeeded == 'moderator') {
+            if(accessNeeded == 'admin' || accessNeeded == 'moderator' || accessNeeded == 'power_user') {
                 var allowedNicks = dbot.config.admins;
                 if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
+                if(accessNeeded == 'power_user') allowedNicks = _.union(allowedNicks, dbot.config.power_users);
 
                 if(!_.include(allowedNicks, user.primaryNick)) {
                     callback(false);
