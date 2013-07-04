@@ -100,6 +100,7 @@ var commands = function(dbot) {
             }
 
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
+                console.log(host);
                 // Add host record entry
                 if(host) {
                     if(!_.has(this.hosts, event.server)) this.hosts[event.server] = {};
