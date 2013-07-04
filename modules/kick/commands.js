@@ -145,7 +145,8 @@ var commands = function(dbot) {
 
                     // Add qutoe category documenting ban
                     if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
-                        dbot.api.quotes.addQuote('ban_' + banee.toLowerCase(), quoteString, function() {});
+                        dbot.api.quotes.addQuote('ban_' + banee.toLowerCase(),
+                            quoteString, banee, function() {});
                         notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
                     }
 
