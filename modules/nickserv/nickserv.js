@@ -72,8 +72,8 @@ var nickserv = function(dbot) {
 
             if(match[1]) match[1] = match[1].replace('\*', '');
             if(match && _.has(this.userStack, event.server) && _.has(this.userStack[event.server], match[1])) {
-                this.userStack[event.server][match[1]](match[3].trim());
                 delete this.userStack[event.server][match[1]];
+                this.userStack[event.server][match[1]](match[3].trim());
             }
         }
     }.bind(this);
