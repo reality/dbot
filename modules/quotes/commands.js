@@ -361,7 +361,7 @@ var commands = function(dbot) {
                 category = result;
             }, function(err) {
                 if(category) {
-                    if(_.has(dbot.config, 'web') && _.has(dbot.config.web, 'webHost')) {
+                    if(_.has(dbot.modules, 'web')) {
                         event.reply(dbot.t('quote_link', {
                             'category': key, 
                             'url': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
