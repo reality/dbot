@@ -76,7 +76,7 @@ var kick = function(dbot) {
                     } else {
                         callback(true); // No host could be found
                     }
-                });
+                }.bind(this));
             }
         }
     };
