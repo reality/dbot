@@ -18,7 +18,7 @@ var pages = function(dbot) {
             });
         },
 
-        '/notify/:server/:user': function(req, res) {
+        '/notify/:server/:channel': function(req, res) {
             var server = req.params.server,
                 channel = req.params.channel,
                 notifies = [];
