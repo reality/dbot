@@ -1,5 +1,6 @@
 {
     "ignorable": true,
     "notifyVoice": false,
-    "dependencies": [ "users" ]
+    "dependencies": [ "users" ],
+    "dbType": "redis"
 }
