@@ -13,9 +13,15 @@ var report = function(dbot) {
                 }
             }, this);
 
-            _.each(ops, function(user) {
-                dbot.say(server, user.name, message);
-            }, this);
+            var i = 0;
+            var notifyChannel = function(ops) {
+                if(i >= ops.length) return;
+                dbot.say(server, ops[i].name, message);
+                setTimeout(function() {
+                    i++; notifyChannel(ops);
+                }, 1000);
+            };
+            notifyChannel(ops);
         }
     };
 
