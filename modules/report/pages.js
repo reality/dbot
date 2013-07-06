@@ -14,7 +14,7 @@ var pages = function(dbot) {
             res.render('channels', {
                 'name': dbot.config.name,
                 'server': server,
-                'channels': _.keys(dbot.instance.servers[server].channels)
+                'channels': _.keys(dbot.instance.connections[server].channels)
             });
         },
 
