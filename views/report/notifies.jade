@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+  div#backlink
+    a(href='/notify/'+server) &laquo; Server Channels
+  p
+  div#profile_datatable
+    table.table.table-hover.data
+      thead
+        tr
+          th Date
+          th Channel
+          th User
+          th Message 
+      tbody
+        for notify, key in notifies
+          tr
+            td #{new Date(notify.time)}
+            td #{notify.channel}
+            td #{notify.user}
+            td #{notify.message}

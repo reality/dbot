@@ -1,4 +1,5 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    uuid = require('node-uuid');
 
 var report = function(dbot) {
     this.api = {
@@ -56,6 +57,17 @@ var report = function(dbot) {
                     'notifier': event.user,
                     'message': message
                 }));
+
+                var id = uuid.v4();
+                this.db.save('notifies', id, {
+                    'id': id,
+                    'server': event.server,
+                    'channel': channelName,
+                    'user': event.user,
+                    'time': new Date().getTime(),
+                    'message': message
+                }, function() {});
+
                 event.reply(dbot.t('notified', {
                     'user': event.user,
                     'channel': channelName
