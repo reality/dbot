@@ -1,11 +1,13 @@
 var databank = require('databank'),
     Databank = databank.Databank,
-    DatabankObject = databank.DatabankObject;
+    DatabankObject = databank.DatabankObject,
+    _ = require('underscore')._;
 
 /**
  * Multiplex databank objects
  */
-var DatabaseDriver = function() {
+var DatabaseDriver = function(config) {
+    this.config = config;
     this.databanks = {};
 };
 
@@ -15,6 +17,7 @@ var DatabaseDriver = function() {
 DatabaseDriver.prototype.createDB = function(name, driver, schema, callback) {
     var params = { 'schema': schema };
 
+    if(driver == 'redis' && _.has(this.config, 'redisPort')) params.port = this.config.redisPort;
     if(driver == 'disk') params.dir = 'db';
 
     this.databanks[name] = Databank.get(driver, params);

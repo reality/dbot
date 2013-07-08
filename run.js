@@ -18,10 +18,10 @@ var DBot = function() {
         this.db = {};
     }
 
-    /*** Load the fancy DB ***/
-    this.ddb = new DatabaseDriver();
-
     this.reloadConfig();
+
+    /*** Load the fancy DB ***/
+    this.ddb = new DatabaseDriver(this.config);
 
     /*** Load main strings ***/
     try {
