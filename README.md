@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Depressionbot is an IRC bot which aims to be the fanciest IRC bot around - On
+DBot is an IRC bot which aims to be the fanciest IRC bot around - On
 the general standard of software fanciness, dbot is statistically rated as being 
 '82% the same as bathing in fine, fine grape juice.'
 
