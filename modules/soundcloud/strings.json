@@ -1,5 +1,8 @@
 {
     "sc_track": {
         "en": "[{title} by {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]"
+    },
+    "sc_notrack": {
+        "en": "No results found."
     }
 }

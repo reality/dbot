@@ -8,6 +8,33 @@ var _ = require('underscore')._,
 var soundcloud = function(dbot) {
     this.ApiRoot = 'http://api.soundcloud.com';
 
+    this.commands = {
+        '~soundcloud': function(event) {
+            var query = event.input[1];
+            request.get(this.ApiRoot + '/tracks.json', {
+                'qs': {
+                    'client_id': this.config.client_id,
+                    'q': query
+                },
+                'json': true
+            }, function(error, response, body) {
+                if(body.length != 0) {
+                    body = body[0];
+                    event.reply(dbot.t('sc_track', {
+                        'title': body.title,
+                        'artist': body.user.username,
+                        'genre': body.genre.trim(),
+                        'plays': body.playback_count,
+                        'favs': body.favoritings_count
+                    }) + ' — ' + body.permalink_url);
+                } else {
+                    event.reply(dbot.t('sc_notrack'));
+                }
+            });
+        }
+    };
+    this.commands['~soundcloud'].regex = [/^~soundcloud (.+)$/, 2];
+
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, 
             /https?:\/\/(www\.)?soundcloud\.com\//,
