@@ -20,6 +20,7 @@ var soundcloud = function(dbot) {
             }, function(error, response, body) {
                 if(body.length != 0) {
                     body = body[0];
+                    if(!body.genre) body.genre = '';
                     event.reply(dbot.t('sc_track', {
                         'title': body.title,
                         'artist': body.user.username,
@@ -49,6 +50,7 @@ var soundcloud = function(dbot) {
                 }, function(error, response, body) {
                     if(response.statusCode == 200) {
                         if(body.kind == 'track') {
+                            if(!body.genre) body.genre = '';
                             event.reply(dbot.t('sc_track', {
                                 'title': body.title,
                                 'artist': body.user.username,
