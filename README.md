@@ -1,4 +1,4 @@
-# Depressionbot IRC Bot
+# DBot IRC Bot
 
 ## Introduction
 
