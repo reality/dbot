@@ -1,0 +1,8 @@
+{
+    "dependencies": [ "command" ],
+    "ignorable": true,
+    "help": "http://github.com/zuzak/dbot-github/blob/master/README.md",
+    "defaultrepo": "reality/dbot",
+    "sortorder": "updated",
+    "useragent": "reality/depressionbot github module"
+}
