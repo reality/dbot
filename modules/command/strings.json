@@ -1,11 +1,12 @@
 {
     "command_ban": {
         "en": "{user} is banned from using this command. Commence incineration.",
-        "es": "{user} está prohibido de usar esta instrucción. Comenzar incineración.",
+        "es": "{user} está prohibido de usar esta instrucción. urrently loaded modules now default: {modules}.",
         "na'vi": "Tsu'ori {user} ke tung. Nga skxawng lu.",
         "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad",
         "nl": "{user} mag dit commando niet meer gebruiken. Bereid het verbrandingsritueel voor.",
-        "de": "{user} wurde von diesem Befehl gebannt. Verbrennung einleiten"
+        "de": "{user} wurde von diesem Befehl gebannt. Verbrennung einleiten",
+	"fr": "{user} est interdit d'utiliser cette commande. Commencer l'incinération."
     },
     "syntax_error": { 
         "en": "Invalid syntax. Initiate incineration.",
@@ -13,46 +14,54 @@
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
         "cy": "Cystrawen annilys. Cychwyn orfflosgiad",
         "nl": "Ongeldige syntax. Bereid het verbrandingsritueel voor.",
-        "de": "Syntax ungültig. Verbrennung einleiten"
+        "de": "Syntax ungültig. Verbrennung einleiten",
+	"fr": "Syntaxe invalide. Initier l'incinération."
     },
     "usage": {
         "en": "Usage for {command}: {usage}.",
         "na'vi": "Nga tsun sivar ìlä {command}: {usage}.",
         "cy": "Defnydd o {command}: {usage}.",
         "nl": "{command} wordt op de volgende manier gebruikt: {usage}.",
-        "de": "Benutzung von {command}: [usage}."
+        "de": "Benutzung von {command}: [usage}.",
+	"fr": "Utilisation de {command}: {usage}."
     },
     "no_usage_info": {
         "en": "No usage information found for {command}.",
         "na'vi": "Oel ke tsun sivar {comamnd}it",
         "cy": "Ni chanfuwyd gwybodaeth am ddefnydd o {command}",
         "nl": "Geen gebruiksinformatie gevonden voor {command}.",
-        "de": "Keine Gebrauchsanweisung gefunden für {command}."
+        "de": "Keine Gebrauchsanweisung gefunden für {command}.",
+	"fr": "Aucune information d'utilisation trouvée pour {command}"
     },
     "help_link": {
         "en": "Help for {module}: {link}",
         "na'vi": "{module}ä srungìl {link} it tok",
         "cy": "Cymorth am {module}: {link}",
         "nl": "Hulp voor {module}: {link}",
-        "de": "Hilfe für {module}: {link}"
+        "de": "Hilfe für {module}: {link}",
+	"fr": "Aide pour {module}: {link}"
     },
     "no_help": {
         "en": "No help found for {module}.",
         "na'vi": "Fì{module}ìri oel ke tsun run srungit",
         "cy": "Ni chanfuwyd cymorth am {module}",
         "nl": "Geen hulp gevonden voor {module}.",
-        "de": "Keine Hilfe gefunden für {module}."
+        "de": "Keine Hilfe gefunden für {module}.",
+	"fr": "Aucune aide trouvée pour {module}."
     },
     "loaded_modules": {
         "en": "Loaded modules: {modules}.",
         "cy": "Modiwlau sy'n lwythodd: {modules}.",
         "nl": "Geladen modules: {modules}.",
-        "de": "Module geladen: {modules}."
+        "de": "Module geladen: {modules}.",
+	"fr": "Modules chargés: {modules}."
     },
     "access_denied": {
-        "en": "{user}: You don't have the access level to run this command."
+        "en": "{user}: You don't have the access level to run this command.",
+	"fr": "{user}: Vous n'avez pas le niveau d'accès requis pour utiliser cette commande."
     },
     "module_commands": {
-        "en": "Commands in {module}: {commands}."
+        "en": "Commands in {module}: {commands}.",
+	"fr": "Commandes de {module}: {commands}."
     }
 }
