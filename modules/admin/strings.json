@@ -158,7 +158,7 @@
         "en": "Failed to load {module}. See 'status {module}'.",
         "cy": "Methu i lwytho {module}. Gwelwch 'status {module}'.",
         "de": "Konnte {module} nicht laden. Siehe 'status {module}'.",
-	"fr:" "Echec du chargement de {module}. Voir 'status {module}'."
+	"fr": "Echec du chargement de {module}. Voir 'status {module}'."
     },
     "no_config_key": {
         "en": "{path} doesn't exist bro",
