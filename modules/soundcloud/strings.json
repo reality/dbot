@@ -1,8 +1,10 @@
 {
     "sc_track": {
-        "en": "[{title} by {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]"
+        "en": "[{title} by {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]",
+	"en": "[{title} par {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]"
     },
     "sc_notrack": {
-        "en": "No results found."
+        "en": "No results found.",
+	"fr": "Aucun résultat trouvé."
     }
 }
