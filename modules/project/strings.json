@@ -206,7 +206,8 @@
 	"fr": "Contribuez au code sur GitHub!"
     },
     "branch": {
-        "en": "{branch}"
+        "en": "{branch}",
+	"fr": "{branch}"
     },
     "git": {
         "en": "version control",
@@ -251,7 +252,8 @@
 	"fr": "Il a des requêtes pull en attente"
     },
     "oaosidl": {
-        "en": "The Official Aberystwyth Open Source International Development League"
+        "en": "The Official Aberystwyth Open Source International Development League",
+	"fr": "La Ligue Officielle de Développement International Open Source d'Aberystwyth"
     },
     "link-autotitle": {
         "en": "Automatically titling links in channels",
