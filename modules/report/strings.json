@@ -4,33 +4,38 @@
         "na'vi": "{reporter}ìl fpìl futa {reported} fe' lu taluna {reason}.",
         "cy": "Sylw! {reporter} wedi adrodd {reported} yn {channel}. Y rheswm a rhoddwyd oedd: \"{reason}.\"",
         "nl": "Waarschuwing: {reporter} heeft {reported} aangegeven in {channel}. De reden die gegeven werd was: \"{reason}.\"",
-        "de": "Achtung: {reporter} hat {reported} in {channel} gemeldet. Grund: \"{reason}.\""
+        "de": "Achtung: {reporter} hat {reported} in {channel} gemeldet. Grund: \"{reason}.\"",
+	"fr": "Attention : {reporter} a reporté {reported} dans {channel}. Raison donnée : \"{reason}.\""
     },
     "reported": {
         "en": "Thank you, {reported} has been reported to the channel administrators.",
         "na'vi": "Irayo si ngari, fìtsengìri ayeyktan omum teri {reported}it set.",
         "cy": "Diolch, {reported} wedi cael ei adrodd i'r gweinyddwyr sianel.",
         "nl": "Bedankt, {reported} is aangegeven bij de administrators.",
-        "de": "Danke, {reported} wurde bei den Administratoren dieses Kanals gemeldet."
+        "de": "Danke, {reported} wurde bei den Administratoren dieses Kanals gemeldet.",
+	"fr": "Merci, {reported} a été reporté aux administrateurs du canal."
     },
     "user_not_found": {
         "en": "{reported} isn't a known user in {channel}.",
         "na'vi": "Oel ke omum {reported}it mì {channel}.",
         "cy": "Nid yw {reported} yn ddefnyddiwr hysbys yn {channel}.",
         "nl": "{reported} is geen bestaande gebruiker in {channel}.",
-        "de": "{reported} ist kein bekannter Benutzer in {channel}."
+        "de": "{reported} ist kein bekannter Benutzer in {channel}.",
+	"fr": "{reported} n'est pas un utilisateur connu dans {channel}."
     },
     "not_in_channel": {
         "en": "I am not present in {channel}.",
         "na'vi": "Oel {channel}it ke tok.",
         "cy": "Dydw i ddim yn bresennol yn {channel}.",
         "nl": "Ik ben niet aanwezig in {channel}.",
-        "de": "Ich bin nicht in {channel} aktiv."
+        "de": "Ich bin nicht in {channel} aktiv.",
+	"fr": "Je ne suis pas présent dans {channel}."
     },
     "notify": {
         "en": "Attention {channel}: {notifier}: {message}"
     },
     "notified": {
-        "en": "{user}: {channel} staff notified."
+        "en": "{user}: {channel} staff notified.",
+	"fr": "{user}: l'équipe de {channel} a été notifiée."
     }
 }
