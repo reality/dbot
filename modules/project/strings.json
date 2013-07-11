@@ -198,7 +198,7 @@
     "web-port": {
         "en": "Web is listening on {port}",
         "cy": "We yn gwrando ar {port}",
-	"fr": "Le web écoute sur {port}
+	"fr": "Le web écoute sur {port}"
     },
     "propaganda": {
         "en": "Contribute to the code on Github!",
