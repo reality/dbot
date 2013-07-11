@@ -5,7 +5,7 @@
             "fr": "{name} parle {lang} ({langen})",
             "it": "{name} parla {lang} ({langen})",
             "cy": "{name} yn siarad {lang} ({langen})",
-            "nl": "{name} spreekt {lang} ({langen})",
+            "nl": "{name} spreekt {lang} ({langen})"
     },
     "thanks": {
         "en": "With thanks to:",
