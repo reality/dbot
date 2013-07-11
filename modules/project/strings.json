@@ -28,7 +28,7 @@
     },
     "en": {
         "en": "English",
-        "fr": "anglais",
+        "fr": "Anglais",
         "de": "Englisch",
         "it": "inglese",
         "cy": "saesneg",
@@ -44,7 +44,7 @@
     },
     "de": {
         "en": "German",
-        "fr": "allemand",
+        "fr": "Allemand",
         "de": "Deutsch",
         "it": "tedesco",
         "cy": "Almaeneg",
@@ -52,7 +52,7 @@
     },
     "it": {
         "en": "Italian",
-        "fr": "italien",
+        "fr": "Italien",
         "de": "Italiener",
         "it": "italiano",
         "cy": "Eidaleg",
@@ -60,7 +60,7 @@
     },
     "cy": {
         "en": "Welsh",
-        "fr": "gallois",
+        "fr": "Gallois",
         "de": "Walisisch",
         "it": "gallese",
         "cy": "cymraeg",
@@ -77,7 +77,7 @@
     },
     "es": {
         "en": "Spanish",
-        "fr": "espagnol",
+        "fr": "Espagnol",
         "de": "Spanisch",
         "it": "spagnolo",
         "cy": "Sbaeneg",
@@ -87,7 +87,8 @@
     "nl": {
         "en": "Dutch",
         "cy": "Iseldireg",
-        "nl": "Nederlands"
+        "nl": "Nederlands",
+	"fr": "Néerlandais"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
