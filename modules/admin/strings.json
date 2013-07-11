@@ -96,7 +96,7 @@
         "cy": "Categori wedi cloi: {category}",
         "nl": "Quote categorie vergrendeld: {category}",
         "de": "Zitat-Kategorie geschlossen: {category}",
-	"fr": "Catégorie de citations verouillée : {category}"
+	"fr": "Catégorie de citations verrouillée : {category}"
     },
     "already_in_channel": {
         "en": "I'm already in {channel}",
@@ -140,13 +140,13 @@
         "en": "{module} status: Shit looks good",
         "cy": "{module} statws: Cachu yn edrych yn dda",
         "de": "Sieht gut aus",
-	"fr": "Status de {module} : Cette merde tourne bien"
+	"fr": "Statut de {module} : Cette merde tourne bien"
     },
     "status_bad": {
         "en": "{module} status: Failed to load: {reason}",
         "cy": "{module} statws: Methu i lwytho: {reason}",
         "de": "{module} Status: Konnte nicht geladen werden: {reason}",
-	"fr": "Status de {module} : échec de chargement : {reason}"
+	"fr": "Statut de {module} : échec de chargement : {reason}"
     },
     "status_unloaded": {
         "en": "Either that module wasn't on the roster or shit is totally fucked.",
