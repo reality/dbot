@@ -4,9 +4,11 @@
         "na'vi": "kxawm ke wivìntxu evengur",
         "cy": "Gallai fod yn anniogel ar gwaith",
         "nl": "bevat mogelijk gevoelige beelden",
-        "de": "Könnte 18+ Material enthalten"
+        "de": "Könnte 18+ Material enthalten",
+	"fr": "peut être risqué pour le travail (NSFW)"
     },
     "imgurinfo": {
-        "en": "[{info}]"
+        "en": "[{info}]",
+	"fr": "[{info}]"
     }
 }
