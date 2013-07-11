@@ -5,7 +5,7 @@
             "fr": "{name} parle {lang} ({langen})",
             "it": "{name} parla {lang} ({langen})",
             "cy": "{name} yn siarad {lang} ({langen})",
-            "nl": "{name} spreekt {lang} ({langen})"
+            "nl": "{name} spreekt {lang} ({langen})",
     },
     "thanks": {
         "en": "With thanks to:",
@@ -36,7 +36,7 @@
     },
     "fr": {
         "en": "French",
-        "fr": "français",
+        "fr": "Français",
         "de": "Französisch",
         "it": "francese",
         "cy": "Ffrangeg",
@@ -44,7 +44,7 @@
     },
     "de": {
         "en": "German",
-        "fr": "allemande",
+        "fr": "allemand",
         "de": "Deutsch",
         "it": "tedesco",
         "cy": "Almaeneg",
@@ -77,7 +77,7 @@
     },
     "es": {
         "en": "Spanish",
-        "fr": "espagnole",
+        "fr": "espagnol",
         "de": "Spanisch",
         "it": "spagnolo",
         "cy": "Sbaeneg",
@@ -91,7 +91,7 @@
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
-        "fr": "{name} est à révision {rev}",
+        "fr": "{name} est à la révision {rev}",
         "de": "{name} ist in der Revision {rev}",
         "it": "{name} il numero di revisione {rev}",
         "cy": "{name} ar diwygiad {rev}",
@@ -115,7 +115,7 @@
     },
     "debugmode-true": {
         "en": "Debug mode active",
-        "fr": "debug actif",
+        "fr": "Mode de débogage activé",
         "de": "Debug-Modus aktiviert",
         "it": "debug attivo",
         "cy": "Modd dadfygio gweithredol",
@@ -123,7 +123,7 @@
     },
     "debugmode-false": {
         "en": "Debug off",
-        "fr": "debug éteint",
+        "fr": "Mode de débogage arrêté",
         "de": "Debug-Modus ausgeschaltet",
         "it": "debug spento",
         "cy": "Modd dadfygio wedi'i ddiffodd",
@@ -131,7 +131,7 @@
     },
     "milestones": {
         "en": "Milestones",
-        "fr": "étapes",
+        "fr": "Etapes",
         "cy": "Cerrig milltir",
         "de": "Zwischenziel"
     },
@@ -177,27 +177,33 @@
     },
     "dent-account": {
         "en": "Submitting dents to @{username}",
-        "cy": "Cyflwyno 'dents' i'w @{username}"
+        "cy": "Cyflwyno 'dents' i'w @{username}",
+	"fr": "Envoi de 'dents' à @{username}"
     },
     "dent-push": {
         "en": "Pushing quotes to identi.ca",
-        "cy": "Gwthio dyfyniadau i identi.ca"
+        "cy": "Gwthio dyfyniadau i identi.ca",
+	"fr": "Envoi des citations vers identi.ca"
     },
     "quote-rmlimit": {
         "en": "Quote removal throttle set to {limit}",
-        "cy": "Trothwy ar dileu dyfyniadau gosod i {limit}"
+        "cy": "Trothwy ar dileu dyfyniadau gosod i {limit}",
+	"fr": "Commande d'enlèvement de citations réglée à {limit}"
     },
     "report-notifyvoice": {
         "en": "Voiced users are being notified of reports",
-        "cy": "Defnyddwyr leisiwyd yn cael eu hysbysu o adroddiadau"
+        "cy": "Defnyddwyr leisiwyd yn cael eu hysbysu o adroddiadau",
+	"fr": "Les utilisateurs ayant la parole sont notifiés des rapports"
     },
     "web-port": {
         "en": "Web is listening on {port}",
-        "cy": "We yn gwrando ar {port}"
+        "cy": "We yn gwrando ar {port}",
+	"fr": "Le web écoute sur {port}
     },
     "propaganda": {
         "en": "Contribute to the code on Github!",
-        "cy": "Cyfrannu at ay cod ar Github!"
+        "cy": "Cyfrannu at ay cod ar Github!",
+	"fr": "Contribuez au code sur GitHub!"
     },
     "branch": {
         "en": "{branch}"
@@ -206,7 +212,7 @@
         "en": "version control",
         "de": "Versionsverwaltung",
         "es": "Control de versiones",
-        "fr": "Festion de versions",
+        "fr": "Gestion de versions",
         "it": "Controllo versione",
         "cy": "Rheoli fersiwn",
         "nl": "Versiebeheersysteem"
@@ -230,7 +236,7 @@
     },
     "langhead-progress": {
         "en": "Translation Progress",
-        "fr": "Avancement de la Traduction",
+        "fr": "Avancement de la traduction",
         "cy": "Cynnydd Cyfieithu",
         "de": "Übersetzungsfortschritt"
     },
@@ -241,13 +247,15 @@
     },
     "outstanding-pullreq": {
         "en": "There are outstanding pull requests",
-        "cy": "Mae disgwyl ceisiadau tynnu"
+        "cy": "Mae disgwyl ceisiadau tynnu",
+	"fr": "Il a des requêtes pull en attente"
     },
     "oaosidl": {
         "en": "The Official Aberystwyth Open Source International Development League"
     },
     "link-autotitle": {
         "en": "Automatically titling links in channels",
-        "cy": "Teitlo awtomatig cysylltiadau mewn sianelau"
+        "cy": "Teitlo awtomatig cysylltiadau mewn sianelau",
+	"fr": "Titre automatiquement les liens dans les channels"
     }
 }
