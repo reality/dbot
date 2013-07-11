@@ -29,7 +29,7 @@
         "cy": "Mae'n bwrw glaw yn uffern o lawer yn {place}.",
         "nl": "Het regent nu toch wel erg hard.",
         "de": "Es regnet stark.",
-	"fr": "Il pleut vachement beaucoup."
+	"fr": "Il pleut à mort."
     },
     "rain-4": {
         "en" : "It's raining fucktons.",
@@ -53,7 +53,7 @@
         "cy": "MAE'N WIR GWLYB TU ALLAN.",
         "nl": "Dit is dus een inloopdouche.",
         "de": "ES IST SO VERDAMMT NASS HIER MANN.",
-	"fr": "C'EST TELLEMENT MOUILLE DEHORS ICI MEC"
+	"fr": "C'EST TELLEMENT MOUILLE DEHORS MEC"
     },
     "rain-7": { 
         "en" : "I AM SO MOIST RIGHT NOW",
@@ -61,7 +61,7 @@
         "cy": "RYDW I'N LLAITH IAWN AR HYN O BRYD",
         "nl": "IK VOEL ME NU TOCH ANDERS WEL BEHOORLIJK ONDER GEZEKEN.",
         "de": "ICH BIN SO EINGENÄSST.",
-	"fr": "JE SUIS TELLEMENT HUMIDE LA MAINTENANT"
+	"fr": "JE SUIS TELLEMENT MOITE LA"
     },
     "rain-8": {
         "en" : "You used a #3 pencil instead of #2, didn't you?",
@@ -69,7 +69,7 @@
         "cy": "Rydych yn defnyddio #2 pensil yn hytrach na #3 pensil, ie?",
         "nl": "PROOST.",
         "de": "Jemand muss dich hassen",
-	"fr": "T'as utilisé un crayon #3 au lieu de #2, n'est-ce pas ?"
+	"fr": "T'as utilisé un crayon #3 au lieu d'un #2, n'est-ce pas ?"
     },
     "rain-9": { 
         "en" : "WELCOME TO ATLANTIS",

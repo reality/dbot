@@ -159,14 +159,15 @@
         "cy": "{category} ({needle}): '{quote}' [{matches} canlyniad]",
         "nl": "{category} ({needle}): '{quote}' [{matches} resultaten]",
         "de": "{category} ({needle}): '{quote}' [{matches} Ergebnisse]",
-	"en": "{category} ({needle}): '{quote}' [{matches} résultats]"
+	"fr": "{category} ({needle}): '{quote}' [{matches} résultats]"
     },
     "quote_cache_auto_remove": {
         "en": "There are {count} quotes in the removal cache, which will be automatically cleared.",
         "na'vi": "{count}a 'upxarel sngelit tok, Oel 'ayku sngelit lukenga.",
         "cy": "Mae {count} dyfyniadau yn y celc dileu a fydd yn cael ei clirio yn awtomatig.",
         "nl": "Er staan {count} quotes klaar om verwijderd te worden, wat automatisch zal gebeuren.",
-        "de": "Es befinden sich {count} im Cache, die automatisch entfernt werden."
+        "de": "Es befinden sich {count} im Cache, die automatisch entfernt werden.",
+	"fr": "Il y a {count} citations dans le cache de suppression, qui va être automatiquement vidé."
     },
     "quote_cache_manual_remove": {
         "en": "There are {count} quotes in the removal cache, which must be manually cleared.",
@@ -174,7 +175,7 @@
         "cy": "Mae {count} dyfyniadau yn y celc dileu a fydd yn cael ei clirio â llaw.",
         "nl": "Er staan {count} quotes klaar om verwijderd te worden, wat handmatig zal moeten gebeuren.",
         "de": "Es befinden sich {count} im Cache, die manuell entfernt werden müssen.",
-	"fr": "Il y a {count} citations dans le cache de suppression, qui va être automatiquement vidé."
+	"fr": "Il y a {count} citations dans le cache de suppression, qui doit être manuellement vidé."
     },
     "quote_cache_cleared": {
         "en": "{count} quotes cleared from the removal cache.",
