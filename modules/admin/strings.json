@@ -5,7 +5,8 @@
         "na'vi": "fpxäkìm {channel}(nemfa)",
         "cy": "Wedi ymuno {channel}",
         "nl": "{channel} binnengekomen",
-        "de": "{channel} beigetreten"
+        "de": "{channel} beigetreten",
+	"fr": "{channel} rejoint"
     },
     "part": {
         "en": "Left {channel}",
@@ -13,7 +14,8 @@
         "na'vi": "Hum {channel}",
         "cy": "Wedi gadael {channel}",
         "nl": "{channel} verlaten",
-        "de": "{channel} verlassen"
+        "de": "{channel} verlassen",
+	"fr": "{channel} quitté"
     },
     "gpull": {
         "en": "Git pulled that shit.",
@@ -21,7 +23,8 @@
         "na'vi": "Gìtìl fì'uti stamarsìm.",
         "cy": "Wedi tynnu git yr cach na i gyd",
         "nl": "Git heeft die zooi binnengehaald.",
-        "de": "Git hat es gezogen"
+        "de": "Git hat es gezogen",
+	"fr": "Git a pullé cette merde"
     },
     "reload": {
         "en": "Reloaded that shit.",
@@ -29,7 +32,8 @@
         "na'vi": "Oel fìuti stìyeftxaw.",
         "cy": "Ail-lwytho'r cach na",
         "nl": "Die zooi opnieuw geladen.",
-        "de": "Neu geladen"
+        "de": "Neu geladen",
+	"fr": "Bordel rechargé"
     },
     "load_module": {
         "en": "Loaded new module: {moduleName}",
@@ -37,7 +41,8 @@
         "na'vi": "Oel {moduleName}it amip stìyeftxaw.",
         "cy": "Wedi llwytho modiwl newydd: {moduleName}",
         "nl": "Nieuwe module geladen: {moduleName}",
-        "de": "Neues Modul geladen: {moduleName}"
+        "de": "Neues Modul geladen: {moduleName}",
+	"fr": "Nouveau module chargé : {moduleName}"
     },
     "unload_module": {
         "en": "Turned off module: {moduleName}",
@@ -45,7 +50,8 @@
         "na'vi": "Oel {moduleName} tswìya'.",
         "cy": "Wedi troi ffwrdd y modiwl: {moduleName}",
         "nl": "Module uitgeschakeld: {moduleName}",
-        "de": "Modul ausgeschaltet: {moduleName}"
+        "de": "Modul ausgeschaltet: {moduleName}",
+	"fr": "Module déchargé : {moduleName}"
     },
     "unload_error": {
         "en": "{moduleName} isn't loaded. Idiot.",
@@ -53,7 +59,8 @@
         "na'vi": "Oel {moduleName}it omum. Nga skxawng lu.",
         "cy": "Di {moduleName} ddim wedi llwytho. Twpsyn",
         "nl": "{moduleName} is niet geladen. Idioot.",
-        "de": "{moduleName} ist nicht geladen, du Idiot."
+        "de": "{moduleName} ist nicht geladen, du Idiot.",
+        "fr": "{moduleName} n'est pas chargé. Idiot."
     },
     "banned": {
         "en": "{user} banned from {command}",
@@ -61,7 +68,8 @@
         "na'vi": "{command}ìri {user} ke tung.",
         "cy": "{user} wedi ei gohurio o {command}",
         "nl": "{user} mag {command} niet meer gebruiken",
-        "de": "{user} wurde von {command} gebannt"
+        "de": "{user} wurde von {command} gebannt",
+        "fr": "{user} a été interdit d'utiliser {command}"
     },
     "unbanned": {
         "en": "{user} unbanned from {command}",
@@ -69,7 +77,8 @@
         "na'vi": "{command}ìri {user} tung set.",
         "cy": "{user} wedi ei dad-wahardd o {command}",
         "nl": "{user} mag {command} weer gebruiken",
-        "de": "{user} wurde von {command} entbannt"
+        "de": "{user} wurde von {command} entbannt",
+	"fr": "{user} peut de nouveau utiliser {command}"
     },
     "unban_error": {
         "en": "{user} wasn't banned from that command, fool.",
@@ -77,7 +86,8 @@
         "na'vi": "{user} fìtsu'oti tamung srekrr, nga skxawng lu.",
         "cy": "Nid oedd {user} wedi ei wahardd o'r gorchymyn yna, twpsyn",
         "nl": "{user} mag dat commando sowieso al gebruiken, mafketel.",
-        "de": "{user} wurde nicht von {command} gebannt, du Trottel"
+        "de": "{user} wurde nicht von {command} gebannt, du Trottel",
+	"fr": "{user} n'a pas été interdit d'utiliser cette commande, imbécile."
     },
     "qlock": {
         "en": "Locked quote category: {category}",
@@ -85,90 +95,107 @@
         "na'vi": "{category}ìri oel 'upxareti fmoli",
         "cy": "Categori wedi cloi: {category}",
         "nl": "Quote categorie vergrendeld: {category}",
-        "de": "Zitat-Kategorie geschlossen: {category}"
+        "de": "Zitat-Kategorie geschlossen: {category}",
+	"fr": "Catégorie de citations verouillée : {category}"
     },
     "already_in_channel": {
         "en": "I'm already in {channel}",
         "na'vi": "Oel {channel}it tok li",
         "cy": "Rydw i eisoes yn {channel}",
         "nl": "Ik ben al in {channel}",
-        "de": "Ich bin schon in {channel}"
+        "de": "Ich bin schon in {channel}",
+	"fr": "Je suis déjà dans {channel}"
     },
     "not_in_channel": {
         "en": "I'm not in {channel}",
         "na'vi": "Oel {channel}it ke tok",
         "cy": "Rydw i ddim yn {channel}",
         "nl": "Ik ben niet aanwezig in {channel}",
-        "de": "Ich bin noch nicht in {channel}"
+        "de": "Ich bin noch nicht in {channel}",
+	"fr": "Je ne suis pas dans {channel}"
     },
     "already_loaded_web": {
         "en": "WHY CAN'T I LOAD ALL THIS WEB? (web already loaded)",
         "na'vi": "PELUN OEL KE TSUN OMUM FÌWETIT NÌWOTX (wetìri oe omum li)",
         "cy": "PAM ALLA I DDIM YN LWYTHO POB Y WE? (We eisoes yn lwytho)",
         "nl": "AL DIT WEB WORDT ME TOCH EEN BEETJE TE VEEL! (web is al geladen)",
-        "de": "WARUM KANN DAS NICHT GELADEN WERDEN? (bereits geladen)"
+        "de": "WARUM KANN DAS NICHT GELADEN WERDEN? (bereits geladen)",
+	"fr": "POURQUOI EST-CE QUE JE PEUX PAS CHARGER TOUT CE WEB? (web déjà chargé)"
     },
     "already_loaded": {
         "en": "{moduleName} is already loaded.",
         "na'vi": "Oel omum teri {moduleName}it li.",
         "cy": "{moduleName} eisoes yn lwytho",
         "nl": "{moduleName} is al geladen.",
-        "de": "{moduleName} ist bereits geladen."
+        "de": "{moduleName} ist bereits geladen.",
+	"fr": "{moduleName} est déjà chargé."
     },
     "no_version": {
         "en": "No version information or queried module not loaded.",
         "cy": "Dim gwybodaeth fersiwn neu modiwl holodd dim yn lwytho",
-        "de": "Keine Informationen verfügbar oder gewünschtes Modul wurde noch nicht geladen."
+        "de": "Keine Informationen verfügbar oder gewünschtes Modul wurde noch nicht geladen.",
+	"fr": "Aucune information de version ou module demandé non chargé."
     },
     "status_good": {
         "en": "{module} status: Shit looks good",
         "cy": "{module} statws: Cachu yn edrych yn dda",
-        "de": "Sieht gut aus"
+        "de": "Sieht gut aus",
+	"fr": "Status de {module} : Cette merde tourne bien"
     },
     "status_bad": {
         "en": "{module} status: Failed to load: {reason}",
         "cy": "{module} statws: Methu i lwytho: {reason}",
-        "de": "{module} Status: Konnte nicht geladen werden: {reason}"
+        "de": "{module} Status: Konnte nicht geladen werden: {reason}",
+	"fr": "Status de {module} : échec de chargement : {reason}"
     },
     "status_unloaded": {
         "en": "Either that module wasn't on the roster or shit is totally fucked.",
         "cy": "Naill ai heb fod modiwl oedd ar y rhestr, neu cachu yn gwbl torrodd",
-        "de": "Entweder ist das Modul nicht auf der Liste oder die Kacke ist am dampfen"
+        "de": "Entweder ist das Modul nicht auf der Liste oder die Kacke ist am dampfen",
+	"fr": "Soit ce module n'est pas sur la liste, soit tout est complètement niqué"
     },
     "load_failed": {
         "en": "Failed to load {module}. See 'status {module}'.",
         "cy": "Methu i lwytho {module}. Gwelwch 'status {module}'.",
-        "de": "Konnte {module} nicht laden. Siehe 'status {module}'."
+        "de": "Konnte {module} nicht laden. Siehe 'status {module}'.",
+	"fr:" "Echec du chargement de {module}. Voir 'status {module}'."
     },
     "no_config_key": {
         "en": "{path} doesn't exist bro",
         "cy": "{path} cyfluniad yn bodoli, fy mrawd",
-        "de": "{path} existiert nicht, Bruder"
+        "de": "{path} existiert nicht, Bruder",
+	"fr": "{path} n'existe pas, fréro"
     },
     "config_array": {
         "en": "Config option is an array. Try '{alternate}'.",
         "cy": "Opsiwn cyfluniad ydy'r amrywiaeth. Rhowch gynnig ar '{alternate}'.",
-        "de": "Einstellung ist ein Array, probiere '{alternate}' aus."
+        "de": "Einstellung ist ein Array, probiere '{alternate}' aus.",
+	"fr": "L'option de configuration est un array. Essaye '{alternate}'."
     },
     "config_lock": {
         "en": "This config option cannot be altered while the bot is running.",
         "cy": "Ni all yr opsiwn cyfluniad yn cael ei newid tra bod y bot yn rhedeg.",
-        "de": "Diese Option kann während der Benutzung des Bots nicht verändert werden"
+        "de": "Diese Option kann während der Benutzung des Bots nicht verändert werden",
+	"fr": "Cette option de configuration ne peut pas être changée pendant que le bot est activé."
     },
     "no_config_path": {
         "en": "Config path doesn't exist bro",
         "cy": "Nid yw llwybr cyfluniad yn bodoli, fy mrawd",
-        "de": "Konfigurationspfad nicht vorhanden, Bruder"
+        "de": "Konfigurationspfad nicht vorhanden, Bruder",
+	"fr": "Le chemin de configuration n'existe pas, fréro"
     },
     "new_config_key": {
-        "en": "Warning: Creating new config key: {key}."
+        "en": "Warning: Creating new config key: {key}.",
+	"fr": "Attention : création d'une nouvelle clé de configuration : {key}."
     },
     "config_keys_location": {
         "en": "Config keys in {path}: {value}",
         "cy": "Allweddi cyfluniad yn {path}: {value}",
-        "de": "Die Konfiguration in {path}: {value}"
+        "de": "Die Konfiguration in {path}: {value}",
+	"fr": "Clés de configuration dans {path}: {value}"
     },
     "modules_saved": {
-        "en": "Currently loaded modules now default: {modules}"
+        "en": "Currently loaded modules now default: {modules}",
+	"fr": "Les modules actuellement chargés sont maintenant chargés par défaut : {modules}"
     }
 }
