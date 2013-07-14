@@ -1,7 +1,11 @@
 var _ = require('underscore')._,
-    uuid = require('node-uuid');
+    uuid = require('node-uuid'),
+    async = require('async');
 
 var report = function(dbot) {
+    if(!dbot.db.pending) dbot.db.pending = {};
+    this.pending = dbot.db.pending;
+
     this.api = {
         'notify': function(server, channel, message) {
             var channel = dbot.instance.connections[server].channels[channel]; 
@@ -12,6 +16,25 @@ var report = function(dbot) {
                     return user.op; 
                 }
             }, this);
+
+            dbot.api.users.getChannel(server, channel, function(channel) {
+                if(channel) {
+                    var perOps = channel.op;
+                    if(this.config.notifyVoice) pOps = _.union(perOps, channel.voice);
+
+                    async.eachSeries(ops, function(nick, next) {
+                        dbot.api.users.resolveUser(server, nick, function(user) {
+                            perOps = _.without(perOps, user.id); next();
+                        }); 
+                    }, function() {
+                        offlineUsers = perOps;
+                        _.each(offlineUsers, function(id) {
+                            if(!this.pending[id]) this.pending[id] = [];
+                            this.pending[id].push(message);
+                        }.bind(this));
+                    }.bind(this)); 
+                }
+            }.bind(this));
 
             var i = 0;
             var notifyChannel = function(ops) {
@@ -25,10 +48,20 @@ var report = function(dbot) {
         }
     };
 
+    this.listener = function(event) {
+        if(_.has(this.pending, event.rUser.id)) {
+            _.each(this.pending[event.rUser.id], function(message) {
+                dbot.say(event.server, event.rUser.currentNick, message); 
+            });
+            delete this.pending[event.rUser.id];
+        }
+    }.bind(this);
+    this.on = 'JOIN';
+
     var commands = {
         '~report': function(event) {
             var channelName = event.input[1],
-                nick = event.input[2];
+                nick = event.input[2],
                 reason = event.input[3];
 
             dbot.api.users.resolveUser(event.server, nick, function(reportee) {

@@ -185,8 +185,15 @@ var commands = function(dbot) {
                             event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
                         }
                     } else {
-                        event.reply(dbot.t('new_config_key', { 'key': configPath }));
-                        config = null;
+                        topConfigPath = configPath.split('.')[0];
+                        if(_.has(dbot.config.modules, topConfigPath)) {
+                            configPath.splice(0, 0, 'modules');
+                            event.params[1] = configPath.join('.');
+                            this.commands['~showconfig'](event);
+                            return;
+                        } else {
+                            event.reply(dbot.t('new_config_key', { 'key': configPath }));
+                        }
                     }
 
                     this.internalAPI.setConfig(configPath, newOption, function(err) { 
