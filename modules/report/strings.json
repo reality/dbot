@@ -32,7 +32,8 @@
 	"fr": "Je ne suis pas présent dans {channel}."
     },
     "notify": {
-        "en": "Attention {channel}: {notifier}: {message}"
+        "en": "Attention {channel}: {notifier}: {message}",
+	"fr": "Attention {channel}: {notifier}: {message}"
     },
     "notified": {
         "en": "{user}: {channel} staff notified.",
