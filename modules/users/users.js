@@ -95,7 +95,6 @@ var users = function(dbot) {
     };
 
     this.listener = function(event) {
-        // TODO: If user joins channel with alias
         if(event.action == 'JOIN' && event.user != dbot.config.name) {
             if(!event.rUser) {
                 this.internalAPI.createUser(event.server, event.user, function(user) {
@@ -103,6 +102,11 @@ var users = function(dbot) {
                 }.bind(this));
             } else if(!_.include(event.rUser.channels, event.rChannel.id)) {
                 this.internalAPI.addChannelUser(event.rChannel, event.rUser, function() {}); 
+            }
+
+            if(event.rUser.currentNick != event.user) {
+                event.rUser.currentNick = event.user;
+                this.db.save('users', event.rUser.id, event.rUser, function() {});
             }
         } else if(event.action == 'NICK') {
             this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
