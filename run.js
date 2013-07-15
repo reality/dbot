@@ -281,11 +281,8 @@ DBot.prototype.reloadModules = function() {
                     try {
                         propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
                     } catch(err) {
-                        this.status[name] = 'Error loading ' + property + 
-                            ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
                         console.log('Data error (' + module.name + ') in ' + 
                             property + ': ' + err);
-
                     };
                     _.extend(this[property], propertyData);
                     if(property == 'strings') {
