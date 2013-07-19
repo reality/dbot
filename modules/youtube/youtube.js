@@ -21,7 +21,8 @@ var youtube = function(dbot) {
                 }),
                 'json': true
             }, function(error, response, body) {
-                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
+                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed,
+                        'entry') && _.has(body.feed.entry[0], 'yt$statistics')) {
                     var v = body.feed.entry[0];
                     event.reply(dbot.t('yt_video', {
                         'title': v.title['$t'],
