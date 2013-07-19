@@ -12,6 +12,32 @@ var youtube = function(dbot) {
         'v': 2
     };
 
+    this.commands = {
+        '~youtube': function(event) {
+            request.get(this.ApiRoot + '/videos', {
+                'qs': _.extend(this.params, { 
+                    'q': encodeURIComponent(event.input[1]),
+                    'max-results': 1
+                }),
+                'json': true
+            }, function(error, response, body) {
+                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
+                    var v = body.feed.entry[0];
+                    event.reply(dbot.t('yt_video', {
+                        'title': v.title['$t'],
+                        'plays': v['yt$statistics'].viewCount,
+                        'author': v.author[0].name['$t'],
+                        'likes': v['yt$rating'].numLikes,
+                        'dislikes': v['yt$rating'].numDislikes
+                    }));
+                } else {
+                    event.reply(dbot.t('yt_noresults'));
+                }
+            });
+        }
+    };
+    this.commands['~youtube'].regex = [/^~youtube (.+)$/, 2];
+
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name,
             /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/,
