@@ -185,9 +185,10 @@ var commands = function(dbot) {
                             event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
                         }
                     } else {
-                        topConfigPath = configPath.split('.')[0];
-                        if(_.has(dbot.config.modules, topConfigPath)) {
+                        configPath = configPath.split('.');
+                        if(_.has(dbot.config.modules, configPath[0])) {
                             configPath.splice(0, 0, 'modules');
+                            configPath = configPath.join('.');
                             event.params[1] = configPath.join('.');
                             this.commands['~showconfig'](event);
                             return;
