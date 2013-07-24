@@ -8,7 +8,6 @@ var _ = require('underscore')._,
     crypto = require('crypto');
 
 var imgur = function(dbot) {
-    this.db = dbot.db.imgur;
     this.internalAPI = {
         'infoString': function(imgData) {
             info = '';
@@ -77,21 +76,21 @@ var imgur = function(dbot) {
             var testUrl = 'http://i.imgur.com/' + 
                 testSlug +
                 '.' + ext[_.random(0, ext.length - 1)];
-            this.db.totalHttpRequests += 1;
+            dbot.db.imgur.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
-                    this.db.totalImages += 1;
+                    dbot.db.imgur.totalImages += 1;
                     var hash = crypto.createHash('md5').update(body).digest("hex");
                     if(_.has(dbot.modules, 'quotes')){
                         // autoadd: {"abcdef": "facebookman"}
-                        if(_.has(dbot.config.imgur.autoadd,hash)){
+                        if(_.has(dbot.config.modules.imgur.autoadd,hash)){
                             var category = dbot.config.imgur.autoadd[hash];
                             if (_.contains(category, testUrl)){
                                 // there's probably less than 62^5 chance of this happening
                             } else {
-                                if(!_.has(dbot.db.quoteArrs, category)) dbot.db.quoteArrs[category] = [];
-                                dbot.db.quoteArrs[category].push(testUrl);
+                                dbot.api.quotes.addQuote(category, testUrl,
+                                    dbot.config.name, function() { });
                             }
                         }
                     }
@@ -113,10 +112,10 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/image/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                    'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
-                this.db.totalApiRequests += 1;
+                dbot.db.imgur.totalApiRequests += 1;
                 callback(body);
             }.bind(this));
         },
@@ -126,7 +125,7 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/album/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                    'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
                 this.db.totalApiRequests += 1;
@@ -139,7 +138,7 @@ var imgur = function(dbot) {
                 'url': 'https://api.imgur.com/3/gallery/' + slug + '.json',
                 'json': true,
                 'headers': {
-                    'Authorization': 'Client-ID ' + dbot.config.imgur.apikey
+                    'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
                 this.db.totalApiRequests += 1;
@@ -197,6 +196,7 @@ var imgur = function(dbot) {
         if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
         if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
         if(!_.has(dbot.db.imgur, 'totalImages')) dbot.db.imgur.totalImages = 0;
+        this.db = dbot.db.imgur;
     }.bind(this);
 };
 

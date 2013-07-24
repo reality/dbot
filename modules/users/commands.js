@@ -3,106 +3,139 @@ var _ = require('underscore')._;
 var commands = function(dbot) {
     var commands = {
         '~alias': function(event) {
-            var knownUsers = this.getServerUsers(event.server),
-                alias = event.params[1].trim();
+            var nick = event.params[1].trim() || event.user;
+            this.api.resolveUser(event.server, nick, function(user) {
+                if(user) {
+                    if(nick == user.primaryNick) {
+                        var aliases = _.first(user.aliases, 10);
+                        var including = 'including: ' + aliases.join(', ') + '.';
 
-            if(_.include(knownUsers.users, alias)) {
-                var aliases = this.api.getAliases(event.server, alias);
-                var aliasCount = aliases.length;
-
-                if(aliasCount != 0) {
-                    var aliases = _.first(aliases, 10);
-                    var including = 'including: ' + aliases.join(', ') + '.';
-                    
-                    event.reply(dbot.t('primary', { 
-                        'user': alias, 
-                        'count': aliasCount 
-                    }) + including); 
+                        if(user.aliases.length != 0) {
+                            event.reply(dbot.t('primary', { 
+                                'user': nick,
+                                'currentNick': user.currentNick,
+                                'count': user.aliases.length,
+                            }) + including);
+                        } else {
+                            event.reply(dbot.t('primary', { 
+                                'user': nick, 
+                                'currentNick': user.currentNick,
+                                'count': user.aliases.length 
+                            }).slice(0, -2) + ".");
+                        }
+                    } else {
+                        event.reply(dbot.t('alias', { 
+                            'alias': nick, 
+                            'user': user.primaryNick
+                        }));
+                    }
                 } else {
-                    event.reply(dbot.t('primary', { 
-                        'user': alias, 
-                        'count': aliasCount 
-                    }).slice(0, -2) + ".");
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
-            } else if(_.has(knownUsers.aliases, alias)) {
-                event.reply(dbot.t('alias', { 
-                    'alias': alias, 
-                    'user': knownUsers.aliases[alias] 
-                }));
-            } else {
-                event.reply(dbot.t('unknown_alias', { 'alias': alias }));
-            }
+            });
+        },
+
+        '~addalias': function(event) {
+            var nick = event.input[1],
+                alias = event.input[2];
+
+            this.api.resolveUser(event.server, nick, function(user) {
+                if(user) {
+                    if(!_.include(user.aliases, alias)) {
+                        user.aliases.push(alias);
+                        this.db.save('users', user.id, user, function(err) {
+                            if(!err) {
+                                event.reply(dbot.t('alias_added', {
+                                    'user': user.primaryNick,
+                                    'alias': alias
+                                }));
+                            }
+                        });
+                    } else {
+                        event.reply(dbot.t('alias_exists', { 'alias': alias }));
+                    }
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            }.bind(this));
         },
 
         '~setaliasparent': function(event) {
-            var knownUsers = this.getServerUsers(event.server);
-            var newParent = event.params[1];
+            var newPrimary = event.params[1].trim();
+            this.api.resolveUser(event.server, newPrimary, function(user) {
+                if(user && user.primaryNick != newPrimary) {
+                    var newAlias = user.primaryNick;
+                    user.primaryNick = newPrimary;
+                    user.aliases = _.without(user.aliases, newPrimary);
+                    user.aliases.push(newAlias);
+                    this.internalAPI.updateChannelPrimaryUser(event.server, newAlias, newPrimary);
 
-            if(_.has(knownUsers.aliases, newParent)) {
-                var newAlias = knownUsers.aliases[newParent]; 
-
-                // Replace user entry
-                knownUsers.users = _.without(knownUsers.users, newAlias);
-                knownUsers.users.push(newParent);
-
-                // Replace channels entries with new primary user
-                this.updateChannels(event, newAlias, newParent);
-
-                // Remove alias for new parent & add alias for new alias
-                delete knownUsers.aliases[newParent];
-                knownUsers.aliases[newAlias] = newParent;
-
-                // Update aliases to point to new primary user
-                this.updateAliases(event, newAlias, newParent);
-
-                event.reply(dbot.t('aliasparentset', { 
-                    'newParent': newParent, 
-                    'newAlias': newAlias 
-                }));
-
-                return {
-                    'server': event.server,
-                    'alias': newAlias
-                };
-            } else {
-                event.reply(dbot.t('unknown_alias', { 'alias': newParent }));
-            }
-            return false;
+                    this.db.save('users', user.id, user, function(err) {
+                        if(!err) {
+                            event.reply(dbot.t('aliasparentset', {
+                                'newParent': newPrimary,
+                                'newAlias': newAlias
+                            }));
+                            dbot.api.event.emit('~setaliasparent', {
+                                'server': event.server,
+                                'alias': newAlias 
+                            });
+                        } 
+                    });
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimarj }));
+                }
+            }.bind(this));
         },
 
         '~mergeusers': function(event) {
-            var knownUsers = this.getServerUsers(event.server);
             var primaryUser = event.params[1];
             var secondaryUser = event.params[2];
 
-            if(_.include(knownUsers.users, primaryUser) && _.include(knownUsers.users, secondaryUser)) {
-                knownUsers.users = _.without(knownUsers.users, secondaryUser);
-                knownUsers.aliases[secondaryUser] = primaryUser;
-                this.updateAliases(event, secondaryUser, primaryUser);
-                this.updateChannels(event, secondaryUser, primaryUser);
-
-                event.reply(dbot.t('merged_users', { 
-                    'old_user': secondaryUser,
-                    'new_user': primaryUser
-                }));
-                
-                return {
-                    'server': event.server,
-                    'secondary': secondaryUser
-                };
-            } else {
-                event.reply(dbot.t('unprimary_error'));
-            }
-            return false;
-        } 
+            this.api.resolveUser(event.server, primaryUser, function(user) {
+                if(user) {
+                    this.api.resolveUser(event.server, secondaryUser, function(oldUser) {
+                        if(oldUser) {
+                            user.aliases.push(oldUser.primaryNick);
+                            user.aliases = _.union(user.aliases, oldUser.aliases);
+                            this.internalAPI.mergeChannelUsers(event.server, oldUser, user);
+                            this.db.del('users', oldUser.id, function(err) {
+                                if(!err) {
+                                    this.db.save('users', user.id, user, function(err) {
+                                        if(!err) {
+                                            this.internalAPI.mergeChannelUsers(event.server, secondaryUser, primaryUser);
+                                            event.reply(dbot.t('merged_users', { 
+                                                'old_user': secondaryUser,
+                                                'new_user': primaryUser
+                                            }));
+                                            dbot.api.event.emit('~mergeusers', [
+                                                event.server,
+                                                oldUser,
+                                                user
+                                            ]);
+                                        }
+                                    }.bind(this));
+                                }
+                            }.bind(this));
+                        } else {
+                            event.reply(dbot.t('unprimary_error', { 'nick': secondaryUser }));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('unprimary_error', { 'nick': primaryUser }));
+                }
+            }.bind(this));
+        }
     };
     
     commands['~alias'].regex = [/^~alias ([\d\w[\]{}^|\\`_-]+?)/, 2];
     commands['~setaliasparent'].regex = [/^~setaliasparent ([\d\w[\]{}^|\\`_-]+?)/, 2];
     commands['~mergeusers'].regex = [/^~mergeusers ([\d\w[\]{}^|\\`_-]+?)\s*?([\d\w[\]{}^|\\`_-]+?)/, 3];
+    commands['~addalias'].regex = [/^~addalias ([\d\w[\]{}^|\\`_-]+?) ([\d\w[\]{}^|\\`_-]+?)$/, 3];
     
     commands['~setaliasparent'].access = 'moderator';
     commands['~mergeusers'].access = 'moderator';
+    commands['~addalias'].access = 'moderator';
     
     return commands;
 };

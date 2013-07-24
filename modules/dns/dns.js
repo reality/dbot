@@ -16,6 +16,7 @@ var dns = function(dbot) {
                 }
             });
         },
+
         '~rdns': function(event) {
             ip = event.params[1];
             dnsmod.reverse(ip, function (error, domain) {

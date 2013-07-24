@@ -4,19 +4,23 @@
         "na'vi": "Oel ke tsun run 'upxare atxin.",
         "cy": "Ni chanfuwyd teitl y dudalen",
         "nl": "Er is geen paginatitel gevonden.",
-        "de": "Kein Seitenname gefunden."
+        "de": "Kein Seitenname gefunden.",
+	"fr": "Aucun titre de page trouvé."
     },
     "xkcd": {
-        "en": "xkcd {num}: {title} https://xkcd.com/{num}"
+        "en": "xkcd {num}: {title} https://xkcd.com/{num}",
+	"fr": "xkcd {num}: {title} https://xkcd.com/{num}"
     },
     "no-hits": {
         "en": "No hits.",
         "na'vi": "Oel ke tsun rivum ayuoti.",
         "cy": "Dim canlyniadau.",
         "nl": "Geen resultaten.",
-        "de": "Keine Treffer."
+        "de": "Keine Treffer.",
+	"fr": "Aucun résultat."
     },
     "link": {
-        "en": "{link}"
+        "en": "{link}",
+	"fr": "{link}"
     }
 }

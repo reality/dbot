@@ -21,6 +21,16 @@ var js = function(dbot) {
 
         // Run JS code un-sandboxed, with access to DBot memory (admin-only).
         '~ajs': function(event) {
+            var callback = function() { 
+                var args = Array.prototype.slice.call(arguments);
+                for(var i=0;i<args.length;i++) {
+                    var arg = args[i];
+                    if(_.isObject(arg) && !_.isArray(arg)) {
+                        arg = '[object Object]: ' + _.keys(arg).join(', ');
+                    }
+                    event.reply('Callback[' + i + ']: ' + arg);
+                }
+            };
             var ret = eval(event.input[1]);
             if(ret !== undefined) {
                 event.reply(ret);

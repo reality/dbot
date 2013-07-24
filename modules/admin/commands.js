@@ -5,45 +5,7 @@ var fs = require('fs'),
 
 var commands = function(dbot) {
     var noChangeConfig = [ 'servers', 'name', 'moduleNames' ];
-
-    var getCurrentConfig = function(configKey) {
-        var defaultConfigPath = dbot.config;
-        var userConfigPath = dbot.db.config;
-
-        if(configKey) {
-            var configKey = configKey.split('.');
-            for(var i=0;i<configKey.length-1;i++) {
-                if(_.has(defaultConfigPath, configKey[i])) {
-                    if(!_.has(userConfigPath, configKey[i])) {
-                        userConfigPath[configKey[i]] = {};
-                    }
-                    userConfigPath = userConfigPath[configKey[i]];
-                    defaultConfigPath = defaultConfigPath[configKey[i]];
-                } else {
-                    return false;
-                }
-            }
-        }
-
-        var currentOption;
-        if(configKey && configKey.length != 1) {
-            configKey = _.last(configKey);
-            if(_.has(userConfigPath, configKey) && !_.isUndefined(userConfigPath[configKey])) {
-                currentOption = userConfigPath[configKey];
-            } else if(_.has(defaultConfigPath, configKey)) {
-                currentOption = defaultConfigPath[configKey];
-            }
-        } else {
-            currentOption = defaultConfigPath[configKey];
-        }
-
-        return { 
-            'user': userConfigPath,
-            'default': defaultConfigPath,
-            'value': currentOption
-        };
-   };
-
+    
     var commands = {
         // Join a channel
         '~join': function(event) {
@@ -120,9 +82,15 @@ var commands = function(dbot) {
             if(_.has(dbot.status, moduleName)) {
                 var status = dbot.status[moduleName];
                 if(status === true) {
-                    event.reply(dbot.t("status_good",{"module":moduleName, "reason": status}));
+                    event.reply(dbot.t('status_good', {
+                        'module': moduleName, 
+                        'reason': status
+                    }));
                 } else {
-                    event.reply(dbot.t("status_bad",{"module":moduleName, "reason": status}));
+                    event.reply(dbot.t('status_bad', { 
+                        'module': moduleName, 
+                        'reason': status
+                    }));
                 }
             } else {
                 event.reply(dbot.t("status_unloaded"));
@@ -133,7 +101,9 @@ var commands = function(dbot) {
         '~reload': function(event) {
             dbot.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
             dbot.reloadModules();
-            event.reply(dbot.t('reload'));
+            process.nextTick(function() {
+                event.reply(dbot.t('reload'));
+            });
         },
 
         // Say something in a channel
@@ -150,18 +120,21 @@ var commands = function(dbot) {
         '~load': function(event) {
             var moduleName = event.params[1];
             if(!_.include(dbot.config.moduleNames, moduleName)) {
-                dbot.config.moduleNames.push(moduleName);
+                dbot.customConfig.moduleNames.push(moduleName);
+                this.internalAPI.saveConfig();
                 dbot.reloadModules();
-                if(dbot.status[moduleName] === true) {
-                    event.reply(dbot.t('load_module', {'moduleName': moduleName}));
-                } else {
-                    event.reply(dbot.t("load_failed",{"module": moduleName}));
-                }
+                process.nextTick(function() {
+                    if(dbot.status[moduleName] === true) {
+                        event.reply(dbot.t('load_module', { 'moduleName': moduleName }));
+                    } else {
+                        event.reply(dbot.t('load_failed', { 'module': moduleName }));
+                    }
+                });
             } else {
                 if(moduleName == 'web') {
                     event.reply(dbot.t('already_loaded_web'));
                 } else {
-                    event.reply(dbot.t('already_loaded', {'moduleName': moduleName}));
+                    event.reply(dbot.t('already_loaded', { 'moduleName': moduleName }));
                 }
             }
         },
@@ -176,98 +149,136 @@ var commands = function(dbot) {
                     var cacheKey = require.resolve(moduleDir + moduleName);
                     delete require.cache[cacheKey];
                 } catch(err) { }
-                dbot.config.moduleNames = _.without(dbot.config.moduleNames, moduleName);
+
+                dbot.customConfig.moduleNames = _.without(dbot.config.moduleNames, moduleName);
+                this.internalAPI.saveConfig();
                 dbot.reloadModules();
 
-                event.reply(dbot.t('unload_module', {'moduleName': moduleName}));
+                process.nextTick(function() {
+                    event.reply(dbot.t('unload_module', { 'moduleName': moduleName }));
+                });
             } else {
-                event.reply(dbot.t('unload_error', {'moduleName': moduleName}));
+                event.reply(dbot.t('unload_error', { 'moduleName': moduleName }));
             }
         },
 
         /*** Config options ***/
 
         '~setconfig': function(event) {
-            var configPathString = event.params[1],
-                configKey = _.last(configPathString.split('.')),
-                newOption = event.params[2];
+            var configPath = event.input[1],
+                newOption = event.input[2];
 
-            if(!_.include(noChangeConfig, configKey)) {
-                var configPath = getCurrentConfig(configPathString);
+            if(!_.include(noChangeConfig, configPath)) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config !== null) {
+                        // Convert to boolean type if config item boolean
+                        if(_.isBoolean(config)) {
+                            newOption = (newOption == "true");
+                        }
 
-                if(configPath == false || _.isUndefined(configPath.value)) {
-                    event.reply(dbot.t("no_config_key"));
-                    return;
-                }
-                var currentOption = configPath.value;
+                        // Convert to integer type is config item integer
+                        if(_.isNumber(config)) {
+                            newOption = parseInt(newOption);
+                        }
 
-                // Convert to boolean type if config item boolean
-                if(_.isBoolean(currentOption)) {
-                    newOption = (newOption == "true");
-                }
+                        if(_.isArray(config)) {
+                            event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
+                        }
+                    } else {
+                        topConfigPath = configPath.split('.')[0];
+                        if(_.has(dbot.config.modules, topConfigPath)) {
+                            configPath.splice(0, 0, 'modules');
+                            event.params[1] = configPath.join('.');
+                            this.commands['~showconfig'](event);
+                            return;
+                        } else {
+                            event.reply(dbot.t('new_config_key', { 'key': configPath }));
+                        }
+                    }
 
-                // Convert to integer type is config item integer
-                if(_.isNumber(currentOption)) {
-                    newOption = parseInt(newOption);
-                }
-
-                if(_.isArray(currentOption)) {
-                    event.reply(dbot.t("config_array",{"alternate": "pushconfig"}));
-                }
-                
-                event.reply(configPathString + ": " + currentOption + " -> " + newOption);
-                configPath['user'][configKey] = newOption;
-                dbot.reloadModules();
+                    this.internalAPI.setConfig(configPath, newOption, function(err) { 
+                        event.reply(configPath + ": " + config + " -> " + newOption);
+                    });
+                }.bind(this));
             } else {
                 event.reply(dbot.t("config_lock"));
             }
         },
 
         '~pushconfig': function(event) {
-            var configPathString = event.params[1],
-                configKey = _.last(configPathString.split('.')),
-                newOption = event.params[2];
+            var configPath = event.input[1],
+                newOption = event.input[2];
 
-            if(!_.include(noChangeConfig, configKey)) {
-                var configPath = getCurrentConfig(configPathString);
-                if(configPath == false || _.isUndefined(configPath.value)) {
-                    event.reply(dbot.t("no_config_key"));
-                    return;
-                }
-                var currentArray = configPath.value;
-
-                if(!_.isArray(currentArray)) {
-                    event.reply(dbot.t("config_array",{"alternate": "setconfig"}));
-                    return;
-                }
-
-                event.reply(configPathString + ": " + currentArray + " << " + newOption);
-                currentArray.push(newOption);
-                dbot.reloadModules(); 
+            if(!_.include(noChangeConfig, configPath)) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config !== null) {
+                        if(_.isArray(config)) {
+                            event.reply(configPath + ": " + config + " << " + newOption);
+                            config.push(newOption);
+                            this.internalAPI.setConfig(configPath, config, function(err) {});
+                        } else {
+                            event.reply(dbot.t("config_array", { "alternate": "setconfig" }));
+                        }
+                    } else {
+                        event.reply(dbot.t("no_config_key", { 'path': configPath }));
+                    }
+                }.bind(this));
+            } else {
+                event.reply(dbot.t("config_lock"));
             }
         },
 
         '~showconfig': function(event) {
-            var configPathString = event.params[1];
-            var configPath = getCurrentConfig(configPathString);
-            
-            if(configPathString) {
-                var configKey = _.last(configPathString.split('.'));
-                if(!configKey) {
-                    event.reply(dbot.t("no_config_path"));
-                    return;
-                }
+            var configPath = event.params[1];
+            if(configPath) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config !== null) {
+                        if(_.isArray(config)) {
+                            event.reply(dbot.t("config_keys_location", {
+                                "path": configPath,
+                                "value": config
+                            }));
+                        } else if(_.isObject(config)) {
+                            event.reply(dbot.t("config_keys_location", {
+                                "path": configPath,
+                                "value": _.keys(config)
+                            }));
+                        } else {
+                            event.reply(dbot.t("config_keys_location", {
+                                "path": configPath,
+                                "value": config
+                            }));
+                        }
+                    } else {
+                        event.reply(dbot.t("no_config_key", {'path': configPath}));
 
-                if(_.isArray(configPath.value)) {
-                    event.reply(configKey + ': ' + configPath.value);
-                } else if(_.isObject(configPath.value)) {
-                    event.reply(dbot.t("config_keys_location",{"path":configPathString,"value":Object.keys(configPath.value)}));
-                } else {
-                    event.reply(configKey + ': ' + configPath.value);
-                }
+                        configPath = configPath.split('.');
+                        if(_.has(dbot.config.modules, configPath[0])) {
+                            configPath.splice(0, 0, 'modules');
+                        } else {
+                            configPath.pop();
+                        }
+
+                        event.params[1] = configPath.join('.');
+                        this.commands['~showconfig'](event);
+                    }
+                }.bind(this));
             } else {
-                event.reply(dbot.t("config_keys_location",{"path":"root","value":Object.keys(configPath['default'])}));
+                event.reply(dbot.t("config_keys_location", {
+                    "path": "root",
+                    "value": _.keys(dbot.config)
+                }));
             }
+        },
+
+        '~savemodules': function(event) {
+            fs.readFile('config.json', 'utf-8', function(err, config) {
+                config = JSON.parse(config);
+                config.moduleNames = _.keys(dbot.modules);
+                fs.writeFile('config.json', JSON.stringify(config, null, '    '), function() {
+                    event.reply(dbot.t('modules_saved', { 'modules': _.keys(dbot.modules) }));
+                });
+            });
         }
     };
 
@@ -280,6 +291,9 @@ var commands = function(dbot) {
     commands['~part'].access = 'moderator';
     commands['~opme'].access = 'moderator';
     commands['~say'].access = 'moderator';
+
+    commands['~pushconfig'].regex = [/~pushconfig ([^ ]+) ([^ ]+)/, 3];
+    commands['~setconfig'].regex = [/~setconfig ([^ ]+) ([^ ]+)/, 3];
 
     return commands;
 };

@@ -1,6 +1,6 @@
 {
     "dbKeys": [ "imgur" ],
-    "dependencies": [ "web", "api" ],
+    "dependencies": [ "web", "api", "link" ],
     "imagelength": 5,
     "nsfwwarn": true,
     "apikey": "86fd3a8da348b65",

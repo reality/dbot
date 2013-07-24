@@ -1,49 +1,4 @@
-/*** Array ***/
-
-Array.prototype.each = function(fun) {
-    for(var i=0;i<this.length;i++) {
-        fun(this[i]);
-    }
-};
-
-Array.prototype.collect = function(fun) {
-    var collect = [];
-    for(var i=0;i<this.length;i++) {
-        collect.push(fun(this[i]));
-    }
-    return collect;
-};
-
-Array.prototype.include = function(value) {
-    for(var i=0;i<this.length;i++) {
-        if(this[i] == value) {
-            return true;
-        }
-    }
-    return false;
-};
-
-Array.prototype.sum = function() {
-    var sum = 0;
-    for(var i=0;i<this.length;i++) {
-        sum += (parseFloat(this[i]) || 0);
-    }
-    return sum;
-};
-
-Array.prototype.uniq = function() {
-    var hash = {}
-    var result = [];
-    this.each(function(item) {
-        if(!hash.hasOwnProperty(item)){
-            hash[item] = true;
-            result.push(item);
-        }
-    });
-    return result;
-}
-
-/*** String ***/
+/*** String ***/ 
 
 String.prototype.valMatch = function(regex, expLength) {
     var key = this.match(regex);
@@ -52,14 +7,6 @@ String.prototype.valMatch = function(regex, expLength) {
     } else {
         return false;
     }
-};
-
-String.prototype.endsWith = function(needle) {
-    return needle === this.slice(this.length - needle.length);
-};
-
-String.prototype.startsWith = function(needle) {
-    return needle === this.slice(0, needle.length);
 };
 
 String.prototype.format = function() { // format takes either multiple indexed arguments, or a single object, whose keys/values will be used
@@ -75,13 +22,6 @@ String.prototype.format = function() { // format takes either multiple indexed a
         };
     };
     return targetStr;
-};
-
-/*** Integer ***/
-
-Number.prototype.chanceIn = function(x, y) {
-    var num = Math.floor(Math.random() * (y + 1)) / x;
-    return num == 1;
 };
 
 /*** Regex ***/

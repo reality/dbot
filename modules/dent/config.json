@@ -1,8 +1,7 @@
 {
     "username": "youruserhere",
     "password": "yourpasswordhere",
-    "dependencies": [ "command" ],
+    "dependencies": [ "link" ],
     "ignorable": true,
-    "help": "https://github.com/reality/depressionbot/blob/master/modules/dent/README.md",
-    "dentQuotes": false
+    "dentQuotes": true
 }

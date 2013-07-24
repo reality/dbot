@@ -18,9 +18,9 @@ block content
       a(href='../connections') &laquo; Connections
 
   ul.thumbnails
-    each nick in nicks
+    each thumbnail in thumbnails
       li.span2
-        a.thumbnail(href='/profile/'+connection+'/'+encodeURIComponent(nick))
+        a.thumbnail(href='/profile/'+connection+'/'+encodeURIComponent(thumbnail.nick))
           div.imgwrap
-            img(src="#{profiles[nick].profile.avatar}", alt="#{profiles[nick].profile.primary}'s photo")
-            span.nicks #{profiles[nick].profile.primary}
+            img(src="#{thumbnail.avatar}", alt="#{thumbnail.nick}'s photo")
+            span.nicks #{thumbnail.nick}

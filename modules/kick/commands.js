@@ -91,16 +91,13 @@ var commands = function(dbot) {
                 timeout = event.input[1],
                 banee = event.input[2],
                 reason = event.input[3],
-                adminChannel = this.config.admin_channel[event.server];
+                adminChannel = dbot.config.servers[server].admin_channel,
                 channels = dbot.config.servers[server].channels,
                 network = event.server;
 
             if(this.config.network_name[event.server]) {
                 network = this.config.network_name[event.server];
             }
-            console.log(timeout);
-            console.log(banee);
-            console.log(reason);
 
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
                 // Add host record entry
@@ -148,34 +145,37 @@ var commands = function(dbot) {
 
                     // Add qutoe category documenting ban
                     if(this.config.document_bans && _.has(dbot.modules, 'quotes')) {
-                        dbot.db.quoteArrs['ban_' + banee.toLowerCase()] = [ quoteString ];
+                        dbot.api.quotes.addQuote('ban_' + banee.toLowerCase(),
+                            quoteString, banee, function() {});
                         notifyString += ' ' + dbot.t('quote_recorded', { 'user': banee });
                     }
 
                     // Notify moderators, banee
-                    if(this.config.admin_channel[event.server]) {
+                    if(!_.isUndefined(adminChannel)) {
                         channels = _.without(channels, adminChannel);
+                    } else {
+                        adminChannel = event.channel.name;
+                    }
 
-                        dbot.api.report.notify(server, adminChannel, notifyString);
-                        dbot.say(event.server, adminChannel, notifyString);
+                    dbot.api.report.notify(server, adminChannel, notifyString);
+                    dbot.say(event.server, adminChannel, notifyString);
 
-                        if(!_.isUndefined(timeout)) {
-                            dbot.say(event.server, banee, dbot.t('tbanned_notify', {
-                                'network': network,
-                                'banner': banner,
-                                'reason': reason,
-                                'hours': timeout,
-                                'admin_channel': adminChannel 
-                            }));
-                        } else {
-                            dbot.say(event.server, banee, dbot.t('nbanned_notify', {
-                                'network': network,
-                                'banner': banner,
-                                'reason': reason,
-                                'hours': timeout,
-                                'admin_channel': adminChannel 
-                            }));
-                        }
+                    if(!_.isUndefined(timeout)) {
+                        dbot.say(event.server, banee, dbot.t('tbanned_notify', {
+                            'network': network,
+                            'banner': banner,
+                            'reason': reason,
+                            'hours': timeout,
+                            'admin_channel': adminChannel 
+                        }));
+                    } else {
+                        dbot.say(event.server, banee, dbot.t('nbanned_notify', {
+                            'network': network,
+                            'banner': banner,
+                            'reason': reason,
+                            'hours': timeout,
+                            'admin_channel': adminChannel 
+                        }));
                     }
 
                     // Ban the user from all channels

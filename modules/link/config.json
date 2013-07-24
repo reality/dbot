@@ -1,6 +1,5 @@
 {
-    "autoTitle": false,
-    "dependencies": [ "command" ],
+    "autoTitle": true,
     "ignorable": true,
     "outputPrefix": "\u00032link\u000f",
     "help": "http://github.com/reality/depressionbot/blob/master/modules/link/README.md"

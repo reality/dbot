@@ -4,96 +4,110 @@
         "na'vi": "tompa ke zup {place}ur.",
         "cy": "Dyw hi ddim yn bwrw glaw yn {place}.",
         "nl": "Het regent niet in {place}.",
-        "de": "Es ist trocken in {place}."
+        "de": "Es ist trocken in {place}.",
+	"fr": "Il ne pleut pas à {place}."
     },
     "rain-1": {
         "en" : "It's raining in {place}.",
         "na'vi":"tompa zup {place}ur.",
         "cy": "Mae'n bwrw glaw yn {place}.",
         "nl": "Het regent in {place}.",
-        "de": "Es regnet in {place}."
+        "de": "Es regnet in {place}.",
+	"fr": "Il pleut à {place}."
     },
     "rain-2": {
         "en" : "It's raining rather a lot in {place}.",
         "na'vi":"tompa zup {place}ur nìhawng.",
         "cy": "Mae'n bwrw glaw cryn dipyn yn {place}.",
         "nl": "Het regent tamelijk hard in {place}.",
-        "de": "Es regnet relativ viel in {place}."
+        "de": "Es regnet relativ viel in {place}.",
+	"fr": "Il pleut assez fortement à {place}."
     },
     "rain-3": { 
         "en" : "It's raining shitloads.",
         "na'vi":"tompa zup {place}ur nìhawng.",
         "cy": "Mae'n bwrw glaw yn uffern o lawer yn {place}.",
         "nl": "Het regent nu toch wel erg hard.",
-        "de": "Es regnet stark."
+        "de": "Es regnet stark.",
+	"fr": "Il pleut à mort."
     },
     "rain-4": {
         "en" : "It's raining fucktons.",
         "na'vi": "tompa zup {place}ur nìhawng.",
         "cy": "Mae'n bwrw glaw yn drwm iawn yn {place}.",
         "nl": "De regen komt verdorie met bakken uit de lucht.",
-        "de": "Es regnet extrem stark."
+        "de": "Es regnet extrem stark.",
+	"fr": "Il pleut vraiment des putains de tonnes."
     },
     "rain-5": { 
         "en" : "It's raining whales (in {place})!",
         "na'vi": "payoang zup {place}ur",
         "cy": "Mae'n bwrw glaw cathod a chŵn yn {place}.",
         "nl": "Een punker krijgt z'n hanekam niet meer omhoog gehouden.",
-        "de": "Es regnet unglaublich stark (in {place})!"
+        "de": "Es regnet unglaublich stark (in {place})!",
+	"fr": "Il pleut des baleines (à {place}) !"
     },
     "rain-6": { 
         "en" : "IT'S SO FUCKING WET OUT HERE MAN",
         "na'vi" : "pey lu oeru nìhawng taluna tok fìtengeti",
         "cy": "MAE'N WIR GWLYB TU ALLAN.",
         "nl": "Dit is dus een inloopdouche.",
-        "de": "ES IST SO VERDAMMT NASS HIER MANN."
+        "de": "ES IST SO VERDAMMT NASS HIER MANN.",
+	"fr": "C'EST TELLEMENT MOUILLE DEHORS MEC"
     },
     "rain-7": { 
         "en" : "I AM SO MOIST RIGHT NOW",
         "na'vi":"pey lu oeru nìhawng taluna tok fìtengeti",
         "cy": "RYDW I'N LLAITH IAWN AR HYN O BRYD",
         "nl": "IK VOEL ME NU TOCH ANDERS WEL BEHOORLIJK ONDER GEZEKEN.",
-        "de": "ICH BIN SO EINGENÄSST."
+        "de": "ICH BIN SO EINGENÄSST.",
+	"fr": "JE SUIS TELLEMENT MOITE LA"
     },
     "rain-8": {
         "en" : "You used a #3 pencil instead of #2, didn't you?",
         "na'vi": "Nga pamrel sami hu pencìl a#3 ulte ke pamrel sami pencìl a#2 kefyak?",
         "cy": "Rydych yn defnyddio #2 pensil yn hytrach na #3 pensil, ie?",
         "nl": "PROOST.",
-        "de": "Jemand muss dich hassen"
+        "de": "Jemand muss dich hassen",
+	"fr": "T'as utilisé un crayon #3 au lieu d'un #2, n'est-ce pas ?"
     },
     "rain-9": { 
         "en" : "WELCOME TO ATLANTIS",
         "na'vi": "ziva'u nìprrte atlantisftu.",
         "cy": "CROESO I ATLANTIS!",
         "nl": "HAD IK GEVRAAGD OM EEN OMMETJE ATLANTIS?!",
-        "de": "WILLKOMMEN IN ATLANTIS"
+        "de": "WILLKOMMEN IN ATLANTIS",
+	"fr": "BIENVENUE A ATLANTIS"
     },
     "rain-10": { 
         "en" : "GET INSIDE",
         "na'vi": "Sweylu txo nga livatam futa ngal fìtsengeti tok",
         "nl": "SCHUIL, BITCH! SCHUIL!",
-        "de": "REIN MIT DIR"
+        "de": "REIN MIT DIR",
+	"fr": "RENTRE CHEZ TOI"
     },
     "rain-11": {
         "en" : "LOL U PROBABLY DIED",
         "na'vi": "hrh kxawm nga tolerkup.",
         "cy": "EWCH I MEWN",
         "nl": "HA, NU BEN JE TOCH ZEKER VERZOPEN?!",
-        "de": "LOL DU MIST VERMUTLICH TOT"
+        "de": "LOL DU MIST VERMUTLICH TOT",
+	"fr": "LOL T'ES PROBABLEMENT MORT"
     },
     "rain-e": {
         "en" : "Unable to fetch weather data.",
         "na'vi":"Oel ke tsun rivum sänumeti teriyafkeyk.",
         "cy": "Nid gallu nôl data tywydd.",
         "nl": "Geen weerinformatie beschikbaar.",
-        "de": "Keine Wetterdaten vorhanden."
+        "de": "Keine Wetterdaten vorhanden.",
+	"fr": "Impossible de récupérer les données météo."
     },
     "rain-u": {
         "en": "Location too ambiguous to process.",
         "na'vi":"tsengeri, yayayr lu oeru.",
         "cy": "Lleoliad yn rhy amwys i brosesu.",
         "nl": "Deze locatie is te onduidelijk.",
-        "de": "Wähle den nächst größeren Ort."
+        "de": "Wähle den nächst größeren Ort.",
+	"fr": "Location trop ambiguë à traiter."
     }
 }

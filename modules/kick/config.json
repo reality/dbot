@@ -1,12 +1,8 @@
 {
     "dbKeys": [ "kicks", "kickers", "hosts", "tempBans" ],
     "dependencies": [ "command", "report", "users" ],
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/kick/README.md",
     "ignorable": true,
     "countSilently": true,
-    "admin_channel": {
-        "aberwiki": "#fishbox"
-    },
     "network_name": {
         "aberwiki": "OAOSIDL"
     },

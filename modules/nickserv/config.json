@@ -1,10 +1,9 @@
 {
     "servers": {
-        "nc": {
+        "aberwiki": {
             "matcher": "STATUS ([^ ]+) (\\d)$",
             "acceptableState": 3,
             "infoCommand": "status"
         }
-    },
-    "help": "https://github.com/reality/depressionbot/blob/master/modules/nickserv/README.md"
+    }
 }

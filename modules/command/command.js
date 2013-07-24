@@ -5,9 +5,8 @@
  * ignoring that command.
  */
 var _ = require('underscore')._;
+
 var command = function(dbot) {
-    this.dbot = dbot;
-    
     /**
      * Run the appropriate command given the input.
      */
@@ -20,24 +19,23 @@ var command = function(dbot) {
                 return;
             }
         } 
-
-        if(this.api.isBanned(event.user, commandName)) {
-            event.reply(dbot.t('command_ban', {'user': event.user})); 
-        } else {
-            this.api.hasAccess(event.server, event.user, commandName, function(result) {
-                if(result) {
-                    if(!this.api.isIgnoring(event.user, commandName) && 
-                            !this.api.isIgnoring(event.channel, commandName) &&
-                            dbot.commands[commandName].disabled !== true) {
+       
+        this.api.hasAccess(event.rUser, commandName, function(hasAccess) {
+            dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
+                dbot.api.ignore.isUserBanned(event.rUser, commandName, function(isBanned) {
+                    if(isBanned) {
+                        if(this.config.banOutput && commandName != '~') {
+                            event.reply(dbot.t('command_ban', {'user': event.user})); 
+                        }
+                    } else if(!hasAccess) {
+                        if(this.config.accessOutput) {
+                            event.reply(dbot.t('access_denied', { 'user': event.user }));
+                        }
+                    } else if(!isIgnoring && !dbot.commands[commandName].disabled) {
                         if(this.api.applyRegex(commandName, event)) {
                             try {
                                 var command = dbot.commands[commandName];
                                 var results = command.apply(dbot.modules[command.module], [event]);
-                                if(_.has(command, 'hooks') && results !== false) {
-                                    _.each(command['hooks'], function(hook) {
-                                        hook.apply(hook.module, _.values(results)); 
-                                    }, this);
-                                }
                             } catch(err) {
                                 if(dbot.config.debugMode == true) {
                                     var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
@@ -51,7 +49,7 @@ var command = function(dbot) {
                                     });
                                 }
                             }
-                            dbot.api.event.emit('command', [ event ]);
+                            if(!_.include(['~reload', '~load', '~unload'], commandName)) dbot.api.event.emit('command', [ event ]);
                             dbot.save();
                         } else {
                             if(commandName !== '~') {
@@ -63,9 +61,9 @@ var command = function(dbot) {
                             }
                         }
                     }
-                }
+                }.bind(this));
             }.bind(this));
-        }
+        }.bind(this));
     }.bind(this);
     this.on = 'PRIVMSG';
 };

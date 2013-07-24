@@ -48,8 +48,8 @@ var commands = function(dbot) {
             } else {
                 var helpLink = dbot.config.repoRoot + 
                     'blob/master/modules/' + moduleName + '/README.md';
-                if(dbot.config[moduleName].help) {
-                    helpLink = dbot.config[moduleName].help;
+                if(dbot.config.modules[moduleName].help) {
+                    helpLink = dbot.config.modules[moduleName].help;
                 }
 
                 // TODO: Check it exists

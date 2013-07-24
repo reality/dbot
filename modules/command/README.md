@@ -21,6 +21,17 @@ Command flow:
 This is the only module which is force loaded, even if it's not specified in
 the configuration file.
 
+### Config
+
+#### useNickserv: false
+Use the nickserv module to ensure a user is logged into their account before
+running any elevated commands. Note you will still have to load and configure
+the nickserv module yourself.
+
+#### accessOutput: false
+Show a message to a user if they attempt to run a command they don't have the
+access level for.
+
 ### Commands
 
 #### ~usage [command]

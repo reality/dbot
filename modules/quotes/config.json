@@ -1,9 +1,8 @@
 {
-    "dbKeys": [ "quoteArrs" ],
-    "dependencies": [ "command", "users", "event" ],
+    "dbType": "redis",
+    "dependencies": [ "users", "event" ],
     "rmLimit": 10,
     "ignorable": true,
     "quotesOnJoin": false,
-    "udFallback": false,
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/quotes/README.md"
+    "udFallback": false
 }
