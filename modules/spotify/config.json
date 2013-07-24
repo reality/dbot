@@ -1,5 +1,5 @@
 {
-  "dependencies": [ "command" ],
+  "dependencies": [ "link" ],
   "ignorable": true,
   "outputPrefix": "\u00039spotify\u000f"
 }

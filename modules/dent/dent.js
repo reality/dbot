@@ -2,7 +2,6 @@ var request = require('request');
     _ = require('underscore')._;
 
 var dent = function(dbot) {
-    this.dbot = dbot;
     this.StatusRegex = {
       identica: /\bhttps?:\/\/identi\.ca\/notice\/(\d+)\b/ig,
       twitter: /\bhttps?:\/\/twitter\.com\/\w+\/status\/(\d+)\b/ig
@@ -15,8 +14,8 @@ var dent = function(dbot) {
 
     this.api = {
         'post': function(content) {
-            var username = dbot.config.dent.username,
-                password = dbot.config.dent.password,
+            var username = this.config.username,
+                password = this.config.password,
                 info,
                 auth = "Basic " +
                 new Buffer(username + ":" + password).toString("base64");
@@ -57,8 +56,8 @@ var dent = function(dbot) {
     this.commands['~dent'].regex = [/^~dent (.+)$/, 2];
 
     this.onLoad = function() {
-        if(dbot.config.dent.dentQuotes === true && _.has(dbot.modules, 'quotes')) {
-            dbot.api.command.addHook('~qadd', function(key, text) {
+        if(this.config.dentQuotes === true && _.has(dbot.modules, 'quotes')) {
+            dbot.api.event.addHook('~qadd', function(key, text) {
                 if(text.indexOf('~~') == -1) {
                     this.api.post(key + ': ' + text);
                 }

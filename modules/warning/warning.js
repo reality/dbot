@@ -1,54 +1,69 @@
 var _ = require('underscore')._;
+    uuid = require('node-uuid');
 
 var warning = function(dbot) {
-    this.warnings = dbot.db.warnings;
-
     this.commands = {
         '~warn': function(event) {
-            var warner = event.user,
+            var warner = event.rUser,
                 server = event.server,
-                warnee = dbot.api.users.resolveUser(server, event.input[1]),
                 reason = event.input[2],
                 adminChannel = dbot.config.servers[server].admin_channel;
 
-            // Store the warn
-            if(!_.has(this.warnings, server)) this.warnings[server] = {};
-            if(!_.has(this.warnings[server], warnee)) this.warnings[server][warnee] = [];
-
-            this.warnings[server][warnee].push({
-                'warner': warner,
-                'reason': reason,
-                'time': new Date().getTime()
-            });
-
-            // Notify interested parties
-            var notifyString = dbot.t('warn_notify', {
-                'warner': warner,
-                'warnee': warnee,
-                'reason': reason,
-                'url': dbot.api.web.getUrl('warning/' + server + '/' + warnee)
-            });
-            if(!_.isUndefined(adminChannel)) {
-                adminChannel = event.channel.name; 
-            }
-            dbot.api.report.notify(server, adminChannel, notifyString);
-            dbot.say(server, adminChannel, notifyString);
-            dbot.say(server, warnee, notifyString);
+            dbot.api.users.resolveUser(server, event.input[1], function(warnee) {
+                if(warnee) {
+                    var id = uuid.v4();
+                    this.db.save('warnings', id, {
+                        'id': id,
+                        'server': event.server,
+                        'warnee': warnee.id,
+                        'warner': warner.id,
+                        'reason': reason,
+                        'time': new Date().getTime()
+                    }, function(err) {
+                        var notifyString = dbot.t('warn_notify', {
+                            'warner': warner.primaryNick,
+                            'warnee': warnee.primaryNick,
+                            'reason': reason,
+                            'url': dbot.api.web.getUrl('warning/' + server + '/'
+                                + warnee.primaryNick)
+                        });
+                        if(_.isUndefined(adminChannel)) {
+                            adminChannel = event.channel.name; 
+                        }
+                        dbot.api.report.notify(server, adminChannel, notifyString);
+                        dbot.say(server, adminChannel, notifyString);
+                        dbot.say(server, warnee.currentNick, notifyString);
+                    });
+                } else {
+                    event.reply(dbot.t('warnee_not_found', { 'user': event.input[1] }));
+                }
+            }.bind(this));
         },
 
         '~warnings': function(event) {
             var warnee = event.params[1],
                 server = event.server;
 
-            if(_.has(this.warnings, server) && _.has(this.warnings[server], warnee)) {
-                event.reply(dbot.t('warning_info', {
-                    'user': warnee,
-                    'num': this.warnings[server][warnee].length,
-                    'url': dbot.api.web.getUrl('warning/' + server + '/' + warnee)
-                })); 
-            } else {
-                event.reply(dbot.t('no_warnings', { 'user': warnee }));
-            }
+            dbot.api.users.resolveUser(server, warnee, function(warnee) {
+                var warnings = 0;
+                this.db.search('warnings', { 
+                    'server': server,
+                    'warnee': warnee.id
+                }, function(warning) {
+                    warnings++; 
+                }, function(err) {
+                    if(warnings > 0) {
+                        event.reply(dbot.t('warning_info', {
+                            'user': warnee.primaryNick,
+                            'num': warnings,
+                            'url': dbot.api.web.getUrl('warning/' + server + '/'
+                                + warnee.primaryNick)
+                        })); 
+                    } else {
+                        event.reply(dbot.t('no_warnings', { 'user': warnee }));
+                    }
+                });
+            }.bind(this));
         }
     };
 

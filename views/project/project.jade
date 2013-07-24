@@ -13,18 +13,14 @@ html(lang='#{curr839}')
       div#page
         div#title #{pagetitle}
         div.container#main
-          p.intro
-            #{dquote}
+          p.intro #{dquote}
           section#git
             h2 #{development} 
             p#pullreq
               a(href="https://github.com/"+repo+"/pulls") #{pullreqs}
-            p#revnum
-              #{revnum}
-            pre#gitdiff
-              #{diff}
-            p#branch
-              #{branch}
+            p#revnum #{revnum}
+            pre#gitdiff #{diff}
+            p#branch #{branch}
             h3 #{milestonehead} 
             table#milestones.center
               tr
@@ -45,8 +41,7 @@ html(lang='#{curr839}')
                       print #{Math.round(wdth)+"%"}
                   td #{milestone.open_issues}
                   td #{milestone.closed_issues}
-            a(href="https://github.com/"+repo+"/")
-              #{propaganda}
+            a(href="https://github.com/"+repo+"/") #{propaganda}
             h3 #{languagetranshead} 
             table#translations
               tr
@@ -79,8 +74,7 @@ html(lang='#{curr839}')
             #{thanks}
             ul#credits
               each author in authors
-                li
-                  #{author}
+                li #{author}
           section#config
             h2 #{config}
             ul
@@ -93,5 +87,4 @@ html(lang='#{curr839}')
               each module in modules
                 li #{module}
           section#footer
-            p
-              #{currver}
+            p #{currver}

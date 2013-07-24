@@ -5,7 +5,8 @@
         "na'vi": "{category} yawne ke lu kawturu.",
         "cy": "Does neb yn caru {category}",
         "nl": "Niemand houdt van {category}",
-        "de": "Niemand hat {category} gerne"
+        "de": "Niemand hat {category} gerne",
+	"fr": "Personne n'aime {category}"
     },
     "large_categories": {
         "en": "Largest categories: ",
@@ -13,7 +14,8 @@
         "na'vi": "U atsawl: ",
         "cy": "Categoriau mwyaf: ",
         "nl": "Grootste categoriën: ",
-        "de": "Größte Kategorien: "
+        "de": "Größte Kategorien: ",
+	"fr": "Les plus grandes catégories :"
     },
     "empty_category": {
         "en": "That category has no quotes in. Commence incineration.",
@@ -21,7 +23,8 @@
         "na'vi": "Tsauru upxare lu. Nga skxawng lu.",
         "cy": "Nid yw'r categori yna efo dyfyniadau. Cychwyn orfflosgiad",
         "nl": "Die categorie heeft geen quotes. Bereid het verbrandingsritueel voor.",
-        "de": "In dieser Kategorie befinden sich keine Zitate. Verbennung einleiten."
+        "de": "In dieser Kategorie befinden sich keine Zitate. Verbennung einleiten.",
+	"fr": "Cette catégorie ne contient aucune citation. Commencer l'incinération."
     },
     "no_results": {
         "en": "No results found.",
@@ -29,7 +32,8 @@
         "na'vi": "Oel kea humit rìmun",
         "cy": "Dim canlyniadau ar gael",
         "nl": "Geen resultaten gevonden.",
-        "de": "Keine Ergebnisse gefunden."
+        "de": "Keine Ergebnisse gefunden.",
+	"fr": "Aucun résultat trouvé."
     },
     "locked_category": {
         "en": "{category} is locked. Commence incineration.",
@@ -37,7 +41,8 @@
         "na'vi": "{category} ke fkeytok set. Nga skxawng lu nafì'u",
         "cy": "Mae {category} wedi cloi. Cychwyn orfflosgiad",
         "nl": "{category} is op slot. Bereid het verbrandingsritueel voor.",
-        "de": "{category} ist geschlossen. Verbrennung einleiten."
+        "de": "{category} ist geschlossen. Verbrennung einleiten.",
+	"fr": "{category} est verrouillé(e). Commencer l'incinération."
     },
     "no_quotes": {
         "en": "No quotes exist under {category}",
@@ -45,7 +50,8 @@
         "na'vi": "Kea upxare fkeytok {category}mì",
         "cy": "Does dim dyfyniadau gan {category}",
         "nl": "Er zijn geen quotes in {category}",
-        "de": "Es existieren keine Ziatate in {category}"
+        "de": "Es existieren keine Ziatate in {category}",
+	"fr": "Il n'existe aucune citation dans {category}"
     },
     "last_removed": {
         "en": "Last quote removed from {category}.",
@@ -53,7 +59,8 @@
         "na'vi": "Oel 'upxareti aham 'aku {category}ta",
         "cy": "Dyfyniad olaf wedi ei ddileu o {category}",
         "nl": "De laatste quote is verwijderd uit {category}.",
-        "de": "Das letzte Zitat wurde aus {category} entfernt."
+        "de": "Das letzte Zitat wurde aus {category} entfernt.",
+	"fr": "Dernière citation enlevée de {category}."
     },
     "no_recent_adds": {
         "en": "No quotes were added recently.",
@@ -61,7 +68,8 @@
         "na'vi": "Kea upxareti samung nìfkrr",
         "cy": "Nid oes unrhyw dyfyniadau wedi ei ychwwanegu'n ddiweddar",
         "nl": "Er zijn recentelijk geen quotes toegevoegd.",
-        "de": "Es wurden neulich keine Zitate hinzugefügt."
+        "de": "Es wurden neulich keine Zitate hinzugefügt.",
+	"fr": "Aucune citation n'a été ajoutée récemment."
     },
     "rmlast_spam": {
         "en": "No spamming that shit. Try again in a few minutes...",
@@ -69,7 +77,8 @@
         "na'vi": "Nga Tsasngelit ke zene fpivere'. Sweylu nga fmivi ye'rìn...",
         "cy": "Peidiwch a sbamio hwna. Triwch eto mewn ychydyg funudau...",
         "nl": "Dat spammen kun je ook lekker laten. Probeer het zometeen nog eens...",
-        "de": "Hör auf zu spammen. Versuche es in einigen Minuten erneut..."
+        "de": "Hör auf zu spammen. Versuche es in einigen Minuten erneut...",
+	"fr": "Pas de spam de cette merde. Réessaye dans quelques minutes..."
     },
     "removed_from": {
         "en": "'{quote}' removed from {category}",
@@ -77,7 +86,8 @@
         "na'vi": "'{quote}'(it/ti) 'ìyaku {category}",
         "cy": "'{quote}' wedi ei ddileu o {category}",
         "nl": "{quote} verwijderd uit {category}",
-        "de": "'{quote} aus {category} gelöscht"
+        "de": "'{quote} aus {category} gelöscht",
+	"fr": "'{quote}' enlevé(e) {category}"
     },
     "q_not_exist_under": {
         "en": "'{quote}' doesn't exist under '{category}'.",
@@ -85,7 +95,8 @@
         "na'vi": "'{quote}' ke fkeytok '{category}'ta.",
         "cy": "Nid yw '{quote}' yn bodoli yn '{category}'",
         "nl": "{quote} bestaat niet in '{category}'.",
-        "de": "'{quote} existiert nicht in '{category}'."
+        "de": "'{quote} existiert nicht in '{category}'.",
+	"fr": "'{quote}' ne semble pas exister dans '{category}'."
     },
     "total_quotes": {
         "en": "Total quote count: {count}.",
@@ -93,7 +104,8 @@
         "na'vi": "'upxareri holpxay: {count}.",
         "cy": "Cyfanswm dyfyniadau: {count}.",
         "nl": "Totaal aantal quotes: {count}.",
-        "de": "Anzahl Zitate insgesamt: {count}."
+        "de": "Anzahl Zitate insgesamt: {count}.",
+	"fr": "Nombre total de citations: {count}."
     },
     "quote_exists": {
         "en": "Quote already in DB. Initiate incineration.",
@@ -101,7 +113,8 @@
         "na'vi": "'Upxarel säomumit fìtsengit tok srekrr. Nga skxawng lu.",
         "cy": "Dyfyniad yn y gronfa ddata yn barod. Cychwyn orfflosgiad",
         "nl": "De quote bestaat al. Bereid het verbrandingsritueel voor.",
-        "de": "Zitat ist bereits in der Datenbank. Verbennung einleiten."
+        "de": "Zitat ist bereits in der Datenbank. Verbennung einleiten.",
+	"fr": "La citation existe déjà dans la base de données. Initier l'incinération."
     },
     "quote_saved": {
         "en": "Quote saved in '{category}' ({count}).",
@@ -109,7 +122,8 @@
         "na'vi": "Oe zayerok '{category}'mì ({count}).",
         "cy": "Dyfyniad wedi ei gadw yn '{category}' ({count}).",
         "nl": "Quote opgeslagen in '{category}' ({count}).",
-        "de": "Zitat in '{category}' gespeichert ({count})."
+        "de": "Zitat in '{category}' gespeichert ({count}).",
+	"fr": "Citation sauvegardée dans '{category}' ({count})."
     },
     "quote_replace": {
         "en": "No replacing arrays, you whore.",
@@ -117,7 +131,8 @@
         "na'vi": "Ngal fìsäomumit ke tsun rivawn. Nga muntxa sayi suteo hrh.",
         "cy": "Peidiwch a newid rhestrau, y cachgi",
         "nl": "Geen arrays vervangen, slet.",
-        "de": "Ersetze keine Arrays, du Schlampe."
+        "de": "Ersetze keine Arrays, du Schlampe.",
+	"fr": "On ne remplace pas les arrays, espèce de salope."
     },
     "quote_count": {
         "en": "{category} has {count} quotes.",
@@ -125,7 +140,8 @@
         "na'vi": "{count}a upxare {category}ur lu.",
         "cy": "{count} dyfyniad yn {category}",
         "nl": "{category} heeft {count} quotes.",
-        "de": "{count} Zitate befinden sich in {category}."
+        "de": "{count} Zitate befinden sich in {category}.",
+	"fr": "{category} contient {count} citations."
     },
     "quote_link": {
         "en": "Link to {category} - {url}",
@@ -133,7 +149,8 @@
         "na'vi": "Fya'o {category}ne - {url}",
         "cy": "Dolen i {category} - {url}",
         "nl": "Link naar {category} - {url}",
-        "de": "Link zu {category} - {url}"
+        "de": "Link zu {category} - {url}",
+	"fr": "Lien vers {category} - {url}"
     },
     "search_results": {
         "en": "{category} ({needle}): '{quote}' [{matches} results]",
@@ -141,47 +158,66 @@
         "na'vi": "{category} ({needle}): '{quote}' [kum a{matches}]",
         "cy": "{category} ({needle}): '{quote}' [{matches} canlyniad]",
         "nl": "{category} ({needle}): '{quote}' [{matches} resultaten]",
-        "de": "{category} ({needle}): '{quote}' [{matches} Ergebnisse]"
+        "de": "{category} ({needle}): '{quote}' [{matches} Ergebnisse]",
+	"fr": "{category} ({needle}): '{quote}' [{matches} résultats]"
     },
     "quote_cache_auto_remove": {
         "en": "There are {count} quotes in the removal cache, which will be automatically cleared.",
         "na'vi": "{count}a 'upxarel sngelit tok, Oel 'ayku sngelit lukenga.",
         "cy": "Mae {count} dyfyniadau yn y celc dileu a fydd yn cael ei clirio yn awtomatig.",
         "nl": "Er staan {count} quotes klaar om verwijderd te worden, wat automatisch zal gebeuren.",
-        "de": "Es befinden sich {count} im Cache, die automatisch entfernt werden."
+        "de": "Es befinden sich {count} im Cache, die automatisch entfernt werden.",
+	"fr": "Il y a {count} citations dans le cache de suppression, qui va être automatiquement vidé."
     },
     "quote_cache_manual_remove": {
         "en": "There are {count} quotes in the removal cache, which must be manually cleared.",
         "na'vi": "{count}a 'upxarel sngelit tok slä oel ke 'ayku sngelit tafral nga zene 'aivku",
         "cy": "Mae {count} dyfyniadau yn y celc dileu a fydd yn cael ei clirio â llaw.",
         "nl": "Er staan {count} quotes klaar om verwijderd te worden, wat handmatig zal moeten gebeuren.",
-        "de": "Es befinden sich {count} im Cache, die manuell entfernt werden müssen."
+        "de": "Es befinden sich {count} im Cache, die manuell entfernt werden müssen.",
+	"fr": "Il y a {count} citations dans le cache de suppression, qui doit être manuellement vidé."
     },
     "quote_cache_cleared": {
         "en": "{count} quotes cleared from the removal cache.",
         "na'vi": "Oel 'aìmku {count}a 'upxareti ta sngel.",
         "cy": "{count} dyfyniadau wedi ei clirio o'r celc dileu",
         "nl": "{count} quotes verwijderd uit de verwijderlijst.",
-        "de": "{count} Zitate wurden aus dem Cache entfernt."
+        "de": "{count} Zitate wurden aus dem Cache entfernt.",
+	"fr": "{count} citation(s) supprimée(s) du cache de suppression."
     },
     "quote_cache_reinstated": {
         "en": "{count} quotes reinstated from the removal cache.",
         "na'vi": "{count}a 'upxare tolätxaw ta sngel.",
         "cy": "{count} dyfyniadau wedi ei adfer o'r celc dileu",
         "nl": "{count} quotes hersteld van de verwijderlijst.",
-        "de": "{count} Zitate wurden aus dem Cache gerettet."
+        "de": "{count} Zitate wurden aus dem Cache gerettet.",
+	"fr": "{count} citation(s) restaurée(s) du cache de suppression."
     },
     "rm_cache_limit": {
         "en": "Attention: Too many quotes removed, rmCache must be cleared or reinstated manually with ~rmconfirm or ~rmdeny.",
         "na'vi": "Oel zerok 'upxareti apxay set, sweylu txo nga 'aivku upxareti ìlä ~rmconfirm fu ~rmdeny.",
         "cy": "Sylw: Gormod o dyfyniadau wedi ei clirio, rhaid i'r celc dileu yn cael ei glirio neu adfer â llaw gyda ~rmconfirm neu ~rmdeny.",
         "nl": "Waarschuwing: Er zijn te veel quotes verwijderd. rmCache moet opgeschoond of herinstalleerd worden met ~rmconfirm of ~rmdeny",
-        "de": "Achtung: Zu viele Zitate gelöscht, rmCache muss geleert werden oder manuell via ~rmconfirm oder ~rmdeny wiedereingesetzt werden."
+        "de": "Achtung: Zu viele Zitate gelöscht, rmCache muss geleert werden oder manuell via ~rmconfirm oder ~rmdeny wiedereingesetzt werden.",
+	"fr": "Attention : Trop de citations enlevées, rmCache doit être vidé ou restauré manuellement avec ~rmconfirm ou ~rmdeny."
     },
     "web_not_configured": {
         "en": "Cannot link to category. Web module is either not loaded or misconfigured.",
         "cy": "Ni all gysylltu â gategori. Modiwl we yn naill ai nid lwytho neu wedi ei camffurfweddu.",
         "nl": "De categorie kan niet gelinkt worden. De web module is niet geladen of onjuist geconfigureerd.",
-        "de": "Diese Kategorie kann nicht gelinkt werden. Das Web-Modul ist entweder nicht geladen oder falsch konfiguriert."
+        "de": "Diese Kategorie kann nicht gelinkt werden. Das Web-Modul ist entweder nicht geladen oder falsch konfiguriert.",
+	"fr": "Impossible de donner le lien vers la catégorie. Le module web n'est pas chargé ou est mal configuré."
+    },
+    "category_renamed": {
+        "en": "Category ~{oldName} renamed to ~{newName}.",
+	"fr": "Catégorie ~{oldName} renommée ~{newName}."
+    },
+    "newcat_exists": {
+        "en": "Category ~{newcat} already exists. Delete that first or use ~qmerge.",
+	"fr": "La catégorie ~{newcat} existe déjà. Supprimez-la en premier ou utilisez ~qmerge."
+    },
+    "categories_merged": {
+        "en": "Category ~{from} and its quotes merged into ~{into}.",
+	"fr": "La catégorie ~{from} et ses citations ont été fusionnée dans ~{into}."
     }
 }

@@ -5,58 +5,80 @@ var pages = function(dbot) {
     return {
         '/profile/:connection/:user': function(req, res) {
             var connection = req.params.connection;
-            var user = dbot.cleanNick(req.params.user);
+            var nick = req.params.user;
 
-            var primary = dbot.api.users.resolveUser(connection, user, true);
-            //var profile = dbot.api.profile.getProfile(primary);
-            var profile = dbot.db.profiles[connection][primary.toLowerCase()].profile;
-            var stats = dbot.api.stats.getUserChansStats(connection, primary.toLowerCase(), [
-                    "lines", "words", "lincent", "wpl", "in_mentions"]
-            );
+            dbot.api.users.resolveUser(connection, nick, function(user){
+                if(user){
+                    dbot.api.profile.getProfile(connection, user.primaryNick, function(err, user, profile){
+                        if(!err){
+                            var stats = [];
 
-            res.render('profile', {
-                'name': dbot.config.name,
-                'connection': connection,
-                'primary': primary,
-                'profile': profile,
-                'stats': stats.channels,
+                            /*TODO(@samstudio8)
+                             * stats functionality currently disabled as it has not been databanked
+                             */
+                            //var stats = dbot.api.stats.getUserChansStats(connection, user.primaryNick, [
+                            //        "lines", "words", "lincent", "wpl", "in_mentions"]
+                            //);
+
+                            res.render('profile', {
+                                'name': dbot.config.name,
+                                'connection': connection,
+                                'primary': user.primaryNick,
+                                'profile': profile.profile,
+                                'stats': stats.channels,
+                            });
+                        }
+                        else{
+                            res.render('error', {
+                            });
+                        }
+                    });
+                }
+                else{
+                    res.render('not_found', {
+                    });
+                }
             });
         },
 
         '/profile/:connection': function(req, res) {
-            var connection = req.params.connection;
-            var profiles = dbot.db.profiles[connection];
+            dbot.api.profile.getAllProfiles(function(profiles){
+                var thumbnails = [];
+                _.each(profiles, function(profile){
+                    var nick = dbot.api.users.getUser(profile.id, function(user){
+                        if(user){
 
-            // TODO: Clean up
-            _.each(profiles, function(profile) {
-                if(_.has(dbot.db.quoteArrs, profile.profile.primary) && !profile.profile.avatar) {
-                    var category = dbot.db.quoteArrs[profile.profile.primary];
-                    var avatar = _.find(category, function(quote) {
-                        return quote.match(/(\.jpg|\.png|\.jpeg)$/i);
+                            /*TODO(@tmenari / @samstudio8)
+                             * if username has a quote array and no avatar:
+                             *    search their quote array for a jpg, png, jpeg or gif
+                             *    set this as their new avatar
+                             */
+
+                            if(profile.profile.avatar){
+                                thumbnails.push({
+                                    "avatar": profile.profile.avatar,
+                                    "nick": user.primaryNick
+                                });
+                            }
+                        }
                     });
-                    if(avatar) profile.profile.avatar = avatar;
-                }
-            });
+                });
 
-            var nicks = [];
-            for (var p in profiles) {
-              if (profiles.hasOwnProperty(p) && profiles[p].profile.avatar) {
-                nicks.push(p);
-              }
-            }
-            nicks.sort(function(a, b) {
-              var x = profiles[a].profile.primary.toLowerCase();
-              var y = profiles[b].profile.primary.toLowerCase();
-              if(x > y) return 1;
-              if(x < y) return -1;
-              return 0;
-            });
+                process.nextTick(function(){
+                    thumbnails.sort(function(a, b) {
+                        var x = a.nick.toLowerCase();
+                        var y = b.nick.toLowerCase();
+                        if(x > y) return 1;
+                        if(x < y) return -1;
+                        return 0;
+                    });
 
-            res.render('profile_grid', {
-                'name': dbot.config.name,
-                'connection': connection,
-                'nicks': nicks,
-                'profiles': profiles,
+                    res.render('profile_grid', {
+                        'name': dbot.config.name,
+                        'connection': req.params.connection,
+                        'thumbnails': thumbnails,
+                    });
+                });
             });
         }
     }

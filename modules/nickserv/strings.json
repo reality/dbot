@@ -1,14 +1,18 @@
 {
     "authed": {
-        "en": "{nick} is authed with nickserv."
+        "en": "{nick} is authed with nickserv.",
+	"fr": "{nick} est authentifié avec nickserv."
     },
     "not_authed": {
-        "en": "{nick} is not authed with nickserv."
+        "en": "{nick} is not authed with nickserv.",
+	"fr": "{nick} n'est pas authentifié avec nickserv."
     },
     "hostmask": {
-        "en": "Hostmask for {nick}: {host}"
+        "en": "Hostmask for {nick}: {host}",
+	"fr": "Hostmask pour {nick}: {host}"
     },
     "no_hostmask": {
-        "en": "No hostmask could be found for {nick}"   
+        "en": "No hostmask could be found for {nick}",
+	"fr": "Aucun hostmask trouvé pour {nick}"
     }
 }

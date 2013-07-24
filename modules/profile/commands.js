@@ -2,49 +2,33 @@ var _ = require('underscore')._;
 
 var commands = function(dbot){
     var commands = {
-
-        "~getprop": function(event){
+        '~getprop': function(event){
             if(event.params[1]){
-                var primary = dbot.api.users.resolveUser(event.server, event.user);
-                var res = dbot.db.profiles[event.server][primary.toLowerCase()].profile[event.params[1]];
-                if(res){
-                    event.reply(res);
-                }
-                else{
-                    event.reply("Nope.");
+                if(_.has(this.config.schema.profile, event.params[1])){
+                    this.api.getProperty(event.server, event.user, event.params[1], function(reply){
+                        event.reply(reply);
+                    });
+                } else {
+                    event.reply('Invalid property. Go home.');
                 }
             }
         },
 
-        "~setprop": function(event){
+        '~setprop': function(event){
             if(event.input[1] && event.input[2]){
                 if(_.has(this.config.schema.profile, event.input[1])){
-                    var primary = dbot.api.users.resolveUser(event.server, event.user);
-                    dbot.db.profiles[event.server][primary.toLowerCase()].profile[event.input[1]] = event.input[2];
-                    event.reply("Property set, maybe?");
-                }
-                else{
-                    event.reply("Invalid property. Go home.");
+                    this.api.setProperty(event.server, event.user, event.input[1], event.input[2], function(reply){
+                        event.reply(reply);
+                    });
+                } else {
+                    event.reply('Invalid property. Go home.');
                 }
             }
         },
 
-        "~profile": function(event){
-            if(event.params[1]){
-                var primary = dbot.api.users.resolveUser(event.server, event.params[1]);
-                if(_.has(dbot.db.profiles[event.server], primary.toLowerCase())){
-                    event.reply(dbot.api.web.getUrl("profile/"+event.server+"/"+primary.toLowerCase()));
-                }
-                else{
-                    event.reply("No profile found for "+event.params[1]);
-                }
-            }
-            else{
-                event.message = '~profile ' + event.user;
-                event.action = 'PRIVMSG';
-                event.params = event.message.split(' ');
-                dbot.instance.emit(event);
-            }
+        '~profile': function(event) {
+            var user = event.params[1] || event.user;
+            event.reply(dbot.api.web.getUrl('profile/' + event.server + '/' + user));
         }
     };
     commands['~setprop'].regex = [/~setprop ([^ ]+) (.+)/, 3];

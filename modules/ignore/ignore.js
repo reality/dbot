@@ -5,15 +5,35 @@
  * this information, since that actually performs the ignorance. Also provides
  * commands for moderators to choose the bot to ignore certain channels.
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    databank = require('databank'),
+    uuid = require('node-uuid'),
+    NoSuchThingError = databank.NoSuchThingError;
 
 var ignore = function(dbot) {
+    this.internalAPI = {
+        'isUserImpeded': function(user, item, by, callback) {
+            this.api.getUserIgnores(user, function(err, ignores) {
+                var isImpeded = false;
+                if(!err && ignores) {
+                    if(_.has(dbot.commands, item)) {
+                        item = dbot.commands[item].module;
+                    }
+                    if(_.include(ignores[by], item)) {
+                        isImpeded = true;
+                    }
+                }
+                callback(isImpeded);
+            });
+        }.bind(this)
+    };
+
     var commands = {
         '~ignore': function(event) {
             var module = event.params[1];
             var ignorableModules = _.chain(dbot.modules)
                 .filter(function(module, name) {
-                    return dbot.config[module].ignorable === true;
+                    return dbot.config.modules[module].ignorable === true;
                 })
                 .pluck('name')
                 .value();
@@ -25,21 +45,30 @@ var ignore = function(dbot) {
                 }));
             } else {
                 if(module == '*' || _.include(ignorableModules, module)) {
-                    if(_.has(dbot.db.ignores, event.user) && _.include(dbot.db.ignores[event.user], module)) {
-                        event.reply(dbot.t('already_ignoring', { 'user': event.user }));
-                    } else {
-                        if(_.has(dbot.db.ignores, module)) {
-                            dbot.db.ignores[event.user].push(module);
-                        } else {
-                            dbot.db.ignores[event.user] = [module];
+                    this.api.getUserIgnores(event.rUser, function(err, ignores) {
+                        if(!ignores) {
+                            ignores = {
+                                'id': event.rUser.id,
+                                'ignores': [],
+                                'bans': []
+                            };
                         }
 
-                        dbot.instance.ignoreTag(event.user, module);
-                        event.reply(dbot.t('ignored', {
-                            'user': event.user, 
-                            'module': module
-                        }));
-                    }
+                        if(!_.include(ignores.ignores, module)) {
+                            ignores.ignores.push(module);
+                            this.db.save('ignores', event.rUser.id, ignores, function(err) {
+                                if(!err) {
+                                    dbot.instance.ignoreTag(event.user, module);
+                                    event.reply(dbot.t('ignored', {
+                                        'user': event.user, 
+                                        'module': module
+                                    }));
+                                }
+                            });
+                        } else {
+                            event.reply(dbot.t('already_ignoring', { 'user': event.user }));
+                        }
+                    }.bind(this));
                 } else {
                     event.reply(dbot.t('invalid_ignore', { 'user': event.user }));
                 }
@@ -47,136 +76,191 @@ var ignore = function(dbot) {
         }, 
 
         '~unignore': function(event) {
-            var ignoredModules = [];
-            if(_.has(dbot.db.ignores, event.user)) {
-                ignoredModules = dbot.db.ignores[event.user];
-            }
             var module = event.params[1];
 
-            if(_.isUndefined(module)) {
-                event.reply(dbot.t('unignore_usage', {
-                    'user': event.user, 
-                    'modules': ignoredModules.join(', ')
-                }));
-            } else {
-                if(_.include(ignoredModules, module)) {
-                    dbot.db.ignores[event.user].splice(dbot.db.ignores[event.user].indexOf(module), 1);
-                    dbot.instance.removeIgnore(event.user, module)
-                    event.reply(dbot.t('unignored', { 
-                        'user': event.user, 
-                        'module': module
-                    }));
+            this.api.getUserIgnores(event.rUser, function(err, ignores) {
+                if(err || !ignores || _.isUndefined(module)) {
+                    if(ignores) {
+                        event.reply(dbot.t('unignore_usage', {
+                            'user': event.user, 
+                            'modules': ignores.ignores.join(', ')
+                        }));
+                    } else {
+                        event.reply(dbot.t('empty_unignore_usage', {
+                            'user': event.user
+                        }));
+                    }
                 } else {
-                    event.reply(dbot.t('invalid_unignore', { 'user': event.user }));
+                    if(_.include(ignores.ignores, module)) {
+                        ignores.ignores = _.without(ignores.ignores, module);
+                        this.db.save('ignores', event.rUser.id, ignores, function(err) {
+                            if(!err) {
+                                dbot.instance.removeIgnore(event.user, module)
+                                event.reply(dbot.t('unignored', {
+                                    'user': event.user, 
+                                    'module': module
+                                }));
+                            }
+                        });
+                    } else {
+                        event.reply(dbot.t('invalid_unignore', { 'user': event.user }));
+                    }
                 }
-            }
+            }.bind(this));
         },
 
         '~ban': function(event) {
-            var user = event.params[1];
-            var module = event.params[2];
+            var nick = event.input[1],
+                item = event.input[2];
 
-            if(_.isUndefined(user) || _.isUndefined(module)) {
-                event.reply(dbot.t('ban_usage', {'user': event.user}));
-                return;
-            }
- 
-            if(module == '*' || _.include(dbot.config.moduleNames, module) || _.include(dbot.commands, module)) {
-                if(_.has(dbot.db.bans, user) && _.include(dbot.db.bans[user], module)) {
-                    event.reply(dbot.t('already_banned', {
-                        'user': event.user,
-                        'banned': user
-                    }));
-                    return;
-                }
+            if(module == '*' || _.include(dbot.config.moduleNames, item) || _.include(dbot.commands, item)) {
+                dbot.api.users.resolveUser(event.server, nick, function(user) {
+                    this.api.getUserIgnores(user, function(err, ignores) {
+                        if(!err) {
+                            if(!ignores) {
+                                ignores = {
+                                    'id': user.id,
+                                    'ignores': [],
+                                    'bans': [] 
+                                };
+                            }
 
-                if(_.has(dbot.db.bans, event.params[1])) {
-                    dbot.db.bans[event.params[1]].push(module);
-                } else {
-                    dbot.db.bans[event.params[1]] = [module];
-                }
-
-                event.reply(dbot.t('banned_success', {
-                    'user': event.user,
-                    'banned': user,
-                    'module': module
-                }));
+                            if(!_.include(ignores.bans, item)) {
+                                ignores.bans.push(item);
+                                this.db.save('ignores', user.id, ignores, function(err) {
+                                    if(!err) {
+                                        event.reply(dbot.t('banned_success', {
+                                            'user': event.user, 
+                                            'banned': nick,
+                                            'module': item 
+                                        }));
+                                    }
+                                });
+                            } else {
+                                event.reply(dbot.t('already_banned', {
+                                    'user': event.user,
+                                    'banned': nick
+                                }));
+                            }
+                        }
+                    }.bind(this));
+                });
             } else {
-                event.reply(dbot.t('invalid_ban', {'user': event.user}));
+                event.reply(dbot.t('invalid_ban', { 'user': event.user }));
             }
         },
 
         '~unban': function(event) {
-            var bannedModules = [];
+            var nick = event.input[1],
+                item = event.input[2];
 
-            var user = event.params[1];
-            var module = event.params[2];
-
-            if(_.isUndefined(user) || _.isUndefined(module)) {
-                event.reply(dbot.t('unban_usage', {'user': event.user}));
-            } else {
-                if(_.has(dbot.db.bans, user) && _.include(dbot.db.bans[user], module)) {
-                    dbot.db.bans[user].splice(dbot.db.bans[user].indexOf(module), 1);
-
-                    event.reply(dbot.t('unbanned_success', {
-                        'user': event.user,
-                        'banned': user,
-                        'module': module
-                    }));
-                } else {
-                    event.reply(dbot.t('invalid_unban', {
-                        'user': event.user,
-                        'banned': user
-                    }));
-                }
-            }
+            dbot.api.users.resolveUser(event.server, nick, function(user) {
+                this.api.getUserIgnores(user, function(err, ignores) {
+                    if(err || !ignores) {
+                        event.reply(dbot.t('invalid_unban', {
+                            'user': event.user,
+                            'banned': nick 
+                        }));
+                    } else {
+                        if(_.include(ignores.bans, item)) {
+                            ignores.bans = _.without(ignores.bans, item); 
+                            this.db.save('ignores', user.id, ignores, function(err) {
+                                event.reply(dbot.t('unbanned_success', {
+                                    'user': event.user,
+                                    'banned': nick,
+                                    'module': item
+                                }));
+                            });
+                        } else {
+                            event.reply(dbot.t('invalid_unban', {
+                                'user': event.user,
+                                'banned': nick
+                            }));
+                        }
+                    }
+                }.bind(this));
+            }.bind(this));
         },
 
         '~ignorechannel': function(event) {
-            var channel = ((event.params[1] == '@') ? event.channel.name : event.params[1]);
-            var module = event.params[2];
+            var channelName = event.input[1],
+                module = event.input[2];
 
             // Ignoring the value of 'ignorable' at the moment
             if(module == '*' || _.include(dbot.config.moduleNames, module)) {
-                if(!_.has(dbot.db.ignores, channel)) dbot.db.ignores[channel] = [];
-                if(!_.include(dbot.db.ignores[channel], module)) {
-                    dbot.db.ignores[channel].push(module);
-                    dbot.instance.ignoreTag(channel, module);
-                    event.reply(dbot.t('ignoring_channel', {
-                        'module': module,
-                        'channel': channel
-                    }));
-                } else {
-                    event.reply(dbot.t('already_ignoring_channel', {
-                        'module': module,
-                        'channel': channel
-                    }));
-                }
+                var channel = false;
+
+                this.db.search('channel_ignores', { 
+                    'server': event.server,
+                    'name': channelName
+                }, function(result) {
+                    channel = result; 
+                }, function(err) {
+                    if(!channel) {
+                        var id = uuid.v4();
+                        channel = {
+                            'id': id,
+                            'server': event.server,
+                            'name': channelName,
+                            'ignores': []
+                        };
+                    }
+
+                    if(!_.include(channel.ignores, module)) {
+                        channel.ignores.push(module);
+                        this.db.save('channel_ignores', channel.id, channel, function(err) {
+                            dbot.instance.ignoreTag(channel, module);
+                            event.reply(dbot.t('ignoring_channel', {
+                                'module': module,
+                                'channel': channelName
+                            }));
+                        }); 
+                    } else {
+                        event.reply(dbot.t('already_ignoring_channel', {
+                            'module': module,
+                            'channel': channelName
+                        }));
+                    }
+                }.bind(this));
             } else {
                 event.reply(dbot.t('module_not_exist', { 'module': module }));
             }
         },
 
         '~unignorechannel': function(event) {
-            var channel = ((event.params[1] == '@') ? event.channel.name : event.params[1]);
-            var module = event.params[2];
+            var channelName = event.input[1],
+                module = event.input[2],
+                channel = false;
 
-            if(!_.has(dbot.db.ignores, channel)) dbot.db.ignores[channel] = [];
-            if(_.include(dbot.db.ignores[channel], module)) {
-                dbot.db.ignores[channel] = _.without(dbot.db.ignores[channel], module); 
-                dbot.instance.removeIgnore(channel, module);
-                event.reply(dbot.t('unignoring_channel', {
-                    'module': module,
-                    'channel': channel
-                }));
-            } else {
-                event.reply(dbot.t('not_ignoring_channel', {
-                    'module': module,
-                    'channel': channel
-                }));
-            }
+            this.db.search('channel_ignores', {
+                'server': event.server,
+                'name': channelName
+            }, function(result) {
+                channel = result;                
+            }, function(err) {
+                if(channel && _.include(channel.ignores, module)) {
+                    channel.ignores = _.without(channel.ignores, module);
+                    this.db.save('channel_ignores', channel.id, channel, function(err) {
+                        dbot.instance.removeIgnore(channel, module);
+                        event.reply(dbot.t('unignoring_channel', {
+                            'module': module,
+                            'channel': channelName
+                        }));
+                    });
+                } else {
+                    event.reply(dbot.t('not_ignoring_channel', {
+                        'module': module,
+                        'channel': channelName
+                    }));
+                }
+            }.bind(this));
         }
     };
+
+    commands['~ban'].regex = [/^~ban ([^ ]+) ([^ ]+)$/, 3];
+    commands['~unban'].regex = [/^~unban ([^ ]+) ([^ ]+)$/, 3];
+    commands['~ignorechannel'].regex = [/^~ignorechannel ([^ ]+) ([^ ]+)$/, 3];
+    commands['~unignorechannel'].regex = [/^~unignorechannel ([^ ]+) ([^ ]+)$/, 3];
 
     commands['~ban'].access = 'moderator';
     commands['~unban'].access = 'moderator';
@@ -187,11 +271,22 @@ var ignore = function(dbot) {
 
     this.onLoad = function() {
         dbot.instance.clearIgnores();
-        _.each(dbot.db.ignores, function(ignores, item) {
-            _.each(ignores, function(ignore) {
-                    dbot.instance.ignoreTag(item, ignore);
-            }, this);
-        }, this);
+
+        this.db.scan('ignores', function(ignores) {
+            dbot.api.users.getUser(ignores.id, function(user) {
+                if(user) {
+                    _.each(ignores.ignores, function(module) {
+                        dbot.instance.ignoreTag(user.primaryNick, module);
+                    });
+                }
+            });
+        }, function(err) { });
+
+        this.db.scan('channel_ignores', function(channel) {
+            _.each(channel.ignores, function(module) {
+                dbot.instance.ignoreTag(channel, module);
+            });
+        }, function(err) { });
     };
 };
 

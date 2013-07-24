@@ -5,8 +5,7 @@ Track users.
 ### Description
 
 This module tracks users and their aliases through nick changes and all that
-kind of thing. It's mainly a utility module for other modules to use. It's 
-also totally !insaned.
+kind of thing. It's mainly a utility module for other modules to use. 
 
 ### Commands
 
@@ -27,30 +26,67 @@ Requires moderator level access by default.
 
 ### API
 
-#### resolveUser(server, nick, [useLowerCase])
-This resolves a given nick to its primary user and returns it. 
+#### resolveUser(server, nick, callback)
+This resolves a given nick to its primary user, returning false if no user
+record is found in the store associated with the given nickname (either as a
+primary nick or an alias). The callback is called with one argument, a _user_
+object or false if no user was found.
 
-Note that if the useLowerCase argument is set to true, it will do a lower-case 
-search, however it will return the username in its properly capitalised form, so
-remember to lower case the return value if you are using lower case values as
-keys.
+#### getUser(uuid, callback)
+Get a user by its uuid. Callback is called with one argument, a _user_ object or
+false if no user was found by that uuid.
 
-#### resolveUser(server, user)
-Return whether a user is known either as an alias or a primary user.
+#### getChannel(server, channelName, callback)
+This resolves a given server and channel name to a particular channel. The
+callback is called with one argument, a _channel_ object or false if no channel
+was found with the given name on the given server.
 
-#### isPrimaryUser(server, nick)
-Return whether a nick is known as a primary user.
+#### getRandomChannelUser(server, channel, callback)
+Given a server name and a channel name, this gets a random user from that
+channel. Callback is called with one argument, a _user_ object or false if no
+channel was found from the given parameters.
 
-#### getAliases(server, user)
-Return a list of aliases for a given primary user.
+#### getAllusers(callback)
+Get a list of all users the bot currently knows about. Callback is called with
+one argument, a list of user records.
 
-#### isOnline(server, user, channel, useLowerCase)
-Return whether a user is online in a given channel on the given server.
+#### isOnline
+Is the given nick on the given server currently in the given channel. Callback
+is called with one argument, a boolean as to whether the nick is currently in
+the specified place. 
+
+### Data 
+
+#### User Object
+
+    {
+        id: user uuid,
+        primaryNick,
+        currentNick: Current or last used nickname,
+        server,
+        channels: A list of names for channels this user has been in,
+        aliases: A list of known aliases for this user
+    }
+
+#### Channel Object
+
+    {
+        id: channel uuid,
+        server,
+        name,
+        users: A list of the uuids of users who are in this channel
+    }
 
 ### Events
 
-#### nick_changed(server, newNick)
-This is executed when a new alias is added for a user.
+#### new_user(user)
+This is executed when a new user is added to the known users DB.
 
-#### new_user(server, nick)
-This is executed when a new primary user is added to the known users DB.
+#### new_user_alias(user, newNick)
+When a new user alias is added.
+
+#### new_channel(channel)
+Executed when DBot creates a new channel object.
+
+#### new_channel_user(user, channel)
+Executed when DBot creates a new channel object.

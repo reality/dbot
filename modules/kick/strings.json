@@ -5,16 +5,20 @@
         "na'vi": "Tuteol {user}it tsrame'i {kicks} hìmtxan ulte sute tsrame'i {kicked} hìmtxan.",
         "cy": "Cafwyd {user} ei gicio {kicks} gwaith ac wedi cicio pobl {kicked} gwaith.",
         "nl": "{user} is {kicks} keer gekickt en heeft anderen {kicked} keer gekickt.",
-        "de": "{user} wurde {kicks} mal gekickt und hat {kicked} mal andere Benutzer gekickt."
+        "de": "{user} wurde {kicks} mal gekickt und hat {kicked} mal andere Benutzer gekickt.",
+	"fr": "{user} a été kické {kicks} fois et a kické des personnes {kicked} fois."
     },
     "quieted": {
-        "en": "Quieted {quietee}. Remember: don't be a coconut."
+        "en": "Quieted {quietee}. Remember: don't be a coconut.",
+	"fr": "{quietee} a été rendu silencieux. Rappelle-toi : ne sois pas têtu."
     },
     "tquieted": {
-        "en": "Quieted {quietee} for {minutes} minutes. Remember: don't be a coconut."
+        "en": "Quieted {quietee} for {minutes} minutes. Remember: don't be a coconut.",
+	"fr": "{quietee} a été rendu silencieux pour {minutes} minutes. Rappelle-toi : ne sois pas têtu."
     },
     "unquieted": {
-        "en": "Unquieted {quietee}. Remember: don't be a coconut."
+        "en": "Unquieted {quietee}. Remember: don't be a coconut.",
+	"fr": "{quietee} peut maintenant parler. Rappelle-toi : ne sois pas têtu."
     },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
@@ -22,52 +26,65 @@
         "na'vi": "Ngal {botname}it ke tsun tsrive'i",
         "cy": "Ni ddylech cicio {botname}",
         "nl": "Gij zult {botname} niet kicken",
-        "de": "Du sollst {botname} nicht kicken"
+        "de": "Du sollst {botname} nicht kicken",
+	"fr": "Tu ne kickeras pas {botname}"
     },
     "ckicked": {
         "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
         "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "Achtung: {kicker} hat {kickee} von {channel} verwiesen. Grund: \"{reason}.\""
+        "de": "Achtung: {kicker} hat {kickee} von {channel} verwiesen. Grund: \"{reason}.\"",
+	"fr": "Attention : {kicker} a kické {kickee} de {channel}. Raison donnée : \"{reason}.\""
     },
     "cbanned": {
         "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}.\"",
         "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}.\""
+        "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}.\"",
+	"fr": "Attention : {banner} a banni {banee} de {channel}. Raison donnée : \"{reason}.\""
     },
     "tbanned": {
-        "en": "Attention: {banner} has banned {banee} from the {network} network for {hours} hours. The reason given was \"{reason}.\""
+        "en": "Attention: {banner} has banned {banee} from the {network} network for {hours} hours. The reason given was \"{reason}.\"",
+	"fr": "Attention : {banner} a banni {banee} du réseau {network} pour {hours} heures. Raison donnée : \"{reason}.\""
     },
     "tbanned_notify": {
-        "en": "You have been banned from the {network} network for {hours} hours by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban."
+        "en": "You have been banned from the {network} network for {hours} hours by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban.",
+	"fr": "Vous avez été banni du réseau {network} pour {hours} heures par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban."
     },
     "nbanned": {
         "en": "Attention: {banner} has banned {banee} from the {network} network. The reason given was \"{reason}.\"",
         "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}.\""
+        "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}.\"",
+	"fr": "Attention : {banner} a banni {banee} du réseau {network}. Raison donnée : \"{reason}.\""
     },
     "nbanned_notify": {
-        "en": "You have been banned from the {network} network by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban."
+        "en": "You have been banned from the {network} network by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban.",
+	"fr": "Vous avez été banni du réseau {network} par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban."
     },
     "nban_quote": {
         "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\"",
         "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "{banee} wurde von {banner} auf dem gesamten Netzwerk um {time} gebannt. Grund: \"{reason}.\""
+        "de": "{banee} wurde von {banner} auf dem gesamten Netzwerk um {time} gebannt. Grund: \"{reason}.\"",
+	"fr": "{banee} a été banni du réseau par {banner} à {time}. Raison donnée : \"{reason}.\""
     },
     "no_user": {
-        "en": "{user} doesn't seem to be online on this server."
+        "en": "{user} doesn't seem to be online on this server.",
+	"fr": "{user} ne semble pas être connecté à ce serveur."
     },
     "nunbanned": {
-        "en": "Attention: {unbanee} has been unbanned from the {network} network by {unbanner}."
+        "en": "Attention: {unbanee} has been unbanned from the {network} network by {unbanner}.",
+	"fr": "Attention : {unbanee} a été débanni du réseau {network} par {unbanner}."
     },
     "nunban_notify": {
-        "en": "You have been unbanned from the {network} network by {unbanner}."
+        "en": "You have been unbanned from the {network} network by {unbanner}.",
+	"fr": "Vous avez été débanni du réseau {network} par {unbanner}."
     },
     "nunban_error": {
-        "en": "It appears {unbanee} was not banned using the ~nban command."
+        "en": "It appears {unbanee} was not banned using the ~nban command.",
+	"fr": "Il semble que {unbanee} n'a pas été banni en utilisant la commande ~nban."
     },
     "quote_recorded": {
         "en": "This has been recorded in ~ban_{user}.",
         "cy": "Mae hyn wedi cael ei gofnodi yn ~ban_{user}.",
-        "de": "Dies wurde in ~ban_{user} aufgenommen."
+        "de": "Dies wurde in ~ban_{user} aufgenommen.",
+	"fr": "Cela a été enregistré dans ~ban_{user}."
     }
 }

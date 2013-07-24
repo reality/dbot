@@ -2,22 +2,10 @@ var _ = require('underscore')._;
 
 var api = function(dbot) {
     return {
-        'isBanned': function(user, command) {
-            var banned = false;
-            if(_.has(dbot.db.bans, user)) {
-                if(_.include(dbot.db.bans[user], command) ||
-                   _.include(dbot.db.bans[user], dbot.commands[command].module) ||
-                   _.include(dbot.db.bans[user], '*')) {
-                    banned = true;
-                }
-            }
-            return banned;
-        },
-
         /**
          * Does the user have the correct access level to use the command?
          */
-        'hasAccess': function(server, user, command, callback) {
+        'hasAccess': function(user, command, callback) {
             var accessNeeded = dbot.commands[command].access;
 
             if(accessNeeded == 'admin' || accessNeeded == 'moderator' || accessNeeded == 'power_user') {
@@ -25,11 +13,11 @@ var api = function(dbot) {
                 if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
                 if(accessNeeded == 'power_user') allowedNicks = _.union(allowedNicks, dbot.config.power_users);
 
-                if(!_.include(allowedNicks, user)) {
+                if(!_.include(allowedNicks, user.primaryNick)) {
                     callback(false);
                 } else {
                     if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
-                        dbot.api.nickserv.auth(server, user, function(result) {
+                        dbot.api.nickserv.auth(user.server, user.currentNick, function(result) {
                             callback(result);
                         });
                     } else {
@@ -39,16 +27,6 @@ var api = function(dbot) {
             } else {
                 callback(true);
             }
-        },
-
-        /**
-         * Is item (user or channel) ignoring command?
-         */
-        'isIgnoring': function(item, command) {
-            var module = dbot.commands[command].module;
-            return (_.has(dbot.db.ignores, item) &&
-                (_.include(dbot.db.ignores[item], module) ||
-                 _.include(dbot.db.ignores[item], '*')));
         },
 
         /**
@@ -76,16 +54,6 @@ var api = function(dbot) {
                 applies = true;
             }
             return applies;
-        },
-
-        'addHook': function(command, callback) {
-            console.log('adding hook');
-            if(_.has(dbot.commands, command)) {
-                if(!_.has(dbot.commands[command], 'hooks')) {
-                    dbot.commands[command].hooks = [];
-                }
-                dbot.commands[command].hooks.push(callback);
-            }
         }
     };
 };

@@ -28,21 +28,23 @@ var kick = function(dbot) {
         'networkUnban': function(server, unbanee, unbanner, callback) {
             var channels = dbot.config.servers[server].channels,
                 network = this.config.network_name[server] || server,
-                adminChannel = this.config.admin_channel[server];
+                adminChannel = dbot.config.servers[server].admin_channel;
 
             if(_.has(this.hosts, server) && _.has(this.hosts[server], unbanee)) {
                 var host = this.hosts[server][unbanee];
 
                 // Notify Staff
-                if(!_.isUndefined(adminChannel)) {
-                    var notifyString = dbot.t('nunbanned', {
-                        'network': network,
-                        'unbanee': unbanee,
-                        'unbanner': unbanner
-                    });
-                    dbot.api.report.notify(server, adminChannel, notifyString);
-                    dbot.say(server, adminChannel, notifyString);
+                if(_.isUndefined(adminChannel)) {
+                    adminChannel = event.channel.name;
                 }
+
+                var notifyString = dbot.t('nunbanned', {
+                    'network': network,
+                    'unbanee': unbanee,
+                    'unbanner': unbanner
+                });
+                dbot.api.report.notify(server, adminChannel, notifyString);
+                dbot.say(server, adminChannel, notifyString);
 
                 // Notify Unbanee
                 dbot.say(server, unbanee, dbot.t('nunban_notify', {
@@ -74,7 +76,7 @@ var kick = function(dbot) {
                     } else {
                         callback(true); // No host could be found
                     }
-                });
+                }.bind(this));
             }
         }
     };

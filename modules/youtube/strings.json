@@ -1,0 +1,8 @@
+{
+    "yt_video": {
+        "en": "[{title} by {author} — \u000312▶\u000f{plays} (\u00039▲{likes}\u000f|\u000312{dislikes}▼\u000f)]"
+    },
+    "yt_noresults": {
+        "en": "No results found."
+    }
+}

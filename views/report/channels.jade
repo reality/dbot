@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+    h3 Channels on #{server}
+    div#backlink
+        a(href='/warning') &laquo; Server List
+    ul#quotelist
+        -each channel in channels 
+            a(href='/notify/'+server+'/'+encodeURIComponent(channel))
+              li.quotes #{channel}

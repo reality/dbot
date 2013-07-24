@@ -1,6 +1,7 @@
 {
     "ignorable": false,
-    "help": "http://github.com/reality/depressionbot/blob/master/modules/command/README.md",
+    "dependencies": [ "event", "ignore", "users" ],
     "useNickserv": false,
-    "dbKeys": [ "ignores", "bans" ]
+    "accessOutput": false,
+    "banOutput": false
 }

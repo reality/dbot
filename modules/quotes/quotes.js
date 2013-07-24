@@ -1,49 +1,45 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    uuid = require('node-uuid');
 
 var quotes = function(dbot) {
     dbot.sessionData.rmCache = [];
-    this.quotes = dbot.db.quoteArrs,
-    this.addStack = [],
-    this.rmAllowed = true,
-    this.rmCache = dbot.sessionData.rmCache,
+    this.rmCache = dbot.sessionData.rmCache;
+    this.quotes = dbot.db.quoteArrs;
+    this.rmAllowed = true;
     this.rmTimer;
 
     this.internalAPI = {
-        // Retrieve a random quote from a given category, interpolating any quote
-        // references (~~QUOTE CATEGORY~~) within it
-        'interpolatedQuote': function(server, channel, user, key, quoteTree) {
-            if(!_.isUndefined(quoteTree) && quoteTree.indexOf(key) != -1) { 
-                return ''; 
-            } else if(_.isUndefined(quoteTree)) { 
-                quoteTree = [];
-            }
-
-            var index = _.random(0, this.quotes[key].length - 1);
-            var quoteString = this.quotes[key][index];
-
-            // Parse quote interpolations
-            var quoteRefs = quoteString.match(/~~([\d\w\s-]*)~~/g);
-            var thisRef;
-
-            while(quoteRefs && (thisRef = quoteRefs.shift()) !== undefined) {
-                var cleanRef = dbot.cleanNick(thisRef.replace(/^~~/,'').replace(/~~$/,'').trim());
-                if(cleanRef === '-nicks-') {
-                    var randomNick = dbot.api.users.getRandomChannelUser(server, channel);
-                    quoteString = quoteString.replace("~~" + cleanRef + "~~", randomNick);
-                    quoteTree.pop();
-                } else if(cleanRef === '-user-') {
-                    quoteString = quoteString.replace("~~" + cleanRef + "~~", user);
-                    quoteTree.pop();
-                } else if(_.has(this.quotes, cleanRef)) {
-                    quoteTree.push(key);
-                    quoteString = quoteString.replace("~~" + cleanRef + "~~", 
-                            this.internalAPI.interpolatedQuote(server, channel, user, cleanRef, quoteTree.slice()));
-                    quoteTree.pop();
+        // Parse quote interpolations
+        'interpolatedQuote': function(server, channel, key, quote, callback) {
+            var quoteRefs = quote.match(/~~([\d\w\s-]*)~~/g);
+            if(quoteRefs) {
+                var ref = this.internalAPI.cleanRef(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
+                if(ref === '-nicks-') {
+                    dbot.api.users.getRandomChannelUser(server, channel, function(user) {
+                        quote = quote.replace('~~' + ref + '~~', randomNick);
+                        this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
+                    }.bind(this));
+                } else {
+                    this.api.getQuote(ref, function(interQuote) {
+                        if(!interQuote || ref == key) {
+                            interQuote = '';
+                        }
+                        quote = quote.replace('~~' + ref + '~~', interQuote);
+                        this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
+                    }.bind(this));
                 }
+            } else {
+                callback(quote);
             }
-
-            return quoteString;
         }.bind(this),
+
+        'cleanRef': function(key) {
+            key = key.toLowerCase();
+            while(key.slice(-1) == '_') {
+                key = key.substring(0, key.length-1);
+            }
+            return key;
+        },
 
         'resetRemoveTimer': function(event, key, quote) {
             this.rmAllowed = false;
@@ -57,7 +53,7 @@ var quotes = function(dbot) {
             });
 
             clearTimeout(this.rmTimer);
-            if(this.rmCache.length < dbot.config.quotes.rmLimit) {
+            if(this.rmCache.length < this.config.rmLimit) {
                 this.rmTimer = setTimeout(function() {
                     this.rmCache.length = 0; // lol what
                 }.bind(this), 600000);
@@ -70,37 +66,81 @@ var quotes = function(dbot) {
     };
 
     this.api = {
-        'getQuote': function(event, category) {
-            var key = category.trim().toLowerCase();
-            var altKey;
-            if(key.split(' ').length > 0) {
-                altKey = key.replace(/ /g, '_');
-            }
+        'addQuote': function(key, quote, user, callback) {
+             var key = key.toLowerCase().trim(),
+                newCount,
+                category = false;
 
-            if(key.charAt(0) !== '_') { // lol
-                if(_.has(this.quotes, key)) {
-                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, event.user, key);
-                } else if(_.has(this.quotes, altKey)) {
-                    return this.internalAPI.interpolatedQuote(event.server, event.channel.name, event.user, altKey);
+            this.db.search('quote_category', { 'name': key }, function(result) {
+                category = result;
+            }, function(err) {
+                if(!category) {
+                    var id = uuid.v4();
+                    category = {
+                        'id': id,
+                        'name': key,
+                        'quotes': [], 
+                        'owner': user
+                    };
+                } 
+
+                if(_.include(category.quotes, quote)) {
+                    callback(false);
                 } else {
-                    return false;
+                    newCount = category.quotes.push(quote);
+                    this.db.save('quote_category', category.id, category, function(err) {
+                        this.rmAllowed = true;
+                        callback(newCount);
+                    }.bind(this));
                 }
-            } 
+            }.bind(this));
+
+        }, 
+
+        'getQuote': function(key, callback) {
+            this.api.getQuoteCategory(key, function(category) {
+                if(category) {
+                    var quotes = category.quotes;
+                    var index = _.random(0, quotes.length - 1); 
+                    callback(quotes[index]);
+                } else {
+                    callback(false);
+                }
+            });
         },
 
-        'getQuoteCategory': function(name) {
-            console.log(name);
-            var key = name.trim().toLowerCase();
-            if(_.has(this.quotes, key)) {
-                return this.quotes[key];
-            } else {
-                return false;
-            }
+        'getInterpolatedQuote': function(server, channel, key, callback) {
+            key = key.trim().toLowerCase(),
+
+            this.api.getQuote(key, function(quote) {
+                if(quote) {
+                    this.internalAPI.interpolatedQuote(server, channel, key, quote, callback); 
+                } else {
+                    callback(quote);
+                }
+            }.bind(this));
+        },
+
+        'getQuoteCategory': function(key, callback) {
+            var category = false, 
+                key = key.trim().toLowerCase();
+
+            this.db.search('quote_category', { 'name': key }, function(result) {
+                category = result;
+            }, function(err) {
+                callback(category);
+            });
+        },
+
+        'getCategoryKeys': function(callback) {
+            var keys = [];
+            this.db.scan('quote_category', function(result) {
+                if(result) keys.push(result.name);
+            }, function(err) {
+                callback(keys);
+            });
         }
     };
-
-    this.api['getQuoteCategory'].external = true;
-    this.api['getQuoteCategory'].extMap = [ 'name' ];
    
     this.listener = function(event) {
         if(event.action == 'PRIVMSG') {
@@ -111,17 +151,17 @@ var quotes = function(dbot) {
             }
 
             if(once) {
-                event.message = '~qadd realityonce=reality ' + once[1];
-                event.action = 'PRIVMSG';
-                event.params = event.message.split(' ');
-                dbot.instance.emit(event);
-            }
+                this.api.addQuote('realityonce', 'reality' + once[1], event.user, function(newCount) {
+                    event.reply('\'reality ' + once[1] + '\' saved (' + newCount + ').');
+                });
+           }
         } else if(event.action == 'JOIN') {
             if(this.config.quotesOnJoin == true) {
-                var userQuote = this.api.getQuote(event, event.user)
-                if(userQuote) {
-                    event.reply(event.user + ': ' + this.api.getQuote(event, event.user));
-                }
+                this.api.getQuote(event.user, function(quote) {
+                    if(quote) {
+                        event.reply(event.user + ': ' + quote);
+                    }
+                });
             }
         }
     }.bind(this);

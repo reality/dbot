@@ -1,4 +1,4 @@
 {
     "dependencies": [ "report", "users", "web" ],
-    "dbKeys": [ "warnings" ]
+    "dbType": "redis"
 }

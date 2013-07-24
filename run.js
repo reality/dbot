@@ -1,12 +1,12 @@
 var fs = require('fs'),
     _ = require('underscore')._,
-    jsbot = require('./jsbot/jsbot');
+    jsbot = require('./jsbot/jsbot'),
+    DatabaseDriver = require('./database').DatabaseDriver;
 require('./snippets');
 
 var DBot = function() {
     
     /*** Load the DB ***/
-
     if(fs.existsSync('db.json')) {
         try {
             this.db = JSON.parse(fs.readFileSync('db.json', 'utf-8'));
@@ -18,37 +18,12 @@ var DBot = function() {
         this.db = {};
     }
 
-    if(!_.has(this.db, 'config')) {
-        this.db.config = {};
-    }
+    this.reloadConfig();
 
-    /*** Load the Config ***/
-
-    if(!fs.existsSync('config.json')) {
-        console.log('Error: config.json file does not exist. Stopping');
-        process.exit();
-    }
-    
-    this.config = _.clone(this.db.config);
-    try {
-        _.defaults(this.config, JSON.parse(fs.readFileSync('config.json', 'utf-8')));
-    } catch(err) {
-        console.log('Config file is invalid. Stopping: ' + err);
-        process.exit();
-    }
-
-    try {
-        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
-    } catch(err) {
-        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
-        process.exit();
-    }
-
-    // Load missing config directives from sample file
-    _.defaults(this.config, defaultConfig);
+    /*** Load the fancy DB ***/
+    this.ddb = new DatabaseDriver(this.config);
 
     /*** Load main strings ***/
-
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -79,6 +54,38 @@ var DBot = function() {
     this.instance.connectAll();
 };
 
+DBot.prototype.reloadConfig = function() {
+    this.config = {};
+
+    if(!fs.existsSync('config.json')) {
+        console.log('Error: config.json file does not exist. Stopping');
+        process.exit();
+    }
+    
+    try {
+        var configFile = fs.readFileSync('config.json', 'utf-8');
+        this.config = JSON.parse(configFile);
+        this.customConfig = JSON.parse(configFile);
+    } catch(err) {
+        console.log('Config file is invalid. Stopping: ' + err);
+        process.exit();
+    }
+
+    try {
+        var defaultConfig = JSON.parse(fs.readFileSync('config.json.sample', 'utf-8'));
+    } catch(err) {
+        console.log('Error loading sample config. Bugger off this should not even be edited. Stopping.');
+        process.exit();
+    }
+
+    // Load missing config directives from sample file
+    if(!_.has(this.customConfig, 'modules')) {
+        this.customConfig.modules = {};
+        this.config.modules = {};
+    }
+    _.defaults(this.config, defaultConfig);
+};
+
 // Say something in a channel
 DBot.prototype.say = function(server, channel, message) {
     this.instance.say(server, channel, message);
@@ -97,8 +104,8 @@ DBot.prototype.t = function(string, formatData) {
         if(_.has(this.strings[string], lang)) {
             var module = this.stringMap[string];
             formattedString = this.strings[string][lang].format(formatData);
-            if(this.config[module] && this.config[module].outputPrefix) {
-                formattedString = '[' + this.config[module].outputPrefix + '] ' +
+            if(this.config.modules[module] && this.config.modules[module].outputPrefix) {
+                formattedString = '[' + this.config.modules[module].outputPrefix + '] ' +
                     formattedString;
             }
         }
@@ -134,10 +141,8 @@ DBot.prototype.reloadModules = function() {
     this.api = {};
     this.stringMap = {};
     this.usage = {};
+    this.reloadConfig();
     
-    // Load config changes
-    _.extend(this.config, this.db.config);
-
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -148,7 +153,7 @@ DBot.prototype.reloadModules = function() {
 
     // Enforce having command. it can still be reloaded, but dbot _will not_ 
     //  function without it, so not having it should be impossible
-    if(!moduleNames.include("command")) {
+    if(!_.include(moduleNames, 'command')) {
         moduleNames.push("command");
     }
 
@@ -159,171 +164,159 @@ DBot.prototype.reloadModules = function() {
 
     this.instance.removeListeners();
 
-    _.each(moduleNames, function(name) {
+    var name, moduleDir, config;
+    for(i=0;i<moduleNames.length;i++) {
+        name = moduleNames[i];
         this.status[name] = true;
-        var moduleDir = './modules/' + name + '/';
+        moduleDir = './modules/' + name + '/';
         try {
             var cacheKey = require.resolve(moduleDir + name);
             delete require.cache[cacheKey];
         } catch(err) {
             this.status[name] = 'Error loading module: ' + err + ' ' + err.stack.split('\n')[2].trim();
-            return;
+            continue;
         }
 
-        try {
-            var webKey = require.resolve(moduleDir + 'web');
-        } catch(err) {
-        }
-        if(webKey) {
-            delete require.cache[webKey];
-        }
-
-        try {
-            // Load the module config data
-            var config = {};
-            
-            if(_.has(this.db.config, name)) {
-                config = _.clone(this.db.config[name]); 
-            }
-
+        if(!_.has(this.config.modules, name)) this.config.modules[name] = {};
+        if(fs.existsSync(moduleDir + 'config.json')) {
             try {
-                var defaultConfig = fs.readFileSync(moduleDir + 'config.json', 'utf-8');
-                try {
-                    defaultConfig = JSON.parse(defaultConfig);
-                } catch(err) { // syntax error
-                    this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
-                    return;
+                var defaultConfig = JSON.parse(fs.readFileSync(moduleDir + 'config.json', 'utf-8'));
+            } catch(err) { // Syntax error
+                this.status[name] = 'Error parsing config: ' + err + ' ' + err.stack.split('\n')[2].trim();
+                continue;
+            }
+            this.config.modules[name] = _.defaults(this.config.modules[name], defaultConfig);
+        }
+        var config = this.config.modules[name];
+
+        // Don't shit out if dependencies not met
+        if(_.has(config, 'dependencies')) {
+            _.each(config.dependencies, function(dependency) {
+                if(!_.include(moduleNames, dependency)) {
+                    console.log('Warning: Automatically loading ' + dependency);
+                    moduleNames.push(dependency);
                 }
-                config = _.defaults(config, defaultConfig);
-            } catch(err) {
-                // Invalid or no config data
-            }
+            }, this);
+        }
 
-            // Don't shit out if dependencies not met
-            if(_.has(config, 'dependencies')) {
-                _.each(config.dependencies, function(dependency) {
-                    if(!_.include(moduleNames, dependency)) {
-                        console.log('Warning: Automatically loading ' + dependency);
-                        moduleNames.push(dependency);
-                    }
-                }, this);
-            }
-
+        // Groovy funky database shit
+        if(!_.has(config, 'dbType') || config.dbType == 'olde') {
             // Generate missing DB keys
-            this.config[name] = config;
             _.each(config.dbKeys, function(dbKey) {
                 if(!_.has(this.db, dbKey)) {
                     this.db[dbKey] = {};
                 }
             }, this);
-
-            // Load string data for the module
-            _.each([ 'usage', 'strings' ], function(property) {
-                var propertyData = {};
-                try {
-                    propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
-                } catch(err) {};
-                _.extend(this[property], propertyData);
-                if(property == 'strings') {
-                    _.each(_.keys(propertyData), function(string) {
-                        this.stringMap[string] = name;
-                    }.bind(this));
-                }
-            }, this);
-
-            // Load the module itself
-            var rawModule = require(moduleDir + name);
-            var module = rawModule.fetch(this);
-            module.name = name;
-            this.rawModules.push(rawModule);
-
-            module.config = this.config[name];
-
-            // Load the module data
-            _.each([ 'commands', 'pages', 'api' ], function(property) {
-                var propertyObj = {};
-
-                if(fs.existsSync(moduleDir + property + '.js')) {
-                    try {
-                        var propertyKey = require.resolve(moduleDir + property);
-                        if(propertyKey) delete require.cache[propertyKey];
-                        propertyObj = require(moduleDir + property).fetch(this);
-                    } catch(err) {
-                        this.status[name] = 'Error loading ' + propertyKey + ': ' + err + ' - ' + err.stack.split('\n')[1].trim();
-                        console.log('Module error (' + module.name + ') in ' + property + ': ' + err);
-                    } 
-                }
-
-                if(!_.has(module, property)) module[property] = {};
-                _.extend(module[property], propertyObj);
-                _.each(module[property], function(item, itemName) {
-                    item.module = name; 
-                    if(_.has(config, property) && _.has(config[property], itemName)) {
-                        _.extend(item, config[property][itemName]);
-                    }
-                    module[property][itemName] = _.bind(item, module);
-                    _.extend(module[property][itemName], item);
-                }, this);
-
-                if(property == 'api') {
-                    this[property][name] = module[property];
-                } else {
-                    _.extend(this[property], module[property]);
-                }
-            }, this);
-
-            // Load the module listener
-            if(module.listener) {
-                if(!_.isArray(module.on)) {
-                    module.on = [ module.on ];
-                }
-                _.each(module.on, function(on) {
-                    this.instance.addListener(on, module.name, module.listener);
-                }, this);
-            }
-           
-            // Provide toString for module name
-            module.toString = function() {
-                return this.name;
-            }
-
-            this.modules[module.name] = module;
-        } catch(err) {
-            console.log(this.t('module_load_error', { 'moduleName': name }));
-            this.status[name] = err + ' - ' + err.stack.split('\n')[1].trim();
-            if(this.config.debugMode) {
-                console.log('MODULE ERROR (' + name + '): ' + err.stack );
-            } else {
-                console.log('MODULE ERROR (' + name + '): ' + err );
-            }
+        } else {
+            // Just use the name of the module for now, add dbKey iteration later
+            this.ddb.createDB(name, config.dbType, {}, function(db) {});
         }
+    }
+
+    process.nextTick(function() {
+        _.each(moduleNames, function(name) {
+            if(this.status[name] === true) {
+                try {
+                    var moduleDir = './modules/' + name + '/';
+                    var rawModule = require(moduleDir + name);
+                    var module = rawModule.fetch(this);
+                    this.rawModules.push(rawModule);
+                } catch(err) {
+                    var stack = err.stack.split('\n')[2].trim();
+                    this.status[name] = 'Error loading module: ' + err + ' ' + stack;
+                    console.log('Error loading module: ' + err + ' ' + stack);
+                    return;
+                }
+
+                module.name = name;
+                module.db = this.ddb.databanks[name];
+                module.config = this.config.modules[name];
+
+                // Load the module data
+                _.each([ 'commands', 'pages', 'api' ], function(property) {
+                    var propertyObj = {};
+
+                    if(fs.existsSync(moduleDir + property + '.js')) {
+                        try {
+                            var propertyKey = require.resolve(moduleDir + property);
+                            if(propertyKey) delete require.cache[propertyKey];
+                            propertyObj = require(moduleDir + property).fetch(this);
+                        } catch(err) {
+                            console.log('Module error (' + module.name + ') in ' + 
+                                property + ': ' + err);
+                        } 
+                    }
+
+                    if(!_.has(module, property)) module[property] = {};
+                    _.extend(module[property], propertyObj);
+                    _.each(module[property], function(item, itemName) {
+                        item.module = name; 
+                        if(_.has(module.config, property) && _.has(module.config[property], itemName)) {
+                            _.extend(item, module.config[property][itemName]);
+                        }
+                        module[property][itemName] = _.bind(item, module);
+                        _.extend(module[property][itemName], item);
+                    }, this);
+
+                    if(property == 'api') {
+                        this[property][name] = module[property];
+                    } else {
+                        _.extend(this[property], module[property]);
+                    }
+                }, this);
+
+                // Load the module listener
+                if(module.listener) {
+                    if(!_.isArray(module.on)) {
+                        module.on = [ module.on ];
+                    }
+                    _.each(module.on, function(on) {
+                        this.instance.addListener(on, module.name, module.listener);
+                    }, this);
+                }
+
+                // Load string data for the module
+                _.each([ 'usage', 'strings' ], function(property) {
+                    var propertyData = {};
+                    try {
+                        propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
+                    } catch(err) {
+                        console.log('Data error (' + module.name + ') in ' + 
+                            property + ': ' + err);
+                    };
+                    _.extend(this[property], propertyData);
+                    if(property == 'strings') {
+                        _.each(_.keys(propertyData), function(string) {
+                            this.stringMap[string] = name;
+                        }.bind(this));
+                    }
+                }, this);
+
+                // Provide toString for module name
+                module.toString = function() {
+                    return this.name;
+                }
+
+                this.modules[module.name] = module;
+            }
+        }.bind(this));
     }.bind(this));
 
-    if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
-    
-    _.each(this.modules, function(module, name) {
-        if(module.onLoad) {
-            try {
-                module.onLoad();
-            } catch(err) {
-                this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
-                console.log('MODULE ONLOAD ERROR (' + name + '): ' + err );
+    process.nextTick(function() {
+        if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
+        _.each(this.modules, function(module, name) {
+            if(module.onLoad) {
+                try {
+                    module.onLoad();
+                } catch(err) {
+                    this.status[name] = 'Error in onLoad: ' + err + ' ' + err.stack.split('\n')[1].trim();
+                    console.log('MODULE ONLOAD ERROR (' + name + '): ' + err );
+                }
             }
-        }
-    }, this);
+        }, this);
+    }.bind(this));
 
     this.save();
 };
-
-DBot.prototype.cleanNick = function(key) {
-    key = key.toLowerCase();
-    while(key.endsWith("_")) {
-        if(_.has(this.db.quoteArrs, key)) {
-            return key;
-        }
-        key = key.substring(0, key.length-1);
-    }
-    return key;
-}
 
 new DBot();
