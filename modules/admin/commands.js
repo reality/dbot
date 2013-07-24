@@ -185,11 +185,12 @@ var commands = function(dbot) {
                             event.reply(dbot.t("config_array", { "alternate": "pushconfig" }));
                         }
                     } else {
+                        event.reply(dbot.t("no_config_key", {'path': configPath}));
                         configPath = configPath.split('.');
                         if(_.has(dbot.config.modules, configPath[0])) {
                             configPath.splice(0, 0, 'modules');
                             event.params[1] = configPath.join('.');
-                            this.commands['~showconfig'](event);
+                            this.commands['~setconfig'](event);
                             return;
                         } else {
                             event.reply(dbot.t('new_config_key', { 'key': configPath }));
