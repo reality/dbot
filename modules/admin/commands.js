@@ -188,7 +188,6 @@ var commands = function(dbot) {
                         configPath = configPath.split('.');
                         if(_.has(dbot.config.modules, configPath[0])) {
                             configPath.splice(0, 0, 'modules');
-                            configPath = configPath.join('.');
                             event.params[1] = configPath.join('.');
                             this.commands['~showconfig'](event);
                             return;
