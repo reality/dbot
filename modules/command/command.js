@@ -49,7 +49,7 @@ var command = function(dbot) {
                                     });
                                 }
                             }
-                            if(!_.include(['~reload', '~load', '~unload'], commandName)) dbot.api.event.emit('command', [ event ]);
+                            if(!_.include(['~reload', '~load', '~unload', '~setconfig'], commandName)) dbot.api.event.emit('command', [ event ]);
                             dbot.save();
                         } else {
                             if(commandName !== '~') {
