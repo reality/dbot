@@ -48,6 +48,12 @@ var youtube = function(dbot) {
                     'json': true
                 }, function(error, response, body) {
                     if(_.isObject(body) && _.has(body, 'entry')) {
+                        if(!_.has(v, 'yt$rating')) {
+                            v['yt$rating'] = {
+                                'numLikes': 0,
+                                'numDislikes': 0
+                            };
+                        }
                         var v = body.entry;
                         event.reply(dbot.t('yt_video', {
                             'title': v.title['$t'],
