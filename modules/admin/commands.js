@@ -190,6 +190,7 @@ var commands = function(dbot) {
                         if(_.has(dbot.config.modules, configPath[0])) {
                             configPath.splice(0, 0, 'modules');
                             event.params[1] = configPath.join('.');
+                            event.reply(event.params);
                             this.commands['~setconfig'](event);
                             return;
                         } else {
