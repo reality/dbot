@@ -24,6 +24,12 @@ var youtube = function(dbot) {
                 if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed,
                         'entry') && _.has(body.feed.entry[0], 'yt$statistics')) {
                     var v = body.feed.entry[0];
+                    if(!_.has(v, 'yt$rating')) {
+                        v['yt$rating'] = {
+                            'numLikes': 0,
+                            'numDislikes': 0
+                        };
+                    }
                     event.reply(dbot.t('yt_video', {
                         'title': v.title['$t'],
                         'plays': v['yt$statistics'].viewCount,
@@ -48,13 +54,13 @@ var youtube = function(dbot) {
                     'json': true
                 }, function(error, response, body) {
                     if(_.isObject(body) && _.has(body, 'entry')) {
+                        var v = body.entry;
                         if(!_.has(v, 'yt$rating')) {
                             v['yt$rating'] = {
                                 'numLikes': 0,
                                 'numDislikes': 0
                             };
                         }
-                        var v = body.entry;
                         event.reply(dbot.t('yt_video', {
                             'title': v.title['$t'],
                             'plays': v['yt$statistics'].viewCount,
