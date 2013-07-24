@@ -31,7 +31,7 @@ var command = function(dbot) {
                         if(this.config.accessOutput) {
                             event.reply(dbot.t('access_denied', { 'user': event.user }));
                         }
-                    } else if(!isIgnoring && !dbot.commands[commandName].disabled) {
+                    } else if(!isIgnoring && && _.has(dbot.commands, commandName) && !dbot.commands[commandName].disabled) {
                         if(this.api.applyRegex(commandName, event)) {
                             try {
                                 var command = dbot.commands[commandName];
