@@ -11,6 +11,7 @@ var youtube = function(dbot) {
         'alt': 'json',
         'v': 2
     };
+    this.LinkRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
     this.commands = {
         '~youtube': function(event) {
@@ -32,24 +33,25 @@ var youtube = function(dbot) {
                     if(!_.has(v, 'yt$statistics')) {
                         v['yt$statistics'] = { 'viewCount': 0 };
                     }
+
+                    var link = v.link[0].href.match(this.LinkRegex)[2];
                     event.reply(dbot.t('yt_video', {
                         'title': v.title['$t'],
                         'plays': v['yt$statistics'].viewCount,
                         'author': v.author[0].name['$t'],
                         'likes': v['yt$rating'].numLikes,
                         'dislikes': v['yt$rating'].numDislikes
-                    }));
+                    }) + ' - ' + 'http://youtu.be/' + link);
                 } else {
                     event.reply(dbot.t('yt_noresults'));
                 }
-            });
+            }.bind(this));
         }
     };
     this.commands['~youtube'].regex = [/^~youtube (.+)$/, 2];
 
     this.onLoad = function() {
-        dbot.api.link.addHandler(this.name,
-            /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/,
+        dbot.api.link.addHandler(this.name, this.LinkRegex,
             function(event, match, name) {
                 request.get(this.ApiRoot + '/videos/' + match[2], {
                     'qs': this.params,
