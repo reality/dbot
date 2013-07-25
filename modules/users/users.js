@@ -203,6 +203,7 @@ var users = function(dbot) {
                             if(!_.include(channel.users, user.id)) {
                                 this.internalAPI.addChannelUser(channel, user, staff, next); 
                             } else {
+                                console.log(channel);
                                 this.internalAPI.modChannelStaff(channel, user, staff, next);
                             }
                         }.bind(this);
