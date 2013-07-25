@@ -1,5 +1,6 @@
-depressionbot version 0.4-dev
+dbot version 0.4 (jimbletron)
 
+this.db.search('releases', { 'name': 'jimbletron' }, function(result) { "RELEASE" });
 "the database is a grilled cheese"
 _.each(dbot.modules, function(module) { "RESCORE EVERYTHING" });
 "He called his bot depressionbot, and that's when he was happy."
