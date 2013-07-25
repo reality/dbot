@@ -57,7 +57,7 @@ var reddit = function(dbot) {
     };
 
     this.onLoad = function() {
-        var rHandler = function(event, matches, name) {
+        var rHandler = function(matches, name, callback) {
             if(matches[6]) { // It's a comment
                 this.api.getCommentInfo(matches[4], matches[6], function(info) {
                     if(info) {
@@ -70,7 +70,7 @@ var reddit = function(dbot) {
                             'down': info.downs
                         });
                         if(info.over_18) infoString += " " + dbot.t("nsfw");
-                        event.reply(infoString);
+                        callback(infoString);
                     } 
                 });
             } else if(matches[4]) { // It's a post
@@ -86,7 +86,7 @@ var reddit = function(dbot) {
                             'url': this.ApiRoot + matches[4]
                         });
                         if(info.over_18) infoString += " " + dbot.t("nsfw");
-                        event.reply(infoString);
+                        callback(infoString);
                     }
                 }.bind(this));
             } else if(matches[2]) { // It's a subreddit
@@ -98,7 +98,7 @@ var reddit = function(dbot) {
                             'active': info.accounts_active
                         });
                         if(info.over18) infoString += dbot.t("nsfw");
-                        event.reply(infoString);
+                        callback(infoString);
                     }
                 });
             }

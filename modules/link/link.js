@@ -57,6 +57,27 @@ var link = function(dbot) {
                 } catch(err) { callback(false); }
             });
 
+        },
+
+        'parseLink': function(link, callback) {
+            var handler = false;
+            for(var i=0;i<this.handlers.length;i++) {
+                var matches = this.handlers[i].regex.exec(link);     
+                if(matches) {
+                    handler = this.handlers[i];
+                    break;
+                }
+            }
+            
+            if(handler) {
+                this.handlers[i].callback(matches, this.handlers[i].name, function(parsed) {
+                    callback(parsed);
+                });
+            } else {
+                this.api.getTitle(link, function(title) {
+                    callback(dbot.t('link', { 'link': title } ));
+                });
+            }
         }
     };
                 
@@ -127,19 +148,9 @@ var link = function(dbot) {
         if(urlMatches !== null) {
             this.links[event.channel.name] = urlMatches[0];
             if(this.config.autoTitle == true) {
-                var handlerFound = false;
-                for(var i=0;i<this.handlers.length;i++) {
-                    var matches = this.handlers[i].regex.exec(urlMatches[0]);     
-                    if(matches) {
-                        this.handlers[i].callback(event, matches, this.handlers[i].name);
-                        handlerFound = true; break;
-                    }
-                }
-                if(!handlerFound) {
-                    this.api.getTitle(urlMatches[0], function(title) {
-                        event.reply(dbot.t('link', { 'link': title } ));
-                    });
-                }
+                this.api.parseLink(urlMatches[0], function(result) {
+                    event.reply(result); 
+                });
             }
         }
     }.bind(this);

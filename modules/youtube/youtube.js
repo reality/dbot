@@ -52,7 +52,7 @@ var youtube = function(dbot) {
 
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, this.LinkRegex,
-            function(event, match, name) {
+            function(match, name, callback) {
                 request.get(this.ApiRoot + '/videos/' + match[2], {
                     'qs': this.params,
                     'json': true
@@ -65,7 +65,7 @@ var youtube = function(dbot) {
                                 'numDislikes': 0
                             };
                         }
-                        event.reply(dbot.t('yt_video', {
+                        callback(dbot.t('yt_video', {
                             'title': v.title['$t'],
                             'plays': v['yt$statistics'].viewCount,
                             'author': v.author[0].name['$t'],

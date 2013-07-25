@@ -33,7 +33,7 @@ var dent = function(dbot) {
         }
     };
 
-    this.lookup = function(event, id, service) {
+    this.lookup = function(id, service, callback) {
       request({
         url: this.StatusAPI[service],
         qs: {"id": id},
@@ -41,7 +41,7 @@ var dent = function(dbot) {
       }, function(error, response, body) {
         if (!error && response.statusCode == 200) {
           if (_.has(body, 'text')) {
-            event.reply(service + " [" + body.user.screen_name + '] ' + body.text);
+            callback(service + " [" + body.user.screen_name + '] ' + body.text);
           }
         }
       });
@@ -65,8 +65,8 @@ var dent = function(dbot) {
         }
 
         for(s in this.StatusRegex) {
-            dbot.api.link.addHandler(s, this.StatusRegex[s], function(event, matches, name) {
-                this.lookup(event, matches[1], name);
+            dbot.api.link.addHandler(s, this.StatusRegex[s], function(matches, name, callback) {
+                this.lookup(matches[1], name, callback);
             }.bind(this));
         }
     }.bind(this);

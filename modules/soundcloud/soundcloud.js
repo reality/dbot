@@ -39,7 +39,7 @@ var soundcloud = function(dbot) {
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, 
             /https?:\/\/(www\.)?soundcloud\.com\//,
-            function(event, match, name) {
+            function(match, name, callback) {
                 var url = match.input;
                 request.get(this.ApiRoot + '/resolve.json', {
                     'qs': {
@@ -51,7 +51,7 @@ var soundcloud = function(dbot) {
                     if(response.statusCode == 200) {
                         if(body.kind == 'track') {
                             if(!body.genre) body.genre = '';
-                            event.reply(dbot.t('sc_track', {
+                            callback(dbot.t('sc_track', {
                                 'title': body.title,
                                 'artist': body.user.username,
                                 'genre': body.genre.trim(),

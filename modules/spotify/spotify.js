@@ -20,7 +20,7 @@ var spotify = function(dbot) {
     this.youtubeRegex = /^http:\/\/(?:www\.)?youtube.com\/watch\?v=\w+(&\S*)?$/
     this.spotifyText = '\u00039spotify\u000f';
 
-    this.lookup = function(event, link) {
+    this.lookup = function(link, callback) {
         request({
             'url': this.spotifyLookup,
             'qs': { 'uri': link },
@@ -28,19 +28,19 @@ var spotify = function(dbot) {
         }, function(error, response, body) {
             if(!error && response.statusCode == 200) {
                 if(_.has(body, 'track')) {
-                    event.reply(dbot.t('track', {
+                    callback(dbot.t('track', {
                         'artist': _.map(body.track.artists, 
                             function(a) { return a.name }).join(', '), 
                         'album': body.track.album.name, 
                         'track': body.track.name
                     }));
                 } else if(_.has(body, 'album')) {
-                    event.reply(dbot.t('album', {
+                    callback(dbot.t('album', {
                         'artist': body.album.artist, 
                         'album': body.album.name
                     }));
                 } else if(_.has(body, 'artist')) {
-                    event.reply(dbot.t('artist', {
+                    callback(dbot.t('artist', {
                         'artist': body.artist.name
                     }));
                 }
@@ -119,8 +119,8 @@ var spotify = function(dbot) {
     this.commands = commands;
 
     this.onLoad = function() {
-        dbot.api.link.addHandler(this.name, this.spotifyRegex, function(event, matches, name) {
-            this.lookup(event, matches[0]);
+        dbot.api.link.addHandler(this.name, this.spotifyRegex, function(matches, name, callback) {
+            this.lookup(matches[0], callback);
         }.bind(this));
     }.bind(this);
 };

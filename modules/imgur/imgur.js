@@ -163,7 +163,7 @@ var imgur = function(dbot) {
     }
 
     this.onLoad = function() {
-        var imgurHandler = function(event, matches, name) {
+        var imgurHandler = function(matches, name, callback) {
             if(matches[1]) {
                 var dataCallback = function(data) {
                     var info;
@@ -175,7 +175,7 @@ var imgur = function(dbot) {
                         info = this.internalAPI.galleryInfoString(data);
                     }
 
-                    if(info) event.reply(dbot.t('imgurinfo', { 'info': info }));
+                    if(info) callback(dbot.t('imgurinfo', { 'info': info }));
                 }.bind(this);
 
                 if(name == 'imgurimage') { 
