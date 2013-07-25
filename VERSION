@@ -1,4 +1,4 @@
-dbot version 0.4 (jimbletron)
+dbot version 0.5-dev
 
 this.db.search('releases', { 'name': 'jimbletron' }, function(result) { "RELEASE" });
 "the database is a grilled cheese"
