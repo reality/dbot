@@ -16,19 +16,21 @@ var youtube = function(dbot) {
         '~youtube': function(event) {
             request.get(this.ApiRoot + '/videos', {
                 'qs': _.extend(this.params, { 
-                    'q': encodeURIComponent(event.input[1]),
+                    'q': event.input[1],
                     'max-results': 1
                 }),
                 'json': true
             }, function(error, response, body) {
-                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed,
-                        'entry') && _.has(body.feed.entry[0], 'yt$statistics')) {
+                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
                     var v = body.feed.entry[0];
                     if(!_.has(v, 'yt$rating')) {
                         v['yt$rating'] = {
                             'numLikes': 0,
                             'numDislikes': 0
                         };
+                    }
+                    if(!_.has(v, 'yt$statistics')) {
+                        v['yt$statistics'] = { 'viewCount': 0 };
                     }
                     event.reply(dbot.t('yt_video', {
                         'title': v.title['$t'],
