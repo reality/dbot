@@ -11,7 +11,10 @@ var api = function(dbot) {
             if(accessNeeded == 'admin' || accessNeeded == 'moderator' || accessNeeded == 'power_user') {
                 var allowedNicks = dbot.config.admins;
                 if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
-                if(accessNeeded == 'power_user') allowedNicks = _.union(allowedNicks, dbot.config.power_users);
+                if(accessNeeded == 'power_user') {
+                    allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
+                    allowedNicks = _.union(allowedNicks, dbot.config.power_users);
+                }
 
                 if(!_.include(allowedNicks, user.primaryNick)) {
                     callback(false);
