@@ -17,7 +17,7 @@ var api = function(dbot) {
                     callback(false);
                 } else {
                     if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
-                        dbot.api.nickserv.auth(user.server, user.currentNick, function(result) {
+                        dbot.api.nickserv.auth(user.server, user, function(result) {
                             callback(result);
                         });
                     } else {
