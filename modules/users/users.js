@@ -214,7 +214,9 @@ var users = function(dbot) {
                             this.internalAPI.createUser(event.server, nick, checkChannelUser);
                         }
                     }.bind(this));
-                }.bind(this), function(err) {});
+                }.bind(this), function(err) {
+                    console.log('finished checking ' + channel);
+                });
             }.bind(this);
 
             if(!event.rChannel) {
