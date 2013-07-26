@@ -264,6 +264,8 @@ var commands = function(dbot) {
 
     commands['~kickcount'].access = 'regular';
     commands['~kickstats'].access = 'regular';
+    commands['~quiet'].access = 'power_user';
+    commands['~unquiet'].access = 'power_user';
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
