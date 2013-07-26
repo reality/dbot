@@ -196,23 +196,25 @@ var users = function(dbot) {
         dbot.instance.addListener('366', 'users', function(event) {
             var checkChannel = function(channel) {
                 async.eachSeries(_.keys(event.channel.nicks), function(nick, next) {
-                    var staff = event.channel.nicks[nick];
-                    
-                    this.api.resolveUser(event.server, nick, function(user) {
-                        var checkChannelUser = function(user) {
-                            if(!_.include(channel.users, user.id)) {
-                                this.internalAPI.addChannelUser(channel, user, staff, next); 
-                            } else {
-                                this.internalAPI.modChannelStaff(channel, user, staff, next);
-                            }
-                        }.bind(this);
+                    process.nextTick(function() {
+                        var staff = event.channel.nicks[nick];
+                        
+                        this.api.resolveUser(event.server, nick, function(user) {
+                            var checkChannelUser = function(user) {
+                                if(!_.include(channel.users, user.id)) {
+                                    this.internalAPI.addChannelUser(channel, user, staff, next); 
+                                } else {
+                                    this.internalAPI.modChannelStaff(channel, user, staff, next);
+                                }
+                            }.bind(this);
 
-                        if(user) {
-                            checkChannelUser(user); 
-                        } else {
-                            this.internalAPI.createUser(event.server, nick, checkChannelUser);
-                        }
-                    }.bind(this));
+                            if(user) {
+                                checkChannelUser(user); 
+                            } else {
+                                this.internalAPI.createUser(event.server, nick, checkChannelUser);
+                            }
+                        }.bind(this));
+                    });
                 }.bind(this), function(err) {
                     console.log('finished checking ' + channel);
                 });
