@@ -20,9 +20,17 @@ var webInterface = function(dbot) {
 
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    this.app.use(app.router);
+    this.app.use(this.app.router);
 
-    passport.use(new LocalStrategy(function(username, pass, callback) {
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(obj, done) {
+        done(null, obj);
+    });
+
+    passport.use(new LocalStrategy(function(username, password, callback) {
         var splitUser = username.split('@'),
             server = splitUser[1],
             username = splitUser[0];
@@ -45,7 +53,7 @@ var webInterface = function(dbot) {
                 return callback(null, false, { 'message': 'Unknown user' });
             }
         }.bind(this)); 
-    }.bind(this));
+    }.bind(this)));
 
     var server = this.app.listen(this.config.webPort);
 
@@ -89,9 +97,9 @@ var webInterface = function(dbot) {
         });
 
         this.app.get('/login', function(req, res) {
-            res.render('login', function(req, res) {
+            res.render('login', {
                 'user': req.user,
-                'message': req.flash('error');
+                'message': req.flash('error')
             });
         });
 

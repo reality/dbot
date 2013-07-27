@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    div#backlink 
+        a(href='/') &laquo; Home
+    br
+    if message
+        p #{message}
+    div#login
+        form(action='/login', method='post')
+            p 
+              key Username 
+              input(type="text", name="username")
+            p 
+              key Password 
+              input(type="password", name="password")
+            p 
+              input(type="submit", value="Log In")
+
