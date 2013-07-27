@@ -89,7 +89,22 @@ var webInterface = function(dbot) {
         });
 
         this.app.get('/login', function(req, res) {
-            
+            res.render('login', function(req, res) {
+                'user': req.user,
+                'message': req.flash('error');
+            });
+        });
+
+        this.app.post('/login', passport.authenticate('local', {
+            'failureRedirect': '/login', 
+            'failureFlash': true
+        }), function(req, res) {
+            res.redirect('/');
+        });
+
+        this.app.get('/logout', function(req, res) {
+            req.logout(); 
+            res.redirect('/');
         });
     }.bind(this);
 
