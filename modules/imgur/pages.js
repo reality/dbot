@@ -3,7 +3,7 @@ var _ = require('underscore')._;
 var pages = function(dbot) {
     return {
         '/imgur/random': function(req, res) {
-            var quoteCat = dbot.db.quoteArrs[dbot.config.imgur.highscore],
+            var quoteCat = dbot.db.quoteArrs[dbot.config.modules.imgur.highscore],
                 highScore = 0;
                 
             if(quoteCat) {
