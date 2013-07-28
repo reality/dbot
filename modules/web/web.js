@@ -14,6 +14,7 @@ var webInterface = function(dbot) {
     this.app.use(express.static(this.pub));
     this.app.set('view engine', 'jade');
     this.app.use(express.cookieParser());
+    this.app.use(express.bodyParser());
     this.app.use(express.methodOverride());
     this.app.use(express.session({ 'secret': 'wat' }));
     this.app.use(flash());
@@ -39,8 +40,7 @@ var webInterface = function(dbot) {
             if(user) {
                 this.api.getWebUser(user.id, function(webUser) {
                     if(webUser) {
-                        var hash = passHash.generate(pass);
-                        if(webUser.password === hash) {
+                        if(passHash.verify(password, webUser.password)) {
                             return callback(null, user); 
                         } else {
                             return callback(null, false, { 'message': 'Incorrect password.' });
@@ -107,7 +107,10 @@ var webInterface = function(dbot) {
             'failureRedirect': '/login', 
             'failureFlash': true
         }), function(req, res) {
-            res.redirect('/');
+            res.render('login', {
+                'user': req.user,
+                'message': 'Successfully logged in!'
+            });
         });
 
         this.app.get('/logout', function(req, res) {
@@ -130,16 +133,17 @@ var webInterface = function(dbot) {
             }
         },
 
-        'getWebUser': function(id) {
+        'getWebUser': function(id, callback) {
             this.db.read('web_users', id, function(err, webUser) {
-                if(!err) callback(webUser);
+                callback(webUser);
             }); 
         }
     };
 
     this.commands = {
-        '~setwebpassword': function(event) {
+        '~setwebpass': function(event) {
             var newPass = event.input[1];
+            console.log(newPass);
             this.api.getWebUser(event.rUser.id, function(webUser) {
                 if(!webUser) {
                     webUser = {
@@ -152,9 +156,10 @@ var webInterface = function(dbot) {
                 this.db.save('web_users', webUser.id, webUser, function(result) {
                     event.reply(dbot.t('web_pass_set')); 
                 });
-            });
+            }.bind(this));
         }
     };
+    this.commands['~setwebpass'].regex = [/^~setwebpass ([^ ]+)$/, 2]
 };
 
 exports.fetch = function(dbot) {
