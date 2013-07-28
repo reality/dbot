@@ -6,16 +6,18 @@
         "cy": "Mae {user} wedi ei gohurio gan ddefnyddio'r gorchymun yma. Cychwyn orfflosgiad",
         "nl": "{user} mag dit commando niet meer gebruiken. Bereid het verbrandingsritueel voor.",
         "de": "{user} wurde von diesem Befehl gebannt. Verbrennung einleiten",
-	"fr": "{user} est interdit d'utiliser cette commande. Commencer l'incinération."
+	"fr": "{user} est interdit d'utiliser cette commande. Commencer l'incinération.",
+    "it": "A {user} è stato interdetto di utilizzare questo commando. Iniziare incenerimento."
     },
-    "syntax_error": { 
+    "syntax_error": {
         "en": "Invalid syntax. Initiate incineration.",
         "es": "Sintaxis no válida. Iniciar incineración.",
         "na'vi": "Ngeyä pamrel keyawr lu. Nga skxawng lu.",
         "cy": "Cystrawen annilys. Cychwyn orfflosgiad",
         "nl": "Ongeldige syntax. Bereid het verbrandingsritueel voor.",
         "de": "Syntax ungültig. Verbrennung einleiten",
-	"fr": "Syntaxe invalide. Initier l'incinération."
+	"fr": "Syntaxe invalide. Initier l'incinération.",
+    "it": "Sintassi non valida. Iniziare incenerimento"
     },
     "usage": {
         "en": "Usage for {command}: {usage}.",
@@ -23,7 +25,8 @@
         "cy": "Defnydd o {command}: {usage}.",
         "nl": "{command} wordt op de volgende manier gebruikt: {usage}.",
         "de": "Benutzung von {command}: [usage}.",
-	"fr": "Utilisation de {command}: {usage}."
+	"fr": "Utilisation de {command}: {usage}.",
+    "it": "Utilizzo di {command}: {usage}."
     },
     "no_usage_info": {
         "en": "No usage information found for {command}.",
@@ -31,7 +34,8 @@
         "cy": "Ni chanfuwyd gwybodaeth am ddefnydd o {command}",
         "nl": "Geen gebruiksinformatie gevonden voor {command}.",
         "de": "Keine Gebrauchsanweisung gefunden für {command}.",
-	"fr": "Aucune information d'utilisation trouvée pour {command}"
+	"fr": "Aucune information d'utilisation trouvée pour {command}",
+    "it": "Nessuna informazione d' utilizzo trovata per {command}"
     },
     "help_link": {
         "en": "Help for {module}: {link}",
@@ -39,7 +43,8 @@
         "cy": "Cymorth am {module}: {link}",
         "nl": "Hulp voor {module}: {link}",
         "de": "Hilfe für {module}: {link}",
-	"fr": "Aide pour {module}: {link}"
+	"fr": "Aide pour {module}: {link}",
+    "it": "Aiuto per {module}: {link}"
     },
     "no_help": {
         "en": "No help found for {module}.",
@@ -47,21 +52,25 @@
         "cy": "Ni chanfuwyd cymorth am {module}",
         "nl": "Geen hulp gevonden voor {module}.",
         "de": "Keine Hilfe gefunden für {module}.",
-	"fr": "Aucune aide trouvée pour {module}."
+	"fr": "Aucune aide trouvée pour {module}.",
+    "it": "Nessun aiuto trovato per {module}."
     },
     "loaded_modules": {
         "en": "Loaded modules: {modules}.",
         "cy": "Modiwlau sy'n lwythodd: {modules}.",
         "nl": "Geladen modules: {modules}.",
         "de": "Module geladen: {modules}.",
-	"fr": "Modules chargés: {modules}."
+	"fr": "Modules chargés: {modules}.",
+    "it": "Moduli caricati: {modules}."
     },
     "access_denied": {
         "en": "{user}: You don't have the access level to run this command.",
-	"fr": "{user}: Vous n'avez pas le niveau d'accès requis pour utiliser cette commande."
+	"fr": "{user}: Vous n'avez pas le niveau d'accès requis pour utiliser cette commande.",
+    "it": "{user}: Non hai il livello d'accesso neccessario per utilizzare questo commando."
     },
     "module_commands": {
         "en": "Commands in {module}: {commands}.",
-	"fr": "Commandes de {module}: {commands}."
+	"fr": "Commandes de {module}: {commands}.",
+    "it": "Commandi di {module}: {commands}."
     }
 }

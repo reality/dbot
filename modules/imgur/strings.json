@@ -5,10 +5,12 @@
         "cy": "Gallai fod yn anniogel ar gwaith",
         "nl": "bevat mogelijk gevoelige beelden",
         "de": "Könnte 18+ Material enthalten",
-	"fr": "peut être risqué pour le travail (NSFW)"
+	"fr": "peut être risqué pour le travail (NSFW)",
+    "it": "può essere rischioso al lavoro (NSFW)"
     },
     "imgurinfo": {
         "en": "[{info}]",
-	"fr": "[{info}]"
+	"fr": "[{info}]",
+    "it": "[{info}]"
     }
 }

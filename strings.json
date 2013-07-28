@@ -5,7 +5,8 @@
         "na'vi": "Srake sweylu nga pamrel sivi: ",
         "cy": "A oeddech chi'n feddwl: ",
         "de": "Meintest du: ",
-	"fr": "Vouliez-vous dire : "
+	"fr": "Vouliez-vous dire : ",
+    "it": "Volevi dire :"
     },
     "module_load_error": {
         "en": "Failed to load module: {moduleName}",
@@ -13,6 +14,7 @@
         "na'vi": "Oeru Oel {moduleName}it sung.",
         "cy": "Wedi methu a llwytho modiwl: {moduleName}",
         "de": "Konnte {moduleName} nicht laden",
-	"fr": "Le module {moduleName} n'a pas pu être chargé"
+	"fr": "Le module {moduleName} n'a pas pu être chargé",
+    "it": "Non è possibile caricare il modulo: {moduleName}"
     }
 }

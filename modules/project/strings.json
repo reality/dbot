@@ -11,13 +11,15 @@
         "en": "With thanks to:",
         "fr": "Merci à:",
         "cy": "Gyda diolch i:",
-        "de": "Dankeschön geht an:"
+        "de": "Dankeschön geht an:",
+        "it": "Ringraziamenti vanno a:"
     },
     "credits": {
         "en": "Authors",
         "fr": "Développeurs",
         "cy": "Datblygwyr",
-        "de": "Urheber"
+        "de": "Urheber",
+        "it": "Autori"
     },
     "pagetitle": {
         "en": "{botname} web interface",
@@ -88,13 +90,14 @@
         "en": "Dutch",
         "cy": "Iseldireg",
         "nl": "Nederlands",
-	"fr": "Néerlandais"
+	"fr": "Néerlandais",
+        "it": "olandese"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
         "fr": "{name} est à la révision {rev}",
         "de": "{name} ist in der Revision {rev}",
-        "it": "{name} il numero di revisione {rev}",
+        "it": "{name} è al numero di revisione {rev}",
         "cy": "{name} ar diwygiad {rev}",
         "nl": "{name} is bij revisie {rev}"
     },
@@ -110,7 +113,7 @@
         "en": "Configuration",
         "fr": "Configuration",
         "de": "Konfiguration",
-        "it": "Configuazione",
+        "it": "Configurazione",
         "cy": "Cyfluniad",
         "nl": "Configuratie"
     },
@@ -126,7 +129,7 @@
         "en": "Debug off",
         "fr": "Mode de débogage arrêté",
         "de": "Debug-Modus ausgeschaltet",
-        "it": "debug spento",
+        "it": "debug disattivato",
         "cy": "Modd dadfygio wedi'i ddiffodd",
         "nl": "Debug uitgeschakeld"
     },
@@ -134,13 +137,14 @@
         "en": "Milestones",
         "fr": "Etapes",
         "cy": "Cerrig milltir",
-        "de": "Zwischenziel"
+        "de": "Zwischenziel",
+        "it": "Pietra miliare"
     },
     "milestoneprog": {
         "en": "Progress",
         "fr": "Progression",
         "de": "Fortschritt",
-        "it": "sviluppo",
+        "it": "progresso",
         "cy": "Cynnydd",
         "nl": "Voortgang"
     },
@@ -179,43 +183,50 @@
     "dent-account": {
         "en": "Submitting dents to @{username}",
         "cy": "Cyflwyno 'dents' i'w @{username}",
-	"fr": "Envoi de 'dents' à @{username}"
+	"fr": "Envoi de 'dents' à @{username}",
+	"it": "Invio di dents a @{username}"
     },
     "dent-push": {
         "en": "Pushing quotes to identi.ca",
         "cy": "Gwthio dyfyniadau i identi.ca",
-	"fr": "Envoi des citations vers identi.ca"
+	"fr": "Envoi des citations vers identi.ca",
+        "it": "Invio di citazione ad identi.ca"
     },
     "quote-rmlimit": {
         "en": "Quote removal throttle set to {limit}",
         "cy": "Trothwy ar dileu dyfyniadau gosod i {limit}",
-	"fr": "Commande d'enlèvement de citations réglée à {limit}"
+	"fr": "Commande d'enlèvement de citations réglée à {limit}",
+        "it": "Regolatore di rimozione citazioni fissato a {limit}"
     },
     "report-notifyvoice": {
         "en": "Voiced users are being notified of reports",
         "cy": "Defnyddwyr leisiwyd yn cael eu hysbysu o adroddiadau",
-	"fr": "Les utilisateurs ayant la parole sont notifiés des rapports"
+	"fr": "Les utilisateurs ayant la parole sont notifiés des rapports",
+        "it": "I rapporti vengono notificati agli utenti con diritto di voce"
     },
     "web-port": {
         "en": "Web is listening on {port}",
         "cy": "We yn gwrando ar {port}",
-	"fr": "Le web écoute sur {port}"
+	"fr": "Le web écoute sur {port}",
+        "it": "La rete ascolta su {port}"
     },
     "propaganda": {
         "en": "Contribute to the code on Github!",
         "cy": "Cyfrannu at ay cod ar Github!",
-	"fr": "Contribuez au code sur GitHub!"
+	"fr": "Contribuez au code sur GitHub!",
+        "it": "Contribuite al codice su GitHub!"
     },
     "branch": {
         "en": "{branch}",
-	"fr": "{branch}"
+	"fr": "{branch}",
+        "it": "{branch}"
     },
     "git": {
         "en": "version control",
         "de": "Versionsverwaltung",
         "es": "Control de versiones",
         "fr": "Gestion de versions",
-        "it": "Controllo versione",
+        "it": "Controllo di versione",
         "cy": "Rheoli fersiwn",
         "nl": "Versiebeheersysteem"
     },
@@ -223,42 +234,50 @@
         "en": "Current",
         "fr": "Courant",
         "cy": "Ar hyn o bryd",
-        "de": "Jetzige"
+        "de": "Jetzige",
+        "it": "Attuale"
     },
     "langhead-translations": {
         "en": "Completion",
         "fr": "Achèvement",
-        "cy": "Cwblhad"
+        "cy": "Cwblhad",
+        "it": "Completamento"
     },
     "translations": {
         "en": "Translations",
         "fr": "Traductions",
         "cy": "Cyfieithiadau",
-        "de": "Übersetzungen"
+        "de": "Übersetzungen",
+        "it": "Traduzioni"
     },
     "langhead-progress": {
         "en": "Translation Progress",
         "fr": "Avancement de la traduction",
         "cy": "Cynnydd Cyfieithu",
-        "de": "Übersetzungsfortschritt"
+        "de": "Übersetzungsfortschritt",
+        "it": "Progresso di traduzione"
     },
     "langhead-native": {
         "en": "Native",
         "fr": "Natale",
-        "cy": "Brodorol"
+        "cy": "Brodorol",
+        "it": "Nativo"
     },
     "outstanding-pullreq": {
         "en": "There are outstanding pull requests",
         "cy": "Mae disgwyl ceisiadau tynnu",
-	"fr": "Il a des requêtes pull en attente"
+	"fr": "Il a des requêtes pull en attente",
+        "it": "Ci sono delle richieste di pull in attesa"
     },
     "oaosidl": {
         "en": "The Official Aberystwyth Open Source International Development League",
-	"fr": "La Ligue Officielle de Développement International Open Source d'Aberystwyth"
+	"fr": "La Ligue Officielle de Développement International Open Source d'Aberystwyth",
+        "it": "La Lega Ufficiale Internazionale di Sviluppo Open Source di Aberystwyth"
     },
     "link-autotitle": {
         "en": "Automatically titling links in channels",
         "cy": "Teitlo awtomatig cysylltiadau mewn sianelau",
-	"fr": "Titre automatiquement les liens dans les channels"
+	"fr": "Titre automatiquement les liens dans les channels",
+        "it": "Titolazione automatica collega ai canali"
     }
 }

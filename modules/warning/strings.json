@@ -1,14 +1,17 @@
 {
     "no_warnings": {
         "en": "No warnings found for {user}.",
-	"fr": "Aucun avertissement trouvé pour {user}."
+	"fr": "Aucun avertissement trouvé pour {user}.",
+	"it": "Nessuna avvertenza trovate per {user}."
     },
     "warning_info": {
         "en": "{user} has {num} warnings. More info can be found at {url}",
-	"fr": "{user} a {num} avertissements. Plus d'informations peuvent être trouvées ici : {url}"
+	"fr": "{user} a {num} avertissements. Plus d'informations peuvent être trouvées ici : {url}",
+	"it": "{user} a {num} avvertenze. Ulteriori informazioni si trovano a {url}"
     },
     "warn_notify": {
         "en": "Attention: {warner} has issued a warning to {warnee} for \"{reason}.\" More info can be found at {url}",
-	"fr": "Attention : {warner} a donné un avertissement à {warnee} pour \"{reason}.\". Plus d'informations peuvent être trouvées ici : {url}"
+	"fr": "Attention : {warner} a donné un avertissement à {warnee} pour \"{reason}.\". Plus d'informations peuvent être trouvées ici : {url}",
+	"it": "Attenzione : {warner} ha dato un' avvertenza a {warnee} per \"{reason}.\". Ulterior informazioni si trovano a {url}"
     }
 }

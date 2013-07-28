@@ -5,11 +5,13 @@
         "cy": "Ni chanfuwyd teitl y dudalen",
         "nl": "Er is geen paginatitel gevonden.",
         "de": "Kein Seitenname gefunden.",
-	"fr": "Aucun titre de page trouvé."
+	"fr": "Aucun titre de page trouvé.",
+    "it": "Nessun titolo di pagina trovato."
     },
     "xkcd": {
         "en": "xkcd {num}: {title} https://xkcd.com/{num}",
-	"fr": "xkcd {num}: {title} https://xkcd.com/{num}"
+	"fr": "xkcd {num}: {title} https://xkcd.com/{num}",
+	"it": "xkcd {num}: {title} https://xkcd.com/{num}"
     },
     "no-hits": {
         "en": "No hits.",
@@ -17,10 +19,12 @@
         "cy": "Dim canlyniadau.",
         "nl": "Geen resultaten.",
         "de": "Keine Treffer.",
-	"fr": "Aucun résultat."
+	"fr": "Aucun résultat.",
+    "it": "Nessun risultato."
     },
     "link": {
         "en": "{link}",
-	"fr": "{link}"
+	"fr": "{link}",
+    "it": "{link}"
     }
 }

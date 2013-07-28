@@ -1,6 +1,7 @@
 {
     "log_message": {
         "en": "[{time}] {user}: {command}",
-	"fr": "[{time}] {user}: {command}"
+	"fr": "[{time}] {user}: {command}",
+	"it": "[{time}] {user}: {command}"
     }
 }
