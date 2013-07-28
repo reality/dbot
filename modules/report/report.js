@@ -64,6 +64,8 @@ var report = function(dbot) {
                 nick = event.input[2],
                 reason = event.input[3];
 
+            if(reason.charAt(reason.length - 1) != '.') reason += '.';
+
             dbot.api.users.resolveUser(event.server, nick, function(reportee) {
                 if(_.has(event.allChannels, channelName)) {
                     if(reportee) {

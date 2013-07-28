@@ -1,12 +1,12 @@
 {
     "report": {
-        "en": "Attention: {reporter} has reported {reported} in {channel}. The reason given was: \"{reason}.\"",
+        "en": "Attention: {reporter} has reported {reported} in {channel}. The reason given was: \"{reason}\"",
         "na'vi": "{reporter}ìl fpìl futa {reported} fe' lu taluna {reason}.",
-        "cy": "Sylw! {reporter} wedi adrodd {reported} yn {channel}. Y rheswm a rhoddwyd oedd: \"{reason}.\"",
-        "nl": "Waarschuwing: {reporter} heeft {reported} aangegeven in {channel}. De reden die gegeven werd was: \"{reason}.\"",
-        "de": "Achtung: {reporter} hat {reported} in {channel} gemeldet. Grund: \"{reason}.\"",
-	"fr": "Attention : {reporter} a reporté {reported} dans {channel}. Raison donnée : \"{reason}.\"",
-	"it": "Attentzone : {reporter} ha segnalato {reported} in {channel}. Motivo : \"{reason}.\""
+        "cy": "Sylw! {reporter} wedi adrodd {reported} yn {channel}. Y rheswm a rhoddwyd oedd: \"{reason}\"",
+        "nl": "Waarschuwing: {reporter} heeft {reported} aangegeven in {channel}. De reden die gegeven werd was: \"{reason}\"",
+        "de": "Achtung: {reporter} hat {reported} in {channel} gemeldet. Grund: \"{reason}\"",
+	"fr": "Attention : {reporter} a reporté {reported} dans {channel}. Raison donnée : \"{reason}\"",
+	"it": "Attentzone : {reporter} ha segnalato {reported} in {channel}. Motivo : \"{reason}\""
     },
     "reported": {
         "en": "Thank you, {reported} has been reported to the channel administrators.",
