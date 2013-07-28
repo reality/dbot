@@ -65,6 +65,10 @@ var youtube = function(dbot) {
                                 'numDislikes': 0
                             };
                         }
+                        if(!_.has(v, 'yt$statistics')) {
+                            v['yt$statistics'] = { 'viewCount': 0 };
+                        }
+
                         callback(dbot.t('yt_video', {
                             'title': v.title['$t'],
                             'plays': v['yt$statistics'].viewCount,
