@@ -4,7 +4,7 @@ var words = function(dbot) {
     this.commands = {
         '~define': function(event) {
             var query = event.params[1];
-            this.wn.definitions(query, function(err, defs) {
+            this.wn.definitions(encodeURIComponent(query), function(err, defs) {
                 if(!err && defs[0]) {
                     event.reply(query + ': ' + defs[0].text);
                 } else {
