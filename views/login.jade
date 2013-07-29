@@ -7,7 +7,7 @@ block content
     if message
         p #{message}
     div#login
-        form(action='/login', method='post')
+        form(name='loginform' action='/login', method='post')
             input(type="hidden", name="redirect", value=redirect)
             p 
               key Username 
