@@ -63,7 +63,7 @@ var webInterface = function(dbot) {
             if(_.has(pages, p)) {
                 var func = pages[p];
                 var mod = func.module;
-                this.app.get(p, (function(req, resp) {
+                this.app.get(p, this.api.hasAccess, (function(req, resp) {
                     // Crazy shim to seperate module views.
                     var shim = Object.create(resp);
                     shim.render = (function(view, one, two) {
@@ -137,6 +137,40 @@ var webInterface = function(dbot) {
             this.db.read('web_users', id, function(err, webUser) {
                 callback(webUser);
             }); 
+        },
+
+        'hasAccess': function(req, res, next) {
+            var module = req.route.path.split('/')[1];
+            module = dbot.modules[module];
+
+            if(module.config.requireWebLogin == true) {
+                if(req.isAuthenticated()) {
+                    if(!_.isUndefined(module.config.webAccess)) {
+                        var allowedUsers = dbot.config.admins;
+                        if(module.config.webAccess == 'moderators') {
+                            allowedUsers = _.union(allowedUsers, dbot.config.moderators);
+                        }
+                        if(module.config.webAccess == 'power_users') {
+                            allowedUsers = _.union(allowedUsers, dbot.config.moderators);
+                            allowedUsers = _.union(allowedUsers, dbot.config.power_users);
+                        }
+
+                        if(_.include(allowedUsers, req.user.primaryNick)) {
+                            return next();
+                        } else {
+                            res.render('index', {
+                                'message': 'You don\'t have access to this module.'
+                            });
+                        }
+                    } else {
+                        return next();
+                    }
+                } else {
+                    res.render('login', {
+                        'message': 'You need to log in to access this module.'
+                    });
+                }
+            }
         }
     };
 
