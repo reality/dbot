@@ -169,6 +169,7 @@ var webInterface = function(dbot) {
                             allowedUsers = _.union(allowedUsers, dbot.config.moderators);
                             allowedUsers = _.union(allowedUsers, dbot.config.power_users);
                         }
+                        console.log(allowedUsers);
 
                         if(_.include(allowedUsers, req.user.primaryNick)) {
                             return next();
