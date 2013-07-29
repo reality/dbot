@@ -170,15 +170,10 @@ var webInterface = function(dbot) {
                             allowedUsers = _.union(allowedUsers, dbot.config.power_users);
                         }
 
-                        console.log(module.config.webAccess);
-                        console.log(allowedUsers);
-
                         if(_.include(allowedUsers, req.user.primaryNick)) {
                             return next();
                         } else {
-                            res.render('index', {
-                                'message': 'You don\'t have access to this module.'
-                            });
+                            res.redirect('index');
                         }
                     } else {
                         return next();
