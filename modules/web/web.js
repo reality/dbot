@@ -24,11 +24,16 @@ var webInterface = function(dbot) {
     this.app.use(this.app.router);
 
     passport.serializeUser(function(user, done) {
-        done(null, user);
+        console.log('serialising ' + user);
+        done(null, user.id);
     });
 
-    passport.deserializeUser(function(obj, done) {
-        done(null, obj);
+    passport.deserializeUser(function(id, done) {
+        dbot.api.users.getUser(id, function(user) {
+            console.log(id);
+            console.log(user);
+            done(null, user);
+        });
     });
 
     passport.use(new LocalStrategy(function(username, password, callback) {
@@ -68,6 +73,10 @@ var webInterface = function(dbot) {
                     var shim = Object.create(resp);
                     shim.render = (function(view, one, two) {
                         // Render with express.js
+                        _.extend(one, { 
+                            'name': dbot.config.name,
+                            'user': req.user    
+                        });
                         resp.render(this.module + '/' + view, one, two);
                     }).bind(this);
                     shim.render_core = resp.render;
@@ -92,6 +101,7 @@ var webInterface = function(dbot) {
         this.app.get('/', function(req, res) {
             res.render('index', { 
                 'name': dbot.config.name,
+                'user': req.user,
                 'routes': indexModules
             });
         });
@@ -107,10 +117,14 @@ var webInterface = function(dbot) {
             'failureRedirect': '/login', 
             'failureFlash': true
         }), function(req, res) {
-            res.render('login', {
-                'user': req.user,
-                'message': 'Successfully logged in!'
-            });
+            if(req.body.redirect) {
+                res.redirect(req.body.redirect);
+            } else {
+                res.render('login', {
+                    'user': req.user,
+                    'message': 'Successfully logged in!'
+                });
+            }
         });
 
         this.app.get('/logout', function(req, res) {
@@ -167,7 +181,8 @@ var webInterface = function(dbot) {
                     }
                 } else {
                     res.render('login', {
-                        'message': 'You need to log in to access this module.'
+                        'message': 'You need to log in to access this module.',
+                        'redirect': module
                     });
                 }
             } else {

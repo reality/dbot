@@ -16,7 +16,12 @@ html(lang='en')
             div.container#main
                 block content
         div#footer
-            a#project(href='/project') About
+            p#project 
+              a#bread(href='/project') About
+              if user
+                span#bread Logged in as #{user.primaryNick}
+              else
+                a#bread(href='/login') Login 
 
     script(type="text/javascript", src="/bootstrap/js/bootstrap.min.js")
     script(type="text/javascript", src="/d3/d3.v3.min.js")

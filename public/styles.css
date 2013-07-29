@@ -230,8 +230,10 @@ div.imgwrap > img {
     margin-right:10px;
     margin-left:10px;
 }
-#footer a {
+#bread {
     float:right;
+    margin-left: 2px;
+    margin-right: 2px;
     padding-left:2px;
     padding-right:2px;
     background-color:#f5f5f5;
