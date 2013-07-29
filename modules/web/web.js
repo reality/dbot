@@ -121,10 +121,7 @@ var webInterface = function(dbot) {
             if(req.body.redirect) {
                 res.redirect(req.body.redirect);
             } else {
-                res.render('login', {
-                    'user': req.user,
-                    'message': 'Successfully logged in!'
-                });
+                res.redirect('/');
             }
         });
 
@@ -173,7 +170,7 @@ var webInterface = function(dbot) {
                         if(_.include(allowedUsers, req.user.primaryNick)) {
                             return next();
                         } else {
-                            res.redirect('index');
+                            res.redirect('/');
                         }
                     } else {
                         return next();
