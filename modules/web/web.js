@@ -170,6 +170,8 @@ var webInterface = function(dbot) {
                         'message': 'You need to log in to access this module.'
                     });
                 }
+            } else {
+                return next();
             }
         }
     };
