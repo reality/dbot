@@ -12,7 +12,7 @@ block content
           th Warner
           th Reason
       tbody
-        for warning, key in warnings
+        each warning, key in warnings
           tr
             td #{new Date(warning.time)}
             td #{warning.warner}

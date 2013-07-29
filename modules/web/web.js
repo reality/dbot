@@ -91,6 +91,7 @@ var webInterface = function(dbot) {
         var moduleNames = _.keys(dbot.modules);
         var indexModules = [];
 
+        // fix the thingy
         _.each(moduleNames, function(moduleName) {
             var modulePath = '/' + moduleName;
             if(_.include(routes, modulePath)) {
