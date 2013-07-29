@@ -35,9 +35,9 @@ var pages = function(dbot) {
             });
         },
 
-        '/warning/:server/:user': function(req, res) {
+        '/warning/:server/:uid': function(req, res) {
             var server = req.params.server,
-                user = req.params.user;
+                user = req.params.uid;
 
             dbot.api.users.resolveUser(server, user, function(user) {
                 var warnings = [];
