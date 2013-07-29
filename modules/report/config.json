@@ -2,5 +2,7 @@
     "ignorable": true,
     "notifyVoice": false,
     "dependencies": [ "users" ],
-    "dbType": "redis"
+    "dbType": "redis",
+    "requireWebLogin": true,
+    "webAccess": "power_users"
 }
