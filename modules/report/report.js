@@ -50,10 +50,21 @@ var report = function(dbot) {
 
     this.listener = function(event) {
         if(_.has(this.pending, event.rUser.id)) {
-            _.each(this.pending[event.rUser.id], function(message) {
-                dbot.say(event.server, event.rUser.currentNick, message); 
-            });
-            delete this.pending[event.rUser.id];
+            var i=0,
+                pending = this.pending[event.rUser.id];
+
+            var notifyUser = function(pending) {
+                if(i >= msg.length) {
+                    delete this.pending[event.rUser.id];
+                    return;
+                }
+                dbot.say(event.server, pending[i], message); 
+                setTimeout(function() {
+                    i++; notifyUser(pending);
+                }, 1000);
+            }.bind(this);
+
+            notifyUser(pending);
         }
     }.bind(this);
     this.on = 'JOIN';
