@@ -61,7 +61,7 @@ var report = function(dbot) {
                 dbot.say(event.server, event.user, pending[i]); 
                 setTimeout(function() {
                     i++; notifyUser(pending);
-                }, 2000);
+                }, 5000);
             }.bind(this);
 
             notifyUser(pending);
