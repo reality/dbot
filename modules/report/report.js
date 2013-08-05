@@ -54,11 +54,11 @@ var report = function(dbot) {
                 pending = this.pending[event.rUser.id];
 
             var notifyUser = function(pending) {
-                if(i >= msg.length) {
+                if(i >= pending.length) {
                     delete this.pending[event.rUser.id];
                     return;
                 }
-                dbot.say(event.server, pending[i], message); 
+                dbot.say(event.server, event.user, pending[i]); 
                 setTimeout(function() {
                     i++; notifyUser(pending);
                 }, 1000);
