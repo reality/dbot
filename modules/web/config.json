@@ -1,5 +1,6 @@
 {
     "webHost": "nourishedcloud.com",
     "webPort": 8080,
-    "externalPath": false
+    "externalPath": false,
+    "dbType": "redis"
 }
