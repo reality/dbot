@@ -17,10 +17,12 @@ var regex = function(dbot) {
                 var user = q[1];
                 last = this.last[event.channel.name][user];
                 replacement = last.replace(toMatch, replaceWith);
+                replacement = replacement.replace("\x01", '').replace(/^.ACTION/,  user);
                 if(replacement != last) event.reply(event.user + " thinks " + user + " meant: " + replacement);
             } else {
                 last = this.last[event.channel.name][event.user];
                 replacement = last.replace(toMatch, replaceWith);
+                replacement = replacement.replace("\x01", '').replace(/^.ACTION/,  event.user);
                 if(replacement != last) event.reply(event.user + " meant: " + replacement);
             }
         } else {
