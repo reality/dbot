@@ -2,14 +2,14 @@ var _ = require('underscore')._;
 
 var pages = function(dbot) {
     return {
-        '/notify': function(req, res) {
+        '/report': function(req, res) {
             res.render('servers', {  
                 'name': dbot.config.name,
                 'servers': _.keys(dbot.config.servers)
             });
         },
 
-        '/notify/:server': function(req, res) {
+        '/report/:server': function(req, res) {
             var server = req.params.server;
             res.render('channels', {
                 'name': dbot.config.name,
@@ -18,7 +18,7 @@ var pages = function(dbot) {
             });
         },
 
-        '/notify/:server/:channel': function(req, res) {
+        '/report/:server/:channel': function(req, res) {
             var server = req.params.server,
                 channel = req.params.channel,
                 notifies = [];

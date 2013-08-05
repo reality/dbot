@@ -35,9 +35,9 @@ var pages = function(dbot) {
             });
         },
 
-        '/warning/:server/:user': function(req, res) {
+        '/warning/:server/:uid': function(req, res) {
             var server = req.params.server,
-                user = req.params.user;
+                user = req.params.uid;
 
             dbot.api.users.resolveUser(server, user, function(user) {
                 var warnings = [];
@@ -47,16 +47,18 @@ var pages = function(dbot) {
                 }, function(warning) {
                     warnings.push(warning);
                 }, function(err) {
+                    console.log(warnings);
                     async.eachSeries(warnings, function(warning, callback) {
                         dbot.api.users.getUser(warning.warner, function(user) {
                             warning.warner = user.primaryNick;
                             callback(false);
                         });
                     }, function(err) {
+                        console.log(warnings);
                         res.render('warnings', {
                             'name': dbot.config.name,
                             'server': server,
-                            'warnings': warnings
+                            'warns': warnings
                         });
                     });
                 });
