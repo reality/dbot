@@ -53,10 +53,12 @@ var youtube = function(dbot) {
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, this.LinkRegex,
             function(match, name, callback) {
+                console.log('DEBUG: well it got to the callback');
                 request.get(this.ApiRoot + '/videos/' + match[2], {
                     'qs': this.params,
                     'json': true
                 }, function(error, response, body) {
+                    console.log('DEBUG: well it got to the callback of the callback');
                     if(_.isObject(body) && _.has(body, 'entry')) {
                         var v = body.entry;
                         if(!_.has(v, 'yt$rating')) {

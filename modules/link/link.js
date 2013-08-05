@@ -64,6 +64,7 @@ var link = function(dbot) {
             for(var i=0;i<this.handlers.length;i++) {
                 var matches = this.handlers[i].regex.exec(link);     
                 if(matches) {
+                    console.log(this.handlers[i].name);
                     handler = this.handlers[i];
                     break;
                 }
@@ -147,6 +148,7 @@ var link = function(dbot) {
         var urlMatches = event.message.match(this.urlRegex);
         if(urlMatches !== null) {
             this.links[event.channel.name] = urlMatches[0];
+            console.log('DEBUG: got a link');
             if(this.config.autoTitle == true) {
                 this.api.parseLink(urlMatches[0], function(result) {
                     event.reply(result); 
