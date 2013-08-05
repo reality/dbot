@@ -9,21 +9,22 @@ var regex = function(dbot) {
                 toMatch = new RegExp(q[2], flags),
                 replaceWith = q[3],
                 last,
-                replacement;
+                replacement,
+                user;
                 
             if(!replaceWith) replaceWith = "";
-
-            if(q[1] != null) {
-                var user = q[1];
-                last = this.last[event.channel.name][user];
-                replacement = last.replace(toMatch, replaceWith);
-                replacement = replacement.replace(/^.ACTION/,  user).replace("\x01", '');
-                if(replacement != last) event.reply(event.user + " thinks " + user + " meant: " + replacement);
-            } else {
-                last = this.last[event.channel.name][event.user];
-                replacement = last.replace(toMatch, replaceWith);
-                replacement = replacement.replace(/^.ACTION/,  event.user).replace("\x01", '');
-                if(replacement != last) event.reply(event.user + " meant: " + replacement);
+            
+            user = q[1] || event.user;
+            last = this.last[event.channel.name][user];
+            replacement = last.replace(toMatch, replaceWith);
+            replacement = replacement.replace(/^.ACTION/,  user).replace("\x01", '');
+            
+            if(replacement != last) {
+                if(q[1]) {
+                    event.reply(event.user + " thinks " + user + " meant: " + replacement);
+                } else {
+                    event.reply(event.user + " meant: " + replacement);
+                }
             }
         } else {
             if(_.has(this.last, event.channel.name)) {
