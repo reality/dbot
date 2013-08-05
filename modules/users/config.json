@@ -2,5 +2,5 @@
     "ignorable": false,
     "dependencies": [ "event" ],
     "dbKeys": [ "knownUsers" ],
-    "dbType": "redis"
+    "dbType": "memory"
 }

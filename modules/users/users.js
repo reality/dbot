@@ -185,44 +185,42 @@ var users = function(dbot) {
         dbot.instance.addPreEmitHook(function(event, callback) {
             if(event.channel) {
                 this.api.getChannel(event.server, event.channel.name, function(channel) {
-                    event.rChannel = channel;
-                    callback(false);
-                });
+                    if(!channel) {
+                        this.internalAPI.createChannel(event.server, event.channel.name, function(channel) {
+                            event.rChannel = channel;
+                            callback(false);
+                        });
+                    } else {
+                        event.rChannel = channel;
+                        callback(false);
+                    }
+                }.bind(this));
             } else {
                 callback(false);
             }
         }.bind(this));
 
         dbot.instance.addListener('366', 'users', function(event) {
-            var checkChannel = function(channel) {
-                async.eachSeries(_.keys(event.channel.nicks), function(nick, next) {
-                    var staff = event.channel.nicks[nick];
-                    
-                    this.api.resolveUser(event.server, nick, function(user) {
-                        var checkChannelUser = function(user) {
-                            if(!_.include(channel.users, user.id)) {
-                                this.internalAPI.addChannelUser(channel, user, staff, next); 
-                            } else {
-                                this.internalAPI.modChannelStaff(channel, user, staff, next);
-                            }
-                        }.bind(this);
-
-                        if(user) {
-                            checkChannelUser(user); 
+            var channel = event.rChannel;
+            this.api.resolveUsers(event.server, _.keys(event.channel.nicks), function(users, missing) {
+                // Create missing users
+                async.each(missing, function(nick, done) {
+                    this.internalAPI.createUser(event.server, nick, done);
+                }.bind(this), function() {
+                    // Check users
+                    async.eachSeries(users, function(user, next) {
+                        var staff = event.channel.nicks[user.currentNick];
+                        
+                        if(!_.include(channel.users, user.id)) {
+                            this.internalAPI.addChannelUser(channel, user, staff, next);
                         } else {
-                            this.internalAPI.createUser(event.server, nick, checkChannelUser);
+                            this.internalAPI.modChannelStaff(channel, user, staff, next);
                         }
-                    }.bind(this));
-                }.bind(this), function(err) {
-                    console.log('finished checking ' + channel);
-                });
-            }.bind(this);
-
-            if(!event.rChannel) {
-                this.internalAPI.createChannel(event.server, event.channel.name, checkChannel);
-            } else {
-                checkChannel(event.rChannel);
-            }
+                    }.bind(this), function(err) {
+                        event.reply('DEBUG: Finished checking ' + event.channel.name);
+                    });
+                }.bind(this));
+            }.bind(this));
         }.bind(this));
 
         _.each(dbot.instance.connections, function(connection) {

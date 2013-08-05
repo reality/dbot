@@ -25,6 +25,27 @@ var api = function(dbot) {
             });
         },
 
+        // Return many user records given primary nicks of aliases
+        'resolveUsers': function(server, nicks, callback) {
+            var users = [];
+            this.db.search('users', { 'server': server }, function(result) {
+                var pNicks = result.aliases.slice(0).unshift(result.primaryNick);
+                for(var i=0;i<pNicks.length;i++) {
+                    var n = _.indexOf(nicks, pNicks[i]);
+                    if(n != -1) {
+                        users.push(result);
+                        nicks = _.without(nicks, nicks[n]);
+                        break;
+                    }
+                }
+            }, function(err) {
+                if(!err) {
+                    console.log(nicks);
+                    callback(users, nicks);
+                }
+            });
+        },
+
         // Return a user record given a UUID
         'getUser': function(uuid, callback) {
             this.db.read('users', uuid, function(err, user) {
