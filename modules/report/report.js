@@ -73,7 +73,7 @@ var report = function(dbot) {
         '~report': function(event) {
             var channelName = event.input[1],
                 nick = event.input[2],
-                reason = event.input[3];
+                reason = event.input[3].trim();
 
             if(reason.charAt(reason.length - 1) != '.') reason += '.';
 
