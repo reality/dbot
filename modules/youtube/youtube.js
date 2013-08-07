@@ -59,6 +59,9 @@ var youtube = function(dbot) {
                     'json': true
                 }, function(error, response, body) {
                     console.log('DEBUG: well it got to the callback of the callback');
+                    console.log('DEBUG: ' + match[2]);
+                    console.log('DEBUG: ' + error);
+                    console.log('DEBUG: ' + body);
                     if(_.isObject(body) && _.has(body, 'entry')) {
                         var v = body.entry;
                         if(!_.has(v, 'yt$rating')) {
