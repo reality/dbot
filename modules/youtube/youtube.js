@@ -15,8 +15,9 @@ var youtube = function(dbot) {
 
     this.commands = {
         '~youtube': function(event) {
+            var qs = _.clone(this.params);
             request.get(this.ApiRoot + '/videos', {
-                'qs': _.extend(this.params, { 
+                'qs': _.extend(qs, { 
                     'q': event.input[1],
                     'max-results': 1
                 }),
