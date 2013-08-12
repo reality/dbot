@@ -8,6 +8,15 @@
 	"fr": "Attention : {reporter} a reporté {reported} dans {channel}. Raison donnée : \"{reason}\"",
 	"it": "Attentzone : {reporter} ha segnalato {reported} in {channel}. Motivo : \"{reason}\""
     },
+    "missed_notifies": {
+        "en": "{user}, you have some missed notifications (clear these once you have read them using ~clearmissing) - {link}"
+    },
+    "cleared_notifies": {
+        "en": "{count} pending notifications cleared."
+    },
+    "no_missed_notifies": {
+        "en": "No missing notifications were available to clear."
+    },
     "reported": {
         "en": "Thank you, {reported} has been reported to the channel administrators.",
         "na'vi": "Irayo si ngari, fìtsengìri ayeyktan omum teri {reported}it set.",

@@ -28,9 +28,13 @@ var report = function(dbot) {
                         }); 
                     }, function() {
                         offlineUsers = perOps;
+                        console.log(offlineUsers);
                         _.each(offlineUsers, function(id) {
                             if(!this.pending[id]) this.pending[id] = [];
-                            this.pending[id].push(message);
+                            this.pending[id].push({
+                                'time': new Date().getTime(),
+                                'message': message
+                            });
                         }.bind(this));
                     }.bind(this)); 
                 }
@@ -50,26 +54,26 @@ var report = function(dbot) {
 
     this.listener = function(event) {
         if(_.has(this.pending, event.rUser.id)) {
-            var i=0,
-                pending = this.pending[event.rUser.id];
-
-            var notifyUser = function(pending) {
-                if(i >= pending.length) {
-                    delete this.pending[event.rUser.id];
-                    return;
-                }
-                dbot.say(event.server, event.user, pending[i]); 
-                setTimeout(function() {
-                    i++; notifyUser(pending);
-                }, 5000);
-            }.bind(this);
-
-            notifyUser(pending);
+            dbot.say(event.server, event.user, dbot.t('missed_notifies', {
+                'user': event.rUser.primaryNick,
+                'link': dbot.api.web.getUrl('report/' + event.server +
+                    '/missing/' + event.rUser.primaryNick)
+            }));
         }
     }.bind(this);
     this.on = 'JOIN';
 
     var commands = {
+        '~clearmissing': function(event) {
+            if(_.has(this.pending, event.rUser.id)) {
+                var count = this.pending[event.rUser.id].length;
+                delete this.pending[event.rUser.id];
+                event.reply(dbot.t('cleared_notifies', { 'count': count }));
+            } else {
+                event.reply(dbot.t('no_missed_notifies'));
+            }
+        },
+
         '~report': function(event) {
             var channelName = event.input[1],
                 nick = event.input[2],
