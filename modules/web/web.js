@@ -176,9 +176,10 @@ var webInterface = function(dbot) {
                         return next();
                     }
                 } else {
+                    console.log(req);
                     res.render('login', {
                         'message': 'You need to log in to access this module.',
-                        'redirect': module
+                        'redirect': req.originalUrl
                     });
                 }
             } else {
