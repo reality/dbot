@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h3 Notifications Missed by #{user.primaryNick}
+  p
+  if notifies
+    div#profile_datatable
+      table.table.table-hover.data
+        thead
+          tr
+            th Date
+            th Message
+        tbody
+          each notify in notifies
+            tr
+              td #{new Date(notify.time)}
+              td #{notify.message}
