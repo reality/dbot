@@ -43,7 +43,6 @@ var pages = function(dbot) {
 
             dbot.api.users.resolveUser(server, nick, function(user) {
                 var notifies = this.pending[user.id];
-                console.log(notifies);
                 res.render('missing_notifies', {
                     'name': dbot.config.name,
                     'user': nick,
