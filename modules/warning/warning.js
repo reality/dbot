@@ -60,7 +60,8 @@ var warning = function(dbot) {
                                 + warnee.primaryNick)
                         })); 
                     } else {
-                        event.reply(dbot.t('no_warnings', { 'user': warnee }));
+                        event.reply(dbot.t('no_warnings', { 'user':
+                            warnee.primaryNick }));
                     }
                 });
             }.bind(this));
