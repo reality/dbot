@@ -4,7 +4,9 @@ var _ = require('underscore')._,
 
 var report = function(dbot) {
     if(!dbot.db.pending) dbot.db.pending = {};
+    if(!dbot.db.pNotify) dbot.db.pNotify = {};
     this.pending = dbot.db.pending;
+    this.pNotify = dbot.db.pNotify;
 
     this.api = {
         'notify': function(server, channel, message) {
@@ -35,6 +37,7 @@ var report = function(dbot) {
                                 'time': new Date().getTime(),
                                 'message': message
                             });
+                            this.pNotify[id] = true;
                         }.bind(this));
                     }.bind(this)); 
                 }
@@ -53,12 +56,13 @@ var report = function(dbot) {
     };
 
     this.listener = function(event) {
-        if(_.has(this.pending, event.rUser.id)) {
+        if(_.has(this.pending, event.rUser.id) && this.pNotify[event.rUser.id] === true) {
             dbot.say(event.server, event.user, dbot.t('missed_notifies', {
                 'user': event.rUser.primaryNick,
                 'link': dbot.api.web.getUrl('report/' + event.server +
                     '/missing/' + event.rUser.primaryNick)
             }));
+            this.pNotify = false;
         }
     }.bind(this);
     this.on = 'JOIN';
