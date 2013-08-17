@@ -25,8 +25,19 @@ var commands = function(dbot) {
                     'quietee': quietee,
                     'minutes': minutes
                 }));
+                dbot.api.report.notify(server, channel, dbot.t('tquiet_notify', {
+                    'quieter': quieter,
+                    'channel': channel,
+                    'quietee': quietee,
+                    'minutes': minutes
+                }));
             } else {
                 event.reply(dbot.t('quieted', { 'quietee': quietee }));
+                dbot.api.report.notify(server, channel, dbot.t('quiet_notify', {
+                    'quieter': quieter,
+                    'channel': channel,
+                    'quietee': quietee
+                }));
             }
 
             this.api.quiet(server, quietee, channel);
