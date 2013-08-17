@@ -175,8 +175,13 @@ var users = function(dbot) {
             if(event.user) {
                 this.api.resolveUser(event.server, event.user, function(user) {
                     event.rUser = user;
-                    callback(false);
-                });
+                    if(event.rUser.currentNick !== event.user) {
+                        event.rUser.currentNick = event.user;
+                        this.db.save('users', event.rUser.id, event.rUser, callback);
+                    } else {
+                        callback(false);
+                    }
+                }.bind(this));
             } else {
                 callback(false);
             }
