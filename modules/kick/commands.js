@@ -20,6 +20,11 @@ var commands = function(dbot) {
                 var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
                 dbot.api.timers.addTimeout(msTimeout, function() {
                     this.api.unquiet(server, quietee, channel);
+                    dbot.api.report.notify(server, channel, dbot.t('unquiet_notify', {
+                        'unquieter': dbot.config.name,
+                        'channel': channel,
+                        'quietee': quietee
+                    }));
                 }.bind(this));  
                 event.reply(dbot.t('tquieted', { 
                     'quietee': quietee,
@@ -56,6 +61,11 @@ var commands = function(dbot) {
 
             this.api.unquiet(server, quietee, channel);
             event.reply(dbot.t('unquieted', { 'quietee': quietee }));
+            dbot.api.report.notify(server, channel, dbot.t('unquiet_notify', {
+                'unquieter': quieter,
+                'channel': channel,
+                'quietee': quietee
+            }));
         },
 
         '~ckick': function(event) {

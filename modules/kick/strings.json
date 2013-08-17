@@ -30,6 +30,9 @@
 	"fr": "{quietee} peut maintenant parler. Rappelle-toi : ne sois pas têtu.",
         "it": "{quietee} può nuovamente parlare. Ricordati: non essere testardo."
     },
+    "unquiet_notify": {
+        "en": "Attention: {unquieter} has unquieted {quietee} in {channel}."
+    },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
         "es": "No expulsás {botname}",
