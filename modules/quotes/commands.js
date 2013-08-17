@@ -38,17 +38,7 @@ var commands = function(dbot) {
                 if(quote) {
                     event.reply(key + ': ' + quote);
                 } else {
-                    if(this.config.udFallback === true && _.has(dbot.modules, 'link')) {
-                        dbot.api.link.udLookup(key, function(word, definition) {
-                            if(word) {
-                                event.reply(key + '[UD]: ' + definition);
-                            } else {
-                                event.reply(dbot.t('category_not_found', { 'category': key }));
-                            }
-                        });
-                    } else {
-                        event.reply(dbot.t('category_not_found', { 'category': key }));
-                    }
+                    event.reply(dbot.t('category_not_found', { 'category': key }));
                 }
             }.bind(this));
         },

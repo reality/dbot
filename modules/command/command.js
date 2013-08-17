@@ -16,28 +16,44 @@ var command = function(dbot) {
             return;
         }
         if(!_.has(dbot.commands, commandName)) {
-            if(_.has(dbot.modules, 'spelling')) {
-                var commands = _.keys(dbot.commands)
-                    winner = false,
-                    closestMatch = Infinity;
+            if(_.has(dbot.modules, 'quotes')) {
+                var key = event.message.substring(1);
+                dbot.api.quotes.getInterpolatedQuote(event.server, event.channel.name, key, function(quote) {
+                    if(quote) {
+                        event.reply(key + ': ' + quote);
+                    } else if(_.has(dbot.modules, 'spelling')) {
+                        var commands = _.keys(dbot.commands)
+                            winner = false,
+                            closestMatch = Infinity;
 
-                _.each(commands, function(command) {
-                    var distance = dbot.api.spelling.distance(commandName, command);
-                    if(distance < closestMatch) {
-                        closestMatch = distance;
-                        winner = command;
+                        _.each(commands, function(command) {
+                            var distance = dbot.api.spelling.distance(commandName, command);
+                            if(distance < closestMatch) {
+                                closestMatch = distance;
+                                winner = command;
+                            }
+                        }); 
+
+                        if(closestMatch < 3) {
+                            event.reply(commandName + ' not found. Did you mean ' + winner + '?');
+                            return;
+                        } else if(_.has(dbot.modules, 'quotes')) {
+                            dbot.api.link.udLookup(key, function(word, definition) {
+                                if(word) {
+                                    event.reply(key + '[UD]: ' + definition);
+                                } else {
+                                    event.reply(dbot.t('category_not_found', { 'category': key }));
+                                }
+                            });
+                        } else {
+                            return;
+                        }
                     }
-                }); 
+                });
+                return;
+            }
 
-                if(closestMatch < 3) {
-                    event.reply(commandName + ' not found. Did you mean ' + winner + '?');
-                    return;
-                } else if(_.has(dbot.modules, 'quotes')) {
-                    commandName = '~';
-                } else {
-                    return;
-                }
-            } else if(_.has(dbot.modules, 'quotes')) {
+             else if(_.has(dbot.modules, 'quotes')) {
                 commandName = '~';
             } else {
                 return;
