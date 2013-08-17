@@ -24,14 +24,11 @@ var webInterface = function(dbot) {
     this.app.use(this.app.router);
 
     passport.serializeUser(function(user, done) {
-        console.log('serialising ' + user);
         done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
         dbot.api.users.getUser(id, function(user) {
-            console.log(id);
-            console.log(user);
             done(null, user);
         });
     });
@@ -176,7 +173,6 @@ var webInterface = function(dbot) {
                         return next();
                     }
                 } else {
-                    console.log(req);
                     res.render('login', {
                         'message': 'You need to log in to access this module.',
                         'redirect': req.originalUrl
@@ -191,7 +187,6 @@ var webInterface = function(dbot) {
     this.commands = {
         '~setwebpass': function(event) {
             var newPass = event.input[1];
-            console.log(newPass);
             this.api.getWebUser(event.rUser.id, function(webUser) {
                 if(!webUser) {
                     webUser = {

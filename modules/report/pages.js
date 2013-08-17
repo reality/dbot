@@ -18,6 +18,18 @@ var pages = function(dbot) {
             });
         },
 
+        '/report/:server/missing': function(req, res) {
+            var server = req.params.server,
+                user = req.user,
+                notifies = this.pending[user.id];
+
+            res.render('missing_notifies', {
+                'name': dbot.config.name,
+                'user': user.primaryNick,
+                'notifies': notifies
+            });
+        },
+
         '/report/:server/:channel': function(req, res) {
             var server = req.params.server,
                 channel = req.params.channel,
@@ -35,20 +47,6 @@ var pages = function(dbot) {
                     'notifies': notifies 
                 });
             });
-        },
-
-        '/report/:server/missing/:user': function(req, res) {
-            var server = req.params.server,
-                nick = req.params.user;
-
-            dbot.api.users.resolveUser(server, nick, function(user) {
-                var notifies = this.pending[user.id];
-                res.render('missing_notifies', {
-                    'name': dbot.config.name,
-                    'user': nick,
-                    'notifies': notifies
-                });
-            }.bind(this));
         }
     };
 };

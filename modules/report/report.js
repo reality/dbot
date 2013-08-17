@@ -59,8 +59,7 @@ var report = function(dbot) {
         if(_.has(this.pending, event.rUser.id) && this.pNotify[event.rUser.id] === true) {
             dbot.say(event.server, event.user, dbot.t('missed_notifies', {
                 'user': event.rUser.primaryNick,
-                'link': dbot.api.web.getUrl('report/' + event.server +
-                    '/missing/' + event.rUser.primaryNick)
+                'link': dbot.api.web.getUrl('report/' + event.server + '/missing')
             }));
             this.pNotify = false;
         }
