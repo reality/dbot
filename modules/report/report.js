@@ -19,7 +19,7 @@ var report = function(dbot) {
                 }
             }, this);
 
-            dbot.api.users.getChannel(server, channel, function(channel) {
+            dbot.api.users.resolveChannel(server, channel, function(channel) {
                 if(channel) {
                     var perOps = channel.op;
                     if(this.config.notifyVoice) pOps = _.union(perOps, channel.voice);
