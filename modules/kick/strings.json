@@ -20,10 +20,10 @@
         "it": "{quietee} è stato silenziato per {minutes} minuto/i. Ricordati: non essere testardo"
     },
     "quiet_notify": {
-        "en": "Attention: {quieter} has quieted {quietee} in {channel}."
+        "en": "Attention: {quieter} has quieted {quietee} in {channel}. The reason given was \"{reason}\"."
     },
     "tquiet_notify": {
-        "en": "Attention: {quieter} has quieted {quietee} in {channel} for {minutes} minutes."
+        "en": "Attention: {quieter} has quieted {quietee} in {channel} for {minutes} minutes. The reason given was \"{reason}\"."
     },
     "unquieted": {
         "en": "Unquieted {quietee}. Remember: don't be a coconut.",

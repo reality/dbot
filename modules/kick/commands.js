@@ -8,7 +8,8 @@ var commands = function(dbot) {
                 quieter = event.user,
                 minutes = event.input[1],
                 channel = event.input[2],
-                quietee = event.input[3].trim();
+                quietee = event.input[3].trim(),
+                reason = event.input[4] || "N/A";
 
             if(_.isUndefined(channel)) {
                 channel = event.channel.name;
@@ -34,14 +35,16 @@ var commands = function(dbot) {
                     'quieter': quieter,
                     'channel': channel,
                     'quietee': quietee,
-                    'minutes': minutes
+                    'minutes': minutes,
+                    'reason': reason
                 }));
             } else {
                 event.reply(dbot.t('quieted', { 'quietee': quietee }));
                 dbot.api.report.notify(server, channel, dbot.t('quiet_notify', {
                     'quieter': quieter,
                     'channel': channel,
-                    'quietee': quietee
+                    'quietee': quietee,
+                    'reason': reason
                 }));
             }
 
@@ -290,7 +293,7 @@ var commands = function(dbot) {
 
     commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^~quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?$/;
+    commands['~quiet'].regex = /^~quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^~unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;
