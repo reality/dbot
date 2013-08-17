@@ -26,6 +26,9 @@
 	"fr": "{alias} n'existe pas actuellement en tant qu'alias ou utilisateur connu.",
 	"it": "{alias} non esiste attualmente come alias o utente conosciuto."
     },
+    "alias_removed": {
+        "en": "Removed alias {alias} from {primary}."
+    },
     "aliasparentset": {
         "en": "{newParent} is now the parent user, and {newAlias} is an alias.",
         "na'vi": "{newParent} lu sa'sem set ulte {newAlias} lu stxo set nìteng.",

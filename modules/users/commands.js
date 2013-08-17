@@ -60,6 +60,24 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
+        '~removealias': function(event) {
+            var alias = event.params[1];
+
+            this.api.resolveUser(event.server, alias, function(user) {
+                if(user) {
+                    user.aliases = _.without(user.aliases, alias);
+                    this.db.save('users', user.id, user, function(err) {
+                        event.reply(dbot.t('alias_removed', {
+                            'primary': user.primaryNick,
+                            'alias': alias
+                        }));
+                    });
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            }.bind(this));
+        },
+
         '~setaliasparent': function(event) {
             var newPrimary = event.params[1].trim();
             this.api.resolveUser(event.server, newPrimary, function(user) {
@@ -135,6 +153,7 @@ var commands = function(dbot) {
     commands['~setaliasparent'].access = 'moderator';
     commands['~mergeusers'].access = 'moderator';
     commands['~addalias'].access = 'moderator';
+    commands['~removealias'].access = 'moderator';
     
     return commands;
 };

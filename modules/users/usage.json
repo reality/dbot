@@ -1,5 +1,7 @@
 {
     "~alias": "~alias [nick]",
     "~setaliasparent": "~setaliasparent [nick]",
-    "~mergeusers": "~mergeusers [primary] [secondary]"
+    "~mergeusers": "~mergeusers [primary] [secondary]",
+    "~addalias": "~addalias [user] [alias]",
+    "~removealias": "~removealias [alias]"
 }

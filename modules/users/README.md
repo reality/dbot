@@ -24,6 +24,12 @@ This command merges two nicks which are recorded as primary users into one user.
 The secondary user and all of their aliases will be merged under primaryuser.
 Requires moderator level access by default.
 
+#### ~addalias [user] [alias]
+Manually add alias to user.
+
+#### ~removealias [alias]
+Remove alias from user.
+
 ### API
 
 #### resolveUser(server, nick, callback)
