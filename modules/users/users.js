@@ -120,10 +120,10 @@ var users = function(dbot) {
             });
         }.bind(this),
 
-        'mergeChannelUsers': function(server, oldUser, newUser) {
+        'mergeChannelUsers': function(oldUser, newUser) {
             newUser.channels = _.union(oldUser.channels, newUser.channels);
-            _.each(newUser.channels, function(name) {
-                this.api.getChannel(server, name, function(channel) {
+            _.each(newUser.channels, function(uuid) {
+                this.api.getChannel(uuid, function(channel) {
                     if(_.include(channel.users, oldUser.id)) {
                         channel.users = _.without(channel.users, oldUser.id);
                     }
@@ -189,7 +189,7 @@ var users = function(dbot) {
         
         dbot.instance.addPreEmitHook(function(event, callback) {
             if(event.channel) {
-                this.api.getChannel(event.server, event.channel.name, function(channel) {
+                this.api.resolveChannel(event.server, event.channel.name, function(channel) {
                     event.rChannel = channel;
                     callback(false);
                 });

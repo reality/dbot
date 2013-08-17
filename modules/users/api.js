@@ -33,7 +33,7 @@ var api = function(dbot) {
             });
         },
 
-        'getChannel': function(server, channelName, callback) {
+        'resolveChannel': function(server, channelName, callback) {
             var channel = false;
             this.db.search('channel_users', {
                 'server': server,
@@ -44,6 +44,13 @@ var api = function(dbot) {
                 if(!err) {
                     callback(channel);
                 }
+            });
+        },
+
+        'getChannel': function(uuid, callback) {
+            this.db.read('channel_users', uuid, function(err, channel) {
+                if(err) channel = false;
+                callback(channel);
             });
         },
 

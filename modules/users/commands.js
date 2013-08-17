@@ -98,12 +98,11 @@ var commands = function(dbot) {
                         if(oldUser) {
                             user.aliases.push(oldUser.primaryNick);
                             user.aliases = _.union(user.aliases, oldUser.aliases);
-                            this.internalAPI.mergeChannelUsers(event.server, oldUser, user);
+                            this.internalAPI.mergeChannelUsers(oldUser, user);
                             this.db.del('users', oldUser.id, function(err) {
                                 if(!err) {
                                     this.db.save('users', user.id, user, function(err) {
                                         if(!err) {
-                                            this.internalAPI.mergeChannelUsers(event.server, secondaryUser, primaryUser);
                                             event.reply(dbot.t('merged_users', { 
                                                 'old_user': secondaryUser,
                                                 'new_user': primaryUser
