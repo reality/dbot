@@ -219,7 +219,7 @@ var users = function(dbot) {
                         }
                     }.bind(this));
                 }.bind(this), function(err) {
-                    console.log('finished checking ' + channel);
+                    console.log('Finished checking ' + channel.name);
                 });
             }.bind(this);
 

@@ -28,6 +28,11 @@ var pages = function(dbot) {
                 'user': user.primaryNick,
                 'notifies': notifies
             });
+
+            if(_.has(dbot.modules, 'log')) {
+                dbot.api.log.log(server, user.primaryNick, 
+                    'Checked their missing notifications.');
+            }
         },
 
         '/report/:server/:channel': function(req, res) {
