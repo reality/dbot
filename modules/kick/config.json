@@ -9,5 +9,6 @@
     "chanserv": "ChanServ",
     "document_bans": false,
     "dbType": "redis",
+    "requireWebLogin": true,
     "webAccess": "power_users"
 }
