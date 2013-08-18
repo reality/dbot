@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  div#backlink
+    a(href='/warning/'+server) &laquo; Server Bans
+  p
+  div#profile_datatable
+    table.table.table-hover.data
+      thead
+        tr
+          th Date
+          th Banner
+          th Banee
+          th Host
+          th Reason
+      tbody
+        each ban, key in bans
+          tr
+            td #{new Date(ban.time)}
+            td #{ban.banner}
+            td #{ban.banee}
+            td #{ban.host}
+            td #{ban.reason}

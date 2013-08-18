@@ -8,5 +8,6 @@
     },
     "chanserv": "ChanServ",
     "document_bans": false,
-    "dbType": "redis"
+    "dbType": "redis",
+    "webAccess": "power_users"
 }
