@@ -73,7 +73,7 @@ var commands = function(dbot) {
                         }));
                     });
                 } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                    event.reply(dbot.t('unknown_alias', { 'alias': alias }));
                 }
             }.bind(this));
         },
