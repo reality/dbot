@@ -127,6 +127,10 @@ var webInterface = function(dbot) {
             req.logout(); 
             res.redirect('/');
         });
+
+        if(_.has(dbot.modules, 'log')) {
+            dbot.api.log.ignoreCommand('~setwebpass');
+        }
     }.bind(this);
 
     this.onDestroy = function() {
