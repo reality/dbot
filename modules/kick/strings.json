@@ -79,14 +79,7 @@
 	"fr": "Vous avez été banni du réseau {network} par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
         "it": "Sei stato bandito dalla rete {network} da {banner}. Motivo: \"{reason}.\" Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
     },
-    "nban_quote": {
-        "en": "{banee} was banned from the network by {banner} on {time}. The reason given was \"{reason}.\"",
-        "cy": "Cafodd {banee} ei wahardd o'r rhwydwaith gan {banner} ar {time}. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "{banee} wurde von {banner} auf dem gesamten Netzwerk um {time} gebannt. Grund: \"{reason}.\"",
-	"fr": "{banee} a été banni du réseau par {banner} à {time}. Raison donnée : \"{reason}.\"",
-	"it": "{banee} è stato bandito dalla rete da {banner} a {time}. Motivo : \"{reason}.\""
-    },
-    "no_user": {
+   "no_user": {
         "en": "{user} doesn't seem to be online on this server.",
 	"fr": "{user} ne semble pas être connecté à ce serveur.",
         "it": "{user} sembra non essere connesso a questo server"
@@ -105,12 +98,5 @@
         "en": "It appears {unbanee} was not banned using the ~nban command.",
 	"fr": "Il semble que {unbanee} n'a pas été banni en utilisant la commande ~nban.",
         "it": "Sembar che {unbanee} non è stato bandito usano il commando ~nban."
-    },
-    "quote_recorded": {
-        "en": "This has been recorded in ~ban_{user}.",
-        "cy": "Mae hyn wedi cael ei gofnodi yn ~ban_{user}.",
-        "de": "Dies wurde in ~ban_{user} aufgenommen.",
-	"fr": "Cela a été enregistré dans ~ban_{user}.",
-        "it": "Questo è stato registrato in  ~ban_{user}."
     }
 }

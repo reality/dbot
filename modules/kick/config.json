@@ -7,5 +7,6 @@
         "aberwiki": "OAOSIDL"
     },
     "chanserv": "ChanServ",
-    "document_bans": false
+    "document_bans": false,
+    "dbType": "redis"
 }
