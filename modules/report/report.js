@@ -8,6 +8,17 @@ var report = function(dbot) {
     this.pending = dbot.db.pending;
     this.pNotify = dbot.db.pNotify;
 
+    this.internalAPI = {
+        'notify': function(server, users, message) {
+            async.eachSeries(users, function(nick, next) {
+                dbot.say(server, nick, message);
+                setTimeout(function() {
+                    next();
+                }, 1000);
+            });
+        }
+    };
+
     this.api = {
         'notify': function(server, channel, message) {
             var channel = dbot.instance.connections[server].channels[channel]; 
@@ -30,7 +41,6 @@ var report = function(dbot) {
                         }); 
                     }, function() {
                         offlineUsers = perOps;
-                        console.log(offlineUsers);
                         _.each(offlineUsers, function(id) {
                             if(!this.pending[id]) this.pending[id] = [];
                             this.pending[id].push({
@@ -39,19 +49,15 @@ var report = function(dbot) {
                             });
                             this.pNotify[id] = true;
                         }.bind(this));
+
+                        this.internalAPI.notify(server, _.pluck(ops, 'name'), message);
                     }.bind(this)); 
                 }
             }.bind(this));
+        }, 
 
-            var i = 0;
-            var notifyChannel = function(ops) {
-                if(i >= ops.length) return;
-                dbot.say(server, ops[i].name, message);
-                setTimeout(function() {
-                    i++; notifyChannel(ops);
-                }, 1000);
-            };
-            notifyChannel(ops);
+        'notifyUsers': function(server, users, message) {
+            this.internalAPI.notify(server, users, message);
         }
     };
 
