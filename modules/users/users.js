@@ -69,57 +69,6 @@ var users = function(dbot) {
             }.bind(this));
         }.bind(this),
 
-        'modChannelStaff': function(channel, user, staff, callback) {
-            var needsUpdating = false;
-
-            if(!channel.op) {
-                channel.op = [];
-                needsUpdating = true; 
-            }
-            if(!channel.voice) {
-                channel.voice = [];
-                needsUpdating = true; 
-            }
-
-            if(!_.include(channel.op, user.id) && staff.op) {
-                channel.op.push(user.id);
-                needsUpdating = true;
-            } else if(!_.include(channel.voice, user.id) && staff.voice) {
-                channel.voice.push(user.id);
-                needsUpdating = true;
-            } else if(_.include(channel.op, user.id) && !staff.op) {
-                channel.op = _.without(channel.op, user.id);
-                needsUpdating = true;
-            } else if(_.include(channel.voice, user.id) && !staff.voice) {
-                channel.voice = _.without(channel.voice, user.id);
-                needsUpdating = true;
-            }
-
-            if(needsUpdating) {
-                this.db.save('channel_users', channel.id, channel, function(err) {
-                    callback(err);
-                });
-            } else {
-                callback();
-            }
-        }.bind(this),
-
-        'updateChannelPrimaryUser': function(server, oldUser, newUser) {
-            this.db.search('channel_users', { 'server': server }, function(channel) {
-                channel.users = _.without(channel.users, oldUser);
-                if(!_.include(channel.users, newUser)) channel.users.push(newUser);
-                this.db.save('channel_users', channel.id, channel, function(err) {
-                    if(err) {
-                        // QQ
-                    }
-                });
-            }.bind(this), function(err) {
-                if(err) {
-                    // QQ
-                }
-            });
-        }.bind(this),
-
         'mergeChannelUsers': function(oldUser, newUser) {
             newUser.channels = _.union(oldUser.channels, newUser.channels);
             _.each(newUser.channels, function(uuid) {
@@ -172,61 +121,97 @@ var users = function(dbot) {
 
     this.onLoad = function() {
         dbot.instance.addPreEmitHook(function(event, callback) {
-            if(event.user) {
-                this.api.resolveUser(event.server, event.user, function(user) {
-                    event.rUser = user;
-                    if(event.rUser.currentNick !== event.user) {
-                        event.rUser.currentNick = event.user;
-                        this.db.save('users', event.rUser.id, event.rUser, callback);
+            // 1. Attempt to resolve channel
+            // 2. Create channel if it doesn't exist
+            // 3. Attempt to resolve user
+            // 4. Create user if it doesn't exist
+            // 5. Make sure channel objects are up to date
+            // 6. Update staff channel lists
+
+            var checkChannel = function(done) {
+                this.api.resolveChannel(event.server, event.channel.name, function(channel) {
+                    if(!channel) {
+                        this.internalAPI.createChannel(event.server, event.channel.name, done);
                     } else {
-                        callback(false);
+                        done(channel);
                     }
                 }.bind(this));
-            } else {
-                callback(false);
-            }
-        }.bind(this));
-        
-        dbot.instance.addPreEmitHook(function(event, callback) {
-            if(event.channel) {
-                this.api.resolveChannel(event.server, event.channel.name, function(channel) {
-                    event.rChannel = channel;
-                    callback(false);
-                });
-            } else {
-                callback(false);
-            }
-        }.bind(this));
-
-        dbot.instance.addListener('366', 'users', function(event) {
-            var checkChannel = function(channel) {
-                async.eachSeries(_.keys(event.channel.nicks), function(nick, next) {
-                    var staff = event.channel.nicks[nick];
-                    
-                    this.api.resolveUser(event.server, nick, function(user) {
-                        var checkChannelUser = function(user) {
-                            if(!_.include(channel.users, user.id)) {
-                                this.internalAPI.addChannelUser(channel, user, staff, next); 
-                            } else {
-                                this.internalAPI.modChannelStaff(channel, user, staff, next);
-                            }
-                        }.bind(this);
-
-                        if(user) {
-                            checkChannelUser(user); 
+            }.bind(this);
+            var checkUser = function(done) {
+                this.api.resolveUser(event.server, event.user, function(user) {
+                    if(!user) {
+                        this.internalAPI.createUser(event.server, event.user, done);
+                    } else {
+                        if(event.user != user.currentNick) {
+                            user.currentNick = event.user;
+                            this.db.save('users', user.id, user, function() {
+                                done(user); 
+                            });
                         } else {
-                            this.internalAPI.createUser(event.server, nick, checkChannelUser);
+                            done(user);
                         }
+                    }
+                }.bind(this));
+            }.bind(this);
+            var checkChannelUsers = function(done) {
+                var needsUpdating = false;
+
+                if(!_.include(event.rUser.channels, event.rChannel.id)) {
+                    event.rUser.channels.push(event.rChannel.id);
+                    event.rChannel.users.push(event.rUser.id);
+                    needsUpdating = true;
+                }
+
+                if(!_.has(event.channel, 'nicks') || !_.has(event.channel.nicks, event.rUser.currentNick)) {
+                    return done();
+                }
+                var cUser = event.channel.nicks[event.rUser.currentNick];
+
+                if(!_.include(event.rChannel.op, event.rUser.id) && cUser.op) {
+                    event.rChannel.op.push(event.rUser.id);
+                    needsUpdating = true;
+                } else if(!_.include(event.rChannel.voice, event.rUser.id) && cUser.voice) {
+                    event.rChannel.voice.push(event.rUser.id);
+                    needsUpdating = true;
+                } else if(_.include(event.rChannel.op, event.rUser.id) && !cUser.op) {
+                    event.rChannel.op = _.without(event.rChannel.op, event.rUser.id);
+                    needsUpdating = true;
+                } else if(_.include(event.rChannel.voice, event.rUser.id) && !cUser.voice) {
+                    event.rChannel.voice = _.without(event.rChannel.voice, event.rUser.id);
+                    needsUpdating = true;
+                }
+
+                if(needsUpdating) {
+                    this.db.save('users', event.rUser.id, event.rUser, function() {
+                        this.db.save('channel_users', event.rChannel.id, event.rChannel, done);
                     }.bind(this));
-                }.bind(this), function(err) {
-                    console.log('Finished checking ' + channel.name);
-                });
+                } else {
+                    done();
+                }
             }.bind(this);
 
-            if(!event.rChannel) {
-                this.internalAPI.createChannel(event.server, event.channel.name, checkChannel);
-            } else {
-                checkChannel(event.rChannel);
+            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG'], event.action)) {
+                checkChannel(function(channel) {
+                    event.rChannel = channel;
+                    checkUser(function(user) {
+                        event.rUser = user;
+                        checkChannelUsers(function() {
+                            callback();
+                        });
+                    });
+                });
+            } else if(event.user) {
+                this.api.resolveUser(event.server, event.user, function(user) {
+                    if(user) event.rUser = user;
+                    if(event.channel) {
+                        this.api.resolveChannel(event.server, event.channel.name, function(channel) {
+                            if(channel) event.rChannel = channel;
+                            callback();
+                        });
+                    } else {
+                        callback();
+                    }
+                }.bind(this));
             }
         }.bind(this));
 
