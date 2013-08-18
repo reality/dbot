@@ -1,7 +1,7 @@
 var _ = require('underscore')._;
 
 var pages = function(dbot) {
-    return {
+    var pages = {
         '/report': function(req, res) {
             res.render('servers', {  
                 'name': dbot.config.name,
@@ -54,6 +54,8 @@ var pages = function(dbot) {
             });
         }
     };
+
+    return pages;
 };
 
 exports.fetch = function(dbot) {

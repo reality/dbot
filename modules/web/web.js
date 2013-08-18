@@ -63,8 +63,9 @@ var webInterface = function(dbot) {
         var pages = dbot.pages;
         for(var p in pages) {
             if(_.has(pages, p)) {
-                var func = pages[p];
-                var mod = func.module;
+                var func = pages[p],
+                    mod = func.module;
+
                 this.app.get(p, this.api.hasAccess, (function(req, resp) {
                     // Crazy shim to seperate module views.
                     var shim = Object.create(resp);
@@ -149,12 +150,21 @@ var webInterface = function(dbot) {
         },
 
         'hasAccess': function(req, res, next) {
-            var module = req.route.path.split('/')[1];
+            var path = req.route.path,
+                module = path.split('/')[1],
+                mConfig = dbot.config.modules[module];
             module = dbot.modules[module];
 
-            if(module.config.requireWebLogin == true) {
+            if(mConfig.requireWebLogin == true) {
                 if(req.isAuthenticated()) {
-                    if(!_.isUndefined(module.config.webAccess)) {
+                    var accessNeeded = 'regular';
+                    if(_.has(mConfig, 'pageAccess') && _.has(mConfig.pageAccess, path)) {
+                        accessNeeded = mConfig.pageAccess[path];
+                    } else if(!_.isUndefined(mConfig.webAccess)) {
+                        accessNeeded = mConfig.webAccess; 
+                    }
+
+                    if(accessNeeded != 'regular') {
                         var allowedUsers = dbot.config.admins;
                         if(module.config.webAccess == 'moderators') {
                             allowedUsers = _.union(allowedUsers, dbot.config.moderators);
