@@ -25,7 +25,7 @@ var log = function(dbot) {
     this.onLoad = function() {
         dbot.api.event.addHook('command', function(event) {
             var logChannel = this.config.logChannel[event.server];
-            if(logChannel && !_.include(this.ignoredCommands, command.split(' ')[0])) {
+            if(logChannel && !_.include(this.ignoredCommands, event.message.split(' ')[0])) {
                 dbot.say(event.server, logChannel, dbot.t('log_message', {
                     'time': new Date().toUTCString(),
                     'command': event.message,
