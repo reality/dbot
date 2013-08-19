@@ -7,6 +7,7 @@ var _ = require('underscore')._,
     async = require('async');
 
 var users = function(dbot) {
+    this.userCache = {};
 
     /*** Internal API ***/
     this.internalAPI = {
@@ -138,20 +139,30 @@ var users = function(dbot) {
                 }.bind(this));
             }.bind(this);
             var checkUser = function(done) {
-                this.api.resolveUser(event.server, event.user, function(user) {
-                    if(!user) {
-                        this.internalAPI.createUser(event.server, event.user, done);
+                var checkCurrentNick = function(user) {
+                    if(event.user != user.currentNick) {
+                        user.currentNick = event.user;
+                        this.db.save('users', user.id, user, function() {
+                            done(user); 
+                        });
                     } else {
-                        if(event.user != user.currentNick) {
-                            user.currentNick = event.user;
-                            this.db.save('users', user.id, user, function() {
-                                done(user); 
-                            });
-                        } else {
-                            done(user);
-                        }
+                        done(user);
                     }
-                }.bind(this));
+                };
+
+                if(_.has(this.userCache, event.server) && _.has(this.userCache[event.server], event.user)) {
+                    this.api.getUser(this.userCache[event.server][event.user], checkCurrentNick);
+                    console.log('got cached user');
+                } else {
+                    this.api.resolveUser(event.server, event.user, function(user) {
+                        if(!user) {
+                            this.internalAPI.createUser(event.server,
+                                event.user, checkCurrentNick);
+                        } else {
+                            checkCurrentNick(user); 
+                        }
+                    }.bind(this));
+                }
             }.bind(this);
             var checkChannelUsers = function(done) {
                 var needsUpdating = false;
@@ -197,11 +208,19 @@ var users = function(dbot) {
                     event.rChannel = channel;
                     checkUser(function(user) {
                         event.rUser = user;
+
+                        if(!_.has(this.userCache, event.server)) this.userCache[event.server] = {};
+                        if(!_.has(this.userCache[event.server], event.rUser.currentNick)) {
+                            this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
+                        } else if(this.userCache[event.server][event.rUser.currentNick] != event.rUser.id) {
+                            this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
+                        }
+
                         checkChannelUsers(function() {
                             callback();
                         });
-                    });
-                });
+                    }.bind(this));
+                }.bind(this));
             } else if(event.user) {
                 this.api.resolveUser(event.server, event.user, function(user) {
                     if(user) event.rUser = user;
