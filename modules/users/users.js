@@ -91,34 +91,19 @@ var users = function(dbot) {
     };
 
     this.listener = function(event) {
-        if(event.action == 'JOIN' && event.user != dbot.config.name) {
-            if(!event.rUser) {
-                this.internalAPI.createUser(event.server, event.user, function(user) {
-                    this.internalAPI.addChannelUser(event.rChannel, user, {}, function() {}); 
-                }.bind(this));
-            } else if(!_.include(event.rUser.channels, event.rChannel.id)) {
-                this.internalAPI.addChannelUser(event.rChannel, event.rUser, {}, function() {}); 
+        this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
+            event.rUser.currentNick = event.newNick;
+
+            if(!isKnown) {
+                event.rUser.aliases.push(event.newNick);
             }
 
-            if(event.rUser.currentNick != event.user) {
-                event.rUser.currentNick = event.user;
-                this.db.save('users', event.rUser.id, event.rUser, function() {});
-            }
-        } else if(event.action == 'NICK') {
-            this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
-                event.rUser.currentNick = event.newNick;
-
-                if(!isKnown) {
-                    event.rUser.aliases.push(event.newNick);
-                }
-
-                this.db.save('users', event.rUser.id, event.rUser, function(err) {
-                    dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
-                });
-            }.bind(this));
-        }
+            this.db.save('users', event.rUser.id, event.rUser, function(err) {
+                dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
+            });
+        }.bind(this));
     }.bind(this);
-    this.on = ['JOIN', 'NICK'];
+    this.on = ['NICK'];
 
     this.onLoad = function() {
         dbot.instance.addPreEmitHook(function(event, callback) {
