@@ -133,7 +133,7 @@ var users = function(dbot) {
                     } else {
                         done(user);
                     }
-                };
+                }.bind(this);
 
                 if(_.has(this.userCache, event.server) && _.has(this.userCache[event.server], event.user)) {
                     this.api.getUser(this.userCache[event.server][event.user], checkCurrentNick);
