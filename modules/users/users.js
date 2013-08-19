@@ -160,6 +160,8 @@ var users = function(dbot) {
                     event.rUser.channels.push(event.rChannel.id);
                     event.rChannel.users.push(event.rUser.id);
                     needsUpdating = true;
+
+                    dbot.api.event.emit('new_channel_user', [ event.rUser, event.rChannel ]);
                 }
 
                 if(!_.has(event.channel, 'nicks') || !_.has(event.channel.nicks, event.rUser.currentNick)) {
