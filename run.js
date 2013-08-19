@@ -163,6 +163,7 @@ DBot.prototype.reloadModules = function() {
     require('./snippets');
 
     this.instance.removeListeners();
+    this.instance.clearHooks();
 
     var name, moduleDir, config;
     for(i=0;i<moduleNames.length;i++) {
