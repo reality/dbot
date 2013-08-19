@@ -181,6 +181,7 @@ var users = function(dbot) {
 
                 if(needsUpdating) {
                     this.db.save('users', event.rUser.id, event.rUser, function() {
+                        console.log(event.rUser.channels);
                         this.db.save('channel_users', event.rChannel.id, event.rChannel, done);
                     }.bind(this));
                 } else {
