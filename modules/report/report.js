@@ -128,19 +128,20 @@ var report = function(dbot) {
                 }, function() {});
 
                 var notifier = event.user;
+                var cChan = channelName;
                 if(_.has(this.config.colours, event.server)) {
                     var colours = this.config.colours[event.server];
 
                     notifier = colours['nicks'] + notifier + '\u000f';
                     type = colours['type'] + 'notify' + '\u000f';
                     if(_.has(colours['channels'], channelName)) {
-                        channelName = colours['channels'][channelName] +
-                            channelName + "\u000f";
+                        cChan = colours['channels'][channelName] +
+                            cChan + "\u000f";
                     }
                 }
                     
                 this.api.notify(event.server, channelName, dbot.t('notify', {
-                    'channel': channelName,
+                    'channel': cChan,
                     'notifier': notifier,
                     'message': message
                 }));
