@@ -129,7 +129,7 @@ var report = function(dbot) {
 
                 var notifier = event.user;
                 if(_.has(this.config.colours, event.server)) {
-                    var colours = this.config[event.server];
+                    var colours = this.config.colours[event.server];
 
                     notifier = colours['nicks'] + notifier + '\u000f';
                     type = colours['type'] + 'notify' + '\u000f';
