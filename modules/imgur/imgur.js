@@ -5,7 +5,8 @@
 
 var _ = require('underscore')._,
     request = require('request'),
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    gm = require('gm');
 
 var imgur = function(dbot) {
     this.internalAPI = {
@@ -79,7 +80,9 @@ var imgur = function(dbot) {
             dbot.db.imgur.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
-                if(!error && response.statusCode == 200 && body.length != 492) {
+                var img = gm(response);
+                if(!error && response.statusCode == 200 && body.length != 492 &&
+                    img.height > 300 && img.width > 300) {
                     dbot.db.imgur.totalImages += 1;
                     var hash = crypto.createHash('md5').update(body).digest("hex");
                     if(_.has(dbot.modules, 'quotes')){
@@ -153,21 +156,12 @@ var imgur = function(dbot) {
 
     this.commands = {
         '~ri': function(event) {
-            var getImage = function() {
-                this.api.getRandomImage(function(link, slug) {
-                    this.api.getImageInfo(slug, function(imgData) {
-                       if(imgData && _.has(imgData, 'data')
-                           && imgData.data.height > 300 && imgData.data.width > 300) {
-                            var info = this.internalAPI.infoString(imgData);
-                            event.reply(event.user + ': ' + link + ' [' + info + ']');
-                        } else {
-                            getImage();
-                        }
-                    }.bind(this));
+            this.api.getRandomImage(function(link, slug) {
+                this.api.getImageInfo(slug, function(imgData) {
+                    var info = this.internalAPI.infoString(imgData);
+                    event.reply(event.user + ': ' + link + ' [' + info + ']');
                 }.bind(this));
-            }.bind(this);
-
-            getImage();
+            }.bind(this));
         }
     }
 
