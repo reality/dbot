@@ -127,13 +127,14 @@ var report = function(dbot) {
                     'message': message
                 }, function() {});
 
-                var notifier = event.user;
-                var cChan = channelName;
+                var notifier = event.user,
+                    cChan = channelName,
+                    type = 'notify';
                 if(_.has(this.config.colours, event.server)) {
                     var colours = this.config.colours[event.server];
 
                     notifier = colours['nicks'] + notifier + '\u000f';
-                    type = colours['type'] + 'notify' + '\u000f';
+                    type = colours['type'] + type + '\u000f';
                     if(_.has(colours['channels'], channelName)) {
                         cChan = colours['channels'][channelName] +
                             cChan + "\u000f";
@@ -141,6 +142,7 @@ var report = function(dbot) {
                 }
                     
                 this.api.notify(event.server, channelName, dbot.t('notify', {
+                    'type': type,
                     'channel': cChan,
                     'notifier': notifier,
                     'message': message
