@@ -166,6 +166,8 @@ var imgur = function(dbot) {
                     }.bind(this));
                 }.bind(this));
             }.bind(this);
+
+            getImage();
         }
     }
 
