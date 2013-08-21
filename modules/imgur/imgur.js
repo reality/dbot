@@ -79,6 +79,7 @@ var imgur = function(dbot) {
                 '.' + ext[_.random(0, ext.length - 1)];
             dbot.db.imgur.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
+                console.log(response.head);
                 // 492 is body.length of a removed image
                 gm(body).size(function(err, val) {
                     console.log(err);
