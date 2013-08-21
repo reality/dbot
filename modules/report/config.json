@@ -7,5 +7,14 @@
     "webAccess": "regular",
     "pageAccess": {
         "/report/:server/:channel": "power_users"
+    },
+    "colours": {
+        "wherever": {
+            "channels": {
+                "#test": "\u00032"
+            },
+            "nicks": "",
+            "type": ""
+        }
     }
 }

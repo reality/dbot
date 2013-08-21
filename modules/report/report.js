@@ -117,12 +117,6 @@ var report = function(dbot) {
                 message = event.input[2];
 
             if(_.has(event.allChannels, channelName)) {
-                this.api.notify(event.server, channelName, dbot.t('notify', {
-                    'channel': channelName,
-                    'notifier': event.user,
-                    'message': message
-                }));
-
                 var id = uuid.v4();
                 this.db.save('notifies', id, {
                     'id': id,
@@ -132,6 +126,23 @@ var report = function(dbot) {
                     'time': new Date().getTime(),
                     'message': message
                 }, function() {});
+
+                if(_.has(this.config.colours, event.server)) {
+                    var colours = this.config[event.server];
+
+                    notifier = colours['nicks'] + event.user + '\u000f';
+                    type = colours['type'] + 'notify' + '\u000f';
+                    if(_.has(colours['channels'], channelName)) {
+                        channelName = colours['channels'][channelName] +
+                            channelName + "\u000f";
+                    }
+                }
+                    
+                this.api.notify(event.server, channelName, dbot.t('notify', {
+                    'channel': channelName,
+                    'notifier': notifier,
+                    'message': message
+                }));
 
                 event.reply(dbot.t('notified', {
                     'user': event.user,
