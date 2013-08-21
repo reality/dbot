@@ -5,8 +5,7 @@
 
 var _ = require('underscore')._,
     request = require('request'),
-    crypto = require('crypto'),
-    gm = require('gm');
+    crypto = require('crypto');
 
 var imgur = function(dbot) {
     this.internalAPI = {
