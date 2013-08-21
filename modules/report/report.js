@@ -93,10 +93,27 @@ var report = function(dbot) {
             dbot.api.users.resolveUser(event.server, nick, function(reportee) {
                 if(_.has(event.allChannels, channelName)) {
                     if(reportee) {
+                        var notifier = '[' + event.user + ']',
+                            cChan = channelName,
+                            type = 'report',
+                            reporter = event.user;
+                        if(_.has(this.config.colours, event.server)) {
+                            var colours = this.config.colours[event.server];
+
+                            reporter = colours['nicks'] + reporter + '\u000f';
+                            nick = colours['nicks'] + nick + '\u000f';
+                            type = colours['type'][type] + type + '\u000f';
+                            if(_.has(colours['channels'], channelName)) {
+                                cChan = colours['channels'][channelName] +
+                                    cChan + "\u000f";
+                            }
+                        }
+
                         this.api.notify(event.server, channelName, dbot.t('report', {
-                            'reporter': event.user,
+                            'type': type,
+                            'reporter': reporter,
                             'reported': nick,
-                            'channel': channelName,
+                            'channel': cChan,
                             'reason': reason
                         }));
                         event.reply(dbot.t('reported', { 'reported': nick }));
@@ -134,7 +151,7 @@ var report = function(dbot) {
                     var colours = this.config.colours[event.server];
 
                     notifier = '[' + colours['nicks'] + event.user + '\u000f]';
-                    type = colours['type'] + type + '\u000f';
+                    type = colours['type'][type] + type + '\u000f';
                     if(_.has(colours['channels'], channelName)) {
                         cChan = colours['channels'][channelName] +
                             cChan + "\u000f";
