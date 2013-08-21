@@ -80,7 +80,7 @@ var imgur = function(dbot) {
             dbot.db.imgur.totalHttpRequests += 1;
             var image = request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
-                var img = gm(response);
+                var img = gm(body);
                 if(!error && response.statusCode == 200 && body.length != 492 &&
                     img.height > 300 && img.width > 300) {
                     dbot.db.imgur.totalImages += 1;
