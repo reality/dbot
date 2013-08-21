@@ -127,10 +127,11 @@ var report = function(dbot) {
                     'message': message
                 }, function() {});
 
+                var notifier = event.user;
                 if(_.has(this.config.colours, event.server)) {
                     var colours = this.config[event.server];
 
-                    notifier = colours['nicks'] + event.user + '\u000f';
+                    notifier = colours['nicks'] + notifier + '\u000f';
                     type = colours['type'] + 'notify' + '\u000f';
                     if(_.has(colours['channels'], channelName)) {
                         channelName = colours['channels'][channelName] +
