@@ -127,23 +127,24 @@ var report = function(dbot) {
                     'message': message
                 }, function() {});
 
-                var notifier = event.user,
+                var notifier = '[' + event.user + ']',
                     cChan = channelName,
                     type = 'notify';
                 if(_.has(this.config.colours, event.server)) {
                     var colours = this.config.colours[event.server];
 
-                    notifier = colours['nicks'] + notifier + '\u000f';
+                    notifier = '[' + colours['nicks'] + event.user + '\u000f]';
                     type = colours['type'] + type + '\u000f';
                     if(_.has(colours['channels'], channelName)) {
                         cChan = colours['channels'][channelName] +
                             cChan + "\u000f";
                     }
 
-                    _.each(message.match(/ @([\d\w\s*|-]+?)( |$)/g), function(user) {
-                        notifier += '[' + colours['nicks'] + user.replace(/ @/, "") + '\u000f]';
+                    _.each(message.match(/@([\d\w\s*|-]+?)( |$)/g), function(user) {
+                        user = user.replace(/@([\d\w\s*|-]+?)( |$)/, "$1");
+                        notifier += '[' + colours['nicks'] + user + '\u000f]';
                     });
-                    message = message.replace(/ @([\d\w\s*|-]+?)( |$)/g, " " + colours['nicks'] +
+                    message = message.replace(/@([\d\w\s*|-]+?)( |$)/g, colours['nicks'] +
                         "@$1\u000f ");
                 }
                     

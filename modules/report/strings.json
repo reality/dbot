@@ -45,9 +45,9 @@
     "it": "Non sono presente in {channel}."
     },
     "notify": {
-        "en": "[{type}][{channel}][{notifier}] {message}",
-	"fr": "[{type}][{channel}][{notifier}] {message}",
-	"it": "[{type}][{channel}][{notifier}] {message}"
+        "en": "[{type}][{channel}]{notifier} {message}",
+	"fr": "[{type}][{channel}]{notifier} {message}",
+	"it": "[{type}][{channel}]{notifier} {message}"
     },
     "notified": {
         "en": "{user}: {channel} staff notified.",
