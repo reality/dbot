@@ -140,7 +140,10 @@ var report = function(dbot) {
                             cChan + "\u000f";
                     }
 
-                    message = message.replace(/ @([\d\w\s*|-]+?)( |$)/g, " " + colours['nicks'] +
+                    _.each(message.match(/@([\d\w\s*|-]+?)/g), function(user) {
+                        notifier += '[' + colours['nicks'] + user + '\u000f]';
+                    });
+                    message = message.replace(/ ( |$)/g, " " + colours['nicks'] +
                         "@$1\u000f ");
                 }
                     
