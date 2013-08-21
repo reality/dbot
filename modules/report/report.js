@@ -140,8 +140,8 @@ var report = function(dbot) {
                             cChan + "\u000f";
                     }
 
-                    message = message.replace(/ @([\d\w\s*|-]+?) /, colours['nicks'] +
-                        "@$1\u000f");
+                    message = message.replace(/ @([\d\w\s*|-]+?) /g, " " + colours['nicks'] +
+                        "@$1\u000f ");
                 }
                     
                 this.api.notify(event.server, channelName, dbot.t('notify', {
