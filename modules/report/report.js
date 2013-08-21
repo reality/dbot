@@ -67,7 +67,7 @@ var report = function(dbot) {
                 'user': event.rUser.primaryNick,
                 'link': dbot.api.web.getUrl('report/' + event.server + '/missing')
             }));
-            this.pNotify = false;
+            this.pNotify[event.rUser.id] = false;
         }
     }.bind(this);
     this.on = 'JOIN';
