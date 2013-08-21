@@ -27,7 +27,7 @@ var link = function(dbot) {
             page = request(link.replace('https', 'http'), function(error, response, body) {
                 if(!error && response.statusCode == 200) {
                     body = body.replace(/(\r\n|\n\r|\n)/gm, " ");
-                    var title = body.valMatch(/<title>(.*)<\/title>/, 2);
+                    var title = body.valMatch(/<title>(.*?)<\/title>/, 2);
                     if(title && title.length < 140) {
                         callback(ent.decode(title[1]).trim());
                     }
