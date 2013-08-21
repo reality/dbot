@@ -94,7 +94,7 @@ var imgur = function(dbot) {
                             }
                         }
                     }
-                    callback(testUrl, testSlug,hash);
+                    callback(testUrl, testSlug, hash);
                 } else {
                     this.api.getRandomImage(callback);
                 }
@@ -153,12 +153,19 @@ var imgur = function(dbot) {
 
     this.commands = {
         '~ri': function(event) {
-            this.api.getRandomImage(function(link, slug) {
-                this.api.getImageInfo(slug, function(imgData) {
-                    var info = this.internalAPI.infoString(imgData);
-                    event.reply(event.user + ': ' + link + ' [' + info + ']');
+            var getImage = function() {
+                this.api.getRandomImage(function(link, slug) {
+                    this.api.getImageInfo(slug, function(imgData) {
+                       if(imgData && _.has(imgData, 'data')
+                           && imgData.data.height > 300 && imgData.data.width > 300) {
+                            var info = this.internalAPI.infoString(imgData);
+                            event.reply(event.user + ': ' + link + ' [' + info + ']');
+                        } else {
+                            getImage();
+                        }
+                    }.bind(this));
                 }.bind(this));
-            }.bind(this));
+            }.bind(this);
         }
     }
 
