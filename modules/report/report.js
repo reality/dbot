@@ -141,7 +141,7 @@ var report = function(dbot) {
                     }
 
                     _.each(message.match(/ @([\d\w\s*|-]+?)( |$)/g), function(user) {
-                        notifier += '[' + colours['nicks'] + user + '\u000f]';
+                        notifier += '[' + colours['nicks'] + user[1] + '\u000f]';
                     });
                     message = message.replace(/ @([\d\w\s*|-]+?)( |$)/g, " " + colours['nicks'] +
                         "@$1\u000f ");
