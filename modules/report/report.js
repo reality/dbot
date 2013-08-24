@@ -157,12 +157,11 @@ var report = function(dbot) {
                             cChan + "\u000f";
                     }
 
-                    _.each(message.match(/@([\d\w\s*|-]+?)( |$|,|\.)/g), function(user) {
-                        user = user.replace(/@([\d\w\s*|-]+?)( |$|,|\.)/, "$1");
-                        notifier += '[' + colours['nicks'] + user + '\u000f]';
+                    _.each(message.match(/ @([\d\w*|-]+)/g), function(user) {
+                        user = user.substr(1);
+                        message = message.replace(user, colours['nicks'] + user + "\u000f");
+                        notifier += '[' + colours['nicks'] + user.substr(1) + '\u000f]';
                     });
-                    message = message.replace(/@([\d\w\s*|-]+?)( |$|,|\.)/g, colours['nicks'] +
-                        "@$1\u000f$2");
                 }
                     
                 this.api.notify(event.server, channelName, dbot.t('notify', {
