@@ -153,10 +153,14 @@ var imgur = function(dbot) {
 
     this.commands = {
         '~ri': function(event) {
+            var local = event.user;
+            if(event.params[1]) {
+                local = event.params.splice(0, 1).join(' ');
+            }
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    event.reply(event.user + ': ' + link + ' [' + info + ']');
+                    event.reply(local + ': ' + link + ' [' + info + ']');
                 }.bind(this));
             }.bind(this));
         }
