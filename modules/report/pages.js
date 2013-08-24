@@ -62,36 +62,55 @@ var pages = function(dbot) {
             }
         },
 
-        '/notify/:server/:channel': function(req, res) {
+        '/notify/:server/:item': function(req, res) {
             var server = req.params.server,
-                channel = req.params.channel,
                 notifies = [];
 
-            this.db.search('notifies', {
-                'server': server,
-                'channel': channel
-            }, function(notify) {
-                notifies.push(notify);
-            }, function(err) {
-                var pNickCache = {};
-                async.eachSeries(notifies, function(notify, next) {
-                    if(!_.has(pNickCache, notify.user)) {
-                        dbot.api.users.getUser(notify.user, function(user) {
-                            pNickCache[notify.user] = user.primaryNick;
-                            notify.user = user.primaryNick; 
+            if(req.params.item.charAt(0) == '#') {
+                var channel = req.params.item;
+
+                this.db.search('notifies', {
+                    'server': server,
+                    'channel': channel
+                }, function(notify) {
+                    notifies.push(notify);
+                }, function(err) {
+                    var pNickCache = {};
+                    async.eachSeries(notifies, function(notify, next) {
+                        if(!_.has(pNickCache, notify.user)) {
+                            dbot.api.users.getUser(notify.user, function(user) {
+                                pNickCache[notify.user] = user.primaryNick;
+                                notify.user = user.primaryNick; 
+                                next();
+                            });
+                        } else {
+                            notify.user = pNickCache[notify.user];
                             next();
+                        }
+                    }, function() {
+                        res.render('notifies', {
+                            'server': server,
+                            'notifies': _.sortBy(notifies, 'time')
                         });
-                    } else {
-                        notify.user = pNickCache[notify.user];
-                        next();
-                    }
-                }, function() {
-                    res.render('notifies', {
-                        'server': server,
-                        'notifies': _.sortBy(notifies, 'time')
                     });
                 });
-            });
+            } else {
+                var username = req.params.item;
+
+                dbot.api.users.resolveUser(server, username, function(user) {
+                    this.db.search('notifies', {
+                        'user': user.id
+                    }, function(notify) {
+                        notify.user = user.primaryNick;
+                        notifies.push(notify);
+                    }, function() {
+                        res.render('notifies', {
+                            'server': server,
+                            'notifies': _.sortBy(notifies, 'time')
+                        });
+                    });
+                }.bind(this));
+            }
         }
     };
 
