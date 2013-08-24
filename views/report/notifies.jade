@@ -13,7 +13,7 @@ block content
           th User
           th Message 
       tbody
-        for notify, key in notifies
+        for notify in notifies
           tr
             td #{new Date(notify.time)}
             td #{notify.channel}

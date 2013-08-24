@@ -26,7 +26,7 @@ var pages = function(dbot) {
             res.render('missing_notifies', {
                 'name': dbot.config.name,
                 'user': user.primaryNick,
-                'notifies': notifies
+                'notifies': _.sortBy(notifies, 'time')
             });
 
             if(_.has(dbot.modules, 'log')) {
@@ -49,7 +49,7 @@ var pages = function(dbot) {
                 res.render('notifies', {
                     'name': dbot.config.name,
                     'server': server,
-                    'notifies': notifies 
+                    'notifies': _.sortBy(notifies, 'time')
                 });
             });
         }
