@@ -17,7 +17,7 @@ block content
             th Message 
         tbody
           for notify in notifies
-            tr
+            tr#row
               td #{new Date(notify.time)}
               td #{notify.channel}
               td #{notify.user}
