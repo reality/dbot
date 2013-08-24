@@ -16,7 +16,7 @@ var pages = function(dbot) {
 
             this.db.scan('notifies', function(notify) {
                 if(!_.has(userCount, notify.user)) {
-                    userCount[notify.user] = 0;
+                    userCount[notify.user] = 1;
                 } else {
                     userCount[notify.user]++;
                 }
