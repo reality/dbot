@@ -11,8 +11,8 @@ function search(q)
 function searchNotifies(q) {
     var notifies = document.getElementById('notifies');
     for (var i=1, row; row=notifies.rows[i]; i++) {
-        console.log(row);
-        if(row.cells[3].innerHTML.indexOf(q) == -1) {
+        if(row.cells[3].innerHTML.indexOf(q) == -1 &&
+                row.cells[2].innerHTML.indexOf(q) == -1) {
             row.style.display = 'none';
         } else {
             row.style.display = '';
