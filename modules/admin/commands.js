@@ -282,7 +282,9 @@ var commands = function(dbot) {
 
         '~die': function(event) {
             event.reply('BRB coconut hunting...');
-            process.exit(0);
+            setTimeout(3000, function() {
+                process.exit(0);
+            });
         }
     };
 
