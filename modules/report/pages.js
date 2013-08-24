@@ -1,20 +1,46 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    async = require('async');
 
 var pages = function(dbot) {
     var pages = {
         '/notify': function(req, res) {
             res.render('servers', {  
-                'name': dbot.config.name,
                 'servers': _.keys(dbot.config.servers)
             });
         },
 
         '/notify/:server': function(req, res) {
-            var server = req.params.server;
-            res.render('channels', {
-                'name': dbot.config.name,
-                'server': server,
-                'channels': _.keys(dbot.instance.connections[server].channels)
+            var server = req.params.server,
+                userCount = {},
+                users = [];
+
+            this.db.scan('notifies', function(notify) {
+                if(!_.has(userCount, notify.user)) {
+                    userCount[notify.user] = 0;
+                } else {
+                    userCount[notify.user]++;
+                }
+            }, function() {
+                userCount = _.map(userCount, function(value, key) { 
+                    return {
+                        'id': key, 
+                        'count': value 
+                    } 
+                });
+
+                async.eachSeries(userCount, function(userCount, next) {
+                    dbot.api.users.getUser(userCount.id, function(user) {
+                        userCount['name'] = user.primaryNick;
+                        users.push(userCount);
+                        next();
+                    });
+                }, function() {
+                    res.render('channels', {
+                        'server': server,
+                        'users': users,
+                        'channels': _.keys(dbot.instance.connections[server].channels)
+                    });
+                });
             });
         },
 
@@ -23,8 +49,9 @@ var pages = function(dbot) {
                 user = req.user,
                 notifies = this.pending[user.id];
 
+            async.eachSeries
+
             res.render('missing_notifies', {
-                'name': dbot.config.name,
                 'user': user.primaryNick,
                 'notifies': _.sortBy(notifies, 'time')
             });
@@ -46,10 +73,23 @@ var pages = function(dbot) {
             }, function(notify) {
                 notifies.push(notify);
             }, function(err) {
-                res.render('notifies', {
-                    'name': dbot.config.name,
-                    'server': server,
-                    'notifies': _.sortBy(notifies, 'time')
+                var pNickCache = {};
+                async.eachSeries(notifies, function(notify, next) {
+                    if(!_.has(pNickCache, notify.user)) {
+                        dbot.api.users.getUser(notify.user, function(user) {
+                            pNickCache[notify.user] = user.primaryNick;
+                            notify.user = user.primaryNick; 
+                            next();
+                        });
+                    } else {
+                        notify.user = pNickCache[notify.user];
+                        next();
+                    }
+                }, function() {
+                    res.render('notifies', {
+                        'server': server,
+                        'notifies': _.sortBy(notifies, 'time')
+                    });
                 });
             });
         }

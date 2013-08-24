@@ -139,7 +139,7 @@ var report = function(dbot) {
                     'id': id,
                     'server': event.server,
                     'channel': channelName,
-                    'user': event.user,
+                    'user': event.rUser.id,
                     'time': new Date().getTime(),
                     'message': message
                 }, function() {});
