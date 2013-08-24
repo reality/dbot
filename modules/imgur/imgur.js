@@ -155,7 +155,7 @@ var imgur = function(dbot) {
         '~ri': function(event) {
             var local = event.user;
             if(event.params[1]) {
-                local = event.params.splice(1, event.params.length - 1).join(' ');
+                local = event.params.splice(1, event.params.length - 1).join(' ').trim();
             }
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
