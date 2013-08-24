@@ -193,6 +193,7 @@ var users = function(dbot) {
             }.bind(this);
 
             if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG'], event.action)) {
+                if(event.action == 'JOIN') console.log(event);
                 checkChannel(function(channel) {
                     event.rChannel = channel;
                     checkUser(function(user) {
