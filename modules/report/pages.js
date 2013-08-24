@@ -12,14 +12,18 @@ var pages = function(dbot) {
         '/notify/:server': function(req, res) {
             var server = req.params.server,
                 userCount = {},
-                users = [];
+                users = [],
+                channelCount = {};
 
             this.db.scan('notifies', function(notify) {
                 if(!_.has(userCount, notify.user)) {
-                    userCount[notify.user] = 1;
-                } else {
-                    userCount[notify.user]++;
+                    userCount[notify.user] = 0;
                 }
+                if(!_.has(channelCount, notify.channel)) {
+                    channelCount[notify.channel] = 0;
+                }
+                userCount[notify.user]++;
+                channelCount[notify.channel]++;
             }, function() {
                 userCount = _.map(userCount, function(value, key) { 
                     return {
@@ -40,7 +44,7 @@ var pages = function(dbot) {
                     res.render('channels', {
                         'server': server,
                         'users': users,
-                        'channels': _.keys(dbot.instance.connections[server].channels)
+                        'channels': channelCount
                     });
                 });
             });

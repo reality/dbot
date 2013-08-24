@@ -5,9 +5,9 @@ block content
     div#backlink
         a(href='/notify') &laquo; Server List
     ul#quotelist
-        -each channel in channels 
-            a(href='/notify/'+server+'/'+encodeURIComponent(channel))
-              li.quotes #{channel}
+        -each count, name in channels 
+            a(href='/notify/'+server+'/'+encodeURIComponent(name))
+              li.quotes #{name} (#{count})
 
     h3 Browse by User on #{server}
     ul#quotelist
