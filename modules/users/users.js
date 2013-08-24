@@ -154,9 +154,14 @@ var users = function(dbot) {
                 if(!_.include(event.rUser.channels, event.rChannel.id)) {
                     event.rUser.channels.push(event.rChannel.id);
                     event.rChannel.users.push(event.rUser.id);
-                    needsUpdating = true;
-
                     dbot.api.event.emit('new_channel_user', [ event.rUser, event.rChannel ]);
+
+                    // since it's not in event.channel yet we have to do this here
+                    this.db.save('users', event.rUser.id, event.rUser, function() {
+                        this.db.save('channel_users', event.rChannel.id, event.rChannel, function() {});
+                    }.bind(this));
+
+                    return done();
                 }
 
                 if(!_.has(event.channel, 'nicks') || !_.has(event.channel.nicks, event.rUser.currentNick)) {
@@ -180,7 +185,6 @@ var users = function(dbot) {
 
                 if(needsUpdating) {
                     this.db.save('users', event.rUser.id, event.rUser, function() {
-                        console.log(event.rUser.channels);
                         this.db.save('channel_users', event.rChannel.id, event.rChannel, done);
                     }.bind(this));
                 } else {
