@@ -4,8 +4,10 @@ block content
   div#backlink
     a(href='/notify/'+server) &laquo; Server Channels
   p
-  div#profile_datatable
-    table.table.table-hover.data
+  div#controls
+    input(type="text", name="search", id="search-text", oninput="searchNotifies(this.value)")
+  div#notify_datatable
+    table.table.table-hover.data#notifies
       thead
         tr
           th Date
