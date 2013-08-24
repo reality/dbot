@@ -159,7 +159,7 @@ var users = function(dbot) {
                     dbot.api.event.emit('new_channel_user', [ event.rUser, event.rChannel ]);
                 }
 
-                if(event.action != 'JOIN' && (!_.has(event.channel, 'nicks') || !_.has(event.channel.nicks, event.rUser.currentNick))) {
+                if(!_.has(event.channel, 'nicks') || !_.has(event.channel.nicks, event.rUser.currentNick)) {
                     return done();
                 }
                 var cUser = event.channel.nicks[event.rUser.currentNick];
