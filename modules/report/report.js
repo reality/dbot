@@ -188,7 +188,14 @@ var report = function(dbot) {
         if(_.has(dbot.modules, 'web')) {
             dbot.api.web.addIndexLink('/notify', 'Notifications');
         }
-    };
+
+        dbot.api.event.addHook('~mergeusers', function(server, oldUser, newUser) {
+            this.db.search('notifies', { 'user': oldUser.id }, function(notify) {
+                notify.user = newUser.id;
+                this.db.save('notifies', notify.id, notify, function() {}); 
+            }.bind(this), function() {}); 
+        }.bind(this));
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {
