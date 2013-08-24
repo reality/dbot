@@ -142,7 +142,10 @@ var users = function(dbot) {
                     this.api.resolveUser(event.server, event.user, function(user) {
                         if(!user) {
                             this.internalAPI.createUser(event.server,
-                                event.user, checkCurrentNick);
+                                event.user, function (user) {
+                                    this.userCache[event.server][user.currentNick] = user.id;
+                                    checkCurrentNick(user);
+                                }.bind(this));
                         } else {
                             checkCurrentNick(user); 
                         }
