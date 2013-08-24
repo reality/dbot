@@ -33,8 +33,8 @@ var pages = function(dbot) {
                         if(user) {
                             userCount['name'] = user.primaryNick;
                             users.push(userCount);
-                            next();
                         }
+                        next();
                     });
                 }, function() {
                     res.render('channels', {
