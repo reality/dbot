@@ -1,6 +1,7 @@
 var fs = require('fs'),
     _ = require('underscore')._,
     sys = require('sys'),
+    process = require('process'),
     exec = require('child_process').exec;
 
 var commands = function(dbot) {
@@ -277,6 +278,11 @@ var commands = function(dbot) {
                     event.reply(dbot.t('modules_saved', { 'modules': _.keys(dbot.modules) }));
                 });
             });
+        },
+
+        '~die': function(event) {
+            event.reply('BRB coconut hunting...');
+            process.exit(0);
         }
     };
 
