@@ -30,9 +30,11 @@ var pages = function(dbot) {
 
                 async.eachSeries(userCount, function(userCount, next) {
                     dbot.api.users.getUser(userCount.id, function(user) {
-                        userCount['name'] = user.primaryNick;
-                        users.push(userCount);
-                        next();
+                        if(user) {
+                            userCount['name'] = user.primaryNick;
+                            users.push(userCount);
+                            next();
+                        }
                     });
                 }, function() {
                     res.render('channels', {
@@ -48,8 +50,6 @@ var pages = function(dbot) {
             var server = req.params.server,
                 user = req.user,
                 notifies = this.pending[user.id];
-
-            async.eachSeries
 
             res.render('missing_notifies', {
                 'user': user.primaryNick,
