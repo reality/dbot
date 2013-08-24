@@ -90,7 +90,7 @@ var pages = function(dbot) {
                     }, function() {
                         res.render('notifies', {
                             'server': server,
-                            'notifies': _.sortBy(notifies, 'time')
+                            'notifies': _.sortBy(notifies, 'time').reverse()
                         });
                     });
                 });
@@ -106,7 +106,7 @@ var pages = function(dbot) {
                     }, function() {
                         res.render('notifies', {
                             'server': server,
-                            'notifies': _.sortBy(notifies, 'time')
+                            'notifies': _.sortBy(notifies, 'time').reverse()
                         });
                     });
                 }.bind(this));
