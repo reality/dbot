@@ -126,6 +126,10 @@ var kick = function(dbot) {
                 this.internalAPI.addTempBan(server, nick, timeout); 
             }, this);
         }, this);
+
+        if(_.has(dbot.modules, 'web')) {
+            dbot.api.web.addIndexLink('/bans', 'Ban List');
+        }
     }.bind(this);
 };
 

@@ -8,6 +8,7 @@ var express = require('express'),
 
 var webInterface = function(dbot) {
     this.config = dbot.config.modules.web;
+    this.indexLinks = {};
     this.pub = 'public';
     this.app = express();
 
@@ -85,25 +86,25 @@ var webInterface = function(dbot) {
     }.bind(this);
 
     this.onLoad = function() {
-        var routes = _.pluck(dbot.modules.web.app.routes.get, 'path');
-        var moduleNames = _.keys(dbot.modules);
-        var indexModules = [];
+        var routes = _.pluck(dbot.modules.web.app.routes.get, 'path'),
+            moduleNames = _.keys(dbot.modules);
 
-        // fix the thingy
         _.each(moduleNames, function(moduleName) {
             var modulePath = '/' + moduleName;
             if(_.include(routes, modulePath)) {
-                indexModules.push(moduleName);
+                moduleName = moduleName.charAt(0).toUpperCase() +
+                    moduleName.slice(1);
+                this.indexLinks[modulePath] = moduleName;
             }
-        });
+        }.bind(this));
 
         this.app.get('/', function(req, res) {
             res.render('index', { 
                 'name': dbot.config.name,
                 'user': req.user,
-                'routes': indexModules
+                'routes': this.indexLinks
             });
-        });
+        }.bind(this));
 
         this.app.get('/login', function(req, res) {
             res.render('login', {
@@ -147,6 +148,10 @@ var webInterface = function(dbot) {
             }
         },
 
+        'addIndexLink': function(route, title) {
+            this.indexLinks[route] = title;
+        },
+
         'getWebUser': function(id, callback) {
             this.db.read('web_users', id, function(err, webUser) {
                 callback(webUser);
@@ -155,9 +160,8 @@ var webInterface = function(dbot) {
 
         'hasAccess': function(req, res, next) {
             var path = req.route.path,
-                module = path.split('/')[1],
+                module = dbot.pages[path].module,
                 mConfig = dbot.config.modules[module];
-            module = dbot.modules[module];
 
             if(mConfig.requireWebLogin == true) {
                 if(req.isAuthenticated()) {
@@ -170,10 +174,10 @@ var webInterface = function(dbot) {
 
                     if(accessNeeded != 'regular') {
                         var allowedUsers = dbot.config.admins;
-                        if(module.config.webAccess == 'moderators') {
+                        if(mConfig.webAccess == 'moderators') {
                             allowedUsers = _.union(allowedUsers, dbot.config.moderators);
                         }
-                        if(module.config.webAccess == 'power_users') {
+                        if(mConfig.webAccess == 'power_users') {
                             allowedUsers = _.union(allowedUsers, dbot.config.moderators);
                             allowedUsers = _.union(allowedUsers, dbot.config.power_users);
                         }

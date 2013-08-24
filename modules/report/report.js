@@ -184,6 +184,12 @@ var report = function(dbot) {
     commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~notify'].regex = [/^~notify ([^ ]+) (.+)$/, 3];
     this.commands = commands;
+
+    this.onLoad = function() {
+        if(_.has(dbot.modules, 'web')) {
+            dbot.api.web.addIndexLink('/notify', 'Notifications');
+        }
+    };
 };
 
 exports.fetch = function(dbot) {

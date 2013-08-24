@@ -3,8 +3,8 @@ extends ../layout
 block content
     h3 Channels on #{server}
     div#backlink
-        a(href='/report') &laquo; Server List
+        a(href='/notify') &laquo; Server List
     ul#quotelist
         -each channel in channels 
-            a(href='/report/'+server+'/'+encodeURIComponent(channel))
+            a(href='/notify/'+server+'/'+encodeURIComponent(channel))
               li.quotes #{channel}

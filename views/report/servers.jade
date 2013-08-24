@@ -5,8 +5,8 @@ block content
     div#backlink
         a(href='/') &laquo; Home
     div
-        a(href='/report/'+user.server+'/missing') My Missed Notifications
+        a(href='/notify/'+user.server+'/missing') My Missed Notifications
     ul#quotelist
         -each server in servers
-          a(href='/report/'+server) 
+          a(href='/notify/'+server) 
             li.quotes #{server}
