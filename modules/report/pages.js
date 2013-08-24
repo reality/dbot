@@ -12,7 +12,7 @@ var pages = function(dbot) {
         '/notify/:server': function(req, res) {
             var server = req.params.server,
                 userCount = {},
-                users = {};
+                users = [];
 
             this.db.scan('notifies', function(notify) {
                 if(!_.has(userCount, notify.user)) {
