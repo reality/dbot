@@ -6,19 +6,18 @@ block content
   p
   div#controls
     input(type="text", name="search", id="search-text", oninput="searchNotifies(this.value)")
-  div#row
-    div#notify_datatable
-      table.table.table-hover.data#notifies
-        thead
+  div#notify_datatable
+    table.table.table-hover.data#notifies
+      thead
+        tr
+          th Date
+          th Channel
+          th User
+          th Message 
+      tbody
+        for notify in notifies
           tr
-            th Date
-            th Channel
-            th User
-            th Message 
-        tbody
-          for notify in notifies
-            tr#row
-              td #{new Date(notify.time)}
-              td #{notify.channel}
-              td #{notify.user}
-              td #{notify.message}
+            td #{new Date(notify.time)}
+            td #{notify.channel}
+            td #{notify.user}
+            td #{notify.message}
