@@ -40,7 +40,6 @@ var api = function(dbot) {
                 }
             }, function(err) {
                 if(!err) {
-                    console.log(nicks);
                     callback(users, nicks);
                 }
             });
@@ -48,10 +47,16 @@ var api = function(dbot) {
 
         // Return a user record given a UUID
         'getUser': function(uuid, callback) {
-            this.db.read('users', uuid, function(err, user) {
-                if(err) user = false;
-                callback(user);
-            });
+            this.db.read('user_redirs', uuid, function(err, id) {
+                if(!err) {
+                    this.api.getUser(id, callback);
+                } else {
+                    this.db.read('users', uuid, function(err, user) {
+                        if(err) user = false;
+                        callback(user);
+                    });
+                }
+            }.bind(this));
         },
 
         'resolveChannel': function(server, channelName, callback) {

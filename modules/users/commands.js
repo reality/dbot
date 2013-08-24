@@ -119,6 +119,7 @@ var commands = function(dbot) {
                             this.internalAPI.mergeChannelUsers(oldUser, user);
                             this.db.del('users', oldUser.id, function(err) {
                                 if(!err) {
+                                    this.db.save('user_redirs', oldUser.id, user.id, function() {});
                                     this.db.save('users', user.id, user, function(err) {
                                         if(!err) {
                                             event.reply(dbot.t('merged_users', { 
