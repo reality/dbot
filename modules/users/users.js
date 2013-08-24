@@ -137,15 +137,11 @@ var users = function(dbot) {
 
                 if(_.has(this.userCache, event.server) && _.has(this.userCache[event.server], event.user)) {
                     this.api.getUser(this.userCache[event.server][event.user], checkCurrentNick);
-                    console.log('got cached user');
                 } else {
                     this.api.resolveUser(event.server, event.user, function(user) {
                         if(!user) {
                             this.internalAPI.createUser(event.server,
-                                event.user, function (user) {
-                                    this.userCache[event.server][user.currentNick] = user.id;
-                                    checkCurrentNick(user);
-                                }.bind(this));
+                                event.user, checkCurrentNick);
                         } else {
                             checkCurrentNick(user); 
                         }
@@ -193,7 +189,6 @@ var users = function(dbot) {
             }.bind(this);
 
             if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG'], event.action)) {
-                if(event.action == 'JOIN') console.log(event);
                 checkChannel(function(channel) {
                     event.rChannel = channel;
                     checkUser(function(user) {
