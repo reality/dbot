@@ -15,7 +15,7 @@ var report = function(dbot) {
             async.eachSeries(users, function(nick, next) {
                 setTimeout(function() {
                 count++
-                console.log(nick + ' ' + count);
+                //console.log(nick + ' ' + count);
                     //dbot.say(server, nick, message);
                     next();
                 }, 1000);
@@ -134,6 +134,7 @@ var report = function(dbot) {
         },
 
         '~notify': function(event) {
+            console.log('~notify triggered');
             var channelName = event.input[1],
                 message = event.input[2];
 
