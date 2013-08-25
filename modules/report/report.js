@@ -14,7 +14,7 @@ var report = function(dbot) {
                 dbot.say(server, nick, message);
                 setTimeout(function() {
                     next();
-                }, 1500);
+                }, 2000);
             });
         }
     };
