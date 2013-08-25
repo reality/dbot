@@ -138,7 +138,7 @@ var users = function(dbot) {
                             done(user);
                         }
                     }
-                });
+                }.bind(this));
             }.bind(this);
             var checkChannelUsers = function(done) {
                 var needsUpdating = false;
