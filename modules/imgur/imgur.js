@@ -42,7 +42,7 @@ var imgur = function(dbot) {
                     info += albumData.title + ' - ';
                 }
                 if(albumData.description) {
-                    info += albumData.description + ' is ';
+                    info += albumData.description.split('\n')[0] + ' is ';
                 }
                 info += 'an album with ' + albumData.images_count + ' images ';
                 info += 'and ' + albumData.views + ' views';
