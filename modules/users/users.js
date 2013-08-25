@@ -127,29 +127,18 @@ var users = function(dbot) {
                 }.bind(this));
             }.bind(this);
             var checkUser = function(done) {
-                var checkCurrentNick = function(user) {
-                    if(event.user != user.currentNick) {
-                        user.currentNick = event.user;
-                        this.db.save('users', user.id, user, function() {
-                            done(user); 
-                        });
+                this.api.resolveUser(event.server, event.user, function(user) {
+                    if(!user) {
+                        this.internalAPI.createUser(event.server, event.user, done);
                     } else {
-                        done(user);
-                    }
-                }.bind(this);
-
-                if(_.has(this.userCache, event.server) && _.has(this.userCache[event.server], event.user)) {
-                    this.api.getUser(this.userCache[event.server][event.user], checkCurrentNick);
-                } else {
-                    this.api.resolveUser(event.server, event.user, function(user) {
-                        if(!user) {
-                            this.internalAPI.createUser(event.server,
-                                event.user, checkCurrentNick);
+                        if(event.user != user.currentNick) {
+                            user.currentNick = event.user;
+                            this.db.save('users', user.id, user, function() { done(user); });
                         } else {
-                            checkCurrentNick(user); 
+                            done(user);
                         }
-                    }.bind(this));
-                }
+                    }
+                });
             }.bind(this);
             var checkChannelUsers = function(done) {
                 var needsUpdating = false;
@@ -201,7 +190,6 @@ var users = function(dbot) {
                     checkUser(function(user) {
                         event.rUser = user;
 
-                        if(!_.has(this.userCache, event.server)) this.userCache[event.server] = {};
                         if(!_.has(this.userCache[event.server], event.rUser.currentNick)) {
                             this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
                         } else if(this.userCache[event.server][event.rUser.currentNick] != event.rUser.id) {
