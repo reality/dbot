@@ -10,18 +10,17 @@ var api = function(dbot) {
     var api = {
         // Return a user record given a primary nick or an alias
         'resolveUser': function(server, nick, callback) {
-            var found = false;
+            var user = false;
             if(_.has(this.userCache[server], nick)) {
                 this.api.getUser(this.userCache[server][nick], callback);
             } else {
                 this.db.search('users', { 'server': server }, function(result) {
                     if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
                         this.userCache[server][nick] = result.id; 
-                        found = true;
-                        callback(result);
+                        user = result;
                     }
                 }.bind(this), function(err) {
-                    if(!found) callback(false);
+                    callback(user);
                 });
             }
         },
