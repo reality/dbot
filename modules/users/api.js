@@ -1,9 +1,6 @@
 var _ = require('underscore')._,
     uuid = require('node-uuid'),
-    databank = require('databank'),
-    AlreadyExistsError = databank.AlreadyExistsError,
-    NoSuchThingError = databank.NoSuchThingError,
-    NotImplementedError = databank.NotImplementedError;
+    databank = require('databank');
 
 var api = function(dbot) {
     var escapeRegexen = function(str) {
@@ -13,16 +10,16 @@ var api = function(dbot) {
     var api = {
         // Return a user record given a primary nick or an alias
         'resolveUser': function(server, nick, callback) {
-            var user = false;
-            this.db.search('users', { 'server': server }, function(result) {
-                if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
-                    user = result;
-                }
-            }, function(err) {
-                if(!err) {
-                    callback(user);
-                }
-            });
+            if(_.has(this.userCache[server], nick)) {
+                this.api.getUser(this.userCache[server][nick], callback);
+            } else {
+                this.db.search('users', { 'server': server }, function(result) {
+                    if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
+                        this.userCache[server][nick] = result.id; 
+                        return callback(result);
+                    }
+                }.bind(this), function(err) {});
+            }
         },
 
         // Return many user records given primary nicks of aliases
@@ -47,16 +44,10 @@ var api = function(dbot) {
 
         // Return a user record given a UUID
         'getUser': function(uuid, callback) {
-            this.db.read('user_redirs', uuid, function(err, id) {
-                if(!err) {
-                    this.api.getUser(id, callback);
-                } else {
-                    this.db.read('users', uuid, function(err, user) {
-                        if(err) user = false;
-                        callback(user);
-                    });
-                }
-            }.bind(this));
+            this.db.read('users', uuid, function(err, user) {
+                if(err) user = false;
+                callback(user);
+            });
         },
 
         'resolveChannel': function(server, channelName, callback) {

@@ -8,6 +8,9 @@ var _ = require('underscore')._,
 
 var users = function(dbot) {
     this.userCache = {};
+    _.each(dbot.config.servers, function(v, k) {
+        this.userCache[k] = {};
+    }.bind(this));
 
     /*** Internal API ***/
     this.internalAPI = {
