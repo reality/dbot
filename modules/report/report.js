@@ -14,8 +14,8 @@ var report = function(dbot) {
             async.eachSeries(users, function(nick, next) {
                 count++;
                 console.log(nick + ' ' + count);
-                dbot.say(server, nick, message);
                 setTimeout(function() {
+                    dbot.say(server, nick, message);
                     next();
                 }, 1000);
             });
