@@ -180,7 +180,8 @@ var imgur = function(dbot) {
                 }
             }, function(err, response, body) {
                 if(body.data && body.data[0] != undefined) {
-                    this.api.getGalleryInfo(body.data[0].id, function(gal) {
+                    var num = _.random(0, body.data.length - 1);
+                    this.api.getGalleryInfo(body.data[num].id, function(gal) {
                         event.reply(dbot.t('imgurinfo',  { 
                             'info': this.internalAPI.galleryInfoString(gal)
                         }) + ' - ' + gal.data.link);
