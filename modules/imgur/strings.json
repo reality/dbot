@@ -6,11 +6,14 @@
         "nl": "bevat mogelijk gevoelige beelden",
         "de": "Könnte 18+ Material enthalten",
 	"fr": "peut être risqué pour le travail (NSFW)",
-    "it": "può essere rischioso al lavoro (NSFW)"
+        "it": "può essere rischioso al lavoro (NSFW)"
     },
     "imgurinfo": {
         "en": "[{info}]",
 	"fr": "[{info}]",
-    "it": "[{info}]"
+        "it": "[{info}]"
+    },
+    "imgur_noresults": {
+        "en": "No results found."
     }
 }

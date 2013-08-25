@@ -179,12 +179,14 @@ var imgur = function(dbot) {
                     'q': term
                 }
             }, function(err, response, body) {
-                if(body.data) {
+                if(body.data && body.data[0] != undefined) {
                     this.api.getGalleryInfo(body.data[0].id, function(gal) {
                         event.reply(dbot.t('imgurinfo',  { 
                             'info': this.internalAPI.galleryInfoString(gal)
                         }) + ' - ' + gal.data.link);
                     }.bind(this));
+                } else {
+                    event.reply(dbot.t('imgur_noresults'));
                 }
             }.bind(this));
         }
