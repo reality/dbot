@@ -14,10 +14,10 @@ var report = function(dbot) {
             async.eachSeries(users, function(nick, next) {
                 count++;
                 console.log(nick + ' ' + count);
-                //dbot.say(server, nick, message);
+                dbot.say(server, nick, message);
                 setTimeout(function() {
                     next();
-                }, 2000);
+                }, 1000);
             });
         }
     };
