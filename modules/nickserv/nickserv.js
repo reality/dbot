@@ -19,7 +19,14 @@ var nickserv = function(dbot) {
             this.userStack[server][nick] = callback;
             dbot.instance.connections[server].send('USERHOST ' + nick);
             setTimeout(function() {
-                if(_.has(this.userStack[server], nick)) callback(false); 
+                if(_.has(this.userStack[server], nick)) {
+                    dbot.instance.connections[server].send('WHOWAS ' + nick);
+                    setTimeout(function() {
+                        if(_.has(this.userStack[server], nick)) {
+                            callback(false); 
+                        }
+                    }, 4000);
+                }
             }.bind(this), 4000);
         }
     };
@@ -76,9 +83,19 @@ var nickserv = function(dbot) {
                 delete this.userStack[event.server][match[1]];
                 callback(match[3].trim());
             }
+        } else if(event.action == '314') {
+            var params = event.message.split(' '),
+                nick = params[1],
+                host = params[3];
+
+            if(_.has(this.userStack, event.server) && _.has(this.userStack[event.server], nick)) {
+                var callback = this.userStack[event.server][nick];
+                delete this.userStack[event.server][nick];
+                callback(host);
+            }
         }
     }.bind(this);
-    this.on = ['NOTICE', '302'];
+    this.on = ['NOTICE', '302', '314'];
 };
 
 exports.fetch = function(dbot) {
