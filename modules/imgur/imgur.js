@@ -8,6 +8,8 @@ var _ = require('underscore')._,
     crypto = require('crypto');
 
 var imgur = function(dbot) {
+    this.ApiRoot = 'https://api.imgur.com/3/';
+
     this.internalAPI = {
         'infoString': function(imgData) {
             info = '';
@@ -163,8 +165,31 @@ var imgur = function(dbot) {
                     event.reply(local + ': ' + link + ' [' + info + ']');
                 }.bind(this));
             }.bind(this));
+        },
+
+        '~imgur': function(event) {
+            var term = event.input[1]; 
+            request.get({
+                'url': this.ApiRoot + 'gallery/search/',
+                'json': true,
+                'headers': {
+                    'Authorization': 'Client-ID ' + this.config.apikey
+                },
+                'qs': {
+                    'q': term
+                }
+            }, function(err, response, body) {
+                if(body.data) {
+                    this.api.getGalleryInfo(body.data[0].id, function(gal) {
+                        event.reply(dbot.t('imgurinfo',  { 
+                            'info': this.internalAPI.galleryInfoString(gal)
+                        }) + ' - ' + gal.data.link);
+                    }.bind(this));
+                }
+            }.bind(this));
         }
     }
+    this.commands['~imgur'].regex = [/^~([\d\w\s-]*)/, 2];
 
     this.onLoad = function() {
         var imgurHandler = function(matches, name, callback) {
