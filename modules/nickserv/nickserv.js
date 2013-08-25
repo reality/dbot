@@ -20,7 +20,7 @@ var nickserv = function(dbot) {
             dbot.instance.connections[server].send('USERHOST ' + nick);
             setTimeout(function() {
                 if(_.has(this.userStack[server], nick)) callback(false); 
-            }.bind(this), 8000);
+            }.bind(this), 4000);
         }
     };
 
