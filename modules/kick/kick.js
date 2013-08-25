@@ -5,8 +5,8 @@ var kick = function(dbot) {
     this.tempBans = dbot.db.tempBans;
     
     this.api = {
-        'ban': function(server, user, channel) {
-            dbot.say(server, this.config.chanserv, 'ban ' + channel + ' ' + user);
+        'ban': function(server, host, channel) {
+            dbot.instance.connections[server].send('MODE ' + channel + ' +b ' + host);
         },
 
         'quiet': function(server, user, channel) {
