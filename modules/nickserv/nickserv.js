@@ -25,7 +25,7 @@ var nickserv = function(dbot) {
                         if(_.has(this.userStack[server], nick)) {
                             callback(false); 
                         }
-                    }, 4000);
+                    }.bind(this), 4000);
                 }
             }.bind(this), 4000);
         }
@@ -77,16 +77,18 @@ var nickserv = function(dbot) {
         } else if(event.action == '302') {
             var match = event.params.match(/:(.+)=([^@]+)@(.+)$/);
 
-            if(match[1]) match[1] = match[1].replace('\*', '');
+            if(match && match[1]) match[1] = match[1].replace('\*', '');
             if(match && _.has(this.userStack, event.server) && _.has(this.userStack[event.server], match[1])) {
                 var callback = this.userStack[event.server][match[1]];
                 delete this.userStack[event.server][match[1]];
                 callback(match[3].trim());
             }
         } else if(event.action == '314') {
-            var params = event.message.split(' '),
+            var params = event.params.split(' '),
                 nick = params[1],
                 host = params[3];
+
+            console.log(params);
 
             if(_.has(this.userStack, event.server) && _.has(this.userStack[event.server], nick)) {
                 var callback = this.userStack[event.server][nick];
