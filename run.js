@@ -105,7 +105,7 @@ DBot.prototype.t = function(string, formatData) {
             var module = this.stringMap[string];
 
             // TODO: Create per-server support
-            if(this.config.enableColours) {
+            /*if(this.config.enableColours) {
                 var colours = this.config.colours;
                 _.each(formatData, function(str, key) {
                     if(_.has(colours, key)) {
@@ -116,7 +116,7 @@ DBot.prototype.t = function(string, formatData) {
                         }
                     }
                 });
-            }
+            }*/
 
             formattedString = this.strings[string][lang].format(formatData);
             if(this.config.modules[module] && this.config.modules[module].outputPrefix) {
