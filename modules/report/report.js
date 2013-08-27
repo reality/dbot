@@ -56,7 +56,7 @@ var report = function(dbot) {
                 'id': id,
                 'server': server,
                 'type': type,
-                'channel': channel,
+                'channel': cName,
                 'user': user.id,
                 'time': new Date().getTime(),
                 'message': message
