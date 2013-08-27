@@ -34,7 +34,7 @@ var command = function(dbot) {
                             }
                         }); 
 
-                        if(closestMatch < 3) {
+                        if(closestMatch < 1) {
                             event.reply(commandName + ' not found. Did you mean ' + winner + '?');
                             return;
                         } else if(_.has(dbot.modules, 'quotes')) {
