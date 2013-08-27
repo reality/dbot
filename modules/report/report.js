@@ -160,7 +160,21 @@ var report = function(dbot) {
                 message = event.input[2];
 
             if(_.has(event.allChannels, channelName)) {
-                this.api.notify('notify', event.server, event.rUser, channelName, message);
+                if(this.config.firstHost) {
+                    var first = message.split(' ')[0];
+                    dbot.api.users.resolveUser(event.server, first, function(user) {
+                        if(user) {
+                            dbot.api.nickserv.getUserHost(event.server, first, function(host) {
+                                message = message.replace(first, first + ' [' + host + ']'); 
+                                this.api.notify('notify', event.server, event.rUser, channelName, message);
+                            }.bind(this)); 
+                        } else {
+                            this.api.notify('notify', event.server, event.rUser, channelName, message);
+                        }
+                    }.bind(this));
+                } else {
+                    this.api.notify('notify', event.server, event.rUser, channelName, message);
+                }
 
                 event.reply(dbot.t('notified', {
                     'user': event.user,
