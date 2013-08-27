@@ -1,6 +1,6 @@
 {
     "report": {
-        "en": "[{type}][{channel}][{reporter} -> {reported}] \"{reason}\"",
+        "en": "{reporter} has reported {reportee} for \"{reason}\"",
         "na'vi": "{reporter}ìl fpìl futa {reported} fe' lu taluna {reason}.",
         "cy": "Sylw! {reporter} wedi adrodd {reported} yn {channel}. Y rheswm a rhoddwyd oedd: \"{reason}\"",
         "nl": "Waarschuwing: {reporter} heeft {reported} aangegeven in {channel}. De reden die gegeven werd was: \"{reason}\"",

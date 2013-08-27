@@ -136,7 +136,12 @@ var report = function(dbot) {
             dbot.api.users.resolveUser(event.server, nick, function(reportee) {
                 if(_.has(event.allChannels, channelName)) {
                     if(reportee) {
-                        this.api.notify('report', event.server, event.rUser, channelName, reason);
+                        this.api.notify('report', event.server, event.rUser,
+                        channelName, dbot.t('report', {
+                            'reporter': event.rUser.primaryNick,
+                            'reportee': nick,
+                            'reason': reason
+                        }));
                         event.reply(dbot.t('reported', { 'reported': nick }));
                     } else {
                         event.reply(dbot.t('user_not_found', { 
