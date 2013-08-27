@@ -16,12 +16,53 @@ var report = function(dbot) {
                     next();
                 }, 1000);
             });
-        }
+        },
+
+        'formatNotify': function(type, server, user, channel, message) {
+            var notifier = '[' + user.primaryNick + ']';
+
+            if(_.has(this.config.colours, server)) {
+                var colours = this.config.colours[server];
+
+                notifier = '[' + colours['nicks'] + user.primaryNick + '\u000f]';
+                if(_.has(colours.type, type)) {
+                    type = colours['type'][type] + type + '\u000f';
+                }
+                if(_.has(colours['channels'], channel)) {
+                    channel = colours['channels'][channel] +
+                        channel + "\u000f";
+                }
+
+                _.each(message.match(/ @([\d\w*|-]+)/g), function(u) {
+                    u = u.substr(1);
+                    message = message.replace(u, colours['nicks'] + u + "\u000f");
+                    notifier += '[' + colours['nicks'] + u.substr(1) + '\u000f]';
+                });
+            }
+
+            return dbot.t('notify', {
+                'type': type,
+                'channel': channel,
+                'notifier': notifier,
+                'message': message
+            });
+        }.bind(this)
     };
 
     this.api = {
-        'notify': function(server, channel, message) {
-            var channel = dbot.instance.connections[server].channels[channel]; 
+        'notify': function(type, server, user, cName, message) {
+            var id = uuid.v4();
+            this.db.save('notifies', id, {
+                'id': id,
+                'server': server,
+                'type': type,
+                'channel': channel,
+                'user': user.id,
+                'time': new Date().getTime(),
+                'message': message
+            }, function() {});
+
+            var channel = dbot.instance.connections[server].channels[cName]; 
             var ops = _.filter(channel.nicks, function(user) {
                 if(this.config.notifyVoice) {
                     return user.op || user.voice;
@@ -30,7 +71,7 @@ var report = function(dbot) {
                 }
             }, this);
 
-            dbot.api.users.resolveChannel(server, channel, function(channel) {
+            dbot.api.users.resolveChannel(server, cName, function(channel) {
                 if(channel) {
                     var perOps = channel.op;
                     if(this.config.notifyVoice) pOps = _.union(perOps, channel.voice);
@@ -49,7 +90,9 @@ var report = function(dbot) {
                             });
                             this.pNotify[id] = true;
                         }.bind(this));
-
+                        
+                        message = this.internalAPI.formatNotify(type, server,
+                            user, cName, message);
                         this.internalAPI.notify(server, _.pluck(ops, 'name'), message);
                     }.bind(this)); 
                 }
@@ -93,29 +136,7 @@ var report = function(dbot) {
             dbot.api.users.resolveUser(event.server, nick, function(reportee) {
                 if(_.has(event.allChannels, channelName)) {
                     if(reportee) {
-                        var notifier = '[' + event.user + ']',
-                            cChan = channelName,
-                            type = 'report',
-                            reporter = event.user;
-                        if(_.has(this.config.colours, event.server)) {
-                            var colours = this.config.colours[event.server];
-
-                            reporter = colours['nicks'] + reporter + '\u000f';
-                            nick = colours['nicks'] + nick + '\u000f';
-                            type = colours['type'][type] + type + '\u000f';
-                            if(_.has(colours['channels'], channelName)) {
-                                cChan = colours['channels'][channelName] +
-                                    cChan + "\u000f";
-                            }
-                        }
-
-                        this.api.notify(event.server, channelName, dbot.t('report', {
-                            'type': type,
-                            'reporter': reporter,
-                            'reported': nick,
-                            'channel': cChan,
-                            'reason': reason
-                        }));
+                        this.api.notify('report', event.server, event.rUser, channelName, reason);
                         event.reply(dbot.t('reported', { 'reported': nick }));
                     } else {
                         event.reply(dbot.t('user_not_found', { 
@@ -130,47 +151,11 @@ var report = function(dbot) {
         },
 
         '~notify': function(event) {
-            console.log('~notify triggered');
             var channelName = event.input[1],
                 message = event.input[2];
 
             if(_.has(event.allChannels, channelName)) {
-                var id = uuid.v4();
-                this.db.save('notifies', id, {
-                    'id': id,
-                    'server': event.server,
-                    'channel': channelName,
-                    'user': event.rUser.id,
-                    'time': new Date().getTime(),
-                    'message': message
-                }, function() {});
-
-                var notifier = '[' + event.user + ']',
-                    cChan = channelName,
-                    type = 'notify';
-                if(_.has(this.config.colours, event.server)) {
-                    var colours = this.config.colours[event.server];
-
-                    notifier = '[' + colours['nicks'] + event.user + '\u000f]';
-                    type = colours['type'][type] + type + '\u000f';
-                    if(_.has(colours['channels'], channelName)) {
-                        cChan = colours['channels'][channelName] +
-                            cChan + "\u000f";
-                    }
-
-                    _.each(message.match(/ @([\d\w*|-]+)/g), function(user) {
-                        user = user.substr(1);
-                        message = message.replace(user, colours['nicks'] + user + "\u000f");
-                        notifier += '[' + colours['nicks'] + user.substr(1) + '\u000f]';
-                    });
-                }
-                    
-                this.api.notify(event.server, channelName, dbot.t('notify', {
-                    'type': type,
-                    'channel': cChan,
-                    'notifier': notifier,
-                    'message': message
-                }));
+                this.api.notify('notify', event.server, event.rUser, channelName, message);
 
                 event.reply(dbot.t('notified', {
                     'user': event.user,

@@ -20,10 +20,10 @@
         "it": "{quietee} è stato silenziato per {minutes} minuto/i. Ricordati: non essere testardo"
     },
     "quiet_notify": {
-        "en": "Attention: {quieter} has quieted {quietee} in {channel}. The reason given was \"{reason}\"."
+        "en": "{quieter} has quieted {quietee}. The reason given was \"{reason}\"."
     },
     "tquiet_notify": {
-        "en": "Attention: {quieter} has quieted {quietee} in {channel} for {minutes} minutes. The reason given was \"{reason}\"."
+        "en": "{quieter} has quieted {quietee} for {minutes} minutes. The reason given was \"{reason}\"."
     },
     "unquieted": {
         "en": "Unquieted {quietee}. Remember: don't be a coconut.",
@@ -31,7 +31,7 @@
         "it": "{quietee} può nuovamente parlare. Ricordati: non essere testardo."
     },
     "unquiet_notify": {
-        "en": "Attention: {unquieter} has unquieted {quietee} in {channel}."
+        "en": "{unquieter} has unquieted {quietee}."
     },
     "kicked_dbot": {
         "en": "Thou shalt not kick {botname}",
@@ -44,7 +44,7 @@
         "it": "Non dare pedata a {botname}"
     },
     "ckicked": {
-        "en": "Attention: {kicker} has kicked {kickee} from {channel}. The reason given was: \"{reason}.\"",
+        "en": "{kicker} has kicked {kickee}. The reason given was: \"{reason}.\"",
         "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
         "de": "Achtung: {kicker} hat {kickee} von {channel} verwiesen. Grund: \"{reason}.\"",
 	"fr": "Attention : {kicker} a kické {kickee} de {channel}. Raison donnée : \"{reason}.\"",

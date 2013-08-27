@@ -22,31 +22,35 @@ var commands = function(dbot) {
                 var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
                 dbot.api.timers.addTimeout(msTimeout, function() {
                     this.api.unquiet(server, quietee, channel);
-                    dbot.api.report.notify(server, channel, dbot.t('unquiet_notify', {
-                        'unquieter': dbot.config.name,
-                        'channel': channel,
-                        'quietee': quietee
-                    }));
+
+                    dbot.api.users.resolveUser(server, dbot.config.name, function(user) {
+                        dbot.api.report.notify('unquiet', server, user, channel,
+                        dbot.t('unquiet_notify', {
+                            'unquieter': dbot.config.name,
+                            'quietee': quietee
+                        }));
+                    });
                 }.bind(this));  
                 event.reply(dbot.t('tquieted', { 
                     'quietee': quietee,
                     'minutes': minutes
                 }));
-                dbot.api.report.notify(server, channel, dbot.t('tquiet_notify', {
-                    'quieter': quieter,
-                    'channel': channel,
-                    'quietee': quietee,
-                    'minutes': minutes,
-                    'reason': reason
-                }));
+                dbot.api.report.notify('quiet', server, event.rUser, channel,
+                    dbot.t('tquiet_notify', {
+                        'minutes': minutes,
+                        'quieter': event.rUser.primaryNick,
+                        'quietee': quietee,
+                        'reason': reason
+                    })
+                );
             } else {
                 event.reply(dbot.t('quieted', { 'quietee': quietee }));
-                dbot.api.report.notify(server, channel, dbot.t('quiet_notify', {
+                dbot.api.report.notify('quiet', server, event.rUser, channel,
+                dbot.t('quiet_notify', {
                     'quieter': quieter,
-                    'channel': channel,
                     'quietee': quietee,
                     'reason': reason
-                }));
+                }));            
             }
 
             this.api.quiet(server, quietee, channel);
@@ -65,9 +69,9 @@ var commands = function(dbot) {
 
             this.api.unquiet(server, quietee, channel);
             event.reply(dbot.t('unquieted', { 'quietee': quietee }));
-            dbot.api.report.notify(server, channel, dbot.t('unquiet_notify', {
+            dbot.api.report.notify('unquiet', server, event.rUser, channel,
+            dbot.t('unquiet_notify', {
                 'unquieter': quieter,
-                'channel': channel,
                 'quietee': quietee
             }));
         },
@@ -81,28 +85,9 @@ var commands = function(dbot) {
 
             this.api.kick(server, kickee, channel, reason + ' (requested by ' + kicker + ')'); 
 
-            dbot.api.report.notify(server, channel, dbot.t('ckicked', {
+            dbot.api.report.notify('kick', server, event.rUser, channel, dbot.t('ckicked', {
                 'kicker': kicker,
                 'kickee': kickee,
-                'channel': channel,
-                'reason': reason
-            }));
-        },
-
-        '~cban': function(event) {
-            var server = event.server,
-                banner = event.user,
-                banee = event.input[2],
-                channel = event.input[1],
-                reason = event.input[3];
-
-            this.api.ban(server, banee, channel);
-            this.api.kick(server, kickee, channel, reason + ' (requested by ' + banner + ')');
-
-            dbot.api.report.notify(server, channel, dbot.t('cbanned', {
-                'banner': banner,
-                'banee': banee,
-                'channel': channel,
                 'reason': reason
             }));
         },
@@ -146,24 +131,11 @@ var commands = function(dbot) {
                             'hours': timeout,
                             'reason': reason
                         });
-                        var quoteString = dbot.t('tban_quote', {
-                            'banee': banee,
-                            'banner': banner,
-                            'hours': timeout,
-                            'time': new Date().toUTCString(),
-                            'reason': reason
-                        });
                     } else {
                         var notifyString = dbot.t('nbanned', {
                             'network': network,
                             'banner': banner,
                             'banee': banee,
-                            'reason': reason
-                        });
-                        var quoteString = dbot.t('nban_quote', {
-                            'banee': banee,
-                            'banner': banner,
-                            'time': new Date().toUTCString(),
                             'reason': reason
                         });
                     }
@@ -190,7 +162,7 @@ var commands = function(dbot) {
                         adminChannel = event.channel.name;
                     }
 
-                    dbot.api.report.notify(server, adminChannel, notifyString);
+                    dbot.api.report.notify('ban', server, event.rUser, adminChannel, notifyString);
                     dbot.say(event.server, adminChannel, notifyString);
 
                     if(!_.isUndefined(timeout)) {

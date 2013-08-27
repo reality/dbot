@@ -12,6 +12,7 @@ block content
         tr
           th Date
           th Channel
+          th type
           th User
           th Message 
       tbody
@@ -19,5 +20,6 @@ block content
           tr
             td #{new Date(notify.time)}
             td #{notify.channel}
+            td #{notify.type}
             td #{notify.user}
             td #{notify.message}
