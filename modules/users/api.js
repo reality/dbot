@@ -9,12 +9,20 @@ var api = function(dbot) {
 
     var api = {
         // Return a user record given a primary nick or an alias
-        'resolveUser': function(server, nick, callback) {
+        'resolveUser': function(server, nick, callback, lc) {
             var user = false;
+            if(lc) nick = nick.toLowerCase();
             if(_.has(this.userCache[server], nick)) {
                 this.api.getUser(this.userCache[server][nick], callback);
             } else {
                 this.db.search('users', { 'server': server }, function(result) {
+                    if(lc) {
+                        result.primaryNick = result.primaryNick.toLowerCase();
+                        _.each(result.aliases, function(v, k) {
+                            result.aliases[k] = v.toLowerCase();
+                        });
+                    }
+
                     if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
                         this.userCache[server][nick] = result.id; 
                         user = result;
