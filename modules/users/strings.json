@@ -8,6 +8,12 @@
 	"fr": "{alias} est un alias de {user}",
 	"it": "{alias} è un alias di {user}"
     },
+    "added_mobile_alias": {
+        "en": "{alias} added as a mobile alias."
+    },
+    "already_mobile": {
+        "en": "{alias} is already a mobile alias."
+    },
     "primary": {
         "en": "{user} (currently {currentNick}) is a primary user with {count} aliases, ",
         "na'vi": "{user} ({currentNick}) lu txin ulte {count}a stxo lu poru, ",

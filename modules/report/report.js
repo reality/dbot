@@ -74,14 +74,21 @@ var report = function(dbot) {
             dbot.api.users.resolveChannel(server, cName, function(channel) {
                 if(channel) {
                     var perOps = channel.op;
-                    if(this.config.notifyVoice) pOps = _.union(perOps, channel.voice);
+                    if(this.config.notifyVoice) perOps = _.union(perOps, channel.voice);
 
                     async.eachSeries(ops, function(nick, next) {
                         dbot.api.users.resolveUser(server, nick, function(user) {
-                            perOps = _.without(perOps, user.id); next();
+                            console.log(user.mobile);
+                            console.log(user.currentNick);
+                            console.log(_.include(user.mobile, user.currentNick));
+                            if(!_.include(user.mobile, user.currentNick)) {
+                                perOps = _.without(perOps, user.id);
+                            }
+                            next();
                         }); 
                     }, function() {
                         offlineUsers = perOps;
+                        console.log(offlineUsers);
                         _.each(offlineUsers, function(id) {
                             if(!this.pending[id]) this.pending[id] = [];
                             this.pending[id].push({
@@ -105,7 +112,7 @@ var report = function(dbot) {
     };
 
     this.listener = function(event) {
-        if(_.has(this.pending, event.rUser.id) && this.pNotify[event.rUser.id] === true) {
+        if(_.has(this.pending, event.rUser.id) && this.pNotify[event.rUser.id] === true && !_.include(event.rUser.mobile, event.rUser.currentNick)) {
             dbot.say(event.server, event.user, dbot.t('missed_notifies', {
                 'user': event.rUser.primaryNick,
                 'link': dbot.api.web.getUrl('notify/' + event.server + '/missing')

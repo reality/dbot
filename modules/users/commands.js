@@ -35,6 +35,22 @@ var commands = function(dbot) {
             });
         },
 
+        '~setmobilealias': function(event) {
+            if(_.include(event.rUser.aliases, event.params[1])) {
+                if(!_.has(event.rUser, 'mobile')) event.rUser.mobile = [];
+                if(!_.include(event.rUser.mobile, event.params[1])) {
+                    event.rUser.mobile.push(event.params[1]);
+                    this.db.save('users', event.rUser.id, event.rUser, function(err) {
+                        event.reply(dbot.t('added_mobile_alias', { 'alias': event.params[1] })); 
+                    });
+                } else {
+                    event.reply(dbot.t('already_mobile', { 'alias': event.params[1] })); 
+                }
+            } else {
+                event.reply(dbot.t('unknown_alias', { 'alias': event.params[1] }));
+            }
+        },
+
         '~addalias': function(event) {
             var nick = event.input[1],
                 alias = event.input[2];
@@ -66,6 +82,7 @@ var commands = function(dbot) {
             this.api.resolveUser(event.server, alias, function(user) {
                 if(user) {
                     user.aliases = _.without(user.aliases, alias);
+                    user.mobile = _.without(user.mobile, alias);
                     this.db.save('users', user.id, user, function(err) {
                         event.reply(dbot.t('alias_removed', {
                             'primary': user.primaryNick,
@@ -86,7 +103,6 @@ var commands = function(dbot) {
                     user.primaryNick = newPrimary;
                     user.aliases = _.without(user.aliases, newPrimary);
                     user.aliases.push(newAlias);
-                    this.internalAPI.updateChannelPrimaryUser(event.server, newAlias, newPrimary);
 
                     this.db.save('users', user.id, user, function(err) {
                         if(!err) {
@@ -101,7 +117,7 @@ var commands = function(dbot) {
                         } 
                     });
                 } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimarj }));
+                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimary }));
                 }
             }.bind(this));
         },
