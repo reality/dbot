@@ -6,7 +6,7 @@ var kick = function(dbot) {
     
     this.api = {
         'ban': function(server, host, channel) {
-            dbot.instance.connections[server].send('MODE ' + channel + ' +b ' + host);
+            dbot.instance.connections[server].send('MODE ' + channel + ' +b *!*@' + host);
         },
 
         'quiet': function(server, user, channel) {
