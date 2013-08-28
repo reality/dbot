@@ -7,7 +7,7 @@ var warning = function(dbot) {
             var warner = event.rUser,
                 server = event.server,
                 reason = event.input[2],
-                adminChannel = dbot.config.servers[server].admin_channel;
+                adminChannel = dbot.config.servers[server].admin_channel || event.channel.name;
 
             dbot.api.users.resolveUser(server, event.input[1], function(warnee) {
                 if(warnee) {
@@ -27,12 +27,9 @@ var warning = function(dbot) {
                             'url': dbot.api.web.getUrl('warning/' + server + '/'
                                 + warnee.primaryNick)
                         });
-                        if(_.isUndefined(adminChannel)) {
-                            adminChannel = event.channel.name; 
-                        }
-                        dbot.api.report.notify(server, adminChannel, notifyString);
+
+                        dbot.api.report.notify('warn', event.server, event.rUser, adminChannel, notifyString);
                         dbot.say(server, adminChannel, notifyString);
-                        dbot.say(server, warnee.currentNick, notifyString);
                     });
                 } else {
                     event.reply(dbot.t('warnee_not_found', { 'user': event.input[1] }));
