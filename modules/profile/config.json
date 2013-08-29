@@ -10,10 +10,7 @@
             "bio": null,
             "favourites": {
               "colour": null
-            }
-        },
-        "preferences": {
-            "timezone": null
+            },
         }
     },
     "dependencies": [ "web", "quotes", "users" ]

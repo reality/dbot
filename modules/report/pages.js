@@ -1,5 +1,6 @@
 var _ = require('underscore')._,
-    async = require('async');
+    async = require('async'),
+    moment = require('moment-timezone');
 
 var pages = function(dbot) {
     var pages = {
@@ -55,9 +56,16 @@ var pages = function(dbot) {
                 user = req.user,
                 notifies = this.pending[user.id];
 
+            notifies = _.sortBy(notifies, 'time').reverse();
+            if(req.user.timezone) {
+                _.each(notifies, function(v, k) {
+                    v.time = moment(v.time).tz(req.user.timezone);
+                });
+            }
+
             res.render('missing_notifies', {
                 'user': user.primaryNick,
-                'notifies': _.sortBy(notifies, 'time')
+                'notifies': notifies
             });
 
             if(_.has(dbot.modules, 'log')) {
@@ -92,9 +100,16 @@ var pages = function(dbot) {
                             next();
                         }
                     }, function() {
+                        notifies = _.sortBy(notifies, 'time').reverse();
+                        if(req.user.timezone) {
+                            _.each(notifies, function(v, k) {
+                                v.time = moment(v.time).tz(req.user.timezone);
+                            });
+                        }
+
                         res.render('notifies', {
                             'server': server,
-                            'notifies': _.sortBy(notifies, 'time').reverse()
+                            'notifies': notifies
                         });
                     });
                 });
@@ -108,9 +123,16 @@ var pages = function(dbot) {
                         notify.user = user.primaryNick;
                         notifies.push(notify);
                     }, function() {
+                        notifies = _.sortBy(notifies, 'time').reverse();
+                        if(req.user.timezone) {
+                            _.each(notifies, function(v, k) {
+                                v.time = moment(v.time).tz(req.user.timezone);
+                            });
+                        }
+
                         res.render('notifies', {
                             'server': server,
-                            'notifies': _.sortBy(notifies, 'time').reverse()
+                            'notifies': notifies
                         });
                     });
                 }.bind(this));

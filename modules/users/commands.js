@@ -1,4 +1,5 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    moment = require('moment-timezone');
 
 var commands = function(dbot) {
     var commands = {
@@ -33,6 +34,23 @@ var commands = function(dbot) {
                     event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
             });
+        },
+        
+        '~timezone': function(event) {
+            if(event.params[1]) {
+                try {
+                    moment().tz(event.params[1]);
+                } catch(err) {
+                    return event.reply('Invalid timezone. See http://momentjs.com/timezone/');
+                }
+
+                event.rUser.timezone = event.params[1];
+                this.db.save('users', event.rUser.id, event.rUser, function() {
+                    event.reply('Timezone updated.');
+                });
+            } else {
+                event.reply('Current timezone: ' + event.rUser.timezone);
+            }
         },
 
         '~setmobilealias': function(event) {
