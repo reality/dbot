@@ -22,7 +22,8 @@ var users = function(dbot) {
                 'currentNick': nick,
                 'server': server,
                 'channels': [],
-                'aliases': []
+                'aliases': [],
+                'mobile': []
             }, function(err, result) {
                 if(!err) {
                     dbot.api.event.emit('new_user', [ result ]);
@@ -96,6 +97,7 @@ var users = function(dbot) {
     this.listener = function(event) {
         this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
             event.rUser.currentNick = event.newNick;
+            dbot.api.event.emit('new_current_nick', [ event.rUser ]);
 
             if(!isKnown) {
                 event.rUser.aliases.push(event.newNick);
@@ -133,7 +135,10 @@ var users = function(dbot) {
                     } else {
                         if(event.user != user.currentNick) {
                             user.currentNick = event.user;
-                            this.db.save('users', user.id, user, function() { done(user); });
+                            this.db.save('users', user.id, user, function() { 
+                                dbot.api.event.emit('new_current_nick', [ user ]);
+                                done(user); 
+                            });
                         } else {
                             done(user);
                         }

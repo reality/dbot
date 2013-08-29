@@ -207,6 +207,20 @@ var report = function(dbot) {
                 this.db.save('notifies', notify.id, notify, function() {}); 
             }.bind(this), function() {}); 
         }.bind(this));
+
+        dbot.api.event.addHook('new_current_nick', function(user) {
+            if(_.has(this.pending, user.id) && this.pNotify[user.id] === true 
+                    && !_.include(user.mobile, user.currentNick)) {
+                dbot.say(user.server, user.currentNick, dbot.t('missed_notifies', {
+                    'user': user.primaryNick,
+                    'link': dbot.api.web.getUrl('notify/' + user.server + '/missing')
+                }));
+                this.pNotify[user.id] = false;
+            }
+
+        }.bind(this));
+
+        
     }.bind(this);
 };
 
