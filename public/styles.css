@@ -54,7 +54,7 @@ div#title a {
 
 div#main {
     position: relative;
-    padding: 10px 5px;
+    margin-left: 5%;
     font-size: 21px;
     text-align:center;
     background: #FFF;
