@@ -82,25 +82,23 @@ var api = function(dbot) {
             });
         },
 
-        'getRandomChannelUser': function(server, channel, callback) {
+        'getRandomChannelUser': function(server, cName, callback) {
             var channel;
             this.db.search('channel_users', { 
                 'server': server,
-                'channel': channel
+                'name': cName
             }, function(result) {
                 channel = result; 
             }, function(err) {
-                if(!err) {
+                if(!err && channel) {
                     if(!_.isUndefined(channel.users)) {
                         var randomUser = channel.users[_.random(0, channel.users.length - 1)];
-                        this.api.resolveUser(server, randomUser, function(user) {
-                            callback(user);
-                        });
+                        this.api.getUser(randomUser, callback);
                     } else {
                         callback(false);
                     }
                 } 
-            });
+            }.bind(this));
         },
 
         'getAllUsers': function(callback) {

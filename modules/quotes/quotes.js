@@ -25,6 +25,7 @@ var quotes = function(dbot) {
                             interQuote = '';
                         }
                         quote = quote.replace('~~' + ref + '~~', interQuote);
+                        console.log('lol');
                         this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
                     }.bind(this));
                 }
