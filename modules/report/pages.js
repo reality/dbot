@@ -71,12 +71,11 @@ var pages = function(dbot) {
                             done();
                         });
                     }, function() {
+                        var timezone = req.user.timezone || 'Europe/London';
                         notifications = _.sortBy(notifications, 'time').reverse();
-                        if(req.user.timezone) {
-                            _.each(notifications, function(v, k) {
-                                v.time = moment(v.time).tz(req.user.timezone);
-                            });
-                        }
+                        _.each(notifications, function(v, k) {
+                            v.time = moment(v.time).tz(timezone);
+                        });
 
                         res.render('notifies', {
                             'server': req.user.server,
@@ -92,12 +91,11 @@ var pages = function(dbot) {
                 user = req.user,
                 notifies = this.pending[user.id];
 
+            var timezone = req.user.timezone || 'Europe/London';
             notifies = _.sortBy(notifies, 'time').reverse();
-            if(req.user.timezone) {
-                _.each(notifies, function(v, k) {
-                    v.time = moment(v.time).tz(req.user.timezone);
-                });
-            }
+            _.each(notifies, function(v, k) {
+                v.time = moment(v.time).tz(timezone);
+            });
 
             res.render('missing_notifies', {
                 'user': user.primaryNick,
@@ -136,12 +134,11 @@ var pages = function(dbot) {
                             next();
                         }
                     }, function() {
+                        var timezone = req.user.timezone || 'Europe/London';
                         notifies = _.sortBy(notifies, 'time').reverse();
-                        if(req.user.timezone) {
-                            _.each(notifies, function(v, k) {
-                                v.time = moment(v.time).tz(req.user.timezone);
-                            });
-                        }
+                        _.each(notifies, function(v, k) {
+                            v.time = moment(v.time).tz(timezone);
+                        });
 
                         res.render('notifies', {
                             'server': server,
@@ -159,12 +156,11 @@ var pages = function(dbot) {
                         notify.user = user.primaryNick;
                         notifies.push(notify);
                     }, function() {
+                        var timezone = req.user.timezone || 'Europe/London';
                         notifies = _.sortBy(notifies, 'time').reverse();
-                        if(req.user.timezone) {
-                            _.each(notifies, function(v, k) {
-                                v.time = moment(v.time).tz(req.user.timezone);
-                            });
-                        }
+                        _.each(notifies, function(v, k) {
+                            v.time = moment(v.time).tz(timezone);
+                        });
 
                         res.render('notifies', {
                             'server': server,
