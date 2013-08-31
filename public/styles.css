@@ -223,6 +223,10 @@ div.imgwrap > img {
   display: inline;
 }
 
+.sidething {
+  border-right: 1px solid grey;
+}
+
 /* footer */
 #footer {
     margin-top:5px;
