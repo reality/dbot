@@ -26,7 +26,7 @@ Once you have that set up, you can install DBot's dependencies, configure and
 run the bot for the first time with the following command:
 
 ```
-sh install.sh
+./install
 ```
 
 ## Upgrading
