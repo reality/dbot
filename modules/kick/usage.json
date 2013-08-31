@@ -3,5 +3,7 @@
     "~cban": "~cban [#channel] [username] [reason]",
     "~nban": "~nban [username] [reason]",
     "~kickstats": "~kickstats",
-    "~kickcount": "~kickcount [user]"
+    "~kickcount": "~kickcount [user]",
+    "~quiet": "~quiet (time) (#channel) username (reason)",
+    "~unquiet": "~unquiet (#channel) username"
 }
