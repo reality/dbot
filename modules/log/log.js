@@ -13,7 +13,7 @@ var log = function(dbot) {
             dbot.say(server, logChannel, dbot.t('log_message', {
                 'time': new Date().toUTCString(),
                 'command': message,
-                "channel"; 'nochan',
+                "channel": 'nochan',
                 'user': user
             }));
         },
