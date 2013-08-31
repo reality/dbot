@@ -131,6 +131,47 @@ var pages = function(dbot) {
                     });
                 }.bind(this));
             }
+        },
+
+        '/notify/stream': function(req, res) {
+            var staffedChannels = [],
+                notifications = [];
+            async.each(req.user.channels, function(cId, done) {
+                dbot.api.users.getChannel(cId, function(channel) {
+                    if(_.include(channel.op, req.user.id) ||
+                            (this.config.notifyVoice && _.include(channel.voice, req.user.id))) {
+                        staffedChannels.push(channel.name);
+                    }
+                    done();
+                }.bind(this));
+            }.bind(this), function() {
+                async.each(staffedChannels, function(cName, done) {
+                    this.db.scan('notifies', { 'server': req.user.server, 'channel': cName }, function(notify) {
+                        notifications.push(notify); 
+                    }, function() {
+                        done();
+                    });
+                }, function() {
+                    async.each(notifications, function(notify, done) {
+                        dbot.api.users.getUser(notify.user, function(user) {
+                            if(user) notify.user = user.primaryNick;
+                            done();
+                        });
+                    }, function() {
+                        notifications = _.sortBy(notifications, 'time').reverse();
+                        if(req.user.timezone) {
+                            _.each(notifications, function(v, k) {
+                                v.time = moment(v.time).tz(req.user.timezone);
+                            });
+                        }
+
+                        res.render('notifies', {
+                            'server': req.user.server,
+                            'notifies': notifications
+                        });
+                    });
+                });
+            });
         }
     };
 
