@@ -39,6 +39,10 @@ var webInterface = function(dbot) {
             server = splitUser[1],
             username = splitUser[0];
 
+        if(!server || !username) return callback(null, false, { 'message':
+            'Please provide a username in the format of name@server (Servers: ' +
+            _.keys(dbot.config.servers).join(', ') + ')' });
+
         dbot.api.users.resolveUser(server, username, function(user) {
             if(user) {
                 this.api.getWebUser(user.id, function(webUser) {
