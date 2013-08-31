@@ -88,11 +88,11 @@ var report = function(dbot) {
                         }); 
                     }, function() {
                         offlineUsers = perOps;
-                        console.log(offlineUsers);
                         _.each(offlineUsers, function(id) {
                             if(!this.pending[id]) this.pending[id] = [];
                             this.pending[id].push({
                                 'time': new Date().getTime(),
+                                'channel': cName,
                                 'message': message
                             });
                             this.pNotify[id] = true;

@@ -11,9 +11,11 @@ block content
         thead
           tr
             th Date
+            th Channel
             th Message
         tbody
           each notify in notifies
             tr
               td #{notify.time}
+              td #{notify.channel}
               td #{notify.message}
