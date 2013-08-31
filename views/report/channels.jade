@@ -1,9 +1,9 @@
 extends ../layout
 
 block content
-    h3 Browse by Channel on #{server}
     div#backlink
         a(href='/') &laquo; Home
+    h3 Browse by Channel on #{server}
     ul#quotelist
         -each count, name in channels 
             a(href='/notify/'+encodeURIComponent(name))
@@ -14,3 +14,5 @@ block content
         -each nUser in users
           a(href='/notify/'+encodeURIComponent(nUser.name))
             li.quotes #{nUser.name} (#{nUser.count})
+    h3 
+      a(href='/notify/missing') My Missed Notifications 
