@@ -3,14 +3,14 @@ extends ../layout
 block content
     h3 Browse by Channel on #{server}
     div#backlink
-        a(href='/notify') &laquo; Server List
+        a(href='/') &laquo; Home
     ul#quotelist
         -each count, name in channels 
-            a(href='/notify/'+server+'/'+encodeURIComponent(name))
+            a(href='/notify/'+encodeURIComponent(name))
               li.quotes #{name} (#{count})
 
     h3 Browse by User on #{server}
     ul#quotelist
         -each nUser in users
-          a(href='/notify/'+server+'/'+encodeURIComponent(nUser.name))
+          a(href='/notify/'+encodeURIComponent(nUser.name))
             li.quotes #{nUser.name} (#{nUser.count})

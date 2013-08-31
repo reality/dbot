@@ -5,13 +5,7 @@ var _ = require('underscore')._,
 var pages = function(dbot) {
     var pages = {
         '/notify': function(req, res) {
-            res.render('servers', {  
-                'servers': _.keys(dbot.config.servers)
-            });
-        },
-
-        '/notify/:server': function(req, res) {
-            var server = req.params.server,
+            var server = req.user.server,
                 userCount = {},
                 users = [],
                 channelCount = {};
@@ -74,8 +68,8 @@ var pages = function(dbot) {
             }
         },
 
-        '/notify/:server/:item': function(req, res) {
-            var server = req.params.server,
+        '/notify/:item': function(req, res) {
+            var server = req.user.server,
                 notifies = [];
 
             if(req.params.item.charAt(0) == '#') {
