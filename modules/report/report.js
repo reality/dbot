@@ -115,7 +115,7 @@ var report = function(dbot) {
         if(_.has(this.pending, event.rUser.id) && this.pNotify[event.rUser.id] === true && !_.include(event.rUser.mobile, event.rUser.currentNick)) {
             dbot.say(event.server, event.user, dbot.t('missed_notifies', {
                 'user': event.rUser.primaryNick,
-                'link': dbot.api.web.getUrl('notify/' + event.server + '/missing')
+                'link': dbot.api.web.getUrl('notify/missing')
             }));
             this.pNotify[event.rUser.id] = false;
         }
@@ -213,7 +213,7 @@ var report = function(dbot) {
                     && !_.include(user.mobile, user.currentNick)) {
                 dbot.say(user.server, user.currentNick, dbot.t('missed_notifies', {
                     'user': user.primaryNick,
-                    'link': dbot.api.web.getUrl('notify/' + user.server + '/missing')
+                    'link': dbot.api.web.getUrl('notify/missing')
                 }));
                 this.pNotify[user.id] = false;
             }
