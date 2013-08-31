@@ -33,7 +33,9 @@
 	"it": "{alias} non esiste attualmente come alias o utente conosciuto."
     },
     "alias_removed": {
-        "en": "Removed alias {alias} from {primary}."
+        "en": "Removed alias {alias} from {primary}.",
+        "de": "Alias {alias} von {primary} entfernt.",
+        "it": "Tolto alias {alias} da {primary}."
     },
     "aliasparentset": {
         "en": "{newParent} is now the parent user, and {newAlias} is an alias.",
@@ -64,11 +66,13 @@
     },
     "alias_exists": {
         "en": "Alias {alias} already exists.",
+        "de": "Alias {alias} bereits vorhanden.",
 	"fr": "L'alias {alias} existe déjà.",
 	"it": "L'alias {alias} esiste già."
     },
     "alias_added": {
         "en": "Alias {alias} added to {user}.",
+        "de": "Alias {alias} dem  Benutzer {user} hinzugefügt.",
 	"fr": "Alias {alias} ajouté à {user}.",
 	"it": "Alias {alias} aggiunto a {user}."
     }

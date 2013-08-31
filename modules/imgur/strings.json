@@ -10,10 +10,13 @@
     },
     "imgurinfo": {
         "en": "[{info}]",
+        "de": "[{info}]",
 	"fr": "[{info}]",
         "it": "[{info}]"
     },
     "imgur_noresults": {
-        "en": "No results found."
+        "en": "No results found.",
+        "de": "Keine Suchrgebnisse.",
+        "it": "Nessun risultato"
     }
 }

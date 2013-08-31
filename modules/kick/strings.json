@@ -59,11 +59,13 @@
     },
     "tbanned": {
         "en": "Attention: {banner} has banned {banee} from the {network} network for {hours} hours. The reason given was \"{reason}.\"",
+        "de": "Achtung: {banner} hat {banee} vom {network} Netzwerk für {hours} Stunden verbannt. Der Grund war \"{reason}.\"",
 	"fr": "Attention : {banner} a banni {banee} du réseau {network} pour {hours} heures. Raison donnée : \"{reason}.\"",
         "it": "Attenzione : {banner} ha bandito {banee} dalla rete {network} per {hours} ora/e. Motivo : \"{reason}.\""
     },
     "tbanned_notify": {
         "en": "You have been banned from the {network} network for {hours} hours by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban.",
+        "de": "Du wurdest von {banner} im {network} Netzwerk für {hours} verbannt. Der Grund war \"{reason}.\" Du kannst {admin_channel} beitreten um mehr Informatonen zu erhalten oder über die Verbannung zu diskutieren.",
 	"fr": "Vous avez été banni du réseau {network} pour {hours} heures par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
 	"it": "Sei stato bandito dalla rete {network} per {hours} ora/e da {banner}. Motivo: \"{reason}.\" Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
     },
@@ -76,26 +78,31 @@
     },
     "nbanned_notify": {
         "en": "You have been banned from the {network} network by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban.",
+        "de": "Du wurdest von {banner} im {network} Netzwerk verbannt. Der Grund war \"{reason}.\" Du kannst {admin_channel} beitreten um mehr Informatonen zu erhalten oder über die Verbannung zu diskutieren.",
 	"fr": "Vous avez été banni du réseau {network} par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
         "it": "Sei stato bandito dalla rete {network} da {banner}. Motivo: \"{reason}.\" Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
     },
    "no_user": {
         "en": "{user} doesn't seem to be online on this server.",
+        "de": "{user} scheint auf diesen Server nicht online zu sein.",
 	"fr": "{user} ne semble pas être connecté à ce serveur.",
         "it": "{user} sembra non essere connesso a questo server"
     },
     "nunbanned": {
         "en": "Attention: {unbanee} has been unbanned from the {network} network by {unbanner}.",
+        "de": "Achtung: {unbanee} wurde im {network} Netzwerk durch {unbanner} entsperrt.",
 	"fr": "Attention : {unbanee} a été débanni du réseau {network} par {unbanner}.",
         "it": "Attenzione : {unbanee} è stato riammesso alla rete {network} da {unbanner}."
     },
     "nunban_notify": {
         "en": "You have been unbanned from the {network} network by {unbanner}.",
+        "de": "Du wurdest im {network} Netzwerk durch {unbanner} entsperrt.",        
 	"fr": "Vous avez été débanni du réseau {network} par {unbanner}.",
         "it": "Sei stato riammesso alla rete {network} da {unbanner}."
     },
     "nunban_error": {
         "en": "It appears {unbanee} was not banned using the ~nban command.",
+        "de": "Es sieht so aus als ob {unbanee} nicht durch die Verwendung des ~nban Befehls verbannt wurde.",
 	"fr": "Il semble que {unbanee} n'a pas été banni en utilisant la commande ~nban.",
         "it": "Sembar che {unbanee} non è stato bandito usano il commando ~nban."
     }

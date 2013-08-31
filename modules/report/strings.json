@@ -9,13 +9,19 @@
 	"it": "Attentzone : {reporter} ha segnalato {reported} in {channel}. Motivo : \"{reason}\""
     },
     "missed_notifies": {
-        "en": "{user}, you have some missed notifications (clear these once you have read them using ~clearmissing) - {link}"
+        "en": "{user}, you have some missed notifications (clear these once you have read them using ~clearmissing) - {link}",
+        "de": "{user}, du hast ungelesene Mitteilungen (bereinige sie nach dem Lesen mit ~clearmissing) - {link}",
+        "it": "{user}, hai dei messaggi non letti (cancellali dopo averli letti con ~clearmissing) - {link}"
     },
     "cleared_notifies": {
-        "en": "{count} pending notifications cleared."
+        "en": "{count} pending notifications cleared.",
+        "de": "{count} pendente Mitteilungen gelöscht.",
+        "it": "Cancellato {count} messagi in attesa."
     },
     "no_missed_notifies": {
-        "en": "No missing notifications were available to clear."
+        "en": "No missing notifications were available to clear.",
+        "de": "Keine ungelesene Mitteilungen zur Löschung verfügbar.",
+        "it": "Nessuna messaggio non letto da cancellare."
     },
     "reported": {
         "en": "Thank you, {reported} has been reported to the channel administrators.",
@@ -33,7 +39,7 @@
         "nl": "{reported} is geen bestaande gebruiker in {channel}.",
         "de": "{reported} ist kein bekannter Benutzer in {channel}.",
 	"fr": "{reported} n'est pas un utilisateur connu dans {channel}.",
-    "it": "{reported} non è un utente conosciuto in {channel}."
+        "it": "{reported} non è un utente conosciuto in {channel}."
     },
     "not_in_channel": {
         "en": "I am not present in {channel}.",
@@ -42,7 +48,7 @@
         "nl": "Ik ben niet aanwezig in {channel}.",
         "de": "Ich bin nicht in {channel} aktiv.",
 	"fr": "Je ne suis pas présent dans {channel}.",
-    "it": "Non sono presente in {channel}."
+        "it": "Non sono presente in {channel}."
     },
     "notify": {
         "en": "[{type}][{channel}]{notifier} {message}",
