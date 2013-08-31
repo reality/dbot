@@ -26,10 +26,11 @@ var log = function(dbot) {
     this.onLoad = function() {
         dbot.api.event.addHook('command', function(event) {
             var logChannel = this.config.logChannel[event.server];
+                channel = event.channel.name || 'PM';
             if(logChannel && !_.include(this.ignoredCommands, event.message.split(' ')[0])) {
                 dbot.say(event.server, logChannel, dbot.t('log_message', {
                     'time': new Date().toUTCString(),
-                    'channel': event.channel.name,
+                    'channel': channel,
                     'command': event.message,
                     'user': event.user
                 }));
