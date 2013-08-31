@@ -1,7 +1,7 @@
 {
     "log_message": {
-        "en": "[{time}] {user}: {command}",
-	"fr": "[{time}] {user}: {command}",
-	"it": "[{time}] {user}: {command}"
+        "en": "[{time}] {user} ({channel}): {command}",
+	"fr": "[{time}] {user} ({channel}): {command}",
+	"it": "[{time}] {user} ({channel}): {command}"
     }
 }

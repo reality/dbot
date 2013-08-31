@@ -13,6 +13,7 @@ var log = function(dbot) {
             dbot.say(server, logChannel, dbot.t('log_message', {
                 'time': new Date().toUTCString(),
                 'command': message,
+                "channel"; 'nochan',
                 'user': user
             }));
         },
@@ -28,6 +29,7 @@ var log = function(dbot) {
             if(logChannel && !_.include(this.ignoredCommands, event.message.split(' ')[0])) {
                 dbot.say(event.server, logChannel, dbot.t('log_message', {
                     'time': new Date().toUTCString(),
+                    'channel': event.channel.name,
                     'command': event.message,
                     'user': event.user
                 }));
