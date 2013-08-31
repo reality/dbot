@@ -10,23 +10,29 @@ var quotes = function(dbot) {
 
     this.internalAPI = {
         // Parse quote interpolations
-        'interpolatedQuote': function(server, channel, key, quote, callback) {
+        'interpolatedQuote': function(server, channel, username, key, quote, callback) {
+            console.log(quote);
             var quoteRefs = quote.match(/~~([\d\w\s-]*)~~/g);
             if(quoteRefs) {
                 var ref = this.internalAPI.cleanRef(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
                 if(ref === '-nicks-') {
                     dbot.api.users.getRandomChannelUser(server, channel, function(user) {
                         quote = quote.replace('~~' + ref + '~~', user.currentNick);
-                        this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
+                        this.internalAPI.interpolatedQuote(server, channel,
+                            username, key, quote, callback);
                     }.bind(this));
+                } else if(ref === '-nick-') {
+                    quote = quote.replace('~~' + ref + '~~', username);
+                    this.internalAPI.interpolatedQuote(server, channel,
+                        username, key, quote, callback);
                 } else {
                     this.api.getQuote(ref, function(interQuote) {
                         if(!interQuote || ref == key) {
                             interQuote = '';
                         }
                         quote = quote.replace('~~' + ref + '~~', interQuote);
-                        console.log('lol');
-                        this.internalAPI.interpolatedQuote(server, channel, key, quote, callback);
+                        this.internalAPI.interpolatedQuote(server, channel,
+                            username, key, quote, callback);
                     }.bind(this));
                 }
             } else {
@@ -110,12 +116,14 @@ var quotes = function(dbot) {
             });
         },
 
-        'getInterpolatedQuote': function(server, channel, key, callback) {
+        'getInterpolatedQuote': function(server, channel, username, key, callback) {
+            console.log(key);
             key = key.trim().toLowerCase(),
 
             this.api.getQuote(key, function(quote) {
                 if(quote) {
-                    this.internalAPI.interpolatedQuote(server, channel, key, quote, callback); 
+                    this.internalAPI.interpolatedQuote(server, channel,
+                        username, key, quote, callback); 
                 } else {
                     callback(quote);
                 }

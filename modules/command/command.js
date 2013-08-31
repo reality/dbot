@@ -18,7 +18,8 @@ var command = function(dbot) {
         if(!_.has(dbot.commands, commandName)) {
             if(_.has(dbot.modules, 'quotes')) {
                 var key = event.message.substring(1);
-                dbot.api.quotes.getInterpolatedQuote(event.server, event.channel.name, key, function(quote) {
+                dbot.api.quotes.getInterpolatedQuote(event.server,
+                        event.channel.name, event.user, key, function(quote) {
                     if(quote) {
                         event.reply(key + ': ' + quote);
                     } else if(_.has(dbot.modules, 'spelling')) {

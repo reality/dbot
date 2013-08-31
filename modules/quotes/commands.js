@@ -34,7 +34,8 @@ var commands = function(dbot) {
         // Retrieve quote from a category in the database.
         '~q': function(event) {
             var key = event.input[1];
-            this.api.getInterpolatedQuote(event.server, event.channel, key, function(quote) {
+            this.api.getInterpolatedQuote(event.server, event.channel,
+                    event.user, key, function(quote) {
                 if(quote) {
                     event.reply(key + ': ' + quote);
                 } else {
