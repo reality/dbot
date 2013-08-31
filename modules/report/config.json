@@ -16,5 +16,6 @@
             "nicks": "",
             "type": ""
         }
-    }
+    },
+    "noMissingChans": []
 }

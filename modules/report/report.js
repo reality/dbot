@@ -78,9 +78,6 @@ var report = function(dbot) {
 
                     async.eachSeries(ops, function(nick, next) {
                         dbot.api.users.resolveUser(server, nick, function(user) {
-                            console.log(user.mobile);
-                            console.log(user.currentNick);
-                            console.log(_.include(user.mobile, user.currentNick));
                             if(!_.include(user.mobile, user.currentNick)) {
                                 perOps = _.without(perOps, user.id);
                             }
@@ -88,15 +85,17 @@ var report = function(dbot) {
                         }); 
                     }, function() {
                         offlineUsers = perOps;
-                        _.each(offlineUsers, function(id) {
-                            if(!this.pending[id]) this.pending[id] = [];
-                            this.pending[id].push({
-                                'time': new Date().getTime(),
-                                'channel': cName,
-                                'message': message
-                            });
-                            this.pNotify[id] = true;
-                        }.bind(this));
+                        if(!_.include(this.config.noMissingChans, cName)) {
+                            _.each(offlineUsers, function(id) {
+                                if(!this.pending[id]) this.pending[id] = [];
+                                this.pending[id].push({
+                                    'time': new Date().getTime(),
+                                    'channel': cName,
+                                    'message': message
+                                });
+                                this.pNotify[id] = true;
+                            }.bind(this));
+                        }
                         
                         message = this.internalAPI.formatNotify(type, server,
                             user, cName, message);
