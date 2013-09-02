@@ -43,7 +43,7 @@ var kick = function(dbot) {
                     'unbanee': unbanee,
                     'unbanner': unbanner
                 });
-                dbot.api.report.notify(server, adminChannel, notifyString);
+                dbot.api.report.notify('unban', server, unbanee, adminChannel, notifyString);
                 dbot.say(server, adminChannel, notifyString);
 
                 // Notify Unbanee
