@@ -41,16 +41,16 @@ var kick = function(dbot) {
                 var notifyString = dbot.t('nunbanned', {
                     'network': network,
                     'unbanee': unbanee,
-                    'unbanner': unbanner
+                    'unbanner': unbanner.currentNick
                 });
-                dbot.api.report.notify('unban', server, unbanee, adminChannel, notifyString);
+                dbot.api.report.notify('unban', server, unbanner, adminChannel, notifyString);
                 dbot.say(server, adminChannel, notifyString);
 
                 // Notify Unbanee
                 dbot.say(server, unbanee, dbot.t('nunban_notify', {
                     'network': network,
                     'unbanee': unbanee,
-                    'unbanner': unbanner
+                    'unbanner': unbanner.currentNick
                 }));
 
                 // Unban
@@ -68,7 +68,7 @@ var kick = function(dbot) {
                 callback(null); // Success
             } else {
                 // Attempt to look up the host on-the-fly
-                dbot.api.nickserv.getUserHost(server, unbanee, function(host) {
+                dbot.api.nickserv.getUserHost(server, unbanee, unbanner, function(host) {
                     if(host) {
                         if(!_.has(this.hosts, server)) this.hosts[server] = {};
                         this.hosts[server][unbanee] = host;

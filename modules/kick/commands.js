@@ -204,7 +204,7 @@ var commands = function(dbot) {
 
         '~nunban': function(event) {
             var unbanee = event.params[1],
-                unbanner = event.user;
+                unbanner = event.rUser;
 
             this.api.networkUnban(event.server, unbanee, unbanner, function(err) {
                 if(err) {
