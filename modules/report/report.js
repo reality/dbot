@@ -91,6 +91,7 @@ var report = function(dbot) {
                                 this.pending[id].push({
                                     'time': new Date().getTime(),
                                     'channel': cName,
+                                    'user': user.primaryNick,
                                     'message': message
                                 });
                                 this.pNotify[id] = true;
