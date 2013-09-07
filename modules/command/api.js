@@ -5,15 +5,23 @@ var api = function(dbot) {
         /**
          * Does the user have the correct access level to use the command?
          */
-        'hasAccess': function(user, command, callback) {
+        'hasAccess': function(user, channel, command, callback) {
             var accessNeeded = dbot.commands[command].access;
 
-            if(accessNeeded == 'admin' || accessNeeded == 'moderator' || accessNeeded == 'power_user') {
+            if(accessNeeded == 'admin' || accessNeeded == 'moderator' ||
+                    accessNeeded == 'power_user' || accessNeeded == 'voice') {
                 var allowedNicks = dbot.config.admins;
                 if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
                 if(accessNeeded == 'power_user') {
                     allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
                     allowedNicks = _.union(allowedNicks, dbot.config.power_users);
+                }
+                if(accessNeeded == 'voice') {
+                    allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
+                    allowedNicks = _.union(allowedNicks, dbot.config.power_users);
+                    allowedNicks = _.union(allowedNicks, _.filter(channel, function(nick) {
+                        return nick.op == true || nick.voice == true; 
+                    }));
                 }
 
                 if(!_.include(allowedNicks, user.primaryNick)) {

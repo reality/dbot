@@ -61,7 +61,7 @@ var command = function(dbot) {
             }
         } 
        
-        this.api.hasAccess(event.rUser, commandName, function(hasAccess) {
+        this.api.hasAccess(event.rUser, event.channel, commandName, function(hasAccess) {
             dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
                 dbot.api.ignore.isUserBanned(event.rUser, commandName, function(isBanned) {
                     if(isBanned) {
