@@ -19,7 +19,7 @@ var api = function(dbot) {
                 if(accessNeeded == 'voice') {
                     allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
                     allowedNicks = _.union(allowedNicks, dbot.config.power_users);
-                    allowedNicks = _.union(allowedNicks, _.filter(channel, function(nick) {
+                    allowedNicks = _.union(allowedNicks, _.filter(channel.nicks, function(nick) {
                         return nick.op == true || nick.voice == true; 
                     }));
                 }
