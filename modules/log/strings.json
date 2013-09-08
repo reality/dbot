@@ -4,7 +4,7 @@
 	"fr": "[{time}] {user} ({channel}): {command}",
 	"it": "[{time}] {user} ({channel}): {command}"
     },
-    {
+    "error_message": {
         "en": "[{time}] Error: {error}"
     }
 }
