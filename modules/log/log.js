@@ -2,7 +2,8 @@
  * Name: Log
  * Description: Log commands to a channel.
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    process = require('process');
 
 var log = function(dbot) {
     this.ignoredCommands = [];
@@ -16,6 +17,25 @@ var log = function(dbot) {
                 "channel": 'nochan',
                 'user': user
             }));
+        },
+
+        'logError': function(server, err) {
+            var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1),
+                logChannel = this.config.logChannel[server],
+                time = new Date().toUTCString();
+
+            dbot.say(server, logChannel, dbot.t('error_message', {
+                'time': time,
+                'error': 'Message: ' + err
+            })); 
+
+            _.each(stack, function(stackLine, index) {
+                dbot.say(server, logChannel, dbot.t('error_message', {
+                    'time': time,
+                    'error': 'Stack[' + index + ']: ' +
+                        stackLine.trim()
+                }));
+            });
         },
 
         'ignoreCommand': function(commandName) {
@@ -35,6 +55,13 @@ var log = function(dbot) {
                     'user': event.user
                 }));
             }
+        }.bind(this));
+
+        process.on('uncaughtException', function(err) {
+            _.each(this.config.logChannel, function(chan, server) {
+                this.api.logError(server, err); 
+            }, this);
+            process.exit(1);
         }.bind(this));
     }.bind(this);
 };
