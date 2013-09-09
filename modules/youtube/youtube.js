@@ -24,7 +24,11 @@ var youtube = function(dbot) {
                 'json': true
             }, function(error, response, body) {
                 if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                    var v = body.feed.entry[0];
+                    var v = body.feed.entry[0],
+                        seconds = v['media$group']['yt$duration'].seconds,
+                        minutes = Math.floor(seconds / 60),
+                        seconds = seconds - minutes * 60;
+
                     if(!_.has(v, 'yt$rating')) {
                         v['yt$rating'] = {
                             'numLikes': 0,
@@ -41,7 +45,9 @@ var youtube = function(dbot) {
                         'plays': v['yt$statistics'].viewCount,
                         'author': v.author[0].name['$t'],
                         'likes': v['yt$rating'].numLikes,
-                        'dislikes': v['yt$rating'].numDislikes
+                        'dislikes': v['yt$rating'].numDislikes,
+                        'minutes': minutes,
+                        'seconds': seconds
                     }) + ' - ' + 'http://youtu.be/' + link);
                 } else {
                     event.reply(dbot.t('yt_noresults'));
@@ -60,7 +66,7 @@ var youtube = function(dbot) {
                 }, function(error, response, body) {
                     if(_.isObject(body) && _.has(body, 'entry')) {
                         var v = body.entry
-                            seconds = v['media$group']['yt$duration'].seconds
+                            seconds = v['media$group']['yt$duration'].seconds,
                             minutes = Math.floor(seconds / 60),
                             seconds = seconds - minutes * 60;
 
