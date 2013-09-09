@@ -167,6 +167,28 @@ var imgur = function(dbot) {
             }.bind(this));
         },
 
+        '~sri': function(event) {
+            var local = event.user;
+            if(event.params[1]) {
+                local = event.params.splice(1, event.params.length - 1).join(' ').trim();
+            }
+            request.get({
+                'url': this.ApiRoot + 'gallery/random/random/',
+                'json': true,
+                'headers': {
+                    'Authorization': 'Client-ID ' + this.config.apikey
+                }
+            }, function(err, response, body) {
+                if(body.data && body.data[0] != undefined) {
+                    var num = _.random(0, body.data.length - 1);
+                    this.api.getGalleryInfo(body.data[num].id, function(gal) {
+                        event.reply(local + ': ' + gal.data.link + ' [' + 
+                            this.internalAPI.galleryInfoString(gal) + ']');
+                    }.bind(this));
+                }
+            }.bind(this));
+        },
+
         '~imgur': function(event) {
             var term = event.input[1]; 
             request.get({
