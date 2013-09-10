@@ -90,7 +90,7 @@ var imgur = function(dbot) {
                     if(_.has(dbot.modules, 'quotes')){
                         // autoadd: {"abcdef": "facebookman"}
                         if(_.has(dbot.config.modules.imgur.autoadd,hash)){
-                            var category = dbot.config.imgur.autoadd[hash];
+                            var category = this.config.autoadd[hash];
                             if (_.contains(category, testUrl)){
                                 // there's probably less than 62^5 chance of this happening
                             } else {

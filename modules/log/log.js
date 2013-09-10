@@ -58,6 +58,7 @@ var log = function(dbot) {
         }.bind(this));
 
         process.on('uncaughtException', function(err) {
+            console.log(err);
             _.each(this.config.logChannel, function(chan, server) {
                 this.api.logError(server, err); 
             }, this);
