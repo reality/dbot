@@ -5,6 +5,7 @@
 
 var _ = require('underscore')._,
     request = require('request'),
+    async = require('async'),
     crypto = require('crypto');
 
 var imgur = function(dbot) {
@@ -287,11 +288,12 @@ var imgur = function(dbot) {
         dbot.api.link.addHandler('imgurimage', /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
         dbot.api.link.addHandler('imgurimage', /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
 
-        for(var i=0;i<this.config.ricachelength;i++) {
+        async.timesSeries(this.config.ricachelength, function(n, next) {
             this.api.getGoodRandomImage(function(link, imgData) {
                 this.riCache.push([ link, imgData ]);
+                next();
             }.bind(this));
-        }
+        }.bind(this));
 
         if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
         if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
