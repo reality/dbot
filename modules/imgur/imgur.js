@@ -9,6 +9,7 @@ var _ = require('underscore')._,
 
 var imgur = function(dbot) {
     this.ApiRoot = 'https://api.imgur.com/3/';
+    this.riCache = [];
 
     this.internalAPI = {
         'infoString': function(imgData) {
@@ -172,6 +173,31 @@ var imgur = function(dbot) {
             if(event.params[1]) {
                 local = event.params.splice(1, event.params.length - 1).join(' ').trim();
             }
+
+            var postImage = function(link, imgData) {
+                var info = this.internalAPI.infoString(imgData);
+                event.reply(local + ': ' + link + ' [' + info + ']');
+            }.bind(this);
+            var newCacheImage = function(link, imgData) {
+                this.riCache.push([link, imgData]);
+            }.bind(this);
+            var callback = postImage;
+
+            if(this.riCache.length > 0) {
+                var image = this.riCache.pop();
+                postImage(image[0], image[1]);
+                callback = newCacheImage;
+            }
+
+            this.api.getGoodRandomImage(callback);
+        },
+
+        // Legacy RI
+        '~lri': function(event) {
+            var local = event.user;
+            if(event.params[1]) {
+                local = event.params.splice(1, event.params.length - 1).join(' ').trim();
+            }
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
@@ -179,19 +205,7 @@ var imgur = function(dbot) {
                 }.bind(this));
             }.bind(this));
         },
-
-        // Super Slow RI
-        '~ssri': function(event) {
-            var local = event.user;
-            if(event.params[1]) {
-                local = event.params.splice(1, event.params.length - 1).join(' ').trim();
-            }
-            this.api.getGoodRandomImage(function(link, imgData) {
-                var info = this.internalAPI.infoString(imgData);
-                event.reply(local + ': ' + link + ' [' + info + ']');
-            }.bind(this));
-        },
-
+        
         // Super RI
         '~sri': function(event) {
             var local = event.user;
@@ -272,6 +286,12 @@ var imgur = function(dbot) {
         dbot.api.link.addHandler('imgurgallery', /https?:\/\/imgur\.com\/gallery\/([a-zA-Z0-9]+)/, imgurHandler);
         dbot.api.link.addHandler('imgurimage', /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
         dbot.api.link.addHandler('imgurimage', /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
+
+        for(var i=0;i<this.config.ricachelength;i++) {
+            this.api.getGoodRandomImage(function(link, imgData) {
+                this.riCache.push([ link, imgData ]);
+            }.bind(this));
+        }
 
         if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
         if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
