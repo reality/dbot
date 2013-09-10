@@ -293,7 +293,7 @@ var imgur = function(dbot) {
                 this.riCache.push([ link, imgData ]);
                 next();
             }.bind(this));
-        }.bind(this));
+        }.bind(this), function() {});
 
         if(!_.has(dbot.db.imgur, 'totalHttpRequests')) dbot.db.imgur.totalHttpRequests = 0; 
         if(!_.has(dbot.db.imgur, 'totalApiRequests')) dbot.db.imgur.totalApiRequests = 0;
