@@ -79,7 +79,8 @@ var imgur = function(dbot) {
                 testSlug +
                 '.' + ext[_.random(0, ext.length - 1)];
             dbot.db.imgur.totalHttpRequests += 1;
-            var image = request(testUrl, function(error, response, body) {
+
+            request(testUrl, function(error, response, body) {
                 // 492 is body.length of a removed image
                 if(!error && response.statusCode == 200 && body.length != 492) {
                     dbot.db.imgur.totalImages += 1;
@@ -100,6 +101,18 @@ var imgur = function(dbot) {
                 } else {
                     this.api.getRandomImage(callback);
                 }
+            }.bind(this));
+        },
+
+        'getGoodRandomImage': function(callback) {
+            this.api.getRandomImage(function(url, slug, hash) {
+                this.api.getImageInfo(slug, function(imgData) {
+                    if(imgData.data && imgData.data.height > 500 && imgData.data.width > 500) {
+                        callback(url, imgData);
+                    } else {
+                        this.api.getGoodRandomImage(callback);
+                    }
+                }.bind(this));
             }.bind(this));
         },
 
@@ -167,6 +180,19 @@ var imgur = function(dbot) {
             }.bind(this));
         },
 
+        // Super Slow RI
+        '~ssri': function(event) {
+            var local = event.user;
+            if(event.params[1]) {
+                local = event.params.splice(1, event.params.length - 1).join(' ').trim();
+            }
+            this.api.getGoodRandomImage(function(link, imgData) {
+                var info = this.internalAPI.infoString(imgData);
+                event.reply(local + ': ' + link + ' [' + info + ']');
+            }.bind(this));
+        },
+
+        // Super RI
         '~sri': function(event) {
             var local = event.user;
             if(event.params[1]) {

@@ -26,7 +26,6 @@ var api = function(dbot) {
                           })
                          .pluck('name')
                          .value());
-                    console.log(allowedNicks);
                 }
 
                 if(!_.include(allowedNicks, user.primaryNick)) {
