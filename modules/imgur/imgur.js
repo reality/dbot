@@ -109,7 +109,7 @@ var imgur = function(dbot) {
         'getGoodRandomImage': function(callback) {
             this.api.getRandomImage(function(url, slug, hash) {
                 this.api.getImageInfo(slug, function(imgData) {
-                    if(imgData && imgData.data && imgData.data.height > 500 && imgData.data.width > 500) {
+                    if(!_.isUndefined(imgData) && imgData.data && imgData.data.height > 500 && imgData.data.width > 500) {
                         callback(url, imgData);
                     } else {
                         this.api.getGoodRandomImage(callback);
@@ -220,7 +220,7 @@ var imgur = function(dbot) {
                     'Authorization': 'Client-ID ' + this.config.apikey
                 }
             }, function(err, response, body) {
-                if(body.data && body.data[0] != undefined) {
+                if(!_.isUndefined(body) && body.data && body.data[0] != undefined) {
                     var num = _.random(0, body.data.length - 1);
                     this.api.getGalleryInfo(body.data[num].id, function(gal) {
                         event.reply(local + ': ' + gal.data.link + ' [' + 
