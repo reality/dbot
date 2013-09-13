@@ -109,7 +109,7 @@ var imgur = function(dbot) {
         'getGoodRandomImage': function(callback) {
             this.api.getRandomImage(function(url, slug, hash) {
                 this.api.getImageInfo(slug, function(imgData) {
-                    if(imgData.data && imgData.data.height > 500 && imgData.data.width > 500) {
+                    if(imgData && imgData.data && imgData.data.height > 500 && imgData.data.width > 500) {
                         callback(url, imgData);
                     } else {
                         this.api.getGoodRandomImage(callback);
