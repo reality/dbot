@@ -15,7 +15,7 @@ var imgur = function(dbot) {
     this.internalAPI = {
         'infoString': function(imgData) {
             info = '';
-            if(imgData && _.has(imgData, 'data') && !_.isUndefined(imgData.data.type)) {
+            if(!_.isUndefined(imgData) && _.has(imgData, 'data') && !_.isUndefined(imgData.data.type)) {
                 imgData = imgData.data;
                 if(imgData.title) {
                     info += imgData.title + ' - ';
@@ -38,7 +38,7 @@ var imgur = function(dbot) {
 
         'albumInfoString': function(albumData) {
             var info = '';
-            if(albumData && _.has(albumData, 'data') && !_.isUndefined(albumData.data.id)) {
+            if(!_.isUndefined(albumData) && _.has(albumData, 'data') && !_.isUndefined(albumData.data.id)) {
                 albumData = albumData.data;
                 if(albumData.title) {
                     info += albumData.title + ' - ';
@@ -57,7 +57,7 @@ var imgur = function(dbot) {
 
         'galleryInfoString': function(galData) {
             var info = '';
-            if(galData && _.has(galData, 'data') && !_.isUndefined(galData.data.is_album)) {
+            if(!_.isUndefined(galData) && _.has(galData, 'data') && !_.isUndefined(galData.data.is_album)) {
                 if(galData.data.is_album === true) {
                     info = this.internalAPI.albumInfoString(galData);
                 } else {
@@ -242,7 +242,7 @@ var imgur = function(dbot) {
                     'q': term
                 }
             }, function(err, response, body) {
-                if(body.data && body.data[0] != undefined) {
+                if(!_.isUndefined(body) && body.data && body.data[0] != undefined) {
                     var num = _.random(0, body.data.length - 1);
                     this.api.getGalleryInfo(body.data[num].id, function(gal) {
                         event.reply(dbot.t('imgurinfo',  { 
