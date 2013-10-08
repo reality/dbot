@@ -27,7 +27,7 @@ var youtube = function(dbot) {
                     var v = body.feed.entry[0],
                         seconds = v['media$group']['yt$duration'].seconds,
                         minutes = Math.floor(seconds / 60),
-                        seconds%60 < 10 ? seconds="0"+seconds%60 : seconds=seconds%60;
+                        seconds = ((seconds%60 < 10) ? "0"+seconds%60 : seconds%60);
 
                     if(!_.has(v, 'yt$rating')) {
                         v['yt$rating'] = {
@@ -68,7 +68,7 @@ var youtube = function(dbot) {
                         var v = body.entry
                             seconds = v['media$group']['yt$duration'].seconds,
                             minutes = Math.floor(seconds / 60),
-                            seconds%60 < 10 ? seconds="0"+seconds%60 : seconds=seconds%60;
+                            seconds = ((seconds%60 < 10) ? "0"+seconds%60 : seconds%60);
 
                         if(!_.has(v, 'yt$rating')) {
                             v['yt$rating'] = {
