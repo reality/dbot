@@ -28,6 +28,7 @@ var youtube = function(dbot) {
                         seconds = v['media$group']['yt$duration'].seconds,
                         minutes = Math.floor(seconds / 60),
                         seconds = seconds - minutes * 60;
+                        if (seconds < 10) seconds = '0'+seconds;
 
                     if(!_.has(v, 'yt$rating')) {
                         v['yt$rating'] = {
@@ -42,7 +43,7 @@ var youtube = function(dbot) {
                     var link = v.link[0].href.match(this.LinkRegex)[2];
                     event.reply(dbot.t('yt_video', {
                         'title': v.title['$t'],
-                        'plays': v['yt$statistics'].viewCount,
+                        'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 "),
                         'author': v.author[0].name['$t'],
                         'likes': v['yt$rating'].numLikes,
                         'dislikes': v['yt$rating'].numDislikes,
@@ -69,6 +70,7 @@ var youtube = function(dbot) {
                             seconds = v['media$group']['yt$duration'].seconds,
                             minutes = Math.floor(seconds / 60),
                             seconds = seconds - minutes * 60;
+                            if (seconds < 10) seconds = '0'+seconds;
 
                         if(!_.has(v, 'yt$rating')) {
                             v['yt$rating'] = {
@@ -82,7 +84,7 @@ var youtube = function(dbot) {
 
                         callback(dbot.t('yt_video', {
                             'title': v.title['$t'],
-                            'plays': v['yt$statistics'].viewCount,
+                            'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1 "),
                             'author': v.author[0].name['$t'],
                             'likes': v['yt$rating'].numLikes,
                             'dislikes': v['yt$rating'].numDislikes,
