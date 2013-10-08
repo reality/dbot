@@ -13,6 +13,35 @@ var youtube = function(dbot) {
     };
     this.LinkRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
+    this.internalAPI = {
+        'formatLink': function(v) {
+            var seconds = v['media$group']['yt$duration'].seconds,
+                minutes = Math.floor(seconds / 60),
+                seconds = ((seconds%60 < 10) ? "0"+seconds%60 : seconds%60);
+
+            if(!_.has(v, 'yt$rating')) {
+                v['yt$rating'] = {
+                    'numLikes': 0,
+                    'numDislikes': 0
+                };
+            }
+            if(!_.has(v, 'yt$statistics')) {
+                v['yt$statistics'] = { 'viewCount': 0 };
+            }
+
+            var link = v.link[0].href.match(this.LinkRegex)[2];
+            return dbot.t('yt_video', {
+                'title': v.title['$t'],
+                'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
+                'author': v.author[0].name['$t'],
+                'likes': v['yt$rating'].numLikes,
+                'dislikes': v['yt$rating'].numDislikes,
+                'minutes': minutes,
+                'seconds': seconds
+            }) + ' - ' + 'http://youtu.be/' + link;
+        }.bind(this)
+    };
+
     this.commands = {
         '~youtube': function(event) {
             var qs = _.clone(this.params);
@@ -24,31 +53,7 @@ var youtube = function(dbot) {
                 'json': true
             }, function(error, response, body) {
                 if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                    var v = body.feed.entry[0],
-                        seconds = v['media$group']['yt$duration'].seconds,
-                        minutes = Math.floor(seconds / 60),
-                        seconds = ((seconds%60 < 10) ? "0"+seconds%60 : seconds%60);
-
-                    if(!_.has(v, 'yt$rating')) {
-                        v['yt$rating'] = {
-                            'numLikes': 0,
-                            'numDislikes': 0
-                        };
-                    }
-                    if(!_.has(v, 'yt$statistics')) {
-                        v['yt$statistics'] = { 'viewCount': 0 };
-                    }
-
-                    var link = v.link[0].href.match(this.LinkRegex)[2];
-                    event.reply(dbot.t('yt_video', {
-                        'title': v.title['$t'],
-                        'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
-                        'author': v.author[0].name['$t'],
-                        'likes': v['yt$rating'].numLikes,
-                        'dislikes': v['yt$rating'].numDislikes,
-                        'minutes': minutes,
-                        'seconds': seconds
-                    }) + ' - ' + 'http://youtu.be/' + link);
+                    event.reply(this.internalAPI.formatLink(body.feed.entry[0]));
                 } else {
                     event.reply(dbot.t('yt_noresults'));
                 }
@@ -65,32 +70,9 @@ var youtube = function(dbot) {
                     'json': true
                 }, function(error, response, body) {
                     if(_.isObject(body) && _.has(body, 'entry')) {
-                        var v = body.entry
-                            seconds = v['media$group']['yt$duration'].seconds,
-                            minutes = Math.floor(seconds / 60),
-                            seconds = ((seconds%60 < 10) ? "0"+seconds%60 : seconds%60);
-
-                        if(!_.has(v, 'yt$rating')) {
-                            v['yt$rating'] = {
-                                'numLikes': 0,
-                                'numDislikes': 0
-                            };
-                        }
-                        if(!_.has(v, 'yt$statistics')) {
-                            v['yt$statistics'] = { 'viewCount': 0 };
-                        }
-
-                        callback(dbot.t('yt_video', {
-                            'title': v.title['$t'],
-                            'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
-                            'author': v.author[0].name['$t'],
-                            'likes': v['yt$rating'].numLikes,
-                            'dislikes': v['yt$rating'].numDislikes,
-                            'minutes': minutes,
-                            'seconds': seconds
-                        }));
+                        callback(this.internalAPI.formatLink(body.entry));
                     }
-                });
+                }.bind(this));
             }.bind(this));
     }.bind(this);
 };
