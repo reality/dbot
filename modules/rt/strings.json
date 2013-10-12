@@ -1,0 +1,8 @@
+{
+    "rt_film": {
+        "en": "[{title} -{rating} - {year}] - {link}"
+    },
+    "rt_noresults": {
+        "en": "No films found."
+    }
+}
