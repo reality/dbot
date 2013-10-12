@@ -32,7 +32,7 @@ var imdb = function(dbot) {
 
     this.commands = {
         '~film': function(event) {
-            request.get(ApiRoot + 'movies.json', {
+            request.get(ApiRoot, {
                 'qs': { 
                     'q': event.input[1],
                     'page_limit': 1
@@ -48,6 +48,24 @@ var imdb = function(dbot) {
         }
     };
     this.commands['~film'].regex = [/^~film (.+)$/, 2];
+
+    this.onLoad = function() {
+        dbot.api.link.addHandler('imdb', /https?:\/\/(www\.)?imdb\.com\/title\/([a-zA-Z0-9]+)/, function(matches, name, callback) {
+            var id = matches[2];
+            request.get(ApiRoot, {
+                'qs': { 
+                    'id': id,
+                    'page_limit': 1
+                },
+                'json': true
+            }, function(error, response, body) {
+                if(_.isObject(body) && !_.has(body, 'error')) {
+                    callback(this.internalAPI.formatLink(body));
+                }
+            }.bind(this));
+
+        }.bind(this));
+    }.bind(this)
 };
 
 exports.fetch = function(dbot) {
