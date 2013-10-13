@@ -29,8 +29,7 @@ var youtube = function(dbot) {
                 v['yt$statistics'] = { 'viewCount': 0 };
             }
 
-            var link = v.link[0].href.match(this.LinkRegex)[2];
-            return dbot.t('yt_video', {
+            var res = dbot.t('yt_video', {
                 'title': v.title['$t'],
                 'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
                 'author': v.author[0].name['$t'],
@@ -38,7 +37,14 @@ var youtube = function(dbot) {
                 'dislikes': v['yt$rating'].numDislikes,
                 'minutes': minutes,
                 'seconds': seconds
-            }) + ' - ' + 'http://youtu.be/' + link;
+            });
+
+            var link = v.link[0].href.match(this.LinkRegex)
+            if(!_.isUndefined(link)) {
+                res += ' - ' + link[2];
+            }
+
+            return res;
         }.bind(this)
     };
 
