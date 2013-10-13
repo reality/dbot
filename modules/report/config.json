@@ -17,5 +17,8 @@
             "type": ""
         }
     },
+    "chan_redirs": {
+        "#chan": "#chan-notify"
+    },
     "noMissingChans": []
 }

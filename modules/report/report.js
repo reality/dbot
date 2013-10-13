@@ -101,6 +101,9 @@ var report = function(dbot) {
                         message = this.internalAPI.formatNotify(type, server,
                             user, cName, message);
                         this.internalAPI.notify(server, _.pluck(ops, 'name'), message);
+                        if(_.has(this.config.chan_redirs, cName)) {
+                            dbot.say(server, this.config.chan_redirs[cName], message);
+                        }
                     }.bind(this)); 
                 }
             }.bind(this));
