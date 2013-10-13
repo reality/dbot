@@ -59,5 +59,20 @@
         "en": "{user}: {channel} staff notified.",
 	"fr": "{user}: l'équipe de {channel} a été notifiée.",
 	"it": "{user}: la squadra di {channel} è stata notificata."
+    },
+    "nunsubbed": {
+        "en": "Unsubscribed from {cName} notifications."
+    },
+    "n_also_found": {
+        "en": " These notifications are repeated in {afaName}."
+    },
+    "already_nunsubbed": {
+        "en": "Already unsubscribed from {cName} notifications."
+    },
+    "ununsubbed": {
+        "en": "No longer unsubscribed from {cName}."
+    },
+    "not_nunsubbed": {
+        "en": "Already subscribed to notifications from {cName}."
     }
 }

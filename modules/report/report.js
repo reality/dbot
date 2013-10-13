@@ -70,41 +70,47 @@ var report = function(dbot) {
                     return user.op; 
                 }
             }, this);
+            ops = _.pluck(ops, 'name');
 
             dbot.api.users.resolveChannel(server, cName, function(channel) {
                 if(channel) {
                     var perOps = channel.op;
                     if(this.config.notifyVoice) perOps = _.union(perOps, channel.voice);
 
-                    async.eachSeries(ops, function(nick, next) {
-                        dbot.api.users.resolveUser(server, nick, function(user) {
-                            if(!_.include(user.mobile, user.currentNick)) {
-                                perOps = _.without(perOps, user.id);
+                    this.db.read('nunsubs', channel.id, function(err, nunsubs) {
+                        async.eachSeries(ops, function(nick, next) {
+                            dbot.api.users.resolveUser(server, nick, function(user) {
+                                if(!_.include(user.mobile, user.currentNick)) {
+                                    perOps = _.without(perOps, user.id);
+                                }
+                                if(nunsubs && _.include(nunsubs.users, user.id)) {
+                                    ops = _.without(ops, user.currentNick);
+                                }
+                                next();
+                            }); 
+                        }, function() {
+                            offlineUsers = perOps;
+                            if(!_.include(this.config.noMissingChans, cName)) {
+                                _.each(offlineUsers, function(id) {
+                                    if(!this.pending[id]) this.pending[id] = [];
+                                    this.pending[id].push({
+                                        'time': new Date().getTime(),
+                                        'channel': cName,
+                                        'user': user.primaryNick,
+                                        'message': message
+                                    });
+                                    this.pNotify[id] = true;
+                                }.bind(this));
                             }
-                            next();
-                        }); 
-                    }, function() {
-                        offlineUsers = perOps;
-                        if(!_.include(this.config.noMissingChans, cName)) {
-                            _.each(offlineUsers, function(id) {
-                                if(!this.pending[id]) this.pending[id] = [];
-                                this.pending[id].push({
-                                    'time': new Date().getTime(),
-                                    'channel': cName,
-                                    'user': user.primaryNick,
-                                    'message': message
-                                });
-                                this.pNotify[id] = true;
-                            }.bind(this));
-                        }
-                        
-                        message = this.internalAPI.formatNotify(type, server,
-                            user, cName, message);
-                        this.internalAPI.notify(server, _.pluck(ops, 'name'), message);
-                        if(_.has(this.config.chan_redirs, cName)) {
-                            dbot.say(server, this.config.chan_redirs[cName], message);
-                        }
-                    }.bind(this)); 
+                            
+                            message = this.internalAPI.formatNotify(type, server,
+                                user, cName, message);
+                            this.internalAPI.notify(server, ops, message);
+                            if(_.has(this.config.chan_redirs, cName)) {
+                                dbot.say(server, this.config.chan_redirs[cName], message);
+                            }
+                        }.bind(this)); 
+                    }.bind(this));
                 }
             }.bind(this));
         }, 
@@ -193,10 +199,65 @@ var report = function(dbot) {
             } else {
                 event.reply(dbot.t('not_in_channel', { 'channel': channelName }));
             }
+        },
+
+        '~nunsub': function(event) {
+            var cName = event.input[1];
+            
+            dbot.api.users.resolveChannel(event.server, cName, function(channel) {
+                if(channel) {
+                    this.db.read('nunsubs', channel.id, function(err, nunsubs) {
+                        if(!nunsubs) {
+                            var nunsubs = {
+                                'id': channel.id,
+                                'users': []
+                            }
+                        } 
+
+                        if(!_.include(nunsubs, event.rUser.id)) {
+                            nunsubs.users.push(event.rUser.id); 
+                            this.db.save('nunsubs', channel.id, nunsubs, function() {
+                                var reply = dbot.t('nunsubbed', { 'cName': cName })
+                                if(_.has(this.config.chan_redirs, cName)) {
+                                    reply += dbot.t('n_also_found', { 'afaName' : this.config.chan_redirs[cName] });
+                                }
+                                event.reply(reply); 
+                            }.bind(this));
+                        } else {
+                            event.reply(dbot.t('already_nunsubbed', { 'cName': cName }));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply('Channel not known.');
+                }
+            }.bind(this));
+        },
+        
+        '~ununsub': function(event) {
+            var cName = event.input[1];
+
+            dbot.api.users.resolveChannel(event.server, cName, function(channel) {
+                if(channel) {
+                    this.db.read('nunsubs', channel.id, function(err, nunsubs) {
+                        if(!_.isUndefined(nunsubs) && _.include(nunsubs.users, event.rUser.id)) {
+                            nunsubs.users = _.without(nunsubs.users, event.rUser.id);
+                            this.db.save('nunsubs', channel.id, nunsubs, function() {
+                                event.reply(dbot.t('ununsubbed', { 'cName': cName }));
+                            });
+                        } else {
+                            event.reply(dbot.t('not_nunsubbed', { 'cName': cName }));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply('Channel not known.');
+                }
+            }.bind(this));
         }
     };
     commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
     commands['~notify'].regex = [/^~notify ([^ ]+) (.+)$/, 3];
+    commands['~nunsub'].regex = [/^~nunsub ([^ ]+)$/, 2];
+    commands['~ununsub'].regex = [/^~ununsub ([^ ]+)$/, 2];
     this.commands = commands;
 
     this.onLoad = function() {
