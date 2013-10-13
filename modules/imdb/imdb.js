@@ -31,7 +31,7 @@ var imdb = function(dbot) {
     };
 
     this.commands = {
-        '~film': function(event) {
+        '~imdb': function(event) {
             request.get(ApiRoot, {
                 'qs': { 
                     'q': event.input[1],
@@ -47,7 +47,7 @@ var imdb = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~film'].regex = [/^~film (.+)$/, 2];
+    this.commands['~imdb'].regex = [/^~film (.+)$/, 2];
 
     this.onLoad = function() {
         dbot.api.link.addHandler('imdb', /https?:\/\/(www\.)?imdb\.com\/title\/([a-zA-Z0-9]+)/, function(matches, name, callback) {
