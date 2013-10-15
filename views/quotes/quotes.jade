@@ -6,7 +6,7 @@ block content
     ul#quotelist
         -var hasYouTubeVids=false
         -each quote in quotes
-            -if(quote.match(locals.url_regex))
+            -if(quote.match(url_regex))
                 li.quote 
                     -if(quote.match(/(jpg|png|gif|jpeg|tiff)$/))
                         a(href=quote)
@@ -18,12 +18,12 @@ block content
                     -else
                         a(href=quote)
                             =quote
-            -else if(quote.match(/~~([^~]+)~~/))
+            -else
                 -var res = quote.match(/~~([^~]+)~~/)
                 -if(res != null)
                     li.quote
                         a(href="/quotes/#{res[1]}") #{quote}
-            -else 
-                li.quote #{quote}
+                -else 
+                    li.quote #{quote}
         -if(hasYouTubeVids)
             script(src='/ytembed.js')

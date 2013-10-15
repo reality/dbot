@@ -8,9 +8,7 @@ var pages = function(dbot) {
                     res.render('quotes', { 
                         'name': dbot.config.name, 
                         'quotes': category.quotes, 
-                        'locals': { 
-                            'url_regex': RegExp.prototype.url_regex() 
-                        } 
+                        'url_regex': new RegExp(/(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig)
                     });
                 } else {
                     res.render('error', { 
