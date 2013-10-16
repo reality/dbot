@@ -10,6 +10,16 @@ var _ = require('underscore')._,
 
 var imgur = function(dbot) {
     this.ApiRoot = 'https://api.imgur.com/3/';
+    this.ExcludeRes = [
+        { 'w': 800, 'h': 600 },
+        { 'w': 1024, 'h': 768 },
+        { 'w': 1280, 'h': 768 },
+        { 'w': 1280, 'h': 960 },
+        { 'w': 1366, 'h': 768 },
+        { 'w': 1600, 'h': 900 },
+        { 'w': 1680, 'h': 1050 },
+        { 'w': 1920, 'h': 1080 }
+    ];
     this.riCache = [];
 
     this.internalAPI = {
@@ -109,7 +119,12 @@ var imgur = function(dbot) {
         'getGoodRandomImage': function(callback) {
             this.api.getRandomImage(function(url, slug, hash) {
                 this.api.getImageInfo(slug, function(imgData) {
-                    if(!_.isUndefined(imgData) && imgData.data && imgData.data.height > 500 && imgData.data.width > 500) {
+                    if(!_.isUndefined(imgData) && 
+                            imgData.data && 
+                            imgData.data.height > 500 && imgData.data.width > 500 &&
+                            !_.any(this.ExcludeRes, function(res) {
+                                return imgData.data.height == res.h && imgData.data.width == res.w;
+                            })) {
                         callback(url, imgData);
                     } else {
                         this.api.getGoodRandomImage(callback);
