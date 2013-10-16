@@ -3,21 +3,11 @@ var _ = require('underscore')._;
 var commands = function(dbot) {
     var commands = {
         '~lines': function(event) {
-            if(event.params[1]) {
-                dbot.api.users.resolveUser(event.server, event.user, function(user) {
-                    if(user) { // I disgust me
-                        event.rUser = user;
-                        delete event['params'];
-                        commands['~lines'](event);
-                    } else {
-                        event.reply(dbot.t('sstats_unknown_user'));
-                    }
-                });
-            } else {
-                this.api.getUserStats(event.rUser.id, function(uStats) {
+            var getLines = function(user) {
+                this.api.getUserStats(user.id, function(uStats) {
                     if(uStats) {
                         var output = dbot.t('sstats_tlines', { 
-                            'user': event.rUser.primaryNick,
+                            'user': user.primaryNick,
                             'lines': uStats.lines 
                         });
                         if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
@@ -31,6 +21,18 @@ var commands = function(dbot) {
                         event.reply(dbot.t('sstats_noustats'));
                     }
                 });       
+            }.bind(this);
+
+            if(event.params[1]) {
+                dbot.api.users.resolveUser(event.server, event.params[1], function(user) {
+                    if(user) {
+                        getLines(user);
+                    } else {
+                        event.reply(dbot.t('sstats_unknown_user'));
+                    }
+                });
+            } else {
+                getLines(event.rUser);
             }
         },
 
