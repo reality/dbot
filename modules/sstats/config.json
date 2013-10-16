@@ -1,0 +1,4 @@
+{
+    "dbType": "redis",
+    "dependencies": [ "users" ]
+}

@@ -1,0 +1,17 @@
+{
+    "sstats_unknown_user": {
+        "en": "Unknown user."
+    },
+    "sstats_tlines": {
+        "en": "{user} has posted {lines} lines"
+    },
+    "sstats_uclines": {
+        "en": " ({lines} in {channel})"
+    },
+    "sstats_noustats": {
+        "en": "No stats recorded for this user."
+    },
+    "sstats_clines": {
+        "en": "{lines} lines posted in {channel}."
+    }
+}
