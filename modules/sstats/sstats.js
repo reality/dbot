@@ -2,7 +2,8 @@
  * Module Name: sstats
  * Description: Simple Stats, in the absence of good ones.
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    async = require('async');
 
 var sstats = function(dbot) {
     if(!_.has(dbot.db, 'ssinception')) dbot.db.ssinception = new Date().getTime();
@@ -42,8 +43,25 @@ var sstats = function(dbot) {
                     .first(10)
                     .value();
 
-                callback(pCounts);
+                async.eachSeries(pCounts, function(pCount, next) {
+                    dbot.api.users.getUser(pCount[0], function(user) {
+                        pCount[0] = user.primaryNick; next();
+                    });
+                }, function() {
+                    callback(pCounts);
+                }.bind(this));
             });
+        }.bind(this),
+
+        'channelHighscore': function(key, server, channel, property, callback) {
+            dbot.api.users.resolveChannel(server, channel, function(channel) {
+                if(channel) {
+                    var newProperty = 'channels.' + channel.id + '.' + property;
+                    this.internalAPI.highscore(key, newProperty, callback);
+                } else {
+                    callback(null);
+                }
+            }.bind(this));
         }.bind(this),
 
         'formatHighscore': function(string, pCounts) {

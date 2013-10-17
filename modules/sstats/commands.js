@@ -77,64 +77,75 @@ var commands = function(dbot) {
         },
 
         '~loudest': function(event) {
-            this.internalAPI.highscore('user_stats', 'lines', function(lCounts) {
-                async.eachSeries(lCounts, function(lCount, next) {
-                    dbot.api.users.getUser(lCount[0], function(user) {
-                        lCount[0] = user.primaryNick; next();
-                    });
-                }, function() {
+            var channel = event.params[1];
+
+            if(_.isUndefined(channel)) {
+                this.internalAPI.highscore('user_stats', 'lines', function(lCounts) {
                     event.reply(this.internalAPI.formatHighscore('Loudest users: ', lCounts));
                 }.bind(this));
-            }.bind(this));
+            } else {
+                this.internalAPI.channelHighscore('user_stats', event.server, channel, 'lines', function(lCounts) {
+                    if(lCounts) {
+                        event.reply(this.internalAPI.formatHighscore('Loudest users in ' + channel + ': ', lCounts));
+                    } else {
+                        event.reply('Unknown channel.');
+                    }
+                }.bind(this));
+            }
         },
 
         '~uncouth': function(event) {
-            this.internalAPI.highscore('user_stats', 'curses', function(lCounts) {
-                async.eachSeries(lCounts, function(lCount, next) {
-                    dbot.api.users.getUser(lCount[0], function(user) {
-                        lCount[0] = user.primaryNick; next();
-                    });
-                }, function() {
+            var channel = event.params[1];
+
+            if(_.isUndefined(channel)) {
+                this.internalAPI.highscore('user_stats', 'curses', function(lCounts) {
                     event.reply(this.internalAPI.formatHighscore('Most uncouth users: ', lCounts));
                 }.bind(this));
-            }.bind(this));
+            } else {
+                this.internalAPI.channelHighscore('user_stats', event.server, channel, 'curses', function(lCounts) {
+                    if(lCounts) {
+                        event.reply(this.internalAPI.formatHighscore('Most uncouth users in ' + channel + ': ', lCounts));
+                    } else {
+                        event.reply('Unknown channel.');
+                    }
+                }.bind(this));
+            }
         },
 
         '~shoutiest': function(event) {
-            this.internalAPI.highscore('user_stats', 'capitals', function(lCounts) {
-                async.eachSeries(lCounts, function(lCount, next) {
-                    dbot.api.users.getUser(lCount[0], function(user) {
-                        lCount[0] = user.primaryNick; next();
-                    });
-                }, function() {
+            var channel = event.params[1];
+
+            if(_.isUndefined(channel)) {
+                this.internalAPI.highscore('user_stats', 'capitals', function(lCounts) {
                     event.reply(this.internalAPI.formatHighscore('Shoutiest users: ', lCounts));
                 }.bind(this));
-            }.bind(this));
+            } else {
+                this.internalAPI.channelHighscore('user_stats', event.server, channel, 'capitals', function(lCounts) {
+                    if(lCounts) {
+                        event.reply(this.internalAPI.formatHighscore('Shoutiest users in ' + channel + ': ', lCounts));
+                    } else {
+                        event.reply('Unknown channel.');
+                    }
+                }.bind(this));
+            }
         },
 
         '~wordiest': function(event) {
-            this.internalAPI.highscore('user_stats', 'words', function(lCounts) {
-                async.eachSeries(lCounts, function(lCount, next) {
-                    dbot.api.users.getUser(lCount[0], function(user) {
-                        lCount[0] = user.primaryNick; next();
-                    });
-                }, function() {
+            var channel = event.params[1];
+
+            if(_.isUndefined(channel)) {
+                this.internalAPI.highscore('user_stats', 'words', function(lCounts) {
                     event.reply(this.internalAPI.formatHighscore('Wordiest users: ', lCounts));
                 }.bind(this));
-            }.bind(this));
-        },
-
-        '~cloudest': function(event) {
-            var pathString = 'channels.' + event.rChannel.id + '.lines';
-            this.internalAPI.highscore('user_stats', pathString, function(lCounts) {
-                async.eachSeries(lCounts, function(lCount, next) {
-                    dbot.api.users.getUser(lCount[0], function(user) {
-                        lCount[0] = user.primaryNick; next();
-                    });
-                }, function() {
-                    event.reply(this.internalAPI.formatHighscore('Loudest users in ' + event.channel + ': ', lCounts));
-                }.bind(this));;
-            }.bind(this));
+            } else {
+                this.internalAPI.channelHighscore('user_stats', event.server, channel, 'words', function(lCounts) {
+                    if(lCounts) {
+                        event.reply(this.internalAPI.formatHighscore('Wordiest users in ' + channel + ': ', lCounts));
+                    } else {
+                        event.reply('Unknown channel.');
+                    }
+                }.bind(this));
+            }
         },
 
         '~clines': function(event) {
