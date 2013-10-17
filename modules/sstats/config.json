@@ -1,4 +1,5 @@
 {
     "dbType": "redis",
-    "dependencies": [ "users" ]
+    "dependencies": [ "users" ],
+    "curses": [ "shit", "piss", "fuck", "cunt", "cocksucker", "motherfucker", "tits" ]
 }

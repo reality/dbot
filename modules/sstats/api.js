@@ -13,6 +13,9 @@ var api = function(dbot) {
             var uStats = {
                 'id': id,
                 'lines': 0,
+                'words': 0,
+                'capitals': 0,
+                'curses': 0,
                 'channels': {},
                 'creation': new Date().getTime()
             };
@@ -31,6 +34,9 @@ var api = function(dbot) {
             var cStats = {
                 'id': id,
                 'lines': 0,
+                'words': 0,
+                'capitals': 0,
+                'curses': 0,
                 'creation': new Date().getTime()
             };
             this.db.save('channel_stats', id, cStats, function(err, cStats) {
