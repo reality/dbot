@@ -76,7 +76,6 @@ var commands = function(dbot) {
             }
         },
 
-        // TODO: too much repeated code between loudest and cloudest yo
         '~loudest': function(event) {
             this.internalAPI.highscore('user_stats', 'lines', function(lCounts) {
                 async.eachSeries(lCounts, function(lCount, next) {
@@ -85,6 +84,18 @@ var commands = function(dbot) {
                     });
                 }, function() {
                     event.reply(this.internalAPI.formatHighscore('Loudest users: ', lCounts));
+                }.bind(this));
+            }.bind(this));
+        },
+
+        '~uncouth': function(event) {
+            this.internalAPI.highscore('user_stats', 'curses', function(lCounts) {
+                async.eachSeries(lCounts, function(lCount, next) {
+                    dbot.api.users.getUser(lCount[0], function(user) {
+                        lCount[0] = user.primaryNick; next();
+                    });
+                }, function() {
+                    event.reply(this.internalAPI.formatHighscore('Most uncouth users: ', lCounts));
                 }.bind(this));
             }.bind(this));
         },
