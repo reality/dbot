@@ -1,4 +1,5 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    async = require('async');
 
 var commands = function(dbot) {
     var commands = {
@@ -73,6 +74,33 @@ var commands = function(dbot) {
             } else {
                 getLines(event.rUser);
             }
+        },
+
+        '~loudest': function(event) {
+            var lines = {};
+            this.db.scan('user_stats', function(uStats) {
+                lines[uStats.id] = uStats.lines;   
+            }, function() {
+                var lCounts = _.chain(lines)
+                    .pairs()
+                    .sortBy(function(user) { return user[1]; })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                async.eachSeries(lCounts, function(lCount, next) {
+                    dbot.api.users.getUser(lCount[0], function(user) {
+                        lCount[0] = user.primaryNick;
+                        next();
+                    });
+                }, function() {
+                    var output = "Loudest users: ";
+                    for(var i=0;i<lCounts.length;i++) {
+                        output += lCounts[i][0] + " (" + lCounts[i][1] + "), ";
+                    }
+                    event.reply(output.slice(0, -2));
+                });
+            });
         },
 
         '~clines': function(event) {
