@@ -91,6 +91,7 @@ var sstats = function(dbot) {
         event.uStats.words += wCount;
         event.uStats.capitals += capitals;
         event.uStats.curses += curses;
+        event.uStats.last = new Date().getTime();
 
         event.cStats.words += wCount;
         event.cStats.capitals += capitals;

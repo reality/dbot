@@ -1,5 +1,6 @@
 var _ = require('underscore')._,
-    async = require('async');
+    async = require('async'),
+    moment = require('moment');
 
 var commands = function(dbot) {
     var commands = {
@@ -154,6 +155,22 @@ var commands = function(dbot) {
                 'channel': event.channel, 
                 'lines': event.cStats.lines 
             }));
+        },
+
+        '~last': function(event) {
+            dbot.api.users.resolveUser(event.server, event.params[1], function(user) {
+                if(user) {
+                    this.api.getUserStats(user.id, function(uStats) {
+                        if(uStats && uStats.last) {
+                            event.reply(user.primaryNick + ' was last seen ' + moment(uStats.last).fromNow() + '.'); 
+                        } else {
+                            event.reply('I haven\'t seen that user active yet.');
+                        }
+                    });
+                } else {
+                    event.reply('Unknown user.');
+                } 
+            }.bind(this));
         }
     };
     return commands;
