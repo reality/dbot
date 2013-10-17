@@ -23,7 +23,7 @@ var sstats = function(dbot) {
             curses = 0;
         _.each(words, function(word) {
             if(this.isUpperCase(word)) capitals++;
-            if(_.include(this.config.curses, word)) curses++;
+            if(_.include(this.config.curses, word.toLowerCase())) curses++;
         }, this);
 
         event.uStats.words += wCount;
