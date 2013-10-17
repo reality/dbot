@@ -76,6 +76,7 @@ var commands = function(dbot) {
             }
         },
 
+        // TODO: too much repeated code between loudest and cloudest yo
         '~loudest': function(event) {
             var lines = {};
             this.db.scan('user_stats', function(uStats) {
@@ -95,6 +96,35 @@ var commands = function(dbot) {
                     });
                 }, function() {
                     var output = "Loudest users: ";
+                    for(var i=0;i<lCounts.length;i++) {
+                        output += lCounts[i][0] + " (" + lCounts[i][1] + "), ";
+                    }
+                    event.reply(output.slice(0, -2));
+                });
+            });
+        },
+
+        '~cloudest': function(event) {
+            var lines = {};
+            this.db.scan('user_stats', function(uStats) {
+                if(_.has(uStats.channels, event.rChannel.id)) {
+                    lines[uStats.id] = uStats.channels[event.rChannel.id].lines;   
+                }
+            }, function() {
+                var lCounts = _.chain(lines)
+                    .pairs()
+                    .sortBy(function(user) { return user[1]; })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                async.eachSeries(lCounts, function(lCount, next) {
+                    dbot.api.users.getUser(lCount[0], function(user) {
+                        lCount[0] = user.primaryNick;
+                        next();
+                    });
+                }, function() {
+                    var output = "Loudest users in " + event.channel + ": ";
                     for(var i=0;i<lCounts.length;i++) {
                         output += lCounts[i][0] + " (" + lCounts[i][1] + "), ";
                     }
