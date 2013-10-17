@@ -7,10 +7,52 @@ var _ = require('underscore')._;
 var sstats = function(dbot) {
     if(!_.has(dbot.db, 'ssinception')) dbot.db.ssinception = new Date().getTime();
 
+    // This needs to be somewhere else
     this.isUpperCase = function(word) {
         return _.all(word.split(''), function(c) {
             return c == c.toUpperCase(); 
         });
+    };
+
+    this.internalAPI = {
+        // I'm not a huge fan of this but it's better than all the code
+        // repetition
+        'highscore': function(key, property, callback) {
+            var pList = {}, 
+                pPointer = property.split('.');
+
+            this.db.scan(key, function(item) {
+                var id = item.id;
+                for(var i=0;i<pPointer.length;i++) {
+                    if(_.has(item, pPointer[i])) {
+                        item = item[pPointer[i]]; 
+                    } else {
+                        item = null; break;
+                    }
+                }
+
+                if(item) {
+                    pList[id] = item;
+                }
+            }, function() {
+                var pCounts = _.chain(pList)
+                    .pairs()
+                    .sortBy(function(p) { return p[1]; })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                callback(pCounts);
+            });
+        }.bind(this),
+
+        'formatHighscore': function(string, pCounts) {
+            var output = string;
+            for(var i=0;i<pCounts.length;i++) {
+                output += pCounts[i][0] + " (" + pCounts[i][1] + "), ";
+            }
+            return output.slice(0, -2);
+        }
     };
 
     this.listener = function(event) {
