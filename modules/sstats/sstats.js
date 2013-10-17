@@ -5,6 +5,8 @@
 var _ = require('underscore')._;
 
 var sstats = function(dbot) {
+    if(!_.has(dbot.db, 'ssinception')) dbot.db.ssinception = new Date().getTime();
+
     this.listener = function(event) {
         event.cStats.lines++;
         event.uStats.lines++;
