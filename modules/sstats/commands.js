@@ -100,6 +100,30 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
+        '~shoutiest': function(event) {
+            this.internalAPI.highscore('user_stats', 'capitals', function(lCounts) {
+                async.eachSeries(lCounts, function(lCount, next) {
+                    dbot.api.users.getUser(lCount[0], function(user) {
+                        lCount[0] = user.primaryNick; next();
+                    });
+                }, function() {
+                    event.reply(this.internalAPI.formatHighscore('Shoutiest users: ', lCounts));
+                }.bind(this));
+            }.bind(this));
+        },
+
+        '~wordiest': function(event) {
+            this.internalAPI.highscore('user_stats', 'words', function(lCounts) {
+                async.eachSeries(lCounts, function(lCount, next) {
+                    dbot.api.users.getUser(lCount[0], function(user) {
+                        lCount[0] = user.primaryNick; next();
+                    });
+                }, function() {
+                    event.reply(this.internalAPI.formatHighscore('Wordiest users: ', lCounts));
+                }.bind(this));
+            }.bind(this));
+        },
+
         '~cloudest': function(event) {
             var pathString = 'channels.' + event.rChannel.id + '.lines';
             this.internalAPI.highscore('user_stats', pathString, function(lCounts) {
