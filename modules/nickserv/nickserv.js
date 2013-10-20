@@ -12,12 +12,6 @@ var nickserv = function(dbot) {
             if(!_.has(this.authStack, server)) this.authStack[server] = {};
             this.authStack[server][nick] = callback;
             dbot.say(server, nickserv, infoCommand + ' ' + nick + ' *');
-            setTimeout(function() {
-                if(_.has(this.userStack[server], nick)) {
-                    delete this.authStack[server][nick];
-                    callback(false);
-                }
-            }, 4000);
         },
 
         'getUserHost': function(server, nick, callback) {
@@ -83,7 +77,7 @@ var nickserv = function(dbot) {
                     if(info[3] == acceptableState) {
                         this.authStack[event.server][info[1]](true, info[2]);
                     } else {
-                        this.authStack[event.server][info[2]](false, info[2]);
+                        this.authStack[event.server][info[1]](false, info[2]);
                     }
                 }
             }
