@@ -229,9 +229,9 @@ var commands = function(dbot) {
         }
     };
 
-    commands['~wordusers'].regex = [/^~wordusers ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~word'].regex = [/^~word ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~trackword'].regex = [/^~trackword ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~wordusers'].regex = [/^~wordusers ([\d\w[\]{}^|\\<>`_-]+?)/, 2];
+    commands['~word'].regex = [/^~word ([\d\w[\]{}^|\\<>`_-]+?)/, 2];
+    commands['~trackword'].regex = [/^~trackword ([\d\w[\]{}^|\\<>`_-]+?)/, 2];
     commands['~trackword'].access = 'power_user';
     return commands;
 };
