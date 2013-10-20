@@ -58,7 +58,7 @@ var commands = function(dbot) {
             this.api.resolveUser(event.server, nick, function(user) {
                 if(user) {
                     if(user.timezone) {
-                        var fDate = moment.tz(user.timezone).format('LLL');                 
+                        var fDate = moment.tz(user.timezone).format('MMMM Do YYYY HH:mm:ss');                 
                         event.reply('The time for ' + user.primaryNick + ' is: ' + fDate);
                     } else {
                         event.reply(user.primaryNick + ' doesn\'t have a timezone set. They can do this with ~timezone.');
