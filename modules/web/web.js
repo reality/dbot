@@ -42,6 +42,9 @@ var webInterface = function(dbot) {
         if(!server || !username) return callback(null, false, { 'message':
             'Please provide a username in the format of name@server (Servers: ' +
             _.keys(dbot.config.servers).join(', ') + ')' });
+        if(!_.has(dbot.config.servers, server)) return callback(null, false, { 'message':
+            'Please provide a valid server (Servers: ' +
+            _.keys(dbot.config.servers).join(', ') + ')' });
 
         dbot.api.users.resolveUser(server, username, function(user) {
             if(user) {
