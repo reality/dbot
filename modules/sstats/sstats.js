@@ -77,6 +77,7 @@ var sstats = function(dbot) {
         event.cStats.lines++;
         event.uStats.lines++;
 
+        event.message = event.message.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "");
         var words = event.message.split(' '),
             wCount = words.length,
             capitals = 0,
