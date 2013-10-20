@@ -113,7 +113,7 @@ var sstats = function(dbot) {
         }
 
         // Look for tracked words.
-        if(event.message.charAt(0) != '~') return;
+        if(event.message.charAt(0) != '~') {
             var wMap = {}; // Why reduce isn't working idk
             _.each(words, function(word) {
                 word = word.toLowerCase();
