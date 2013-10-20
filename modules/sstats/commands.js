@@ -174,7 +174,7 @@ var commands = function(dbot) {
         },
 
         '~trackword': function(event) {
-            var word = event.params[1].trim();
+            var word = event.params[1].trim().toLowerCase();
             this.api.getTrackedWord(word, function(tWord) {
                 if(!tWord) {
                     this.api.createTrackedWord(word, function(tWord) {
@@ -230,6 +230,8 @@ var commands = function(dbot) {
     };
 
     commands['~wordusers'].regex = [/^~wordusers ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~word'].regex = [/^~word ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~trackword'].regex = [/^~trackword ([\d\w[\]{}^|\\`_-]+?)/, 2];
     commands['~trackword'].access = 'power_user';
     return commands;
 };
