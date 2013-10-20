@@ -12,6 +12,10 @@ var nickserv = function(dbot) {
             if(!_.has(this.authStack, server)) this.authStack[server] = {};
             this.authStack[server][nick] = callback;
             dbot.say(server, nickserv, infoCommand + ' ' + nick + ' *');
+            setTimeout(function() {
+                delete this.authStack[server][nick];
+                callback(false);
+            }, 4000)
         },
 
         'getUserHost': function(server, nick, callback) {
