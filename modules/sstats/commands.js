@@ -201,8 +201,35 @@ var commands = function(dbot) {
                     event.reply(word + ' isn\'t being tracked.');
                 }
             });
+        },
+
+        // merge to some raw highscore thing 
+        '~wordusers': function(event) {
+            var word = event.params[1].trim();
+            this.api.getTrackedWord(word, function(tWord) {
+                if(tWord) {
+                    var pCounts = _.chain(tWord.users)
+                        .pairs()
+                        .sortBy(function(p) { return p[1]; })
+                        .reverse()
+                        .first(10)
+                        .value();
+
+                    async.eachSeries(pCounts, function(pCount, next) {
+                        dbot.api.users.getUser(pCount[0], function(user) {
+                            pCount[0] = user.primaryNick; next();
+                        });
+                    }, function() {
+                        event.reply(this.internalAPI.formatHighscore('Top ' + word + ' users: ', pCounts));
+                    }.bind(this));
+                } else {
+                    event.reply(word + ' isn\'t being tracked.');
+                }
+            }.bind(this));
         }
     };
+
+    commands['~wordusers'].regex = [/^~wordusers ([\d\w[\]{}^|\\`_-]+?)/, 2];
     commands['~trackword'].access = 'power_user';
     return commands;
 };
