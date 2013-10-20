@@ -11,7 +11,7 @@ var nickserv = function(dbot) {
 
             if(!_.has(this.authStack, server)) this.authStack[server] = {};
             this.authStack[server][nick] = callback;
-            dbot.say(server, nickserv, infoCommand + ' ' + nick);
+            dbot.say(server, nickserv, infoCommand + ' ' + nick + ' *');
         },
 
         'getUserHost': function(server, nick, callback) {
@@ -34,9 +34,16 @@ var nickserv = function(dbot) {
     this.commands = {
         '~auth': function(event) {
             var user = event.params[1] || event.user;
-            this.api.auth(event.server, user, function(isAuthed) {
+            this.api.auth(event.server, user, function(isAuthed, account) {
                 if(isAuthed) {
-                    event.reply(dbot.t('authed', { 'nick': user })); 
+                    if(user == account) {
+                        event.reply(dbot.t('authed', { 'nick': user })); 
+                    } else {
+                        event.reply(dbot.t('authed_as', { 
+                            'nick': user,
+                            'account': account
+                        })); 
+                    }
                 } else {
                     event.reply(dbot.t('not_authed', { 'nick': user })); 
                 }
@@ -67,10 +74,10 @@ var nickserv = function(dbot) {
             if(event.user == nickserv) {
                 var info = event.params.match(statusRegex);
                 if(info && _.has(this.authStack, event.server)) {
-                    if(info[2] == acceptableState) {
-                        this.authStack[event.server][info[1]](true);
+                    if(info[3] == acceptableState) {
+                        this.authStack[event.server][info[1]](true, info[2]);
                     } else {
-                        this.authStack[event.server][info[1]](false);
+                        this.authStack[event.server][info[2]](false, info[2]);
                     }
                 }
             }
@@ -87,8 +94,6 @@ var nickserv = function(dbot) {
             var params = event.params.split(' '),
                 nick = params[1],
                 host = params[3];
-
-            console.log(params);
 
             if(_.has(this.userStack, event.server) && _.has(this.userStack[event.server], nick)) {
                 var callback = this.userStack[event.server][nick];

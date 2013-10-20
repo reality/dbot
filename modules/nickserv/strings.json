@@ -2,7 +2,10 @@
     "authed": {
         "en": "{nick} is authed with nickserv.",
 	"fr": "{nick} est authentifié avec nickserv.",
-    "it": "{nick} è autenticato con nickserv."
+        "it": "{nick} è autenticato con nickserv."
+    },
+    "authed_as": {
+        "en": "{nick} is authed as {account} with nickserv.",
     },
     "not_authed": {
         "en": "{nick} is not authed with nickserv.",
