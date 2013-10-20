@@ -187,7 +187,7 @@ var commands = function(dbot) {
         },
 
         '~word': function(event) {
-            var word = event.params[1].trim();
+            var word = event.params[1].trim().toLowerCase();
             this.api.getTrackedWord(word, function(tWord) {
                 if(tWord) {
                     event.reply(dbot.t('sstats_word', {
@@ -205,7 +205,7 @@ var commands = function(dbot) {
 
         // merge to some raw highscore thing 
         '~wordusers': function(event) {
-            var word = event.params[1].trim();
+            var word = event.params[1].trim().toLowerCase();
             this.api.getTrackedWord(word, function(tWord) {
                 if(tWord) {
                     var pCounts = _.chain(tWord.users)
