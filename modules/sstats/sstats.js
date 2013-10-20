@@ -115,6 +115,7 @@ var sstats = function(dbot) {
         if(event.message.charAt(0) != '~') {
             var wMap = {}; // Why reduce isn't working idk
             _.each(words, function(word) {
+                word = word.toLowerCase();
                 if(!_.has(wMap, word)) wMap[word] = 0;
                 wMap[word]++;
             });
