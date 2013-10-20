@@ -32,8 +32,12 @@ var api = function(dbot) {
                     callback(false);
                 } else {
                     if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
-                        dbot.api.nickserv.auth(user.server, user.currentNick, function(result) {
-                            callback(result);
+                        dbot.api.nickserv.auth(user.server, user.currentNick, function(result, primary) {
+                            if(result == true && primary == user.primaryNick) {
+                                callback(true);
+                            } else {
+                                callback(false);
+                            }
                         });
                     } else {
                         callback(true);
