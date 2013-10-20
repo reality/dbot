@@ -54,7 +54,7 @@ var commands = function(dbot) {
         },
 
         '~time': function(event) {
-            var nick = event.input[1];
+            var nick = event.params[1].trim();
             this.api.resolveUser(event.server, nick, function(user) {
                 if(user) {
                     if(user.timezone) {
