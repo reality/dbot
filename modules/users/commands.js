@@ -53,6 +53,22 @@ var commands = function(dbot) {
             }
         },
 
+        '~time': function(event) {
+            var nick = event.input[1];
+            this.api.resolveUser(event.server, nick, function(user) {
+                if(user) {
+                    if(user.timezone) {
+                        var fDate = moment.tz(user.timezone).format('LLL');                 
+                        event.reply('The time for ' + user.primaryNick + ' is: ' + fDate);
+                    } else {
+                        event.reply(user.primaryNick + ' doesn\'t have a timezone set. They can do this with ~timezone.');
+                    }
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            });
+        },
+
         '~setmobilealias': function(event) {
             if(_.include(event.rUser.aliases, event.params[1])) {
                 if(!_.has(event.rUser, 'mobile')) event.rUser.mobile = [];
