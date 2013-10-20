@@ -74,13 +74,11 @@ var sstats = function(dbot) {
     };
 
     this.listener = function(event) {
-        if(event.message.charAt(0) != '~') return;
-
         event.cStats.lines++;
         event.uStats.lines++;
 
-        event.message = event.message.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "");
-        var words = event.message.split(' '),
+        var message = event.message.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+        var words = message.split(' '),
             wCount = words.length,
             capitals = 0,
             curses = 0;
@@ -115,24 +113,26 @@ var sstats = function(dbot) {
         }
 
         // Look for tracked words.
-        var wMap = {}; // Why reduce isn't working idk
-        _.each(words, function(word) {
-            word = word.toLowerCase();
-            if(!_.has(wMap, word)) wMap[word] = 0;
-            wMap[word]++;
-        });
-        _.each(wMap, function(count, word) {
-            this.api.getTrackedWord(word, function(tWord) {
-                if(tWord) {
-                    tWord.total += count;
-                    if(!_.has(tWord.channels, event.rChannel.id)) tWord.channels[event.rChannel.id] = 0;
-                    if(!_.has(tWord.users, event.rUser.id)) tWord.users[event.rUser.id] = 0;
-                    tWord.channels[event.rChannel.id] += count;
-                    tWord.users[event.rUser.id] += count;
-                    this.db.save('tracked_words', word, tWord, function() {}); 
-                }
-            }.bind(this));
-        }, this);
+        if(event.message.charAt(0) != '~') return;
+            var wMap = {}; // Why reduce isn't working idk
+            _.each(words, function(word) {
+                word = word.toLowerCase();
+                if(!_.has(wMap, word)) wMap[word] = 0;
+                wMap[word]++;
+            });
+            _.each(wMap, function(count, word) {
+                this.api.getTrackedWord(word, function(tWord) {
+                    if(tWord) {
+                        tWord.total += count;
+                        if(!_.has(tWord.channels, event.rChannel.id)) tWord.channels[event.rChannel.id] = 0;
+                        if(!_.has(tWord.users, event.rUser.id)) tWord.users[event.rUser.id] = 0;
+                        tWord.channels[event.rChannel.id] += count;
+                        tWord.users[event.rUser.id] += count;
+                        this.db.save('tracked_words', word, tWord, function() {}); 
+                    }
+                }.bind(this));
+            }, this);
+        }
 
         this.db.save('channel_stats', event.cStats.id, event.cStats, function() {});
         this.db.save('user_stats', event.uStats.id, event.uStats, function() {});
