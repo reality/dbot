@@ -171,8 +171,39 @@ var commands = function(dbot) {
                     event.reply('Unknown user.');
                 } 
             }.bind(this));
+        },
+
+        '~trackword': function(event) {
+            var word = event.params[1].trim();
+            this.api.getTrackedWord(word, function(tWord) {
+                if(!tWord) {
+                    this.api.createTrackedWord(word, function(tWord) {
+                        event.reply('Now tracking ' + word); 
+                    });
+                } else {
+                    event.reply('Word already being tracked.');
+                }
+            }.bind(this));
+        },
+
+        '~word': function(event) {
+            var word = event.params[1].trim();
+            this.api.getTrackedWord(word, function(tWord) {
+                if(tWord) {
+                    event.reply(dbot.t('sstats_word', {
+                        'word': word,
+                        'total': tWord.total,
+                        'channels': _.keys(tWord.channels).length, 
+                        'users': _.keys(tWord.users).length,
+                        'since': new Date(tWord.creation)
+                    }));
+                } else {
+                    event.reply(word + ' isn\'t being tracked.');
+                }
+            });
         }
     };
+    commands['~trackword'].access = 'power_user';
     return commands;
 };
 

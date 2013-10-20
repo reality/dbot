@@ -19,5 +19,8 @@
     },
     "sstats_ucwords": {
         "en": " - {words} words, {curses} curses, {capitals} capitalised words in {channel}"
+    },
+    "sstats_word": {
+        "en": "{word} has been used {total} times by {users} users in {channels} channels since {since}."
     }
 }

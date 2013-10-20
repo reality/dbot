@@ -110,6 +110,28 @@ var sstats = function(dbot) {
             event.uStats.channels[event.rChannel.id].capitals += capitals;
             event.uStats.channels[event.rChannel.id].curses += curses;
         }
+
+        // Look for tracked words.
+        if(event.message.charAt(0) != '~') {
+            var wMap = {}; // Why reduce isn't working idk
+            _.each(words, function(word) {
+                if(!_.has(wMap, word)) wMap[word] = 0;
+                wMap[word]++;
+            });
+            _.each(wMap, function(count, word) {
+                this.api.getTrackedWord(word, function(tWord) {
+                    if(tWord) {
+                        tWord.total += count;
+                        if(!_.has(tWord.channels, event.rChannel.id)) tWord.channels[event.rChannel.id] = 0;
+                        if(!_.has(tWord.users, event.rUser.id)) tWord.users[event.rUser.id] = 0;
+                        tWord.channels[event.rChannel.id] += count;
+                        tWord.users[event.rUser.id] += count;
+                        this.db.save('tracked_words', word, tWord, function() {}); 
+                    }
+                }.bind(this));
+            }, this);
+        }
+
         this.db.save('channel_stats', event.cStats.id, event.cStats, function() {});
         this.db.save('user_stats', event.uStats.id, event.uStats, function() {});
     }.bind(this);

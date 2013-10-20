@@ -42,6 +42,24 @@ var api = function(dbot) {
             this.db.save('channel_stats', id, cStats, function(err, cStats) {
                 callback(cStats);
             });
+        },
+
+        'createTrackedWord': function(word, callback) {
+            var tWord = {
+                'total': 0,
+                'channels': {},
+                'users': {},
+                'creation': new Date().getTime()
+            };
+            this.db.save('tracked_words', word, tWord, function(err, tWord) {
+                callback(tWord);
+            });
+        },
+
+        'getTrackedWord': function(word, callback) {
+            this.db.read('tracked_words', word, function(err, tWord) {
+                callback(tWord);
+            });
         }
     };
 
