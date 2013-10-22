@@ -12,7 +12,8 @@ var commands = function(dbot) {
                             'user': user.primaryNick,
                             'words': uStats.words,
                             'curses': uStats.curses,
-                            'capitals': uStats.capitals
+                            'capitals': uStats.capitals,
+                            'date': new Date(uStats.creation).format('dd/mm/YYYY')
                         });
                         if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
                             ucStats = uStats.channels[event.rChannel.id];
@@ -49,7 +50,8 @@ var commands = function(dbot) {
                     if(uStats) {
                         var output = dbot.t('sstats_tlines', { 
                             'user': user.primaryNick,
-                            'lines': uStats.lines 
+                            'lines': uStats.lines,
+                            'date': new Date(uStats.creation).format('dd/mm/YYYY')
                         });
                         if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
                             output += dbot.t('sstats_uclines', { 

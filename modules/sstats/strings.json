@@ -3,7 +3,7 @@
         "en": "Unknown user."
     },
     "sstats_tlines": {
-        "en": "{user} has posted {lines} lines"
+        "en": "{user} has posted {lines} lines since {date}"
     },
     "sstats_uclines": {
         "en": " ({lines} in {channel})"
@@ -15,7 +15,7 @@
         "en": "{lines} lines posted in {channel}."
     },
     "sstats_uwords": {
-        "en": "{user} has used {words} words ({curses} curses, {capitals} capitalised words)"
+        "en": "{user} has used {words} words ({curses} curses, {capitals} capitalised words) since {date}"
     },
     "sstats_ucwords": {
         "en": " - {words} words, {curses} curses, {capitals} capitalised words in {channel}"
