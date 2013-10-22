@@ -46,6 +46,7 @@ var api = function(dbot) {
 
         'createTrackedWord': function(word, callback) {
             var tWord = {
+                'word': word,
                 'total': 0,
                 'channels': {},
                 'users': {},
