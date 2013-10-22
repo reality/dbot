@@ -1,6 +1,8 @@
 var _ = require('underscore')._;
 
 var kick = function(dbot) {
+    if(!_.has(dbot.db, 'hosts')) dbot.db.hosts = {};
+    if(!_.has(dbot.db, 'tempBans')) dbot.db.tempBans = {};
     this.hosts = dbot.db.hosts;
     this.tempBans = dbot.db.tempBans;
     
