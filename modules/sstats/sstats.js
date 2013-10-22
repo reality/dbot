@@ -199,7 +199,7 @@ var sstats = function(dbot) {
                     delete tWord.users[oldUser.id];
                     this.db.save('tracked_words', tWord.word, tWord, function() {});
                 }
-            }.bind(this));
+            }.bind(this), function() {});
         }.bind(this));
     }.bind(this);
 };
