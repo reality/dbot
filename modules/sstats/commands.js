@@ -13,7 +13,7 @@ var commands = function(dbot) {
                             'words': uStats.words,
                             'curses': uStats.curses,
                             'capitals': uStats.capitals,
-                            'date': new Date(uStats.creation).format('dd/mm/YYYY')
+                            'date': moment(uStats.creation).format('dd/mm/YYYY')
                         });
                         if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
                             ucStats = uStats.channels[event.rChannel.id];
@@ -51,7 +51,7 @@ var commands = function(dbot) {
                         var output = dbot.t('sstats_tlines', { 
                             'user': user.primaryNick,
                             'lines': uStats.lines,
-                            'date': new Date(uStats.creation).format('dd/mm/YYYY')
+                            'date': moment(uStats.creation).format('dd/mm/YYYY')
                         });
                         if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
                             output += dbot.t('sstats_uclines', { 
@@ -197,7 +197,7 @@ var commands = function(dbot) {
                         'total': tWord.total,
                         'channels': _.keys(tWord.channels).length, 
                         'users': _.keys(tWord.users).length,
-                        'since': new Date(tWord.creation)
+                        'since': moment(tWord.creation).format('dd/mm/YYYY');
                     }));
                 } else {
                     event.reply(word + ' isn\'t being tracked.');
