@@ -197,7 +197,7 @@ var commands = function(dbot) {
                         'total': tWord.total,
                         'channels': _.keys(tWord.channels).length, 
                         'users': _.keys(tWord.users).length,
-                        'since': moment(tWord.creation).format('dd/mm/YYYY');
+                        'since': moment(tWord.creation).format('dd/mm/YYYY')
                     }));
                 } else {
                     event.reply(word + ' isn\'t being tracked.');
