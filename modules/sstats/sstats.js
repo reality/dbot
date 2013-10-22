@@ -185,7 +185,7 @@ var sstats = function(dbot) {
                         }
                     });
                     this.db.del('user_stats', oldUser.id, function() {});
-                    this.db.save('user_stats', newUser.id, newUser, function() {});
+                    this.db.save('user_stats', newUser.id, nuStats, function() {});
                 }.bind(this));
             }.bind(this));
 
