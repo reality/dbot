@@ -172,6 +172,9 @@ var commands = function(dbot) {
                                     this.db.save('user_redirs', oldUser.id, user.id, function() {});
                                     this.db.save('users', user.id, user, function(err) {
                                         if(!err) {
+                                            if(_.has(this.userCache, event.server) && _.has(this.userCache[event.server], oldUser.currentNick)) {
+                                                delete this.userCache[event.server][oldUser.currentNick];
+                                            }
                                             event.reply(dbot.t('merged_users', { 
                                                 'old_user': secondaryUser,
                                                 'new_user': primaryUser
