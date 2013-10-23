@@ -46,19 +46,9 @@ var api = function(dbot) {
         },
 
         'getProfileByUUID': function(uuid, callback){
-            if(uuid){
-                this.db.read('profiles', uuid, function(err, profile){
-                    if(!err){
-                        callback(false, uuid, profile);
-                    }
-                    else{
-                        callback(true, uuid, null);
-                    }
-                });
-            }
-            else{
-                callback(true, null, null);
-            }
+            this.db.read('profiles', uuid, function(err, profile){
+                callback(profile);
+            });
         },
 
         'getAllProfiles': function(callback){
