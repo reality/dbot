@@ -8,9 +8,10 @@
             "tagline": null,
             "avatar": null,
             "bio": null,
+            "lastfm": null,
             "favourites": {
               "colour": null
-            },
+            }
         }
     },
     "dependencies": [ "web", "quotes", "users" ]
