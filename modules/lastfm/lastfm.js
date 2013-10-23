@@ -29,7 +29,11 @@ var lastfm = function(dbot) {
                             event.reply('Unknown Last.FM user.');
                         } else if(_.has(body, 'recenttracks') && !_.isUndefined(body.recenttracks.track[0])) {
                             var track = body.recenttracks.track[0]; 
-                            event.reply(event.user + ' is listening to ' + track.name + ' by ' + track.artist['#text']);
+                            if(_.has(track, '@attr') && _.has(track['@attr'], 'nowplaying') && track['@attr'].nowplaying == 'true') {
+                                event.reply(event.user + ' is listening to ' + track.name + ' by ' + track.artist['#text']);
+                            } else {
+                                event.reply(event.user + ' last listened to ' + track.name + ' by ' + track.artist['#text']);
+                            }
                         } else {
                             event.reply(event.user + ' isn\'t listening to anything right now :\'(');
                         }
