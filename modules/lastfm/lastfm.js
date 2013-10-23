@@ -12,12 +12,12 @@ var lastfm = function(dbot) {
     this.commands = {
         '~listening': function(event) {
             dbot.api.profile.getProfileByUUID(event.rUser.id, function(profile) {
-                if(profile && _.has(profile.profile, 'lastfm')) {
+                if(profile && profile.profile,lastfm != null) {
                     profile = profile.profile;
                     request.get(this.ApiRoot, {
                         'qs': {
                             'user': profile.lastfm,
-                            'limit': 1,
+                            'limit': 2,
                             'nowplaying': true,
                             'method': 'user.getrecenttracks',
                             'api_key': this.config.api_key,
