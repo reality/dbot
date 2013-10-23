@@ -176,12 +176,14 @@ var sstats = function(dbot) {
             this.api.getUserStats(oldUser.id, function(ouStats) {
                 this.api.getUserStats(newUser.id, function(nuStats) {
                     _.each(ouStats, function(stat, key) {
-                        if(_.isObject(stat) && key != 'creation') {
-                            _.each(ouStats[key], function(stat, sKey) {
-                                nuStats[key][sKey] += stat; 
-                            });
-                        } else {
-                            nuStats[key] += stat; 
+                        if(key != 'creation' && key != 'id') {
+                            if(_.isObject(stat)) {
+                                _.each(ouStats[key], function(stat, sKey) {
+                                    nuStats[key][sKey] += stat; 
+                                });
+                            } else {
+                                nuStats[key] += stat; 
+                            }
                         }
                     });
                     this.db.del('user_stats', oldUser.id, function() {});
