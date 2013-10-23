@@ -39,8 +39,8 @@ var youtube = function(dbot) {
                 'seconds': seconds
             });
 
-            var link = v.link[0].href.match(this.LinkRegex)
-            if(!_.isUndefined(link)) {
+            var link = v.link[0].href.match(this.LinkRegex);
+            if(link) {
                 res += ' - http://youtu.be/' + link[2];
             }
 
