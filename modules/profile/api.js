@@ -33,8 +33,7 @@ var api = function(dbot) {
                     this.db.read('profiles', user.id, function(err, profile){
                         if(!err){
                             callback(false, user, profile);
-                        }
-                        else{
+                        } else {
                             callback(true, user, null);
                         }
                     });
