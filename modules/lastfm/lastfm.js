@@ -32,7 +32,8 @@ var lastfm = function(dbot) {
                     'method': 'artist.gettoptracks',
                     'mbid': mbid,
                     'api_key': this.config.api_key,
-                    'format': 'json'
+                    'format': 'json',
+                    'limit': 10
                 },
                 'json': true
             }, function(err, res, body) {
@@ -53,7 +54,8 @@ var lastfm = function(dbot) {
                     'method': 'artist.getsimilar',
                     'mbid': mbid,
                     'api_key': this.config.api_key,
-                    'format': 'json'
+                    'format': 'json',
+                    'limit': 10
                 },
                 'json': true
             }, function(err, res, body) {
