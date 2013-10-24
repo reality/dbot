@@ -26,15 +26,15 @@ var lastfm = function(dbot) {
                         'json': true
                     }, function(err, res, body) {
                         if(_.has(body, 'error') && body.error == 6) {
-                            callback('no_user', null);
+                            callback('no_user', user, null);
                         } else if(_.has(body, 'recenttracks') && !_.isUndefined(body.recenttracks.track[0])) {
-                            callback(null, body.recenttracks.track[0]);
+                            callback(null, user, body.recenttracks.track[0]);
                         } else {
-                            callback('no_listen', null);
+                            callback('no_listen', user, null);
                         }
                     }); 
                 } else {
-                    callback('no_profile', null);
+                    callback('no_profile', user, null);
                 }
             }.bind(this));
 
@@ -43,7 +43,7 @@ var lastfm = function(dbot) {
 
     this.commands = {
         '~listening': function(event) {
-            var outputListening = function(err, track) {
+            var outputListening = function(err, user, track) {
                 if(!err) {
                     var term = track.name + ' ' + track.artist['#text'],
                         output = '';
@@ -90,7 +90,6 @@ var lastfm = function(dbot) {
                     }
                 }.bind(this));
             } else {
-                user = event.rUser;
                 this.api.getListening(event.rUser, outputListening);
             }
         }
