@@ -13,6 +13,21 @@ var youtube = function(dbot) {
     };
     this.LinkRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
+    this.api = {
+        'search': function(term, callback) {
+            var qs = _.clone(this.params);
+            request.get(this.ApiRoot + '/videos', {
+                'qs': _.extend(qs, { 
+                    'q': term,
+                    'max-results': 1
+                }),
+                'json': true
+            }, function(error, response, body) {
+                callback(body); 
+            }.bind(this));
+        }
+    };
+
     this.internalAPI = {
         'formatLink': function(v) {
             var seconds = v['media$group']['yt$duration'].seconds,
@@ -50,14 +65,7 @@ var youtube = function(dbot) {
 
     this.commands = {
         '~youtube': function(event) {
-            var qs = _.clone(this.params);
-            request.get(this.ApiRoot + '/videos', {
-                'qs': _.extend(qs, { 
-                    'q': event.input[1],
-                    'max-results': 1
-                }),
-                'json': true
-            }, function(error, response, body) {
+            this.api.search(event.input[1], function(body) {
                 if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
                     event.reply(this.internalAPI.formatLink(body.feed.entry[0]));
                 } else {

@@ -29,19 +29,31 @@ var lastfm = function(dbot) {
                             event.reply('Unknown Last.FM user.');
                         } else if(_.has(body, 'recenttracks') && !_.isUndefined(body.recenttracks.track[0])) {
                             var track = body.recenttracks.track[0]; 
+                                term = track.name + ' ' + track.artist['#text'],
+                                output = '';
                             if(_.has(track, '@attr') && _.has(track['@attr'], 'nowplaying') && track['@attr'].nowplaying == 'true') {
-                                event.reply(dbot.t('now_listening', {
+                                output = dbot.t('now_listening', {
                                     'user': event.user,
                                     'track': track.name,
                                     'artist': track.artist['#text']
-                                }));
+                                });
                             } else {
-                                event.reply(dbot.t('last_listened', {
+                                output = dbot.t('last_listened', {
                                     'user': event.user,
                                     'track': track.name,
                                     'artist': track.artist['#text']
-                                }));
+                                });
                             }
+                            dbot.api.youtube.search(term, function(body) {
+                                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
+                                    var v = body.feed.entry[0];
+                                        link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
+                                    if(link) {
+                                        output += ' - http://youtu.be/' + link[2];
+                                    }
+                                }
+                                event.reply(output);
+                            });
                         } else {
                             event.reply(dbot.t('no_listen', { 'user': event.user }));
                         }
