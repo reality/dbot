@@ -179,7 +179,9 @@ var sstats = function(dbot) {
                         if(key != 'creation' && key != 'id') {
                             if(_.isObject(stat)) {
                                 _.each(ouStats[key], function(stat, sKey) {
-                                    nuStats[key][sKey] += stat; 
+                                    _.each(ouStats[key][sKey], function(stat, ssKey) {
+                                        nuStats[key][sKey][ssKey] += stat; 
+                                    });
                                 });
                             } else {
                                 nuStats[key] += stat; 
