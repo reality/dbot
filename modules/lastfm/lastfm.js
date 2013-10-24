@@ -81,7 +81,8 @@ var lastfm = function(dbot) {
             }, function(err, res, body) {
                 if(_.has(body, 'error') && body.error == 6) {
                     callback('no_user', null);
-                } else if(_.has(body, 'recenttracks') && !_.isUndefined(body.recenttracks.track[0])) {
+                } else if(_.has(body, 'recenttracks') && _.has(body.recenttracks, 'track') 
+                        && !_.isUndefined(body.recenttracks.track[0])) {
                     callback(null, body.recenttracks.track[0]);
                 } else {
                     callback('no_listen', null);
