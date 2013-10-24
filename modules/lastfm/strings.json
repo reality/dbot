@@ -7,5 +7,8 @@
     },
     "no_listen": {
         "en": "{user} doesn't seem to have listened to anything recently :'("
+    },
+    "taste_compat": {
+        "en": "{user1} and {user2} are {score}% musically compatible!"
     }
 }

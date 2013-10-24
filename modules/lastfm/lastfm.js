@@ -38,6 +38,44 @@ var lastfm = function(dbot) {
                 }
             }.bind(this));
 
+        },
+
+        'tasteCompare': function(user, oUser, callback) {
+            dbot.api.profile.getProfileByUUID(user.id, function(profile) {
+                if(profile && profile.profile.lastfm != null) {
+                    profile = profile.profile;
+                    dbot.api.profile.getProfileByUUID(oUser.id, function(oProfile) {
+                        if(oProfile && oProfile.profile.lastfm != null) {
+                            oProfile = oProfile.profile;
+                            request.get(this.ApiRoot, {
+                                'qs': {
+                                    'type1': 'user',
+                                    'type2': 'user',
+                                    'value1': profile.lastfm,
+                                    'value2': oProfile.lastfm,
+                                    'method': 'tasteometer.compare',
+                                    'api_key': this.config.api_key,
+                                    'format': 'json'
+                                },
+                                'json': true
+                            }, function(err, res, body) {
+                                console.log(body);
+                                if(_.has(body, 'error') && body.error == 6 || body.error == 7) {
+                                    callback('no_user', user, null);
+                                } else if(_.has(body, 'comparison') && _.has(body.comparison, 'result')) {
+                                    callback(null, body.comparison.result);
+                                } else {
+                                    callback('idk', null);
+                                }
+                            }); 
+                        } else {
+                            callback('no_oprofile', null);
+                        }
+                    }.bind(this));
+                } else {
+                    callback('no_profile', null);
+                }
+            }.bind(this));
         }
     };
 
@@ -92,6 +130,36 @@ var lastfm = function(dbot) {
             } else {
                 this.api.getListening(event.rUser, outputListening);
             }
+        },
+
+        '~taste': function(event) {
+            var oNick = event.params[1];
+            dbot.api.users.resolveUser(event.server, oNick, function(oUser) {
+                if(oUser) {
+                    this.api.tasteCompare(event.rUser, oUser, function(err, comp) {
+                        if(!err) {
+                            var score = Math.floor(comp.score * 100);
+                            event.reply(dbot.t('taste_compat', {
+                                'user1': event.user,
+                                'user2': oUser.currentNick,
+                                'score': score
+                            }));
+                        } else {
+                            if(err == 'no_user') {
+                                event.reply('Unknown Last.FM user.');
+                            } else if(err == 'no_profile') {
+                                event.reply(event.user + ': Set a lastfm username with "~set lastfm username"');
+                            } else if(err == 'no_oprofile') {
+                                event.reply(oUser.currentNick + ': Set a lastfm username with "~set lastfm username"');
+                            } else {
+                                event.reply('Well something went wrong and I don\'t know what it means');
+                            }
+                        }
+                    });
+                } else {
+                    event.reply('Unknown user.');
+                }
+            }.bind(this));
         }
     };
 };
