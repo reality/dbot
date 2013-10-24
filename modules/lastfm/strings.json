@@ -1,0 +1,11 @@
+{
+    "now_listening": {
+        "en": "{user} is listening to {track} by {artist}"
+    },
+    "last_listened": {
+        "en": "{user} last listened to {track} by {artist}"
+    },
+    "no_listen": {
+        "en": "{user} doesn't seem to have listened to anything recently :'("
+    }
+}

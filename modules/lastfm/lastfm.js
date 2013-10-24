@@ -30,12 +30,20 @@ var lastfm = function(dbot) {
                         } else if(_.has(body, 'recenttracks') && !_.isUndefined(body.recenttracks.track[0])) {
                             var track = body.recenttracks.track[0]; 
                             if(_.has(track, '@attr') && _.has(track['@attr'], 'nowplaying') && track['@attr'].nowplaying == 'true') {
-                                event.reply(event.user + ' is listening to ' + track.name + ' by ' + track.artist['#text']);
+                                event.reply(dbot.t('now_listening', {
+                                    'user': event.user,
+                                    'track': track.name,
+                                    'artist': track.artist['#text']
+                                }));
                             } else {
-                                event.reply(event.user + ' last listened to ' + track.name + ' by ' + track.artist['#text']);
+                                event.reply(dbot.t('last_listened', {
+                                    'user': event.user,
+                                    'track': track.name,
+                                    'artist': track.artist['#text']
+                                }));
                             }
                         } else {
-                            event.reply(event.user + ' isn\'t listening to anything right now :\'(');
+                            event.reply(dbot.t('no_listen', { 'user': event.user }));
                         }
                     }); 
                 } else {
