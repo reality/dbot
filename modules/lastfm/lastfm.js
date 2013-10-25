@@ -116,138 +116,147 @@ var lastfm = function(dbot) {
 
     this.commands = {
         '~suggestion': function(event) {
-            if(event.rProfile && _.has(event.rProfile, 'lastfm')) {
-                this.api.getListening(event.rProfile.lastfm, function(err, track) {
-                    if(!err) {
-                        this.api.getSimilarArtists(track.artist.mbid, function(err, similar) {
-                            if(!err) {
-                                var choice = _.random(0, similar.length - 1); 
-                                this.api.getRandomArtistTrack(similar[choice].mbid, function(err, track) {
-                                    if(!err) {
-                                        var output = dbot.t('lfm_suggestion', {
-                                            'user': event.user,
-                                            'name': track.name,
-                                            'artist': track.artist.name
-                                        });
-                                        var term = track.name + ' ' + track.artist.name;
-                                        dbot.api.youtube.search(term, function(body) {
-                                            if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                                                var v = body.feed.entry[0];
-                                                    link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
-                                                if(link) {
-                                                    output += ' - http://youtu.be/' + link[2];
-                                                }
+            this.api.getListening(event.rProfile.lastfm, function(err, track) {
+                if(!err) {
+                    this.api.getSimilarArtists(track.artist.mbid, function(err, similar) {
+                        if(!err) {
+                            var choice = _.random(0, similar.length - 1); 
+                            this.api.getRandomArtistTrack(similar[choice].mbid, function(err, track) {
+                                if(!err) {
+                                    var output = dbot.t('lfm_suggestion', {
+                                        'user': event.user,
+                                        'name': track.name,
+                                        'artist': track.artist.name
+                                    });
+                                    var term = track.name + ' ' + track.artist.name;
+                                    dbot.api.youtube.search(term, function(body) {
+                                        if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
+                                            var v = body.feed.entry[0];
+                                                link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
+                                            if(link) {
+                                                output += ' - http://youtu.be/' + link[2];
                                             }
-                                            event.reply(output);
-                                        });
-                                    } else {
-                                        event.reply('something broke');
-                                    }
-                                }); 
-                            } else {
-                                event.reply('something broke');
-                            }
-                        }.bind(this));
-                    } else {
-                        if(err == 'no_user') {
-                            event.reply('Unknown Last.FM user.');
-                        } else if(err == 'no_listen') {
-                            event.reply(dbot.t('no_listen', { 'user': event.user }));
+                                        }
+                                        event.reply(output);
+                                    });
+                                } else {
+                                    event.reply('something broke');
+                                }
+                            }); 
+                        } else {
+                            event.reply('something broke');
                         }
+                    }.bind(this));
+                } else {
+                    if(err == 'no_user') {
+                        event.reply('Unknown Last.FM user.');
+                    } else if(err == 'no_listen') {
+                        event.reply(dbot.t('no_listen', { 'user': event.user }));
                     }
-                }.bind(this));
-            } else {
-                event.reply(event.user + ': Set a lastfm username with "~set lastfm username"');
-            }
+                }
+            }.bind(this));
         },
 
         '~listening': function(event) {
-            var getListening = function(user, lfm) {
-                if(user && lfm) {
-                    this.api.getListening(lfm, function(err, track) {
-                        if(!err) {
-                            var term = track.name + ' ' + track.artist['#text'],
-                                output = '';
-                            if(_.has(track, '@attr') && _.has(track['@attr'], 'nowplaying') && track['@attr'].nowplaying == 'true') {
-                                output = dbot.t('now_listening', {
-                                    'user': user.currentNick,
-                                    'track': track.name,
-                                    'artist': track.artist['#text']
-                                });
-                            } else {
-                                output = dbot.t('last_listened', {
-                                    'user': user.currentNick,
-                                    'track': track.name,
-                                    'artist': track.artist['#text']
-                                });
-                            }
-                            dbot.api.youtube.search(term, function(body) {
-                                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                                    var v = body.feed.entry[0];
-                                        link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
-                                    if(link) {
-                                        output += ' - http://youtu.be/' + link[2];
-                                    }
-                                }
-                                event.reply(output);
-                            });
-                        } else {
-                            if(err == 'no_user') {
-                                event.reply('Unknown LastFM user.');
-                            } else if(err == 'no_listen') {
-                                event.reply(dbot.t('no_listen', { 'user': user.currentNick }));
+            var user = event.rUser,
+                lfm = event.rProfile.lastfm;
+            if(event.res[0]) {
+                user = event.res[0].user;
+                lfm = event.res[0].lfm;
+            }
+
+            this.api.getListening(lfm, function(err, track) {
+                if(!err) {
+                    var term = track.name + ' ' + track.artist['#text'],
+                        output = '';
+                    if(_.has(track, '@attr') && _.has(track['@attr'], 'nowplaying') && track['@attr'].nowplaying == 'true') {
+                        output = dbot.t('now_listening', {
+                            'user': user.currentNick,
+                            'track': track.name,
+                            'artist': track.artist['#text']
+                        });
+                    } else {
+                        output = dbot.t('last_listened', {
+                            'user': user.currentNick,
+                            'track': track.name,
+                            'artist': track.artist['#text']
+                        });
+                    }
+                    dbot.api.youtube.search(term, function(body) {
+                        if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
+                            var v = body.feed.entry[0];
+                                link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
+                            if(link) {
+                                output += ' - http://youtu.be/' + link[2];
                             }
                         }
+                        event.reply(output);
                     });
                 } else {
-                    if(!user) {
-                        event.reply('Unknown user.');
-                    } else {
-                        event.reply(user.currentNick + ': Set a lastfm username with "~set lastfm username"');
+                    if(err == 'no_user') {
+                        event.reply('Unknown LastFM user.');
+                    } else if(err == 'no_listen') {
+                        event.reply(dbot.t('no_listen', { 'user': user.currentNick }));
                     }
                 }
-            }.bind(this);
-
-            if(event.params[1]) {
-                this.internalAPI.getLastFM(event.server, event.params[1], getListening);
-            } else {
-                getListening(event.rUser, event.rProfile.lastfm);
-            }
+            });
         },
 
         '~taste': function(event) {
-            if(event.rProfile && _.has(event.rProfile, 'lastfm')) {
-                this.internalAPI.getLastFM(event.server, event.params[1], function(u2, lfm2) {
-                    if(u2 && lfm2) {
-                        this.api.tasteCompare(event.rProfile.lastfm, lfm2, function(err, comp) {
-                            if(!err) {
-                                var score = Math.floor(comp.score * 100);
-                                event.reply(dbot.t('taste_compat', {
-                                    'user1': event.user,
-                                    'user2': u2.currentNick,
-                                    'score': score
-                                }));
-                            } else {
-                                if(err == 'no_user') {
-                                    event.reply('Unknown Last.FM user.');
-                                } else {
-                                    event.reply('Well something went wrong and I don\'t know what it means');
-                                }
-                            }
-                        });
+            var u1 = event.rUser,
+                lfm1 = event.rProfile.lastfm,
+                u2 = event.res[0].user,
+                lfm2 = event.res[0].lfm;
+
+            this.api.tasteCompare(event.rProfile.lastfm, lfm2, function(err, comp) {
+                if(!err) {
+                    var score = Math.floor(comp.score * 100);
+                    event.reply(dbot.t('taste_compat', {
+                        'user1': event.user,
+                        'user2': u2.currentNick,
+                        'score': score
+                    }));
+                } else {
+                    if(err == 'no_user') {
+                        event.reply('Unknown Last.FM user.');
                     } else {
-                        if(!u2) {
-                            event.reply('No such user.');
-                        } else {
-                            event.reply(u2.currentNick + ': Set a lastfm username with "~set lastfm username"');
-                        }
+                        event.reply('Well something went wrong and I don\'t know what it means');
                     }
-                }.bind(this));
-            } else {
-                event.reply(event.user + ': Set a lastfm username with "~set lastfm username"');
-            }
+                }
+            });
         }
     };
+    this.commands['~taste'].regex = [/^~taste ([\d\w[\]{}^|\\`_-]+?)/, 2];
+
+    _.each(this.commands, function(command) {
+        command.resolver = function(event, callback) {
+            if(event.rProfile && _.has(event.rProfile, 'lastfm')) {
+                if(event.params[1]) {
+                    this.internalAPI.getLastFM(event.server, event.params[1], function(user, lfm) {
+                        if(user && lfm) {
+                            event.res.push({
+                                'user': user,
+                                'lfm': lfm
+                            });
+                            callback(false); 
+                        } else {
+                            if(!user) {
+                                event.reply('Unknown user.');
+                            } else {
+                                event.reply(user.currentNick + ': Set a lastfm username with "~set lastfm username"'); 
+                            }
+                            callback(true);
+                        }
+                    });
+                } else {
+                    callback(false);
+                }
+            } else {
+                event.reply(event.user + ': Set a lastfm username with "~set lastfm username"'); 
+                callback(true);
+            }
+        }.bind(this);
+    }, this);
 };
 
 exports.fetch = function(dbot) {

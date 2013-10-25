@@ -75,8 +75,18 @@ var command = function(dbot) {
                     } else if(!isIgnoring && _.has(dbot.commands, commandName) && !dbot.commands[commandName].disabled) {
                         if(this.api.applyRegex(commandName, event)) {
                             try {
-                                var command = dbot.commands[commandName];
-                                var results = command.apply(dbot.modules[command.module], [event]);
+                                var command = dbot.commands[commandName],
+                                    results;
+                                if(_.has(command, 'resolver')) {
+                                    event.res = [];
+                                    command.resolver(event, function(err) {
+                                        if(!err) {
+                                            results = command.apply(dbot.modules[command.module], [event]);
+                                        }
+                                    });
+                                } else {
+                                    results = command.apply(dbot.modules[command.module], [event]);
+                                }
                             } catch(err) {
                                 if(dbot.config.debugMode == true) {
                                     var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
