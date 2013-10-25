@@ -11,6 +11,9 @@
     "taste_compat": {
         "en": "{user1} and {user2} are {score}% musically compatible!"
     },
+    "common_artists": {
+        "en": "Artists {user1} and {user2} have in common: {common}"
+    },
     "lfm_suggestion": {
         "en": "{user}: Try listening to {name} by {artist}"
     }

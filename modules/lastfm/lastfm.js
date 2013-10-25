@@ -224,9 +224,34 @@ var lastfm = function(dbot) {
                     }
                 }
             });
+        },
+
+        '~artists': function(event) {
+            var u1 = event.rUser,
+                lfm1 = event.rProfile.lastfm,
+                u2 = event.res[0].user,
+                lfm2 = event.res[0].lfm;
+
+            this.api.tasteCompare(event.rProfile.lastfm, lfm2, function(err, comp) {
+                if(!err) {
+                    var artists = _.pluck(comp.artists.artist, 'name').join(', ');
+                    event.reply(dbot.t('common_artists', {
+                        'user1': event.user,
+                        'user2': u2.currentNick,
+                        'common': artists
+                    }));
+                } else {
+                    if(err == 'no_user') {
+                        event.reply('Unknown Last.FM user.');
+                    } else {
+                        event.reply('Well something went wrong and I don\'t know what it means');
+                    }
+                }
+            });
         }
     };
     this.commands['~taste'].regex = [/^~taste ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    this.commands['~artists'].regex = [/^~artists ([\d\w[\]{}^|\\`_-]+?)/, 2];
 
     _.each(this.commands, function(command) {
         command.resolver = function(event, callback) {
