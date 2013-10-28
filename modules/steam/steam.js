@@ -98,7 +98,7 @@ var steam = function(dbot) {
                             });
                             if(_.has(player, 'gameserverip')) {
                                 var host = player.gameserverip.split(':');
-                                output += ' (Host: ' + host[0] + ' Port: ' + host[1] + ')';
+                                output += ' (Server: ' + host[0] + ' Port: ' + host[1] + ')';
                             }
                             event.reply(output);
                         } else {
