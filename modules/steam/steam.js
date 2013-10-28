@@ -70,7 +70,7 @@ var steam = function(dbot) {
                 },
                 'json': true
             }, function(err, res, body) {
-                if(_.has(body, 'response') && _.has(body.response, 'players')) {
+                if(_.has(body, 'response') && _.has(body.response, 'players') && body.response.player != null) {
                     callback(null, body.response.players[0]);
                 } else {
                     callback(true, null);
@@ -98,6 +98,8 @@ var steam = function(dbot) {
                             });
                             if(_.has(player, 'gameserverip')) {
                                 var host = player.gameserverip.split(':');
+                                :qa
+                                :qa
                                 output += ' (Server: ' + host[0] + ' Port: ' + host[1] + ')';
                             }
                             event.reply(output);
@@ -115,12 +117,12 @@ var steam = function(dbot) {
                                         }));
                                     }
                                 } else {
-                                    event.reply('something went wrong');
+                                    event.reply('Unknown Steam Username');
                                 }
                             });
                         }
                     } else {
-                        event.reply('something went wrong');
+                        event.reply('Unknown Steam Username');
                     }
                 }.bind(this));
             }.bind(this));
