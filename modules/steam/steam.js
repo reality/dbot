@@ -70,7 +70,8 @@ var steam = function(dbot) {
                 },
                 'json': true
             }, function(err, res, body) {
-                if(_.has(body, 'response') && _.has(body.response, 'players') && body.response.player != null) {
+                if(_.has(body, 'response') && _.has(body.response, 'players') &&
+                        body.response.players != null) {
                     callback(null, body.response.players[0]);
                 } else {
                     callback(true, null);
