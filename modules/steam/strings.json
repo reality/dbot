@@ -7,5 +7,8 @@
     },
     "steam_currently_playing": {
         "en": "{user} is currently playing {game}"
+    },
+    "steam_games": {
+        "en": "{u1} and {u2} have {count} games in common, including: {examples}"
     }
 }
