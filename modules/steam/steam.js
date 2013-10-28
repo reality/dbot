@@ -91,7 +91,7 @@ var steam = function(dbot) {
 
             this.api.getSteamID(snick, function(err, steamid) {
                 this.api.getProfile(steamid, function(err, player) {
-                    if(!err) {
+                    if(!err && player) {
                         if(_.has(player, 'gameextrainfo')) {
                             var output = dbot.t('steam_currently_playing', {
                                 'user': user.currentNick,
