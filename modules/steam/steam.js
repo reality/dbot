@@ -59,6 +59,23 @@ var steam = function(dbot) {
                     callback(true, null);
                 }
             });
+        },
+
+        'getProfile': function(steamid, callback) {
+             request.get(this.ApiRoot + 'ISteamUser/GetPlayerSummaries/v0002/', {
+                'qs': {
+                    'key': this.config.api_key,
+                    'steamids': steamid,
+                    'format': 'json'
+                },
+                'json': true
+            }, function(err, res, body) {
+                if(_.has(body, 'response') && _.has(body.response, 'players')) {
+                    callback(null, body.response.players[0]);
+                } else {
+                    callback(true, null);
+                }
+            });
         }
     };
 
@@ -72,22 +89,40 @@ var steam = function(dbot) {
             }
 
             this.api.getSteamID(snick, function(err, steamid) {
-                this.api.getRecentlyPlayed(steamid, function(err, games) {
+                this.api.getProfile(steamid, function(err, player) {
                     if(!err) {
-                        if(games.total_count != 0) {
-                            event.reply(dbot.t('steam_last_played', {
+                        if(_.has(player, 'gameextrainfo')) {
+                            var output = dbot.t('steam_currently_playing', {
                                 'user': user.currentNick,
-                                'game': games.games[0].name
-                            }));
+                                'game': player.gameextrainfo
+                            });
+                            if(_.has(player, 'gameserverip')) {
+                                var host = player.gameserverip.split(':');
+                                output += ' (Host: ' + host[0] + ' Port: ' + host[1] + ')';
+                            }
+                            event.reply(output);
                         } else {
-                            event.reply(dbot.t('steam_not_played', {
-                                'user': user.currentNick
-                            }));
+                            this.api.getRecentlyPlayed(steamid, function(err, games) {
+                                if(!err) {
+                                    if(games.total_count != 0) {
+                                        event.reply(dbot.t('steam_last_played', {
+                                            'user': user.currentNick,
+                                            'game': games.games[0].name
+                                        }));
+                                    } else {
+                                        event.reply(dbot.t('steam_not_played', {
+                                            'user': user.currentNick
+                                        }));
+                                    }
+                                } else {
+                                    event.reply('something went wrong');
+                                }
+                            });
                         }
                     } else {
                         event.reply('something went wrong');
                     }
-                }); 
+                }.bind(this));
             }.bind(this));
         }
     };

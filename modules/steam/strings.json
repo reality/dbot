@@ -4,5 +4,8 @@
     },
     "steam_not_played": {
         "en": "{user} didn't play anything recently :'("
+    },
+    "steam_currently_playing": {
+        "en": "{user} is currently playing {game}"
     }
 }
