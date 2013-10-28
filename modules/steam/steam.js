@@ -182,6 +182,7 @@ var steam = function(dbot) {
             }.bind(this));
         }
     };
+    this.commands['~games'].regex = [/^~games ([\d\w[\]{}^|\\`_-]+?)/, 2];
 
     _.each(this.commands, function(command) {
         command.resolver = function(event, callback) {
