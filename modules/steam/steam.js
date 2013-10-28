@@ -75,9 +75,14 @@ var steam = function(dbot) {
                 this.api.getRecentlyPlayed(steamid, function(err, games) {
                     if(!err) {
                         if(games.total_count != 0) {
-                            event.reply(user.currentNick + ' last played ' + games.games[0].name);
+                            event.reply(dbot.t('steam_last_played', {
+                                'user': user.currentNick,
+                                'game': games.games[0].name
+                            }));
                         } else {
-                            event.reply(user.currentNick + ' didn\'t play anything recently');
+                            event.reply(dbot.t('steam_not_played', {
+                                'user': user.currentNick
+                            }));
                         }
                     } else {
                         event.reply('something went wrong');
@@ -102,7 +107,7 @@ var steam = function(dbot) {
                             if(!user) {
                                 event.reply('Unknown user.');
                             } else {
-                                event.reply(user.currentNick + ': Set a steam username with "~set steam username"'); 
+                                event.reply(user.currentNick + ': Set a steam "vanity url" with "~set steam username"'); 
                             }
                             callback(true);
                         }
@@ -111,7 +116,7 @@ var steam = function(dbot) {
                     callback(false);
                 }
             } else {
-                event.reply(event.user + ': Set a steam username with "~set steam username"'); 
+                event.reply(event.user + ': Set a steam "vanity url" with "~set steam username"'); 
                 callback(true);
             }
         }.bind(this);
