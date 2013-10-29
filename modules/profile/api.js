@@ -67,7 +67,7 @@ var api = function(dbot) {
         'getAllProfilesWith': function(item, callback) {
             var profiles = [];
             this.db.scan('profiles', function(profile) {
-                if(_.has(profile.profile, item)) {
+                if(_.has(profile.profile, item) && profile.profile[item] != null) {
                     profiles.push(profile);
                 }
             }, function(err) {
