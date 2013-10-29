@@ -9,21 +9,21 @@
     },
     "thanks": {
         "en": "With thanks to:",
-        "fr": "Merci à:",
+        "fr": "Merci Ã :",
         "cy": "Gyda diolch i:",
-        "de": "Dankeschön geht an:",
+        "de": "DankeschÃ¶n geht an:",
         "it": "Ringraziamenti vanno a:"
     },
     "credits": {
         "en": "Authors",
-        "fr": "Développeurs",
+        "fr": "DÃ©veloppeurs",
         "cy": "Datblygwyr",
         "de": "Autor",
         "it": "Autori"
     },
     "pagetitle": {
         "en": "{botname} web interface",
-        "fr": "{botname} interface réseau",
+        "fr": "{botname} interface rÃ©seau",
         "de": "{botname} Web-Interface",
         "it": "{botname} interfaccia web",
         "cy": "{botname} rhyngwyneb gwe"
@@ -38,8 +38,8 @@
     },
     "fr": {
         "en": "French",
-        "fr": "Français",
-        "de": "Französisch",
+        "fr": "FranÃ§ais",
+        "de": "FranzÃ¶sisch",
         "it": "francese",
         "cy": "Ffrangeg",
         "nl": "Frans"
@@ -84,26 +84,27 @@
         "it": "spagnolo",
         "cy": "Sbaeneg",
         "nl": "Spaans",
-        "es": "Español"
+        "es": "EspaÃ±ol"
     },
     "nl": {
         "en": "Dutch",
         "cy": "Iseldireg",
         "nl": "Nederlands",
-        "fr": "Néerlandais",
-        "it": "olandese"
+        "fr": "NÃ©erlandais",
+        "it": "olandese",
+                "de": "HollÃ¤ndisch"
     },
     "revnum": {
         "en": "{name} is at revision {rev}",
-        "fr": "{name} est à la révision {rev}",
+        "fr": "{name} est Ã  la rÃ©vision {rev}",
         "de": "{name} ist in der Revision {rev}",
-        "it": "{name} è al numero di revisione {rev}",
+        "it": "{name} Ã¨ al numero di revisione {rev}",
         "cy": "{name} ar diwygiad {rev}",
         "nl": "{name} is bij revisie {rev}"
     },
     "loadedmodules": {
         "en": "loaded modules",
-        "fr": "modules chargés",
+        "fr": "modules chargÃ©s",
         "it": "moduli caricati",
         "cy": "modiwlau sy'n lwytho",
         "nl": "geladen modules",
@@ -119,7 +120,7 @@
     },
     "debugmode-true": {
         "en": "Debug mode active",
-        "fr": "Mode de débogage activé",
+        "fr": "Mode de dÃ©bogage activÃ©",
         "de": "Debug-Modus aktiviert",
         "it": "debug attivo",
         "cy": "Modd dadfygio gweithredol",
@@ -127,7 +128,7 @@
     },
     "debugmode-false": {
         "en": "Debug off",
-        "fr": "Mode de débogage arrêté",
+        "fr": "Mode de dÃ©bogage arrÃªtÃ©",
         "de": "Debug-Modus ausgeschaltet",
         "it": "debug disattivato",
         "cy": "Modd dadfygio wedi'i ddiffodd",
@@ -158,7 +159,7 @@
     },
     "closedmilestone": {
         "en": "Closed",
-        "fr": "Fermé",
+        "fr": "FermÃ©",
         "de": "Gesperrt",
         "it": "Chiuso",
         "cy": "Ar Gau",
@@ -174,7 +175,7 @@
     },
     "development": {
         "en": "Development",
-        "fr": "Développement",
+        "fr": "DÃ©veloppement",
         "de": "Entwicklung",
         "it": "Sviluppo",
         "cy": "Datblygu",
@@ -183,7 +184,7 @@
     "dent-account": {
         "en": "Submitting dents to @{username}",
         "cy": "Cyflwyno 'dents' i'w @{username}",
-        "fr": "Envoi de 'dents' à @{username}",
+        "fr": "Envoi de 'dents' Ã  @{username}",
         "it": "Invio di dents a @{username}",
         "de": "Submitting dents to @{username}"
     },
@@ -197,23 +198,23 @@
     "quote-rmlimit": {
         "en": "Quote removal throttle set to {limit}",
         "cy": "Trothwy ar dileu dyfyniadau gosod i {limit}",
-        "fr": "Commande d'enlèvement de citations réglée à {limit}",
+        "fr": "Commande d'enlÃ¨vement de citations rÃ©glÃ©e Ã  {limit}",
         "it": "Regolatore di rimozione citazioni fissato a {limit}",
-        "de": "Das Zitat Beschränkungslimit wurde auf {limit} gesetzt"
+        "de": "Das Zitat BeschrÃ¤nkungslimit wurde auf {limit} gesetzt"
     },
     "report-notifyvoice": {
         "en": "Voiced users are being notified of reports",
         "cy": "Defnyddwyr leisiwyd yn cael eu hysbysu o adroddiadau",
-        "fr": "Les utilisateurs ayant la parole sont notifiés des rapports",
+        "fr": "Les utilisateurs ayant la parole sont notifiÃ©s des rapports",
         "it": "I rapporti vengono notificati agli utenti con diritto di voce",
         "de": "Benutzer mit Stimme werden nun auf Benachrichtigungen hingewiesen"
     },
     "web-port": {
         "en": "Web is listening on {port}",
         "cy": "We yn gwrando ar {port}",
-        "fr": "Le web écoute sur {port}",
+        "fr": "Le web Ã©coute sur {port}",
         "it": "La rete ascolta su {port}",
-        "de": "Das Web hört auf {port}"
+        "de": "Das Web hÃ¶rt auf {port}"
     },
     "propaganda": {
         "en": "Contribute to the code on Github!",
@@ -246,7 +247,7 @@
     },
     "langhead-translations": {
         "en": "Completion",
-        "fr": "Achèvement",
+        "fr": "AchÃ¨vement",
         "cy": "Cwblhad",
         "it": "Completamento",
         "de": "Abgeschlossen"
@@ -255,14 +256,14 @@
         "en": "Translations",
         "fr": "Traductions",
         "cy": "Cyfieithiadau",
-        "de": "Übersetzungen",
+        "de": "Ãbersetzungen",
         "it": "Traduzioni"
     },
     "langhead-progress": {
         "en": "Translation Progress",
         "fr": "Avancement de la traduction",
         "cy": "Cynnydd Cyfieithu",
-        "de": "Übersetzungsfortschritt",
+        "de": "Ãbersetzungsfortschritt",
         "it": "Progresso di traduzione"
     },
     "langhead-native": {
@@ -275,13 +276,13 @@
     "outstanding-pullreq": {
         "en": "There are outstanding pull requests",
         "cy": "Mae disgwyl ceisiadau tynnu",
-        "fr": "Il a des requêtes pull en attente",
+        "fr": "Il a des requÃªtes pull en attente",
         "it": "Ci sono delle richieste di pull in attesa",
         "de": "Pull Requests sind vorhanden"
     },
     "oaosidl": {
         "en": "The Official Aberystwyth Open Source International Development League",
-        "fr": "La Ligue Officielle de Développement International Open Source d'Aberystwyth",
+        "fr": "La Ligue Officielle de DÃ©veloppement International Open Source d'Aberystwyth",
         "it": "La Lega Ufficiale Internazionale di Sviluppo Open Source di Aberystwyth",
         "de": "Die offizielle Aberystwyth Open Source International Development Liga"
     },
