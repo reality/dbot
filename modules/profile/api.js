@@ -64,6 +64,21 @@ var api = function(dbot) {
             });
         },
 
+        'getAllProfilesWith': function(item, callback) {
+            var profiles = [];
+            this.db.scan('profiles', function(profile) {
+                if(_.has(profile.profile, item)) {
+                    profiles.push(profile);
+                }
+            }, function(err) {
+                if(!err) {
+                    callback(profiles);
+                } else {
+                    console.log(err);
+                }
+            });
+        },
+
         'setProperty': function(server, nick, field, value, callback){
             this.api.getProfile(server, nick, function(err, user, profile){
                 if(!err){

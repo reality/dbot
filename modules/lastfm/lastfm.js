@@ -4,7 +4,8 @@
  */
 
 var _ = require('underscore')._,
-   request = require('request');
+    request = require('request'),
+    async = require('async');
 
 var lastfm = function(dbot) {
     this.ApiRoot = 'http://ws.audioscrobbler.com/2.0/';
@@ -224,6 +225,68 @@ var lastfm = function(dbot) {
                     }
                 }
             });
+        },
+
+        '~tastiest': function(event) {
+            dbot.api.profile.getAllProfilesWith('lastfm', function(profiles) {
+                if(profiles) {
+                    var scores = {}; // Using this structure first for easier testing in the async
+                    async.eachSeries(profiles, function(p1, next) {
+                        scores[p1.id] = {};
+                        async.eachSeries(profiles, function(p2, subnext) {
+                            if(p1.id == p2.id || _.has(scores, p2.id) && _.has(scores[p2.id], p1.id)) {
+                                subnext();
+                            } else {
+                                this.api.tasteCompare(p1.profile.lastfm, p2.profile.lastfm, function(err, comp) {
+                                    if(!err) {
+                                        var score = Math.floor(comp.score * 100);
+                                        scores[p1.id][p2.id] = score;
+                                    }
+                                    subnext();
+                                });
+                            }
+                        }.bind(this), function() { next(); });
+                    }.bind(this), function(err) {
+                        // Now we better structure the scores for sorting
+                        var goodScores = [];
+                        _.each(scores, function(subscores, p1) {
+                            _.each(subscores, function(aScore, p2) {
+                                goodScores.push({
+                                    'p1': p1,
+                                    'p2': p2,
+                                    'score': aScore
+                                }); 
+                            });
+                        });
+
+                        var tastiest = _.chain(goodScores)
+                            .sortBy(function(p) { return p.score; })
+                            .reverse()
+                            .first(10)
+                            .value();
+
+                        async.each(tastiest, function(pair, done) {
+                            dbot.api.users.getUser(pair.p1, function(user) {
+                                pair.p1 = user;
+                                dbot.api.users.getUser(pair.p2, function(user) {
+                                    pair.p2 = user;
+                                    done();
+                                });
+                            }); 
+                        }, function() {
+                            var output = 'Most musically compatible users: ';    
+                            _.each(tastiest, function(pair) {
+                                output += pair.p1.currentNick + ' & ' + 
+                                    pair.p2.currentNick + ' (' + pair.score +
+                                    '%), ';
+                            });
+                            event.reply(output.slice(0, -2));
+                        });
+                    });
+                } else {
+                    event.reply('No suitable profiles');
+                }
+            }.bind(this));
         },
 
         '~artists': function(event) {
