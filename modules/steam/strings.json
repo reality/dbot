@@ -1,14 +1,18 @@
 {
     "steam_last_played": {
-        "en": "{user} last played {game}"
+        "en": "{user} last played {game}",
+        "de": "{user} hat zuletzt {game} gespielt"
     },
     "steam_not_played": {
-        "en": "{user} didn't play anything recently :'("
+        "en": "{user} didn't play anything recently :'(",
+        "de": "{user} hat zuletzt nichts gespielt :'(
     },
     "steam_currently_playing": {
-        "en": "{user} is currently playing {game}"
+        "en": "{user} is currently playing {game}",
+        "de": "{user} spielt zur Zeit {game}"
     },
     "steam_games": {
-        "en": "{u1} and {u2} have {count} games in common, including: {examples}"
+        "en": "{u1} and {u2} have {count} games in common, including: {examples}",
+        "de": "{u1} und {u2} haben {count} gemeinsame Spiele, dazu gehÃ¶ren: {examples}"
     }
 }
