@@ -234,7 +234,7 @@ var lastfm = function(dbot) {
                     async.eachSeries(profiles, function(p1, next) {
                         scores[p1.id] = {};
                         async.eachSeries(profiles, function(p2, subnext) {
-                            if(p1.id == p2.id || _.has(scores, p2.id) && _.has(scores[p2.id], p1.id)) {
+                            if(p1.id == p2.id || p1.profile.lastfm == p2.profile.lastfm || _.has(scores, p2.id) && _.has(scores[p2.id], p1.id)) {
                                 subnext();
                             } else {
                                 console.log('comparing ' + p1.profile.lastfm + ' and ' + p2.profile.lastfm);
