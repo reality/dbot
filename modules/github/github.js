@@ -102,7 +102,7 @@ var github = function(dbot) {
             var reqUrl = "https://api.github.com/users/" + event.params[1] + "/repos";
             request({"url": reqUrl,"headers": { "User-Agent": this.config.useragent}}, function(error, response, body) {
             var result = JSON.parse(body);
-			event.reply(event.params[1] + " has " + result.length + " public repositories.");
+            event.reply(event.params[1] + " has " + result.length + " public repositories.");
             });
         },
         '~grate': function(event) {

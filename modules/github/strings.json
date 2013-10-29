@@ -3,92 +3,92 @@
         "en": "{user} has {count} public repos.",
         "cy": "Mae {count} archifdai cyhoeddus gan {user}.",
         "de": "{user} hat {count} öffnetliche Repos.",
-	"fr": "{user} a {count} dépôt(s) public(s).",
-    "it": "{user} ha {count} deposito/i pubblico/i."
+        "fr": "{user} a {count} dépôt(s) public(s).",
+        "it": "{user} ha {count} deposito/i pubblico/i."
     },
     "statusgood": {
         "en": "\u000309Shit's fine",
         "cy": "\u000309Cachu'n ddirwy",
         "de": "\u000309Alles in Ordnung",
-	"fr": "\u000309Cette merde tourne bien",
-	"it": "\u000309Funziona a meraviglia."
+        "fr": "\u000309Cette merde tourne bien",
+        "it": "\u000309Funziona a meraviglia."
     },
     "statusminor": {
         "en": "\u000308Shit's touchy",
         "cy": "\u000308Cachu'n fregus",
         "de": "\u000308Kleinere Probleme vorhanden",
-	"fr": "\u000308Cette merde a un petit problème",
-    "it": "\u000308Piccoli problemi all' orizzonte"
+        "fr": "\u000308Cette merde a un petit problème",
+        "it": "\u000308Piccoli problemi all' orizzonte"
     },
     "statusmajor": {
         "en": "\u000304Shit's fucked:",
         "cy": "\u000304Cachu wedi cyrraedd y ffan:",
         "de": "\u000304Du bist am Arsch",
-	"fr": "\u000304Cette merde est foutue : ",
-	"it": "\u000304Sei nella merda : "
+        "fr": "\u000304Cette merde est foutue : ",
+        "it": "\u000304Sei nella merda : "
     },
     "location": {
         "en": "You can find that shit at:",
         "cy": "Gallwch ddod o hyd y cachu yn:",
         "de": "Kann gefunden werden unter:",
-	"fr": "Tu peux trouver cette merde ici : ",
-    "it": "Puoi trovare questa coglionata a: "
+        "fr": "Tu peux trouver cette merde ici : ",
+        "it": "Puoi trovare questa coglionata a: "
     },
     "forkedrepo": {
         "en": "{name} is a forked {language} repo with {open_issues} unresolved issues [{forks}F {watchers}W]",
         "cy": "{name} ydy archif {language} fforchog gyda {open_issues} materion heb eu datrys [{forks}F {watchers}W]",
         "de": "{name} ist eine geteilte {language} Repo mit {open_issues} ungelösten Problemen [{forks}F {watchers}W]",
-	"fr": "{name} est un dépôt fourché {language} avec {open_issues} problème(s) non résolu(s) [{forks}F {watchers}W]",
-	"it": "{name} è un deposito biforcato {language} con {open_issues} problema/i irrisolto/i [{forks}F {watchers}W]"
+        "fr": "{name} est un dépôt fourché {language} avec {open_issues} problème(s) non résolu(s) [{forks}F {watchers}W]",
+        "it": "{name} è un deposito biforcato {language} con {open_issues} problema/i irrisolto/i [{forks}F {watchers}W]"
     },
     "unforkedrepo": {
         "en": "{name} is a {language} repo with {open_issues} unresolved issues [{forks}F {watchers}W]",
         "cy": "{name} ydy archif {language} gyda {open_issues} materion heb eu datrys [{forks}F {watchers}W]",
         "de": "{name} ist eine {language} Repo mit {open_issues} ungelösten Problemen [{forks}F {watchers}W]",
-	"fr": "{name} est un dépôt {language} avec {open_issues} problème(s) non résolu(s) [{forks}F {watchers}W]",
-	"it": "{name} è un deposito {language} con {open_issues} problema/i irrisolto/i  [{forks}F {watchers}W]"
+        "fr": "{name} est un dépôt {language} avec {open_issues} problème(s) non résolu(s) [{forks}F {watchers}W]",
+        "it": "{name} è un deposito {language} con {open_issues} problema/i irrisolto/i  [{forks}F {watchers}W]"
     },
     "usernotfound": {
         "en": "User not found.",
         "cy": "Defnyddiwr heb ei ganfod.",
         "de": "Benutzer nicht gefunden.",
-	"fr": "Utilisateur non trouvé.",
-    "it": "Utente non trovato."
+        "fr": "Utilisateur non trouvé.",
+        "it": "Utente non trovato."
     },
     "issuenotfound": {
         "en": "Unable to find that issue.",
         "cy": "Wedi methu dod o hyd mater hwnnw",
         "de": "Kann dieses Problem nicht finden.",
-	"fr": "Impossible de trouver ce problème.",
-    "it": "Impossibile trovare questo problema."
+        "fr": "Impossible de trouver ce problème.",
+        "it": "Impossibile trovare questo problema."
     },
     "issue": {
         "en": "Issue \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} comments]{label}",
         "cy": "Mater \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} sylwadau]{label}",
         "de": "Problem \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} comments]{label}",
-	"fr": "Problème \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} commentaires]{label}",
-	"it": "Problema \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} commento/i]{label}"
+        "fr": "Problème \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} commentaires]{label}",
+        "it": "Problema \u000308{number}\u0003: {title} [{state}{pull_request}\u000315; {comments} commento/i]{label}"
     },
     "commitcountboring": {
         "en": "My code has been committed {count} times.",
         "cy": "Mae fy cod wedi cael ei gyflawni ar {count} adegau.",
-        "de": "Mein Code wurde {count} mal überstellt.",
-	"fr": "Mon code a été modifié {count} fois.",
-    "it": "Il mio codice è stato modificato {count} volta/e."
+        "de": "Mein Code wurde {count} mal bestätigt.",
+        "fr": "Mon code a été modifié {count} fois.",
+        "it": "Il mio codice è stato modificato {count} volta/e."
     },
     "commitcountfun": {
         "en": "My repository has the same number of commits as {fact} ({count}).",
         "cy": "Yr un nifer o ymrwymo fel {fact} gan fy archif ({count}).",
         "de": "Meine Repository hat die gleiche Anzahl Commits wie {fact} ({count}).",
-	"fr": "Mon dépôt a le même nombre de modifications que {fact} ({count}).",
-	"it": "Il mio deposito ha lo stesso numero di modifiche come {fact} ({count})."
+        "fr": "Mon dépôt a le même nombre de modifications que {fact} ({count}).",
+        "it": "Il mio deposito ha lo stesso numero di modifiche come {fact} ({count})."
     },
     "commitcountyear": {
         "en": "My repository's commits number {count}, the year that {fact}.",
         "cy": "Nifer o ymrwymo gan fy archif: {count}, y flwyddyn y {fact}.",
         "de": "Anzahl der Commits in meinem Repository {count}, des Jahres {fact}",
-	"fr": "Mon dépot compte {count} modifications, l'année où {fact}.",
-    "it": "Il mio deposito ha {count} modifica/che, l' anno che {fact}."
+        "fr": "Mon dépot compte {count} modifications, l'année où {fact}.",
+        "it": "Il mio deposito ha {count} modifica/che, l' anno che {fact}."
     }
 }
 

@@ -1,10 +1,12 @@
 {
     "log_message": {
         "en": "[{time}] {user} ({channel}): {command}",
-	"fr": "[{time}] {user} ({channel}): {command}",
-	"it": "[{time}] {user} ({channel}): {command}"
+        "fr": "[{time}] {user} ({channel}): {command}",
+        "it": "[{time}] {user} ({channel}): {command}",
+        "de": "[{time}] {user} ({channel}): {command}"
     },
     "error_message": {
-        "en": "[{time}] Error: {error}"
+        "en": "[{time}] Error: {error}",
+        "de": "[{time}] Fehler: {error}"
     }
 }

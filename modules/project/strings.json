@@ -1,11 +1,11 @@
 {
     "dbotspeaks": {
-            "en": "{name} speaks {lang}",
-            "de": "{name} spricht {lang} ({langen})",
-            "fr": "{name} parle {lang} ({langen})",
-            "it": "{name} parla {lang} ({langen})",
-            "cy": "{name} yn siarad {lang} ({langen})",
-            "nl": "{name} spreekt {lang} ({langen})"
+        "en": "{name} speaks {lang}",
+        "de": "{name} spricht {lang} ({langen})",
+        "fr": "{name} parle {lang} ({langen})",
+        "it": "{name} parla {lang} ({langen})",
+        "cy": "{name} yn siarad {lang} ({langen})",
+        "nl": "{name} spreekt {lang} ({langen})"
     },
     "thanks": {
         "en": "With thanks to:",
@@ -18,7 +18,7 @@
         "en": "Authors",
         "fr": "Développeurs",
         "cy": "Datblygwyr",
-        "de": "Urheber",
+        "de": "Autor",
         "it": "Autori"
     },
     "pagetitle": {
@@ -90,7 +90,7 @@
         "en": "Dutch",
         "cy": "Iseldireg",
         "nl": "Nederlands",
-	"fr": "Néerlandais",
+        "fr": "Néerlandais",
         "it": "olandese"
     },
     "revnum": {
@@ -183,43 +183,50 @@
     "dent-account": {
         "en": "Submitting dents to @{username}",
         "cy": "Cyflwyno 'dents' i'w @{username}",
-	"fr": "Envoi de 'dents' à @{username}",
-	"it": "Invio di dents a @{username}"
+        "fr": "Envoi de 'dents' à @{username}",
+        "it": "Invio di dents a @{username}",
+        "de": "Submitting dents to @{username}"
     },
     "dent-push": {
         "en": "Pushing quotes to identi.ca",
         "cy": "Gwthio dyfyniadau i identi.ca",
-	"fr": "Envoi des citations vers identi.ca",
-        "it": "Invio di citazione ad identi.ca"
+        "fr": "Envoi des citations vers identi.ca",
+        "it": "Invio di citazione ad identi.ca",
+        "de": "Pushing quotes to identi.ca"
     },
     "quote-rmlimit": {
         "en": "Quote removal throttle set to {limit}",
         "cy": "Trothwy ar dileu dyfyniadau gosod i {limit}",
-	"fr": "Commande d'enlèvement de citations réglée à {limit}",
-        "it": "Regolatore di rimozione citazioni fissato a {limit}"
+        "fr": "Commande d'enlèvement de citations réglée à {limit}",
+        "it": "Regolatore di rimozione citazioni fissato a {limit}",
+        "de": "Das Zitat Beschränkungslimit wurde auf {limit} gesetzt"
     },
     "report-notifyvoice": {
         "en": "Voiced users are being notified of reports",
         "cy": "Defnyddwyr leisiwyd yn cael eu hysbysu o adroddiadau",
-	"fr": "Les utilisateurs ayant la parole sont notifiés des rapports",
-        "it": "I rapporti vengono notificati agli utenti con diritto di voce"
+        "fr": "Les utilisateurs ayant la parole sont notifiés des rapports",
+        "it": "I rapporti vengono notificati agli utenti con diritto di voce",
+        "de": "Benutzer mit Stimme werden nun auf Benachrichtigungen hingewiesen"
     },
     "web-port": {
         "en": "Web is listening on {port}",
         "cy": "We yn gwrando ar {port}",
-	"fr": "Le web écoute sur {port}",
-        "it": "La rete ascolta su {port}"
+        "fr": "Le web écoute sur {port}",
+        "it": "La rete ascolta su {port}",
+        "de": "Das Web hört auf {port}"
     },
     "propaganda": {
         "en": "Contribute to the code on Github!",
         "cy": "Cyfrannu at ay cod ar Github!",
-	"fr": "Contribuez au code sur GitHub!",
-        "it": "Contribuite al codice su GitHub!"
+        "fr": "Contribuez au code sur GitHub!",
+        "it": "Contribuite al codice su GitHub!",
+        "de": "Hilf dem Projekt auf Github!"
     },
     "branch": {
         "en": "{branch}",
-	"fr": "{branch}",
-        "it": "{branch}"
+        "fr": "{branch}",
+        "it": "{branch}",
+        "de": "{branch}"
     },
     "git": {
         "en": "version control",
@@ -234,14 +241,15 @@
         "en": "Current",
         "fr": "Courant",
         "cy": "Ar hyn o bryd",
-        "de": "Jetzige",
-        "it": "Attuale"
+        "de": "Zur Zeit",
+        "it": "Attuale",
     },
     "langhead-translations": {
         "en": "Completion",
         "fr": "Achèvement",
         "cy": "Cwblhad",
-        "it": "Completamento"
+        "it": "Completamento",
+        "de": "Abgeschlossen"
     },
     "translations": {
         "en": "Translations",
@@ -261,23 +269,27 @@
         "en": "Native",
         "fr": "Natale",
         "cy": "Brodorol",
-        "it": "Nativo"
+        "it": "Nativo",
+        "de": "Einheimisch"
     },
     "outstanding-pullreq": {
         "en": "There are outstanding pull requests",
         "cy": "Mae disgwyl ceisiadau tynnu",
-	"fr": "Il a des requêtes pull en attente",
-        "it": "Ci sono delle richieste di pull in attesa"
+        "fr": "Il a des requêtes pull en attente",
+        "it": "Ci sono delle richieste di pull in attesa",
+        "de": "Pull Requests sind vorhanden"
     },
     "oaosidl": {
         "en": "The Official Aberystwyth Open Source International Development League",
-	"fr": "La Ligue Officielle de Développement International Open Source d'Aberystwyth",
-        "it": "La Lega Ufficiale Internazionale di Sviluppo Open Source di Aberystwyth"
+        "fr": "La Ligue Officielle de Développement International Open Source d'Aberystwyth",
+        "it": "La Lega Ufficiale Internazionale di Sviluppo Open Source di Aberystwyth",
+        "de": "Die offizielle Aberystwyth Open Source International Development Liga"
     },
     "link-autotitle": {
         "en": "Automatically titling links in channels",
         "cy": "Teitlo awtomatig cysylltiadau mewn sianelau",
-	"fr": "Titre automatiquement les liens dans les channels",
-        "it": "Titolazione automatica collega ai canali"
+        "fr": "Titre automatiquement les liens dans les channels",
+        "it": "Titolazione automatica collega ai canali",
+        "de": "Setze Titel in links automatisch"
     }
 }

@@ -17,14 +17,14 @@ var parseDiceSpec = function (specString) {
 var normalizeDiceSpec = function (specString) {
     var diceSpec = parseDiceSpec(specString);
 
-	if (diceSpec["sides"] > 10000) {
-		return false;
-	}
-	
-	if (diceSpec["count"] > 1000) {
-		return false;
-	}
-	
+    if (diceSpec["sides"] > 10000) {
+        return false;
+    }
+    
+    if (diceSpec["count"] > 1000) {
+        return false;
+    }
+    
     if (diceSpec["count"] > 1) {
         var count = diceSpec["count"];
     } else {

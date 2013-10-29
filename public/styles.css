@@ -21,24 +21,24 @@ body {
 }
 
 h1,h2 {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 p {
-	margin: 15px 5px;
+    margin: 15px 5px;
 }
 
 div#page {
-	margin: 0 auto 0 auto;
+    margin: 0 auto 0 auto;
 }
 
 div#backlink {
-	position: absolute;
-	top: 10px;
-	left: 15px;
+    position: absolute;
+    top: 10px;
+    left: 15px;
     text-align: left;
-	font-size: 0.8em;
+    font-size: 0.8em;
 }
 
 div#title {
@@ -49,7 +49,7 @@ div#title {
 }
 
 div#title a {
-	color: #000;
+    color: #000;
 }
 
 div#main {
@@ -61,12 +61,12 @@ div#main {
 }
 
 div#controls {
-	width: 100%;
+    width: 100%;
         padding: 10px;
 }
 
 input {
-	width: 80%;
+    width: 80%;
 }
 
 a,a:active,a:visited {
@@ -75,20 +75,20 @@ a,a:active,a:visited {
 
 /* Index Page */
 #modulelinks {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 .module {
-	display: inline-block;
-	width: 20%;	
-	padding: 5px;
-	margin: 1%;
-	background: #F5F5F5;
-	border-radius: 15px;
+    display: inline-block;
+    width: 20%;    
+    padding: 5px;
+    margin: 1%;
+    background: #F5F5F5;
+    border-radius: 15px;
 }
 .module:hover {
-	background: #BBB;
+    background: #BBB;
 }
 
 ul#quotelist {
@@ -134,38 +134,38 @@ li.quote {
 }
 
 img {
-	max-width: 100%;
+    max-width: 100%;
 }
 
 /* Polls */
 #votelist {
-	margin: 10px 0;
-	padding: 0 40px;
+    margin: 10px 0;
+    padding: 0 40px;
 }
 
 li.option {
-	list-style: none;
-	text-align: left;
-	font-size: 1.2em;
+    list-style: none;
+    text-align: left;
+    font-size: 1.2em;
 }
 
 li.option-votes {
-	list-style: none;
-	text-align: left;
-	margin-bottom: 10px;
+    list-style: none;
+    text-align: left;
+    margin-bottom: 10px;
 }
 
 .vote-percentage {
-	height: 20px;
-	background: #444;
+    height: 20px;
+    background: #444;
 }
 .vote-track {
-	height: 20px;
-	width: 100%;
-	background: #EEE;
-	margin: 2px 0;
+    height: 20px;
+    width: 100%;
+    background: #EEE;
+    margin: 2px 0;
 
-	box-shadow: inset 0px 0px 3px #444;
+    box-shadow: inset 0px 0px 3px #444;
 }
 
 /** 

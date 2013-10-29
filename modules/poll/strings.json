@@ -6,8 +6,8 @@
         "cy": "Defnydd: ~newpoll enw [optiynau=opt1,opt2,op3] disgrifiad",
         "nl": "Gebruik: ~newpoll name [options=opt1,opt2,opt3] description",
         "de": "Benutzung: ~newpoll name [options=opt1,opt2,opt3] Beschreibung",
-	"fr": "Utilisation: ~newpoll nom [options=opt1,opt2,opt3] description",
-	"it": "Uso: ~newpoll nome [opzioni=opz1,opz2,opz3] descrizione"
+        "fr": "Utilisation: ~newpoll nom [options=opt1,opt2,opt3] description",
+        "it": "Uso: ~newpoll nome [opzioni=opz1,opz2,opz3] descrizione"
     },
     "poll_exists": {
         "en": "Poll '{name}' already exists.",
@@ -16,7 +16,7 @@
         "cy": "Mae'r pôl {name} bodoli'n barod",
         "nl": "Poll '{name}' bestaat al.",
         "de": "Umfrage '{name}' existiert bereits.",
-	"fr": "Le sondage '{name}' existe déjà.",
+        "fr": "Le sondage '{name}' existe déjà.",
         "it": "Il sondaggio '{name}' esiste già."
     },
     "poll_created": {
@@ -25,13 +25,14 @@
         "na'vi": "sìpawm sna'o '{name}' ngìyop ({description}). Nga tìpe'unit Pe'eiun - {url}",
         "nl": "Poll '{name}' aangemaakt ({description}). Laat uw stem horen! - {url}",
         "de": "Umfrage '{name}' gestartet ({description}). Lasst Antworten ertönen! - {url}",
-	"fr": "Sondage '{name}' créé ({description}). Tous aux ballots de vote ! - {url}",
+        "fr": "Sondage '{name}' créé ({description}). Tous aux ballots de vote ! - {url}",
         "it": "Sondaggio '{nae}' creato ({description)}. Tutti a votare! - {url}"
     },
     "poll_describe": {
         "en": "{name}: {description} - {url}.",
-	"fr": "{name}: {description} - {url}.",
-	"it": "{name}: {description} - {url}."
+        "fr": "{name}: {description} - {url}.",
+        "it": "{name}: {description} - {url}.",
+        "de": "{name}: {description} - {url}."
     },
     "changed_vote": {
         "en": "{user} changed their vote in {poll} to '{vote}' ({count}).",
@@ -40,8 +41,8 @@
         "cy": "Newidiodd {user} eu pleidlais yn {poll} i '{vote}' ({count}).",
         "nl": "{user} heeft zijn stem voor {poll} veranderd in '{vote}' ({count}).",
         "de": "{user} hat seine Antwort in {poll} zu '{vote}' geändert ({count}).",
-	"fr": "{user} a changé son vote dans {poll} pour '{vote}' ({count}).",
-	"it": "{user} ha cambiato il suo voto in {poll} a '{vote}' ({count})."
+        "fr": "{user} a changé son vote dans {poll} pour '{vote}' ({count}).",
+        "it": "{user} ha cambiato il suo voto in {poll} a '{vote}' ({count})."
     },
     "voted": {
         "en": "{user} voted for '{vote}' in {poll} ({count}).",
@@ -50,8 +51,8 @@
         "cy": "Pledleisiodd {user} am '{vote}' yn {poll} ({count}).",
         "nl": "{user} heeft gestemd voor '{vote}' in {poll} ({count}).",
         "de": "{user} hat für '{vote}' in {poll} gestimmt ({count}).",
-	"fr":"{user} a voté pour '{vote}' dans {poll} ({count}).",
-	"it": "{user} ha votato per '{vote}' in {poll} ({count})."
+        "fr":"{user} a voté pour '{vote}' dans {poll} ({count}).",
+        "it": "{user} ha votato per '{vote}' in {poll} ({count})."
     },
     "invalid_vote": {
         "en": "Invalid vote: {vote}",
@@ -60,8 +61,8 @@
         "cy": "Pleidlais annilys: {vote}",
         "nl": "Ongeldige stem: {vote}",
         "de": "Ungültige Antwort: {vote}",
-	"fr": "Vote invalide: {vote}",
-    "it": "Voto non valido: {vote}"
+        "fr": "Vote invalide: {vote}",
+        "it": "Voto non valido: {vote}"
     },
     "poll_unexistent": {
         "en": "Poll '{name}' doesn't exist.",
@@ -70,7 +71,7 @@
         "cy": "Nid yw pôl '{name}' yn bodoli",
         "nl": "Poll '{name}' bestaat niet.",
         "de": "Umfrage '{name}' existiert nicht.",
-	"fr": "Le sondage '{name}' n'existe pas.",
+        "fr": "Le sondage '{name}' n'existe pas.",
         "it": "Il sondaggio '{name}' non esiste"
     },
     "option_added": {
@@ -80,8 +81,8 @@
         "cy": "{user}: Ychwanegwyd '{option}' i '{name}'",
         "nl": "{user}: '{option}' toegevoegd aan '{name}'.",
         "de": "{user}: '{option}'in '{name}' hinzugefügt.",
-	"fr": "{user}: '{option}' ajouté à '{name}'.",
-	"it": "{user}: '{option}' aggiunto a '{name}'."
+        "fr": "{user}: '{option}' ajouté à '{name}'.",
+        "it": "{user}: '{option}' aggiunto a '{name}'."
     },
     "option_exists": {
         "en": "{user}: '{option}' already exists in '{name}'.",
@@ -90,8 +91,8 @@
         "cy": "{user}: Mae '{option}' yn bodoli'n barod yn '{name}'.",
         "nl": "{user}: '{option}' bestaat al in '{name}'.",
         "de": "{user}: '{option}' existiert bereits in '{name}'.",
-	"fr": "{user}: '{option} existe déjà dans '{name}'.",
-	"it": "{user}: '{option} esiste già in '{name}'."
+        "fr": "{user}: '{option} existe déjà dans '{name}'.",
+        "it": "{user}: '{option} esiste già in '{name}'."
     },
     "not_poll_owner": {
         "en": "{user}: You don't own the '{name}' poll.",
@@ -100,7 +101,7 @@
         "cy": "{user}: Nid ydech chi'n berchen y pôl '{name}'.",
         "nl": "{user}: Je bent niet de eigenaar van de poll '{name}'.",
         "de": "{user}: Du darfst die Umfrage '{name}' nicht verändern.",
-	"fr": "{user}: Le sondage '{name}' ne t'appartient pas.",
+        "fr": "{user}: Le sondage '{name}' ne t'appartient pas.",
         "it": "{user}: Il sondaggio '{name}' non ti appartiene."
     },
     "option_removed": {
@@ -110,7 +111,7 @@
         "cy": "{user}: '{option}' wedi ei ddileu o '{name}'",
         "nl": "{user}: '{option}' verwijderd van '{name}'",
         "de": "{user}: '{option}' entfernt aus '{name}'",
-	"fr": "{user}: '{option}' enlevé de '{name}'",
+        "fr": "{user}: '{option}' enlevé de '{name}'",
         "it": "{user}: '{option}' tolta da  '{name}'"
     },
     "av_voted": {
@@ -120,7 +121,7 @@
         "cy": "Pledleisiodd {user} am '{vote}' yn {poll}",
         "nl": "{user} heeft '{vote}' gestemd in {poll}.",
         "de": "{user} hat in {poll} für '{vote}' gestimmt.",
-	"fr": "{user} a voté '{vote}' dans {poll}.",
+        "fr": "{user} a voté '{vote}' dans {poll}.",
         "it": "{user} ha votato '{vote}' in {poll}."
     },
     "av_changed_vote": {
@@ -130,8 +131,8 @@
         "cy": "Newidiodd {user} eu pleidlais yn {poll} i '{vote}'",
         "nl": "{user} heeft zijn stem veranderd naar '{vote}' in {poll}.",
         "de": "{user} hat seine Stimme in {poll} auf '{vote}' geändert.",
-	"fr": "{user} a changé son vote dans {poll} pour '{vote}'.",
-	"it": "{user} ha cambiato il suo voto in {poll} a '{vote}'."
+        "fr": "{user} a changé son vote dans {poll} pour '{vote}'.",
+        "it": "{user} ha cambiato il suo voto in {poll} a '{vote}'."
     },
     "count": {
         "en": "The running-order of poll '{poll}' ({description}) is: {places}.",
@@ -139,7 +140,7 @@
         "cy": "Trefn yr pôl '{poll}' ({description}) yw: {places}",
         "nl": "De volgorde van poll '{poll}' ({description}) is: {places}.",
         "de": "Das Ergebnis der Umfrage '{poll}' ({description}) lautet: {places}.",
-	"fr": "L'ordre de passage du sondage '{poll}' ({description}) est : {places}.",
-	"it": "La classifica del sondaggio '{poll}' ({description}) è : {places}."
+        "fr": "L'ordre de passage du sondage '{poll}' ({description}) est : {places}.",
+        "it": "La classifica del sondaggio '{poll}' ({description}) è : {places}."
     }
 }

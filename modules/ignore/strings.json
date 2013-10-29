@@ -5,9 +5,9 @@
         "na'vi": "{user}: Sar: ~ignore ['u]. U, nga ke tìng mikyun: {modules}.",
         "cy": "{user}: Defnydd: ~ignore [modiwl]. Modiwlau a allech anwybyddu yw: {modules}.",
         "nl": "{user}: Gebruik: ~ignore [module]. Modules die negeert kunnen worden zijn: {modules}.",
-        "de": "{user}: Benutzung: ~ignore [module]. Module, die ignoriert werden können: {modules}.",
-	"fr": "{user}: Utilisation: ~ignore [module]. Les modules que vous pouvez ignorer sont: {modules}.",
-	"it": "{user}: Uso: ~ignore [module]. I moduli che puoi ignorare sono: {modules}."
+        "de": "{user}: Benutzung: ~ignore [module]. Module, die ausgeschaltet werden können: {modules}.",
+        "fr": "{user}: Utilisation: ~ignore [module]. Les modules que vous pouvez ignorer sont: {modules}.",
+        "it": "{user}: Uso: ~ignore [module]. I moduli che puoi ignorare sono: {modules}."
     },
     "already_ignoring": {
         "en": "{user}: You're already ignoring that module.",
@@ -15,8 +15,8 @@
         "na'vi": "{user}: 'uri nga ke tìng mikyun srekrr.",
         "cy": "{user}: Mi rwyt ti'n anwybyddu'r modiwl yna'n barod.",
         "nl": "{user}: Je negeert deze module al.",
-        "de": "{user}: Dieses Modul wird bereits ignoriert.",
-	"fr": "{user}: Vous ignorez déjà ce module.",
+        "de": "{user}: Dieses Modul ist bereits ausgeschaltet.",
+        "fr": "{user}: Vous ignorez déjà ce module.",
         "it": "{user}: Stai già ignorando questo modulo"
     },
     "ignored": {
@@ -25,8 +25,8 @@
         "na'vi": "{user}: Nga ke terìng mikyun {module}ne set.",
         "cy": "{user}: Nawr yn anwybyddu {module}",
         "nl": "{user}: {module} wordt nu genegeerd.",
-        "de": "{user}: {module} wird nun ignoriert.",
-	"fr": "{user}: {module} désormais ignoré.",
+        "de": "{user}: {module} wird nun ausgeschaltet.",
+        "fr": "{user}: {module} désormais ignoré.",
         "it": "{user}: {module} sarà adesso ignorato"
     },
     "invalid_ignore": {
@@ -35,8 +35,8 @@
         "na'vi": "{user}: Tsatstxo eyawr ke lu.",
         "cy": "{user}: Nid oedd hwna'n modiwl dilys",
         "nl": "{user}: Dat is geen geldige modulenaam.",
-        "de": "{user}: Dies ist nicht der Name eines Moduls.",
-	"fr": "{user}: Ceci ne correspond pas à un nom de module valide.",
+        "de": "{user}: Dies ist kein Name eines Moduls.",
+        "fr": "{user}: Ceci ne correspond pas à un nom de module valide.",
         "it": "{user}: Questo non è un nome di modulo valido"
     },
     "unignore_usage": {
@@ -45,9 +45,9 @@
         "na'vi": "{user}: Sar: ~unignore ['u]. Uri, nga ke terìng mikyun: {modules}.",
         "cy": "{user}: Defnydd: ~unignore [modiwl]. Modiwlau rydech yn anwybyddu ar hyn o bryd: {modules}",
         "nl": "{user}: Gebruik: ~unignore [module]. Modules die momenteel worden genegeerd: {modules}.",
-        "de": "{user}: Benutzung: ~unignore [module]. Module, die im Moment ignoriert werden: {modules}.",
-	"fr": "{user}: Utilisation: ~unignore [module]. Modules que vous ignorez actuellement: {modules}.",
-	"it": "{user}: Uso: ~unignore [module]. Module che ignori attualmente: {modules}."
+        "de": "{user}: Benutzung: ~unignore [module]. Module, die im Moment ausgeschaltet sind: {modules}.",
+        "fr": "{user}: Utilisation: ~unignore [module]. Modules que vous ignorez actuellement: {modules}.",
+        "it": "{user}: Uso: ~unignore [module]. Module che ignori attualmente: {modules}."
     },
     "empty_unignore_usage": {
         "en": "{user}: Usage: ~unignore [module].",
@@ -56,7 +56,7 @@
         "cy": "{user}: Defnydd: ~unignore [modiwl].",
         "nl": "{user}: Gebruik: ~unignore [module].",
         "de": "{user}: Benutzung: ~unignore [module].",
-	"fr": "{user}: Utilisation: ~unignore [module].",
+        "fr": "{user}: Utilisation: ~unignore [module].",
         "it": "{user}: Uso:  ~unignore [module]."
     },
     "invalid_unignore": {
@@ -65,8 +65,8 @@
         "na'vi":"{user}: Nga terìng mikyun fu fì'ul fìtsengit ke tok.",
         "cy": "{user}: Nid wyt ti'n anwybyddu'r modiwl yna neu nid yw e'n bodoli",
         "nl": "{user}: Deze module bestaat niet of wordt niet genegeerd.",
-        "de": "{user}: Dieses Modul wird entweder nicht ignoriert oder existiert nicht.",
-	"fr": "{user}: Vous n'ignorez pas ce module ou il n'existe pas.",
+        "de": "{user}: Dieses Modul ist entweder ausgeschaltet oder existiert nicht.",
+        "fr": "{user}: Vous n'ignorez pas ce module ou il n'existe pas.",
         "it": "{user}: Non stai ignorando questo modulo o non esiste."
     },
     "unignored": {
@@ -75,8 +75,8 @@
         "na'vi": "{user}: Nga terìng mikyun {module}ne set",
         "cy": "{user}: Ddim yn anwybyddu {module} bellach",
         "nl": "{user}: {module} wordt niet langer genegeerd.",
-        "de": "{user}: {module} wird nicht länger ignoriert.",
-	"fr": "{user}: {module} n'est plus ignoré à présent.",
+        "de": "{user}: {module} ist nicht länger ausgeschaltet.",
+        "fr": "{user}: {module} n'est plus ignoré à présent.",
         "it": "{user}: {module} non viene attualmente più ignorato"
     },
     "ban_usage": {
@@ -84,7 +84,7 @@
         "cy": "{user}: Defnydd: ~ban [defnyddiwr] [modiwl/gorchymyn]. Defnyddio * am pob modiwlau a gorchmynion.",
         "nl": "{user}: Gebruik: ~ban [gebruiker] [module/commando]. Gebruik * voor alle modules en alle commandos.",
         "de": "{user}: Benutzung ~ban [Benutzer] [module/Befehl]. Benutze * für alle Module und Befehle.",
-	"fr": "{user}: Utilisation: ~ban [user] [module/command]. Utilisez * pour tous les modules et commandes.",
+        "fr": "{user}: Utilisation: ~ban [user] [module/command]. Utilisez * pour tous les modules et commandes.",
         "it": "{user}: Uso: ~ban [user] [module/command]. Utilizza * per tutti i moduli e commandi."
     },
     "already_banned": {
@@ -92,7 +92,7 @@
         "cy": "{user}: {banned} eisoes wedi ei wahardd o'r modiwl.",
         "nl": "{user}: {banned} is al geband van deze module.",
         "de": "{user}: {banned} ist bereits von diesem Modul gebannt.",
-	"fr": "{user}: {banned} est déjà interdit d'utiliser ce module.",
+        "fr": "{user}: {banned} est déjà interdit d'utiliser ce module.",
         "it": "{user}: {banned} è già bandito da usare questo modulo."
     },
     "banned_success": {
@@ -100,15 +100,15 @@
         "cy": "{user}: {banned} ei wahardd yn awr am {module}.",
         "nl": "{user}: {banned} mag {module} nu niet meer gebruiken.",
         "de": "{user}: {banned} ist nun von {module} gebannt.",
-	"fr": "{user}: {banned} est maintenant interdit d'utiliser {module}.",
+        "fr": "{user}: {banned} est maintenant interdit d'utiliser {module}.",
         "it": "{user}: {banned} è stato adesso bandito da usare {module}."
     },
     "invalid_ban": {
         "en": "{user}: That isn't a valid module name.",
         "cy": "{user}: Nid oedd hwna'n modiwl dilys",
         "nl": "{user}: Dat is geen geldige modulenaam.",
-        "de": "{user}: Dies ist nicht der Name eines Moduls.",
-	"fr": "{user}: Ceci n'est pas un nom de module valide.",
+        "de": "{user}: Dies ist kein Name eines Moduls.",
+        "fr": "{user}: Ceci n'est pas un nom de module valide.",
         "it": "{user}: Queso non è il nome di un modulo valido."
     },
     "unban_usage": {
@@ -116,7 +116,7 @@
         "cy": "{user}: Defnydd: ~unban [defnyddiwr] [modiwl].",
         "nl": "{user}: Gebruik: ~unban [gebruiker] [module].",
         "de": "{user}: Benutzung: ~unban [Benutzer] [module].",
-	"fr": "{user}: Utilisation: ~unban [user] [module].",
+        "fr": "{user}: Utilisation: ~unban [user] [module].",
         "it": "{user}: Uso:  ~unban [user] [module]."
     },
     "invalid_unban": {
@@ -124,7 +124,7 @@
         "cy": "{user}: Nid oedd {banned} wedi ei wahardd o'r modiwl, neu nid yw'n bodoli.",
         "nl": "{user}: {banned} is niet geband van die module of de module bestaat niet.",
         "de": "{user}: {banned} ist von diesem Modul nicht gebannt, oder es existiert nicht.",
-	"fr": "{user}: {banned} n'est pas interdit d'utiliser ce module, ou il n'existe pas.",
+        "fr": "{user}: {banned} n'est pas interdit d'utiliser ce module, ou il n'existe pas.",
         "it": "{user}: {banned} non è stato bandito da questo modulo o non esiste."
     },
     "unbanned_success": {
@@ -132,7 +132,7 @@
         "cy": "{user}: Nid yw {banned} yn cael ei wahardd mwyach.",
         "nl": "{user}: {banned} mag {module} weer gebruiken.",
         "de": "{user}: {banned} wurde von {module} entbannt.",
-	"fr": "{user}: {banned} n'est plus interdit d'utiliser {module}.",
+        "fr": "{user}: {banned} n'est plus interdit d'utiliser {module}.",
         "it": "{user}: {banned} non è più bandito dall' utilizzare {module}."
     },
     "ignoring_channel": {
@@ -140,8 +140,8 @@
         "na'vi": "Oe ke stayawm {module}ur mì {channel}",
         "cy": "Bellach yn anwybyddu {module} yn {channel}.",
         "nl": "{module} wordt nu genegeerd in {channel}.",
-        "de": "{module} in {channel} wird nun ignoriert.",
-	"fr": "{module} dans {channel} maintenant ignoré.",
+        "de": "{module} in {channel} ist nun ausgeschaltet.",
+        "fr": "{module} dans {channel} maintenant ignoré.",
         "it": "{module} in {channel} viene adesso ignorato."
     },
     "already_ignoring_channel": {
@@ -149,8 +149,8 @@
         "na'vi": "Oe ke stayawm {module}ur mì {channel} li",
         "cy": "Eisoes anwybyddu {module} yn {channel}",
         "nl": "{module} wordt al genegeerd in {channel}.",
-        "de": "{module} in {channel} wird bereits ignoriert.",
-	"fr": "{module} dans {channel} déjà ignoré.",
+        "de": "{module} in {channel} ist bereits ausgeschaltet.",
+        "fr": "{module} dans {channel} déjà ignoré.",
         "it": "{module} in {channel} già ignorato."
     },
     "module_not_exist": {
@@ -159,7 +159,7 @@
         "cy": "Dydy {module} ddim yn lwythodd, neu ddim yn bodoli.",
         "nl": "{module} is niet geladen of bestaat niet.",
         "de": "{module} ist nicht geladen oder existiert nicht.",
-	"fr": "{module} n'est pas chargé ou n'existe pas.",
+        "fr": "{module} n'est pas chargé ou n'existe pas.",
         "it": "{module} non caricato o non esiste"
     },
     "unignoring_channel": {
@@ -167,8 +167,8 @@
         "na'vi": "Oel stayawm {module}ur mì {channel} set.",
         "cy": "Nid anwybyddu {module} yn {channel} mwyach.",
         "nl": "{module} wordt niet meer genegeerd in {channel}.",
-        "de": "{module} in {channel} wird nicht länger ignoriert.",
-	"fr": "{module} dans {channel} n'est plus ignoré à présent.",
+        "de": "{module} in {channel} ist nicht länger ausgeschaltet.",
+        "fr": "{module} dans {channel} n'est plus ignoré à présent.",
         "it": "{module} in {channel} non viene più ignorato."
     },
     "not_ignoring_channel": {
@@ -176,8 +176,8 @@
         "na'vi": "Oel stayawm {module}ur mì {channel} li.",
         "cy": "Nid yw {module} yn cael ei anwybyddu yn {channel}.",
         "nl": "{module} werd niet genegeerd in {channel}.",
-        "de": "{module} wurde in {channel} nicht ignoriert.",
-	"fr": "{module} n'était pas ignoré dans {channel}.",
+        "de": "{module} war in {channel} nicht ausgeschaltet.",
+        "fr": "{module} n'était pas ignoré dans {channel}.",
         "it": "{module} non veniva ignorato in {channel}"
     }
 }

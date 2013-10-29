@@ -1,10 +1,12 @@
 {
     "yt_video": {
         "en": "[{title} by {author} — \u000312▶\u000f{plays} ({minutes}:{seconds}) (\u00039▲{likes}\u000f|\u000312{dislikes}▼\u000f)]",
-        "it": "[{title} di {author} — \u000312▶\u000f{plays} ({minutes}:{seconds}) (\u00039▲{likes}\u000f|\u000312{dislikes}▼\u000f)]"
+        "it": "[{title} di {author} — \u000312▶\u000f{plays} ({minutes}:{seconds}) (\u00039▲{likes}\u000f|\u000312{dislikes}▼\u000f)]",
+        "de": "[{title} von {author} — \u000312▶\u000f{plays} ({minutes}:{seconds}) (\u00039▲{likes}\u000f|\u000312{dislikes}▼\u000f)]"
     },
     "yt_noresults": {
         "en": "No results found.",
-        "it": "Nessun risultato."
+        "it": "Nessun risultato.",
+        "de": "Kein Suchergebniss gefunden."
     }
 }

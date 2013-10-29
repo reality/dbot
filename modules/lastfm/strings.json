@@ -1,26 +1,26 @@
 {
     "now_listening": {
-        "en": "{user} is listening to {track} by {artist}"
+        "en": "{user} is listening to {track} by {artist}",
+        "de": "{user} hört {track} von {artist}"
     },
     "last_listened": {
-        "en": "{user} last listened to {track} by {artist}"
+        "en": "{user} last listened to {track} by {artist}",
+        "de": "{user} hörte zuletzt {track} von {artist}"
     },
     "no_listen": {
-        "en": "{user} doesn't seem to have listened to anything recently :'("
+        "en": "{user} doesn't seem to have listened to anything recently :'(",
+        "de": "{user} scheint in letzter Zeit nichts gehört zu haben :'("
     },
     "taste_compat": {
-        "en": "{user1} and {user2} are {score}% musically compatible!"
+        "en": "{user1} and {user2} are {score}% musically compatible!",
+        "de": "{user1} und {user2} sind {score}% musikalisch kompatibel!"
     },
     "common_artists": {
-        "en": "Artists {user1} and {user2} have in common: {common}"
+        "en": "Artists {user1} and {user2} have in common: {common}",
+        "de": "Künstler, die {user1} und {user2} gemeinsam haben: {common}"
     },
     "lfm_suggestion": {
-        "en": "{user}: Try listening to {name} by {artist}"
-    },
-    "lfm_profile": {
-        "en": "{user} has played {plays} tracks since {date} - {link}"
-    },
-    "lfm_scrobbliest": {
-        "en": "Users with most plays: "
+        "en": "{user}: Try listening to {name} by {artist}",
+        "de": "{user}: Versuche mal, {name} von {artist} anzuhören"
     }
 }

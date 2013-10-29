@@ -1,12 +1,14 @@
 {
     "sc_track": {
         "en": "[{title} by {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]",
-	"fr": "[{title} par {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]",
-	"it": "[{title} di {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]"
+        "fr": "[{title} par {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]",
+        "it": "[{title} di {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]",
+        "de": "[{title} von {artist} — {genre} — \u000312▶\u000f{plays} \u000304♥\u000f{favs}]"
     },
     "sc_notrack": {
         "en": "No results found.",
-	"fr": "Aucun résultat trouvé.",
-    "it": "Nessun risultato."
+        "fr": "Aucun résultat trouvé.",
+        "it": "Nessun risultato.",
+        "de": "Kein Suchergebnis gefunden."
     }
 }

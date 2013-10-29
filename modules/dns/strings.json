@@ -4,28 +4,29 @@
         "cy": "{domain} \u000303AR GAEL! \u000314({code})",
         "nl": "{domain} is \u000303BESCHIKBAAR! \u000314({code})",
         "de": "{domain} ist \u000303VERFÜGBAR! \u000314({code})",
-	"fr": "{domain} est \u000303DISPONIBLE! \u000314({code})",
-    "it": "{domain} è \u000303DISPONIBILE! \u000314({code})"
+        "fr": "{domain} est \u000303DISPONIBLE! \u000314({code})",
+        "it": "{domain} è \u000303DISPONIBILE! \u000314({code})"
     },
     "lookup": {
         "en": "{domain} is \u000305TAKEN! \u000314({address})",
         "cy": "Dydy {domain} \u000305DDIM AR GAEL! \u000314({address})",
         "nl": "{domain} is \u000305BEZET! \u000314({address})",
         "de": "{domain} ist \u000305BELEGT! \u000314({address})",
-	"fr": "{domain} est \u000305PRIS! \u000314({address})",
-	"it": "{domain} èt \u000305RISERVATO! \u000314({address})"
+        "fr": "{domain} est \u000305PRIS! \u000314({address})",
+        "it": "{domain} èt \u000305RISERVATO! \u000314({address})"
     },
     "rdns": {
         "en": "{ip} \u2192 {domain}",
-	"fr": "{ip} \u2192 {domain}",
-    "it": "{ip} \u2192 {domain}"
+        "fr": "{ip} \u2192 {domain}",
+        "it": "{ip} \u2192 {domain}",
+        "de":"{ip} \u2192 {domain}"
     },
     "rdns-error": {
         "en": "Unable to lookup {ip}. \u000314({error})",
         "cy": "Methu am-edrych {ip}. \u000314({error})",
         "nl": "{ip} kan niet worden opgezocht. \u000314({error})",
         "de": "Kann {ip} nicht auflösen. \u000314({error})",
-	"fr": "Impossible de rechercher {ip}. \u000314({error})",
-    "it": "Non è possibile cercare {ip}. \u000314({error})"
+        "fr": "Impossible de rechercher {ip}. \u000314({error})",
+        "it": "Non è possibile cercare {ip}. \u000314({error})"
     }
 }

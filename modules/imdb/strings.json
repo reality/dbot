@@ -1,8 +1,10 @@
 {
     "imdb_film": {
-        "en": "[{title} -{rating} - {year}]"
+        "en": "[{title} -{rating} - {year}]",
+        "de": "[{title} -{rating} - {year}]"
     },
     "imdb_noresults": {
-        "en": "No films found."
+        "en": "No films found.",
+        "de": "Kein Film gefunden."
     }
 }

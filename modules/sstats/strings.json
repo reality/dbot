@@ -1,26 +1,34 @@
 {
     "sstats_unknown_user": {
-        "en": "Unknown user."
+        "en": "Unknown user.",
+        "de": "Unbekannter Benutzer."
     },
     "sstats_tlines": {
-        "en": "{user} has posted {lines} lines since {date}"
+        "en": "{user} has posted {lines} lines since {date}.",
+        "de": "{user} hat {lines} Zeilen geschrieben seit {date}."
     },
     "sstats_uclines": {
-        "en": " ({lines} in {channel})"
+        "en": " ({lines} in {channel})",
+        "de": " ({lines} in {channel})"
     },
     "sstats_noustats": {
-        "en": "No stats recorded for this user."
+        "en": "No stats recorded for this user.",
+        "de": "Für diesen Benutzer wurde bisher keine Statistik gespeichert."
     },
     "sstats_clines": {
-        "en": "{lines} lines posted in {channel}."
+        "en": "{lines} lines posted in {channel}.",
+        "de": "{lines} Zeilen wurden in {channel} geschrieben."
     },
     "sstats_uwords": {
-        "en": "{user} has used {words} words ({curses} curses, {capitals} capitalised words) since {date}"
+        "en": "{user} has used {words} words ({curses} curses, {capitals} capitalised words) since {date}.",
+        "de": "{user} schrieb {words} Wörter ({curses} Flüche, {capitals} großgeschrieben) seit {date}."
     },
     "sstats_ucwords": {
-        "en": " - {words} words, {curses} curses, {capitals} capitalised words in {channel}"
+        "en": " - {words} words, {curses} curses, {capitals} capitalised words in {channel}.",
+        "de": " - {words} Wörter, {curses} Flüche, {capitals} großgeschriebene Wörter in {channel}."
     },
     "sstats_word": {
-        "en": "{word} has been used {total} times by {users} users in {channels} channels since {since}."
+        "en": "{word} has been used {total} times by {users} users in {channels} channels since {since}.",
+        "de": "{word} wurde insgesamt {total} mal geschrieben von {users} Benutzern in {channels} Kanälen seit {since}."
     }
 }

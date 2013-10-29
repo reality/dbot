@@ -5,14 +5,16 @@
         "cy": "{alias} ydy enw arall o {user}",
         "nl": "{alias} is een alias van {user}",
         "de": "{alias} ist ein Nickname von {user}",
-	"fr": "{alias} est un alias de {user}",
-	"it": "{alias} è un alias di {user}"
+        "fr": "{alias} est un alias de {user}",
+        "it": "{alias} è un alias di {user}"
     },
     "added_mobile_alias": {
-        "en": "{alias} added as a mobile alias."
+        "en": "{alias} added as a mobile alias.",
+        "de": "{alias} als mobiler Benutzer hinzugefügt."
     },
     "already_mobile": {
-        "en": "{alias} is already a mobile alias."
+        "en": "{alias} is already a mobile alias.",
+        "de": "{alias} ist bereits ein mobiler Benutzer."
     },
     "primary": {
         "en": "{user} (currently {currentNick}) is a primary user with {count} aliases, ",
@@ -20,8 +22,8 @@
         "nl": "{user} ({currentNick})  is een primaire gebruiker met {count} aliassen, ",
         "cy": "Mae {user} ({currentNick}) yn ddefnyddiwr gynradd gyda {count} enwau eraill, ",
         "de": "{user} ({currentNick}) ist ein Benutzer mit {count} Nicknamen, ",
-	"fr": "{user} (actuellement {currentNick}) est un utilisateur primaire avec {count} alias, ",
-	"it": "{user} (attualmente {currentNick}) è un utente primario con {count} alias, "
+        "fr": "{user} (actuellement {currentNick}) est un utilisateur primaire avec {count} alias, ",
+        "it": "{user} (attualmente {currentNick}) è un utente primario con {count} alias, "
     },
     "unknown_alias": {
         "en": "{alias} does not currently exist as an alias or known user.",
@@ -29,8 +31,8 @@
         "cy": "Nid yw {alias} yn bodoli fel enw arall neu defnyddiwr yn hysbys.",
         "nl": "{alias} staat momenteel niet bekend als een bestaande gebruiker of alias.",
         "de": "{alias} existiert nicht oder ist kein Nickname eines Benutzers.",
-	"fr": "{alias} n'existe pas actuellement en tant qu'alias ou utilisateur connu.",
-	"it": "{alias} non esiste attualmente come alias o utente conosciuto."
+        "fr": "{alias} n'existe pas actuellement en tant qu'alias ou utilisateur connu.",
+        "it": "{alias} non esiste attualmente come alias o utente conosciuto."
     },
     "alias_removed": {
         "en": "Removed alias {alias} from {primary}.",
@@ -43,8 +45,8 @@
         "cy": "Mae {newParent} ydy defnyddiwr rhiant nawr, a {alias} ydy enw arall.",
         "nl": "{newParent} is nu de bovenliggende gebruiker, en {newAlias} is een alias.",
         "de": "{newParent} ist nun der Hauptname und {newAlias} ist ein Nickname.",
-	"fr": "{newParent} est maintenant le même utilisateur parent, et {newAlias} est un alias.",
-	"it": "{newParent} è adesso l' utente genitore e {newAlias} è un alias."
+        "fr": "{newParent} est maintenant le même utilisateur parent, et {newAlias} est un alias.",
+        "it": "{newParent} è adesso l' utente genitore e {newAlias} è un alias."
     },
     "unprimary_error": {
         "en": "{nick} isn't recorded as a primary user.",
@@ -52,8 +54,8 @@
         "cy": "Nid yw un o'r defnyddwyr hynny yn cael ei gofnodi ar hyn o bryd fel defnyddiwr gynradd.",
         "nl": "Een van deze gebruikers is nog niet bekend als een primaire gebruiker.",
         "de": "Einer dieser Benutzer ist nicht als Hauptbenutzer gespeichert.",
-	"fr": "{nick} n'est pas enregistré en tant qu'utilisateur primaire.",
-	"it": "{nick} non è registrato come utente principale."
+        "fr": "{nick} n'est pas enregistré en tant qu'utilisateur primaire.",
+        "it": "{nick} non è registrato come utente principale."
     },
     "merged_users": {
         "en": "{old_user} and their aliases have been merged into {new_user}.",
@@ -61,19 +63,19 @@
         "cy": "{old_user} a'u enwau eraill wedi cael eu cyfuno i mewn i {new_user}.",
         "nl": "{old_user} en zijn aliassen zijn samengevoegd met {new_user}.",
         "de": "{old_user} und seine Nicknamen wurden zusammengelegt in {new_user}.",
-	"fr": "{old_user} et ses alias ont été fusionnés dans {new_user}.",
-	"it": "{old_user} e i suoi alias sono stati fusi con {new_user}."
+        "fr": "{old_user} et ses alias ont été fusionnés dans {new_user}.",
+        "it": "{old_user} e i suoi alias sono stati fusi con {new_user}."
     },
     "alias_exists": {
         "en": "Alias {alias} already exists.",
         "de": "Alias {alias} bereits vorhanden.",
-	"fr": "L'alias {alias} existe déjà.",
-	"it": "L'alias {alias} esiste già."
+        "fr": "L'alias {alias} existe déjà.",
+        "it": "L'alias {alias} esiste già."
     },
     "alias_added": {
         "en": "Alias {alias} added to {user}.",
         "de": "Alias {alias} dem  Benutzer {user} hinzugefügt.",
-	"fr": "Alias {alias} ajouté à {user}.",
-	"it": "Alias {alias} aggiunto a {user}."
+        "fr": "Alias {alias} ajouté à {user}.",
+        "it": "Alias {alias} aggiunto a {user}."
     }
 }

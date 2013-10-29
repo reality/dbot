@@ -5,8 +5,8 @@
         "cy": "Sylw! {reporter} wedi adrodd {reported} yn {channel}. Y rheswm a rhoddwyd oedd: \"{reason}\"",
         "nl": "Waarschuwing: {reporter} heeft {reported} aangegeven in {channel}. De reden die gegeven werd was: \"{reason}\"",
         "de": "Achtung: {reporter} hat {reported} in {channel} gemeldet. Grund: \"{reason}\"",
-	"fr": "Attention : {reporter} a reporté {reported} dans {channel}. Raison donnée : \"{reason}\"",
-	"it": "Attentzone : {reporter} ha segnalato {reported} in {channel}. Motivo : \"{reason}\""
+        "fr": "Attention : {reporter} a reporté {reported} dans {channel}. Raison donnée : \"{reason}\"",
+        "it": "Attentzone : {reporter} ha segnalato {reported} in {channel}. Motivo : \"{reason}\""
     },
     "missed_notifies": {
         "en": "{user}, you have some missed notifications (clear these once you have read them using ~clearmissing) - {link}",
@@ -29,8 +29,8 @@
         "cy": "Diolch, {reported} wedi cael ei adrodd i'r gweinyddwyr sianel.",
         "nl": "Bedankt, {reported} is aangegeven bij de administrators.",
         "de": "Danke, {reported} wurde bei den Administratoren dieses Kanals gemeldet.",
-	"fr": "Merci, {reported} a été reporté aux administrateurs du canal.",
-	"it": "Grazie, {reported} è stato segnalato agli amministratori del canale."
+        "fr": "Merci, {reported} a été reporté aux administrateurs du canal.",
+        "it": "Grazie, {reported} è stato segnalato agli amministratori del canale."
     },
     "user_not_found": {
         "en": "{reported} isn't a known user in {channel}.",
@@ -38,7 +38,7 @@
         "cy": "Nid yw {reported} yn ddefnyddiwr hysbys yn {channel}.",
         "nl": "{reported} is geen bestaande gebruiker in {channel}.",
         "de": "{reported} ist kein bekannter Benutzer in {channel}.",
-	"fr": "{reported} n'est pas un utilisateur connu dans {channel}.",
+        "fr": "{reported} n'est pas un utilisateur connu dans {channel}.",
         "it": "{reported} non è un utente conosciuto in {channel}."
     },
     "not_in_channel": {
@@ -47,32 +47,39 @@
         "cy": "Dydw i ddim yn bresennol yn {channel}.",
         "nl": "Ik ben niet aanwezig in {channel}.",
         "de": "Ich bin nicht in {channel} aktiv.",
-	"fr": "Je ne suis pas présent dans {channel}.",
+        "fr": "Je ne suis pas présent dans {channel}.",
         "it": "Non sono presente in {channel}."
     },
     "notify": {
         "en": "[{type}][{channel}]{notifier} {message}",
-	"fr": "[{type}][{channel}]{notifier} {message}",
-	"it": "[{type}][{channel}]{notifier} {message}"
+        "fr": "[{type}][{channel}]{notifier} {message}",
+        "it": "[{type}][{channel}]{notifier} {message}",
+        "de": "[{type}][{channel}]{notifier} {message}"
     },
     "notified": {
         "en": "{user}: {channel} staff notified.",
-	"fr": "{user}: l'équipe de {channel} a été notifiée.",
-	"it": "{user}: la squadra di {channel} è stata notificata."
+        "fr": "{user}: l'équipe de {channel} a été notifiée.",
+        "it": "{user}: la squadra di {channel} è stata notificata.",
+        "de": "{user}: {channel} Administratoren verständigt."
     },
     "nunsubbed": {
-        "en": "Unsubscribed from {cName} notifications."
+        "en": "Unsubscribed from {cName} notifications.",
+        "de": "Von {cName} Benachrichtigungen abgemeldet."
     },
     "n_also_found": {
-        "en": " These notifications are repeated in {afaName}."
+        "en": "These notifications are repeated in {afaName}.",
+        "de": "Diese Benachrichtigungen können in {afaName} gefunden werden."
     },
     "already_nunsubbed": {
-        "en": "Already unsubscribed from {cName} notifications."
+        "en": "Already unsubscribed from {cName} notifications.",
+        "de": "Du bist bereits von {cName} Benachrichtigungen abgemeldet."
     },
     "ununsubbed": {
-        "en": "No longer unsubscribed from {cName}."
+        "en": "No longer unsubscribed from {cName}.",
+        "de": "Du bist nicht länger von {cName} Benachrichtigungen abgemeldet."
     },
     "not_nunsubbed": {
-        "en": "Already subscribed to notifications from {cName}."
+        "en": "Already subscribed to notifications from {cName}.",
+        "de": "Du bist bereits für {cName} Benachrichtigungen angemeldet"
     }
 }
