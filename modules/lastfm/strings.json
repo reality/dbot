@@ -19,5 +19,8 @@
     },
     "lfm_profile": {
         "en": "{user} has played {plays} tracks since {date} - {link}"
+    },
+    "lfm_scrobbliest": {
+        "en": "Users with most plays: "
     }
 }

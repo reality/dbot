@@ -126,7 +126,7 @@ var lastfm = function(dbot) {
                 'json': true
             }, function(err, res, body) {
                 if(_.has(body, 'error') && body.error == 6 || body.error == 7) {
-                    callback('no_user', user, null);
+                    callback('no_user', null);
                 } else if(_.has(body, 'user')) {
                     callback(null, body.user);
                 } else {
@@ -163,6 +163,47 @@ var lastfm = function(dbot) {
                     }
                 }
             });
+        },
+
+        '~scrobbliest': function(event) {
+            dbot.api.profile.getAllProfilesWith('lastfm', function(profiles) {
+                if(profiles) {
+                    var plays = [];
+                    async.each(profiles, function(profile, done) {
+                        this.api.getInfo(profile.profile.lastfm, function(err, lProfile) {
+                            if(!err) {
+                                plays.push({
+                                    'user': profile.id,
+                                    'plays': parseInt(lProfile.playcount)
+                                });
+                            }
+                            done();
+                        });
+                    }.bind(this), function() {
+                        var scrobbliest = _.chain(plays)
+                            .sortBy(function(p) { return p.plays; })
+                            .reverse()
+                            .first(10)
+                            .value();
+
+                        async.each(scrobbliest, function(item, done) {
+                            dbot.api.users.getUser(item.user, function(user) {
+                                item.user = user; 
+                                done();
+                            });
+                        }, function() {
+                            var output = dbot.t('lfm_scrobbliest');
+                            _.each(scrobbliest, function(item) {
+                                output += item.user.currentNick + ' (' +
+                                    item.plays.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")+ '), ';
+                            });
+                            event.reply(output.slice(0, -2));
+                        });
+                    }.bind(this));
+                } else {
+                    event.reply('no suitable profiles');
+                } 
+            }.bind(this));
         },
 
         '~suggestion': function(event) {
