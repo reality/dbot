@@ -237,6 +237,7 @@ var lastfm = function(dbot) {
                             if(p1.id == p2.id || _.has(scores, p2.id) && _.has(scores[p2.id], p1.id)) {
                                 subnext();
                             } else {
+                                console.log('comparing ' + p1.profile.lastfm + ' and ' + p2.profile.lastfm);
                                 this.api.tasteCompare(p1.profile.lastfm, p2.profile.lastfm, function(err, comp) {
                                     if(!err) {
                                         var score = Math.floor(comp.score * 100);
@@ -248,6 +249,7 @@ var lastfm = function(dbot) {
                         }.bind(this), function() { next(); });
                     }.bind(this), function(err) {
                         // Now we better structure the scores for sorting
+                        console.log(scores);
                         var goodScores = [];
                         _.each(scores, function(subscores, p1) {
                             _.each(subscores, function(aScore, p2) {
@@ -258,6 +260,8 @@ var lastfm = function(dbot) {
                                 }); 
                             });
                         });
+
+                        console.log(goodScores);
 
                         var tastiest = _.chain(goodScores)
                             .sortBy(function(p) { return p.score; })
