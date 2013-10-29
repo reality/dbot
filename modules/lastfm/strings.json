@@ -16,5 +16,8 @@
     },
     "lfm_suggestion": {
         "en": "{user}: Try listening to {name} by {artist}"
+    },
+    "lfm_profile": {
+        "en": "{user} has played {plays} tracks since {date} - {link}"
     }
 }

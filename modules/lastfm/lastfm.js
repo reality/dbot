@@ -5,7 +5,8 @@
 
 var _ = require('underscore')._,
     request = require('request'),
-    async = require('async');
+    async = require('async'),
+    moment = require('moment');
 
 var lastfm = function(dbot) {
     this.ApiRoot = 'http://ws.audioscrobbler.com/2.0/';
@@ -112,10 +113,58 @@ var lastfm = function(dbot) {
                     callback('idk', null);
                 }
             }); 
+        },
+
+        'getInfo': function(lfm, callback) {
+            request.get(this.ApiRoot, {
+                'qs': {
+                    'user': lfm,
+                    'method': 'user.getinfo',
+                    'api_key': this.config.api_key,
+                    'format': 'json'
+                },
+                'json': true
+            }, function(err, res, body) {
+                if(_.has(body, 'error') && body.error == 6 || body.error == 7) {
+                    callback('no_user', user, null);
+                } else if(_.has(body, 'user')) {
+                    callback(null, body.user);
+                } else {
+                    callback('idk', null);
+                }
+            }); 
+
         }
     };
 
     this.commands = {
+        '~lastfm': function(event) {
+            var user = event.rUser,
+                lfm = event.rProfile.lastfm;
+            if(event.res[0]) {
+                user = event.res[0].user;
+                lfm = event.res[0].lfm;
+            }
+
+            this.api.getInfo(lfm, function(err, profile) {
+                if(!err) {
+                    console.log(profile);
+                    event.reply(dbot.t('lfm_profile', {
+                        'user': user.currentNick,
+                        'plays': profile.playcount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
+                        'date': moment(profile.registered['#text']).format('DD/MM/YYYY'),
+                        'link': profile.url
+                    }));
+                } else {
+                    if(err == 'no_user') {
+                        event.reply('Unknown Last.FM user.');
+                    } else if(err == 'no_listen') {
+                        event.reply(dbot.t('no_listen', { 'user': event.user }));
+                    }
+                }
+            });
+        },
+
         '~suggestion': function(event) {
             this.api.getListening(event.rProfile.lastfm, function(err, track) {
                 if(!err) {
