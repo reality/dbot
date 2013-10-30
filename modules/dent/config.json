@@ -3,5 +3,6 @@
     "password": "yourpasswordhere",
     "dependencies": [ "link" ],
     "ignorable": true,
-    "dentQuotes": true
+    "dentQuotes": true,
+    "api": "http://quitter.se/"
 }

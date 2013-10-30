@@ -21,7 +21,7 @@ var dent = function(dbot) {
                 new Buffer(username + ":" + password).toString("base64");
 
             request.post({
-                'url': 'http://identi.ca/api/statuses/update.json?status=' +
+                'url': this.config.api + '/statuses/update.json?status=' +
                     escape(content),
                 'headers': {
                     'Authorization': auth
