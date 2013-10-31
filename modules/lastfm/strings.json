@@ -22,5 +22,11 @@
     "lfm_suggestion": {
         "en": "{user}: Try listening to {name} by {artist}",
         "de": "{user}: Versuche mal, {name} von {artist} anzuhören"
+    },
+    "lfm_profile": {
+        "en": "{user} has scrobbled {plays} tracks since {date} - {link}"
+    },
+    "lfm_scrobbliest": {
+        "en": "Users with the most played tracks: "
     }
 }
