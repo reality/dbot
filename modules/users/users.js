@@ -220,10 +220,6 @@ var users = function(dbot) {
                 }.bind(this));
             }
         }.bind(this));
-
-        _.each(dbot.instance.connections, function(connection) {
-            connection.updateNickLists(); 
-        });
     };
 };
 
