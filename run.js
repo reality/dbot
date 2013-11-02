@@ -165,6 +165,7 @@ DBot.prototype.reloadModules = function() {
     delete require.cache[path];
     require('./snippets');
 
+    // Clear JSBot listeners and hooks
     this.instance.removeListeners();
     this.instance.clearHooks();
 
@@ -217,7 +218,6 @@ DBot.prototype.reloadModules = function() {
         }
     }
 
-    process.nextTick(function() {
         _.each(moduleNames, function(name) {
             if(this.status[name] === true) {
                 try {
@@ -304,7 +304,6 @@ DBot.prototype.reloadModules = function() {
                 this.modules[module.name] = module;
             }
         }.bind(this));
-    }.bind(this));
 
     process.nextTick(function() {
         if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
