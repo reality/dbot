@@ -138,7 +138,7 @@ var steam = function(dbot) {
 
         },
 
-        '~game': function(event) {
+        '~playing': function(event) {
             var user = event.rUser,
                 snick = event.rProfile.steam,
                 sid = event.rProfile.sid;
