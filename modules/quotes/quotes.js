@@ -150,6 +150,9 @@ var quotes = function(dbot) {
             });
         }
     };
+
+    this.api['getQuote'].external = true;
+    this.api['getQuote'].extMap = [ 'key', 'callback' ];
    
     this.listener = function(event) {
         if(event.action == 'PRIVMSG') {
