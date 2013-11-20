@@ -107,6 +107,25 @@ var reddit = function(dbot) {
         dbot.api.link.addHandler(this.name, // I'm so sorry, Jesus.
             /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)(\/comments\/([a-zA-Z0-9]+)?\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)?)?/, 
             rHandler);
+        dbot.api.link.addHandler(this.name + 'short',
+            /https?:\/\/(www\.)?redd.it\/([a-zA-Z0-9]+)/,
+            function(match, name, callback) {
+                this.api.getPostInfo(match[2], function(info) {
+                    if(info) {
+                        var infoString = dbot.t('about_post', {
+                            'poster': info.author,
+                            'subreddit': info.subreddit,
+                            'comments': info.num_comments,
+                            'score': info.score,
+                            'up': info.ups,
+                            'down': info.downs,
+                            'url': this.ApiRoot + match[2]
+                        });
+                        if(info.over_18) infoString += " " + dbot.t("nsfw");
+                        callback(infoString);
+                    }
+                }.bind(this));
+            }.bind(this));
     }.bind(this);
 };
 
