@@ -83,6 +83,11 @@ var commands = function(dbot) {
                 channel = event.input[1],
                 reason = event.input[3];
 
+            if(_.isUndefined(channel)) {
+                channel = event.channel.name;
+            }
+            channel = channel.trim();
+
             this.api.kick(server, kickee, channel, reason + ' (requested by ' + kicker + ')'); 
 
             dbot.api.report.notify('kick', server, event.rUser, channel, dbot.t('ckicked', {
@@ -272,7 +277,7 @@ var commands = function(dbot) {
     commands['~quiet'].access = 'voice';
     commands['~unquiet'].access = 'voice';
 
-    commands['~ckick'].regex = [/^~ckick ([^ ]+) ([^ ]+) (.+)$/, 4];
+    commands['~ckick'].regex = /^~ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
     commands['~quiet'].regex = /^~quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^~unquiet (#[^ ]+ )?([^ ]+) ?$/;
