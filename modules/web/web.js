@@ -81,7 +81,8 @@ var webInterface = function(dbot) {
                         // Render with express.js
                         _.extend(one, { 
                             'name': dbot.config.name,
-                            'user': req.user    
+                            'user': req.user,
+                            'modules': this.indexLinks
                         });
                         resp.render(this.module + '/' + view, one, two);
                     }).bind(this);
