@@ -306,7 +306,6 @@ DBot.prototype.reloadModules = function() {
         }.bind(this));
 
     process.nextTick(function() {
-        if(_.has(this.modules, 'web')) this.modules.web.reloadPages();
         _.each(this.modules, function(module, name) {
             if(module.onLoad) {
                 try {
