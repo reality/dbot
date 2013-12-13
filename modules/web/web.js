@@ -82,7 +82,7 @@ var webInterface = function(dbot) {
                         _.extend(one, { 
                             'name': dbot.config.name,
                             'user': req.user,
-                            'routes': this.indexLinks
+                            'routes': dbot.modules.web.indexLinks
                         });
                         resp.render(this.module + '/' + view, one, two);
                     }).bind(this);
