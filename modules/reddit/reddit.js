@@ -221,6 +221,7 @@ var reddit = function(dbot) {
                 this.api.getPostInfo(matches[4], function(info) {
                     if(info) {
                         var infoString = dbot.t('about_post', {
+                            'title': info.title.trim(),
                             'poster': info.author,
                             'subreddit': info.subreddit,
                             'comments': info.num_comments,
