@@ -71,7 +71,7 @@ var reddit = function(dbot) {
                                     checkTimes[channel.id][feed.subreddit] = Date.now();
                                 }
                             }.bind(this)); 
-                        }, feed.interval));
+                        }.bind(this), feed.interval));
                     }.bind(this));
                 }.bind(this));
             }.bind(this));
