@@ -1,0 +1,4 @@
+{
+    "~addredditfeed": "~addredditfeed [#channel] [r/subreddit] [interval in minutes]",
+    "~rmredditfeed": "~rmredditfeed [#channel] [r/subreddit]"
+}
