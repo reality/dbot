@@ -41,7 +41,6 @@ var reddit = function(dbot) {
                 checkTimes = [];
 
             for(i=0;i<this.ints.length;i++) {
-                console.log('destroying ' +this.runningIntervals[i]);
                 clearInterval(this.ints[i]); 
             }
 
