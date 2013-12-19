@@ -7,7 +7,7 @@
         "it": "[{display_name} ha {subscribers} abonnati ({active} activo/i)]"
     },
     "about_post": {
-        "en": "[Post by {poster} in {subreddit} — Comments: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
+        "en": "[{title}] [Post by {poster} in {subreddit} — Comments: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
         "cy": "[Postio gan {poster} yn {subreddit} - Sylwadau: {comments}, Sgôr: {score} (\u00039]▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
         "de": "[Beitrag von {poster} in {subreddit} — Kommentare: {comments}, Bewertung: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
         "fr": "[Message de {poster} dans {subreddit} — Commentaires: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
@@ -27,5 +27,17 @@
         "cy": "[Anniogel Ar Gwaith (AAG)]",
         "fr": "[Risqué Pour le Travail (NSFW)]",
         "it": "[Rischioso per il lavoro (NSFW)]"
+    },
+    "added_channel_feed": {
+        "en": "Added r/{subreddit} feed to {channel} every {interval} minute(s)."
+    },
+    "removed_channel_feed": {
+        "en": "Removed r/{subreddit} feed from {channel}."
+    },
+    "no_such_feed": {
+        "en": "No such feed..."
+    },
+    "feed_already_watched": {
+        "en": "This feed already exists..."
     }
 }
