@@ -41,7 +41,6 @@ var reddit = function(dbot) {
 
             this.db.scan('reddit_feeds', function(channel) {
                 if(channel) {
-                    console.log(channel);
                     channels.push(channel); 
                 }
             }, function() {
@@ -131,8 +130,6 @@ var reddit = function(dbot) {
                 if(!err && body && body.kind === 'Listing') {
                     var posts = _.pluck(body.data.children, 'data');
                         newPosts = _.filter(posts, function(post) {
-                            console.log(post.created_utc + ' vs ' + (last /
-                            1000));
                             return post.created_utc > (last / 1000);
                         });
                     callback(null, newPosts);
