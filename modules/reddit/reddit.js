@@ -8,6 +8,7 @@ var _ = require('underscore')._,
 var reddit = function(dbot) {
     this.ApiRoot = 'http://reddit.com/';
     this.UserAgent = 'dbot by u/realitone';
+    this.ints = [];
 
     this.internalAPI = {
         'getChannelFeeds': function(server, cName, callback) {
@@ -39,6 +40,11 @@ var reddit = function(dbot) {
             var channels = [],
                 checkTimes = [];
 
+            for(i=0;i<this.ints.length;i++) {
+                console.log('destroying ' +this.runningIntervals[i]);
+                clearInterval(this.ints[i]); 
+            }
+
             this.db.scan('reddit_feeds', function(channel) {
                 if(channel) {
                     channels.push(channel); 
@@ -48,7 +54,7 @@ var reddit = function(dbot) {
                     checkTimes[channel.id] = {};
                     _.each(channel.feeds, function(feed) {
                         checkTimes[channel.id][feed.subreddit] = Date.now();
-                        dbot.api.timers.addTimer(30000, function() {
+                        this.ints.push(setInterval(function() {
                             this.api.getNewPosts(feed.subreddit, checkTimes[channel.id][feed.subreddit], function(err, posts) {
                                 if(!err && posts.length > 0) {
                                     _.each(posts, function(post) {
@@ -66,7 +72,7 @@ var reddit = function(dbot) {
                                     checkTimes[channel.id][feed.subreddit] = Date.now();
                                 }
                             }.bind(this)); 
-                        }.bind(this));
+                        }, feed.interval));
                     }.bind(this));
                 }.bind(this));
             }.bind(this));
