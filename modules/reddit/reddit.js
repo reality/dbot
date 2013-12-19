@@ -195,6 +195,8 @@ var reddit = function(dbot) {
     };
     this.commands['~addredditfeed'].regex = [/^~addredditfeed ([^ ]+) ([^ ]+) ([^ ]+)$/, 4];
     this.commands['~rmredditfeed'].regex = [/^~rmredditfeed ([^ ]+) ([^ ]+)$/, 3];
+    this.commands['~addredditfeed'].access = 'moderator';
+    this.commands['~rmredditfeed'].access = 'moderator';
 
     this.onLoad = function() {
         this.internalAPI.reloadChannelFeeds();
