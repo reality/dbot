@@ -203,6 +203,12 @@ var reddit = function(dbot) {
     this.commands['~addredditfeed'].access = 'moderator';
     this.commands['~rmredditfeed'].access = 'moderator';
 
+    this.onDestroy = function() {
+        for(i=0;i<this.ints.length;i++) {
+            clearInterval(this.ints[i]); 
+        }
+    }.bind(this);
+
     this.onLoad = function() {
         this.internalAPI.reloadChannelFeeds();
 
