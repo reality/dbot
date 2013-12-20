@@ -261,7 +261,7 @@ var reddit = function(dbot) {
         }.bind(this);
 
         dbot.api.link.addHandler(this.name, // I'm so sorry, Jesus.
-            /https?:\/\/(www\.)?reddit\.com\/r\/([a-zA-Z0-9]+)(\/comments\/([a-zA-Z0-9]+)?\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)?)?/, 
+            /https?:\/\/(www|pay\.)?reddit\.com\/r\/([a-zA-Z0-9]+)(\/comments\/([a-zA-Z0-9]+)?\/([a-zA-Z0-9_]+)\/([a-zA-Z0-9_]+)?)?/, 
             rHandler);
         dbot.api.link.addHandler(this.name + 'short',
             /https?:\/\/(www\.)?redd.it\/([a-zA-Z0-9]+)/,
@@ -269,6 +269,7 @@ var reddit = function(dbot) {
                 this.api.getPostInfo(match[2], function(info) {
                     if(info) {
                         var infoString = dbot.t('about_post', {
+                            'title': info.title.trim(),
                             'poster': info.author,
                             'subreddit': info.subreddit,
                             'comments': info.num_comments,
