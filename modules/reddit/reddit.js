@@ -43,6 +43,7 @@ var reddit = function(dbot) {
             for(i=0;i<this.ints.length;i++) {
                 clearInterval(this.ints[i]); 
             }
+            this.ints = [];
 
             this.db.scan('reddit_feeds', function(channel) {
                 if(channel) {
@@ -53,7 +54,7 @@ var reddit = function(dbot) {
                     checkTimes[channel.id] = {};
                     _.each(channel.feeds, function(feed) {
                         checkTimes[channel.id][feed.subreddit] = Date.now();
-                        this.ints.push(setInterval(function() {
+                        var intervalId = setInterval(function() {
                             this.api.getNewPosts(feed.subreddit, checkTimes[channel.id][feed.subreddit], function(err, posts) {
                                 if(!err && posts.length > 0) {
                                     _.each(posts, function(post) {
@@ -71,7 +72,9 @@ var reddit = function(dbot) {
                                     checkTimes[channel.id][feed.subreddit] = Date.now();
                                 }
                             }.bind(this)); 
-                        }.bind(this), feed.interval));
+                        }.bind(this), feed.interval);
+                        console.log(intervalId);
+                        this.ints.push(intervalId);
                     }.bind(this));
                 }.bind(this));
             }.bind(this));
