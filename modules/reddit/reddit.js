@@ -97,6 +97,7 @@ var reddit = function(dbot) {
         },
 
         'getPostInfo': function(name, callback) {
+            console.log('MAKIN A REQUEST');
             request.get({
                 'url': this.ApiRoot + 'comments/' + name + '.json',
                 'json': true,
@@ -128,6 +129,7 @@ var reddit = function(dbot) {
         },
 
         'getNewPosts': function(sr, last, callback) {
+            console.log('MAKIN A REQUEST');
             request.get({
                 'url': this.ApiRoot + 'r/' + sr + '/new.json',
                 'json': true,
