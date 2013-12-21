@@ -209,6 +209,7 @@ var reddit = function(dbot) {
     this.commands['~rmredditfeed'].access = 'moderator';
 
     this.onDestroy = function() {
+        console.log('call de ondestroy');
         for(i=0;i<this.ints.length;i++) {
             clearInterval(this.ints[i]); 
         }
