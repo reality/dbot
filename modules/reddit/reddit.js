@@ -213,6 +213,7 @@ var reddit = function(dbot) {
         this.internalAPI.reloadChannelFeeds();
 
         var rHandler = function(matches, name, callback) {
+        console.log('reddit is handling the link');
             if(matches[6]) { // It's a comment
                 this.api.getCommentInfo(matches[4], matches[6], function(info) {
                     if(info) {
@@ -229,7 +230,9 @@ var reddit = function(dbot) {
                     } 
                 });
             } else if(matches[4]) { // It's a post
+                console.log('it is a post');
                 this.api.getPostInfo(matches[4], function(info) {
+                    console.log('got post info');
                     if(info) {
                         var infoString = dbot.t('about_post', {
                             'title': info.title.trim(),
