@@ -209,7 +209,7 @@ var ignore = function(dbot) {
                     if(!_.include(channel.ignores, module)) {
                         channel.ignores.push(module);
                         this.db.save('channel_ignores', channel.id, channel, function(err) {
-                            dbot.instance.ignoreTag(channel, module);
+                            dbot.instance.ignoreTag(channel.name, module);
                             event.reply(dbot.t('ignoring_channel', {
                                 'module': module,
                                 'channel': channelName
@@ -241,7 +241,7 @@ var ignore = function(dbot) {
                 if(channel && _.include(channel.ignores, module)) {
                     channel.ignores = _.without(channel.ignores, module);
                     this.db.save('channel_ignores', channel.id, channel, function(err) {
-                        dbot.instance.removeIgnore(channel, module);
+                        dbot.instance.removeIgnore(channel.name, module);
                         event.reply(dbot.t('unignoring_channel', {
                             'module': module,
                             'channel': channelName
@@ -284,7 +284,7 @@ var ignore = function(dbot) {
 
         this.db.scan('channel_ignores', function(channel) {
             _.each(channel.ignores, function(module) {
-                dbot.instance.ignoreTag(channel, module);
+                dbot.instance.ignoreTag(channel.name, module);
             });
         }, function(err) { });
     };
