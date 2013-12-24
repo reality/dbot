@@ -12,7 +12,7 @@ var kick = function(dbot) {
         },
 
         'quiet': function(server, user, channel) {
-            dbot.say(server, this.config.chanserv, 'quiet ' + channel + ' ' + user);
+            dbot.instance.connections[server].send('MODE ' + channel + ' +q *!*@' + host);
         },
 
         'unquiet': function(server, user, channel) {
