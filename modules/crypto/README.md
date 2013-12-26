@@ -1,29 +1,21 @@
-## Reddit
+## Crypto
 
-Various Reddit functionality
+Cryptography!
 
 ### Description
+This module calculates different hashes or ciphertexts for some algorithms.
 
-This module provides Reddit related functionality, which is currently limited to
-reading various links, but will be expanded in future to include stuff like
-monitoring posts and creating its own.
+### Commands
 
-### API
+#### ~md5 [text]
+Calculate the MD5 hash of the given text.
 
-#### getSubredditInfo(name, callback)
-Get information about a subreddit from the Reddit API. Callback takes one
-argument, the data returned from the API.
+#### ~sha1 [text]
+Calculate the SHA1 hash of the given text.
 
-#### getPostInfo(name, callback)
-Get information about a post from the Reddit API. Callback takes one argument,
-the data returned from the API about the post.
+#### ~sha256 [text]
+Calculate the SHA256 hash of the given text.
 
-#### getCommentInfo(post, name, callback)
-Get information about a particular comment in a particular post. Callback takes
-one argument, information about the given comment.
+#### ~aes "[text]" "[key]"
+Calculates the  hash of the given text.
 
-### Hooks
-
-#### link
-Posts a summary when either a subreddit, a post or a comment is linked in a
-channel.
