@@ -14,7 +14,7 @@ then
     exit 1
 fi
 
-npm install process async wordnik node-uuid underscore request sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
+npm install crypto-js process async wordnik node-uuid underscore request sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
 
 cd public/
 wget http://twitter.github.com/bootstrap/assets/bootstrap.zip
