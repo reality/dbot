@@ -1,6 +1,6 @@
 /** 
- * Module Name: Flashy
- * Description: Makes pages with flashing text and that innit.
+ * Module Name: Crypto
+ * Description: Allows the magic of cryptography to take place.
  */
 
 var MD5 = require('crypto-js/md5');
