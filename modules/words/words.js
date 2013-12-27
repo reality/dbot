@@ -12,6 +12,17 @@ var words = function(dbot) {
                 }
             });
         },
+
+        '~etymology': function(event) {
+            var query = event.params[1];
+            this.wn.etymologies(encodeURIComponent(query), function(err, defs) {
+                if(!err && defs[0]) {
+                    event.reply(query + ' etymology: ' + defs[0].text);
+                } else {
+                    event.reply('No etymology found for ' + query);
+                }
+            });
+        },
         
         '~jimble': function(event) { 
             event.reply(event.params[1].split('').sort(function() { 
