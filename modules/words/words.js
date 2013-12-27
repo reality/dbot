@@ -16,10 +16,8 @@ var words = function(dbot) {
         '~etymology': function(event) {
             var query = event.params[1];
             this.wn.etymologies(encodeURIComponent(query), function(err, defs) {
-                console.log(defs);
                 if(!err && defs[0]) {
-                    event.reply(query + ' etymology: ' +
-                    defs[0].replace(/<\/?[^>]+(>|$)/g, ""));
+                    event.reply(query + ' etymology: ' + defs[0]);
                 } else {
                     event.reply('No etymology found for ' + query);
                 }
