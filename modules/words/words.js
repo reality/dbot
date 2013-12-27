@@ -15,7 +15,9 @@ var words = function(dbot) {
 
         '~etymology': function(event) {
             var query = event.params[1];
-            this.wn.etymologies(encodeURIComponent(query), function(err, defs) {
+            this.wn.etymologies(encodeURIComponent(query), {
+                'format': 'json' 
+            }, function(err, defs) {
                 if(!err && defs[0]) {
                     event.reply(query + ' etymology: ' + defs[0]);
                 } else {
