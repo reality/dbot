@@ -53,10 +53,6 @@ var command = function(dbot) {
                     }
                 });
                 return;
-            }
-
-             else if(_.has(dbot.modules, 'quotes')) {
-                commandName = this.config.commandPrefix;
             } else {
                 return;
             }
