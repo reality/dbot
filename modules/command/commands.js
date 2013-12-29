@@ -39,8 +39,8 @@ var commands = function(dbot) {
             var moduleName = event.params[1];
             if(!moduleName || !_.has(dbot.modules, moduleName)) {
                 event.reply(dbot.t('usage', {
-                    'command': '~help',
-                    'usage': '~help [module]'
+                    'command': this.config.commandPrefix + 'help',
+                    'usage': this.config.commandPrefix + 'help [module]'
                 }));
                 event.reply(dbot.t('loaded_modules', {
                     'modules': _.keys(dbot.modules).join(', ')
