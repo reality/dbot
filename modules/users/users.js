@@ -189,7 +189,7 @@ var users = function(dbot) {
                 }
             }.bind(this);
 
-            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG', 'NICK'], event.action)) {
+            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG'], event.action)) {
                 checkChannel(function(channel) {
                     event.rChannel = channel;
                     checkUser(function(user) {
@@ -207,15 +207,20 @@ var users = function(dbot) {
                     }.bind(this));
                 }.bind(this));
             } else if(event.user) {
-                this.api.resolveUser(event.server, event.user, function(user) {
-                    if(user) event.rUser = user;
+                checkUser(function(user) { // TODO: remove code repeating (is there any reason we can't do this in the first place hmm)
+                    event.rUser = user;
+
+                    if(!_.has(this.userCache[event.server], event.rUser.currentNick)) {
+                        this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
+                    } else if(this.userCache[event.server][event.rUser.currentNick] != event.rUser.id) {
+                        this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
+                    }
+
                     if(event.channel) {
                         this.api.resolveChannel(event.server, event.channel.name, function(channel) {
                             if(channel) event.rChannel = channel;
                             callback();
                         });
-                    } else {
-                        callback();
                     }
                 }.bind(this));
             }
