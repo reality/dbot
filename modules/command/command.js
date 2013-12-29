@@ -12,9 +12,10 @@ var command = function(dbot) {
      */
     this.listener = function(event) {
         var commandName = event.params[0];
-        if(commandName.charAt(0) != '~') {
+        if(commandName.charAt(0) != this.config.commandPrefix || this.config.passiveMode == true) {
             return;
         }
+        commandName = commandName.substring(1);
         if(!_.has(dbot.commands, commandName)) {
             if(_.has(dbot.modules, 'quotes')) {
                 var key = event.message.substring(1);
@@ -23,7 +24,7 @@ var command = function(dbot) {
                     if(quote) {
                         event.reply(key + ': ' + quote);
                     } else if(_.has(dbot.modules, 'spelling')) {
-                        var commands = _.keys(dbot.commands)
+                        var commands = _.keys(dbot.commands),
                             winner = false,
                             closestMatch = Infinity;
 
@@ -55,7 +56,7 @@ var command = function(dbot) {
             }
 
              else if(_.has(dbot.modules, 'quotes')) {
-                commandName = '~';
+                commandName = this.config.commandPrefix;
             } else {
                 return;
             }
@@ -65,7 +66,7 @@ var command = function(dbot) {
             dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
                 dbot.api.ignore.isUserBanned(event.rUser, commandName, function(isBanned) {
                     if(isBanned) {
-                        if(this.config.banOutput && commandName != '~') {
+                        if(this.config.banOutput && commandName != this.config.commandPrefix) {
                             event.reply(dbot.t('command_ban', {'user': event.user})); 
                         }
                     } else if(!hasAccess) {
@@ -100,10 +101,10 @@ var command = function(dbot) {
                                     });
                                 }
                             }
-                            if(!_.include(['~reload', '~load', '~unload', '~setconfig'], commandName)) dbot.api.event.emit('command', [ event ]);
+                            if(!_.include(['reload', 'load', 'unload', 'setconfig'], commandName)) dbot.api.event.emit('command', [ event ]);
                             dbot.save();
                         } else {
-                            if(commandName !== '~') {
+                            if(commandName !== this.config.commandPrefix) {
                                 if(_.has(dbot.usage, commandName)) {
                                     event.reply('Usage: ' + dbot.usage[commandName]);
                                 } else {

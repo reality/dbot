@@ -3,5 +3,7 @@
     "dependencies": [ "event", "ignore", "users" ],
     "useNickserv": false,
     "accessOutput": false,
-    "banOutput": false
+    "banOutput": false,
+    "passiveMode": false,
+    "commandPrefix": "~"
 }

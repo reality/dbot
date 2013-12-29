@@ -166,6 +166,8 @@ var commands = function(dbot) {
             var configPath = event.input[1],
                 newOption = event.input[2];
 
+            event.reply(event.input[1]);
+
             if(!_.include(noChangeConfig, configPath)) {
                 this.internalAPI.getCurrentConfig(configPath, function(config) {
                     if(config !== null) {

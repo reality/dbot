@@ -3,7 +3,7 @@ var _ = require('underscore')._,
 
 var commands = function(dbot) {
     return {
-        '~usage': function(event) {
+        'usage': function(event) {
             var commandName = event.params[1];
             if(_.has(dbot.usage, commandName)) {
                 event.reply(dbot.t('usage', {

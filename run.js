@@ -316,6 +316,14 @@ DBot.prototype.reloadModules = function() {
                 }
             }
         }, this);
+
+        // Legacy fix for ~ command prefix
+        _.each(this.commands, function(command, cName) {
+            if(cName.charAt(0) == '~') {
+                delete this.commands[cName];
+                this.commands[cName.substring(1)] = command;
+            }
+        }, this);
     }.bind(this));
 
     this.save();
