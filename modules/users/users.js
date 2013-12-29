@@ -189,7 +189,7 @@ var users = function(dbot) {
                 }
             }.bind(this);
 
-            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG'], event.action)) {
+            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG', 'NICK'], event.action)) {
                 checkChannel(function(channel) {
                     event.rChannel = channel;
                     checkUser(function(user) {
