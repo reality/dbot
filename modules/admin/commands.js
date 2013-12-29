@@ -300,8 +300,8 @@ var commands = function(dbot) {
     commands['~opme'].access = 'moderator';
     commands['~say'].access = 'moderator';
 
-    commands['~pushconfig'].regex = [/~pushconfig ([^ ]+) ([^ ]+)/, 3];
-    commands['~setconfig'].regex = [/~setconfig ([^ ]+) ([^ ]+)/, 3];
+    commands['~pushconfig'].regex = [/pushconfig ([^ ]+) ([^ ]+)/, 3];
+    commands['~setconfig'].regex = [/setconfig ([^ ]+) ([^ ]+)/, 3];
 
     return commands;
 };
