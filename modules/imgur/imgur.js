@@ -271,7 +271,7 @@ var imgur = function(dbot) {
             }.bind(this));
         }
     }
-    this.commands['~imgur'].regex = [/^~imgur ([\d\w\s-]*)/, 2];
+    this.commands['~imgur'].regex = [/^imgur ([\d\w\s-]*)/, 2];
 
     this.onLoad = function() {
         var imgurHandler = function(matches, name, callback) {

@@ -32,7 +32,7 @@ var words = function(dbot) {
             }).join(''));  
         } 
     };
-    this.commands['~jimble'].regex = [/^~jimble (.+)$/, 2];
+    this.commands['~jimble'].regex = [/^jimble (.+)$/, 2];
 
     this.onLoad = function() {
         this.wn = new Wordnik({

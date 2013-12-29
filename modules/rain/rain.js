@@ -32,7 +32,7 @@ var rain = function(dbot) {
         }
     };
 
-    commands['~rain'].regex = [/~rain (.+)/, 2];
+    commands['~rain'].regex = [/rain (.+)/, 2];
     this.commands = commands;
     this.on = 'PRIVMSG';
 

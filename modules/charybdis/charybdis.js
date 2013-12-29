@@ -22,8 +22,8 @@ var charybdis = function(dbot) {
             }
         }
     };
-    this.commands['~chanserv'].regex = [/^~chanserv (\+.)/, 2]
-    this.commands['~chanmode'].regex = [/^~chanmode (\+.)/, 2]
+    this.commands['~chanserv'].regex = [/^chanserv (\+.)/, 2]
+    this.commands['~chanmode'].regex = [/^chanmode (\+.)/, 2]
 };
 
 exports.fetch = function(dbot) {

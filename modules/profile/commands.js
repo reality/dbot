@@ -31,7 +31,7 @@ var commands = function(dbot){
             event.reply(dbot.api.web.getUrl('profile/' + event.server + '/' + user));
         }
     };
-    commands['~set'].regex = [/~set ([^ ]+) (.+)/, 3];
+    commands['~set'].regex = [/set ([^ ]+) (.+)/, 3];
 
     return commands;
 };

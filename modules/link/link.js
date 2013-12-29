@@ -141,7 +141,7 @@ var link = function(dbot) {
             });
         }
     };
-    commands['~ud'].regex = [/~ud (.+)/, 2];
+    commands['~ud'].regex = [/ud (.+)/, 2];
     this.commands = commands;
 
     this.listener = function(event) {

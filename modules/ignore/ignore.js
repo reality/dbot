@@ -257,10 +257,10 @@ var ignore = function(dbot) {
         }
     };
 
-    commands['~ban'].regex = [/^~ban ([^ ]+) ([^ ]+)$/, 3];
-    commands['~unban'].regex = [/^~unban ([^ ]+) ([^ ]+)$/, 3];
-    commands['~ignorechannel'].regex = [/^~ignorechannel ([^ ]+) ([^ ]+)$/, 3];
-    commands['~unignorechannel'].regex = [/^~unignorechannel ([^ ]+) ([^ ]+)$/, 3];
+    commands['~ban'].regex = [/^ban ([^ ]+) ([^ ]+)$/, 3];
+    commands['~unban'].regex = [/^unban ([^ ]+) ([^ ]+)$/, 3];
+    commands['~ignorechannel'].regex = [/^ignorechannel ([^ ]+) ([^ ]+)$/, 3];
+    commands['~unignorechannel'].regex = [/^unignorechannel ([^ ]+) ([^ ]+)$/, 3];
 
     commands['~ban'].access = 'moderator';
     commands['~unban'].access = 'moderator';

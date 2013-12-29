@@ -115,7 +115,7 @@ var spotify = function(dbot) {
             }
         }
     };
-    commands['~spotify'].regex = [/^~spotify (.*)/, 2];
+    commands['~spotify'].regex = [/^spotify (.*)/, 2];
     this.commands = commands;
 
     this.onLoad = function() {

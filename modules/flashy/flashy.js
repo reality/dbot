@@ -37,7 +37,7 @@ var flashy = function(dbot) {
         }
     };
 
-    this.commands['~flashy'].regex = [/^~flashy ([^ ]+) (.+)$/, 3];
+    this.commands['~flashy'].regex = [/^flashy ([^ ]+) (.+)$/, 3];
 };
 
 exports.fetch = function(dbot) {

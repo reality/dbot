@@ -418,8 +418,8 @@ var lastfm = function(dbot) {
             });
         }
     };
-    this.commands['~taste'].regex = [/^~taste ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    this.commands['~artists'].regex = [/^~artists ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    this.commands['~taste'].regex = [/^taste ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    this.commands['~artists'].regex = [/^artists ([\d\w[\]{}^|\\`_-]+?)/, 2];
 
     _.each(this.commands, function(command) {
         command.resolver = function(event, callback) {

@@ -166,7 +166,7 @@ var webInterface = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~setwebpass'].regex = [/^~setwebpass ([^ ]+)$/, 2]
+    this.commands['~setwebpass'].regex = [/^setwebpass ([^ ]+)$/, 2]
 };
 
 exports.fetch = function(dbot) {

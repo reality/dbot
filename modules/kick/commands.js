@@ -277,10 +277,10 @@ var commands = function(dbot) {
     commands['~quiet'].access = 'voice';
     commands['~unquiet'].access = 'voice';
 
-    commands['~ckick'].regex = /^~ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
-    commands['~nban'].regex = /^~nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^~quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
-    commands['~unquiet'].regex = /^~unquiet (#[^ ]+ )?([^ ]+) ?$/;
+    commands['~ckick'].regex = /^ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~nban'].regex = /^nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
+    commands['~quiet'].regex = /^quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~unquiet'].regex = /^unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;
 };

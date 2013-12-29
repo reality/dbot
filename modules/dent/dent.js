@@ -53,11 +53,11 @@ var dent = function(dbot) {
             event.reply('Dent posted (probably).');
         }
     };
-    this.commands['~dent'].regex = [/^~dent (.+)$/, 2];
+    this.commands['~dent'].regex = [/^dent (.+)$/, 2];
 
     this.onLoad = function() {
         if(this.config.dentQuotes === true && _.has(dbot.modules, 'quotes')) {
-            dbot.api.event.addHook('~qadd', function(key, text) {
+            dbot.api.event.addHook('qadd', function(key, text) {
                 if(text.indexOf('~~') == -1) {
                     this.api.post(key + ': ' + text);
                 }

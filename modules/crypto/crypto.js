@@ -25,10 +25,10 @@ var crypto = function(dbot) {
         }
     };
 
-    this.commands['~md5'].regex = /^~md5 ([^ ]+)$/;
-    this.commands['~sha1'].regex = /^~sha1 ([^ ]+)$/;
-    this.commands['~sha256'].regex = /^~sha256 ([^ ]+)$/;
-    this.commands['~aes'].regex = /^~aes "(.*)" "(.*)"$/;
+    this.commands['~md5'].regex = /^md5 ([^ ]+)$/;
+    this.commands['~sha1'].regex = /^sha1 ([^ ]+)$/;
+    this.commands['~sha256'].regex = /^sha256 ([^ ]+)$/;
+    this.commands['~aes'].regex = /^aes "(.*)" "(.*)"$/;
 };
 
 exports.fetch = function(dbot) {

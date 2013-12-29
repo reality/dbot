@@ -65,7 +65,7 @@ var warning = function(dbot) {
         }
     };
 
-    this.commands['~warn'].regex = [/~warn ([^ ]+) (.+)/, 3];
+    this.commands['~warn'].regex = [/warn ([^ ]+) (.+)/, 3];
     this.commands['~warn'].access = 'power_user';
 };
 

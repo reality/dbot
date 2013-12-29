@@ -367,15 +367,14 @@ var commands = function(dbot) {
         }
     };
 
-    commands['~'].regex = [/^~([\d\w\s-]*)/, 2];
-    commands['~q'].regex = [/^~q ([\d\w\s-]*)/, 2];
-    commands['~qsearch'].regex = [/^~qsearch ([\d\w\s*-]+?)[ ]?=[ ]?(.+)$/, 3];
-    commands['~rm'].regex = [/^~rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
-    commands['~rmlast'].regex = [/^~rmlast ([\d\w\s-]*)/, 2];
-    commands['~qadd'].regex = [/^~qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
-    commands['~qrename'].regex = [/^~qrename ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
-    commands['~qmerge'].regex = [/^~qmerge ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
-    commands['~link'].regex = [/^~link ([\d\w\s-]*)/, 2];
+    commands['~q'].regex = [/^q ([\d\w\s-]*)/, 2];
+    commands['~qsearch'].regex = [/^qsearch ([\d\w\s*-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~rm'].regex = [/^rm ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~rmlast'].regex = [/^rmlast ([\d\w\s-]*)/, 2];
+    commands['~qadd'].regex = [/^qadd ([\d\w-]+[\d\w\s-]*)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qrename'].regex = [/^qrename ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~qmerge'].regex = [/^qmerge ([\d\w\s-]+?)[ ]?=[ ]?(.+)$/, 3];
+    commands['~link'].regex = [/^link ([\d\w\s-]*)/, 2];
 
     commands['~rmconfirm'].access = 'moderator';
     commands['~rmdeny'].access = 'moderator';

@@ -199,11 +199,11 @@ var commands = function(dbot) {
         }
     };
     
-    commands['~alias'].regex = [/^~alias ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~time'].regex = [/^~time ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~setaliasparent'].regex = [/^~setaliasparent ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~mergeusers'].regex = [/^~mergeusers ([\d\w[\]{}^|\\`_-]+?)\s*?([\d\w[\]{}^|\\`_-]+?)/, 3];
-    commands['~addalias'].regex = [/^~addalias ([\d\w[\]{}^|\\`_-]+?) ([\d\w[\]{}^|\\`_-]+?)$/, 3];
+    commands['~alias'].regex = [/^alias ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~time'].regex = [/^time ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~setaliasparent'].regex = [/^setaliasparent ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    commands['~mergeusers'].regex = [/^mergeusers ([\d\w[\]{}^|\\`_-]+?)\s*?([\d\w[\]{}^|\\`_-]+?)/, 3];
+    commands['~addalias'].regex = [/^addalias ([\d\w[\]{}^|\\`_-]+?) ([\d\w[\]{}^|\\`_-]+?)$/, 3];
     
     commands['~setaliasparent'].access = 'moderator';
     commands['~mergeusers'].access = 'moderator';

@@ -34,7 +34,7 @@ var soundcloud = function(dbot) {
             });
         }
     };
-    this.commands['~soundcloud'].regex = [/^~soundcloud (.+)$/, 2];
+    this.commands['~soundcloud'].regex = [/^soundcloud (.+)$/, 2];
 
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, 

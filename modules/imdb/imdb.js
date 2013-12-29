@@ -47,7 +47,7 @@ var imdb = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~imdb'].regex = [/^~imdb (.+)$/, 2];
+    this.commands['~imdb'].regex = [/^imdb (.+)$/, 2];
 
     this.onLoad = function() {
         dbot.api.link.addHandler('imdb', /https?:\/\/(www\.)?imdb\.com\/title\/([a-zA-Z0-9]+)/, function(matches, name, callback) {

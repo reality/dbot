@@ -193,12 +193,12 @@ var commands = function(dbot) {
             });
         }
     };
-    commands['~newpoll'].regex = [/~newpoll ([^ ]+) options=([^ ]+) (.+)/, 4];
-    commands['~addoption'].regex = [/~addoption ([^ ]+) ([^ ]+)/, 3];
-    commands['~rmoption'].regex = [/~rmoption ([^ ]+) ([^ ]+)/, 3];
-    commands['~vote'].regex = [/~vote ([^ ]+) ([^ ]+)/, 3];
-    commands['~pdesc'].regex = [/~pdesc ([^ ]+)/, 2];
-    commands['~count'].regex = [/~count ([^ ]+)/, 2];
+    commands['~newpoll'].regex = [/newpoll ([^ ]+) options=([^ ]+) (.+)/, 4];
+    commands['~addoption'].regex = [/addoption ([^ ]+) ([^ ]+)/, 3];
+    commands['~rmoption'].regex = [/rmoption ([^ ]+) ([^ ]+)/, 3];
+    commands['~vote'].regex = [/vote ([^ ]+) ([^ ]+)/, 3];
+    commands['~pdesc'].regex = [/pdesc ([^ ]+)/, 2];
+    commands['~count'].regex = [/count ([^ ]+)/, 2];
 
     return commands;
 };

@@ -201,8 +201,8 @@ var reddit = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~addredditfeed'].regex = [/^~addredditfeed ([^ ]+) ([^ ]+) ([^ ]+)$/, 4];
-    this.commands['~rmredditfeed'].regex = [/^~rmredditfeed ([^ ]+) ([^ ]+)$/, 3];
+    this.commands['~addredditfeed'].regex = [/^addredditfeed ([^ ]+) ([^ ]+) ([^ ]+)$/, 4];
+    this.commands['~rmredditfeed'].regex = [/^rmredditfeed ([^ ]+) ([^ ]+)$/, 3];
     this.commands['~addredditfeed'].access = 'moderator';
     this.commands['~rmredditfeed'].access = 'moderator';
 

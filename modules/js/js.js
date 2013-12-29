@@ -37,8 +37,8 @@ var js = function(dbot) {
             }
         }
     };
-    commands['~js'].regex = [/^~js (.*)/, 2];
-    commands['~ajs'].regex = [/^~ajs (.*)/, 2];
+    commands['~js'].regex = [/^js (.*)/, 2];
+    commands['~ajs'].regex = [/^ajs (.*)/, 2];
     commands['~ajs'].access = 'admin';
 
     this.name = 'js';

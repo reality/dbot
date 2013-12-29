@@ -124,10 +124,10 @@ var commands = function(dbot) {
             }.bind(this));
         }
     };
-    commands['~report'].regex = [/^~report ([^ ]+) ([^ ]+) (.+)$/, 4];
-    commands['~notify'].regex = [/^~notify ([^ ]+) (.+)$/, 3];
-    commands['~nunsub'].regex = [/^~nunsub ([^ ]+)$/, 2];
-    commands['~ununsub'].regex = [/^~ununsub ([^ ]+)$/, 2];
+    commands['~report'].regex = [/^report ([^ ]+) ([^ ]+) (.+)$/, 4];
+    commands['~notify'].regex = [/^notify ([^ ]+) (.+)$/, 3];
+    commands['~nunsub'].regex = [/^nunsub ([^ ]+)$/, 2];
+    commands['~ununsub'].regex = [/^ununsub ([^ ]+)$/, 2];
 
     return commands;
 };
