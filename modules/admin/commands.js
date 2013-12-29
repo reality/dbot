@@ -46,8 +46,8 @@ var commands = function(dbot) {
             exec("git pull", function (error, stdout, stderr) {
                 exec("git submodule update", function (error, stdout, stderr) {
                     event.reply(dbot.t('gpull'));
-                    commands['~reload'](event);
-                    commands['~version'](event);
+                    commands['reload'](event);
+                    commands['version'](event);
                 }.bind(this));
             }.bind(this));
         },
@@ -190,7 +190,7 @@ var commands = function(dbot) {
                         if(_.has(dbot.config.modules, configPath[0])) {
                             configPath.splice(0, 0, 'modules');
                             event.input[1] = configPath.join('.');
-                            this.commands['~setconfig'](event);
+                            this.commands['setconfig'](event);
                             return;
                         } else {
                             event.reply(dbot.t('new_config_key', { 'key': configPath }));
@@ -261,7 +261,7 @@ var commands = function(dbot) {
                         }
 
                         event.params[1] = configPath.join('.');
-                        this.commands['~showconfig'](event);
+                        this.commands['showconfig'](event);
                     }
                 }.bind(this));
             } else {
