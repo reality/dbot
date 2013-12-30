@@ -140,7 +140,7 @@ var webInterface = function(dbot) {
         });
 
         if(_.has(dbot.modules, 'log')) {
-            dbot.api.log.ignoreCommand('~setwebpass');
+            dbot.api.log.ignoreCommand('setwebpass');
         }
     }.bind(this);
 
