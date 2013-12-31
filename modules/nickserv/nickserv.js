@@ -3,6 +3,7 @@ var _ = require('underscore')._;
 var nickserv = function(dbot) {
     this.authStack = {};
     this.userStack = {};
+    this.servStack = {};
 
     this.api = {
         'auth': function(server, nick, callback) {
@@ -12,6 +13,17 @@ var nickserv = function(dbot) {
             if(!_.has(this.authStack, server)) this.authStack[server] = {};
             this.authStack[server][nick] = callback;
             dbot.say(server, nickserv, infoCommand + ' ' + nick + ' *');
+        },
+
+        'getUserServer': function(server, nick, callback) {
+            if(!_.has(this.servStack, server)) this.servStack[server] = {};
+            this.servStack[server][nick] = callback;
+            dbot.instance.connections[server].send('WHOIS ' + nick);
+            setTimeout(function() {
+                if(_.has(this.servStack[server], nick)) {
+                    callback(false); 
+                }
+            }.bind(this), 6000);
         },
 
         'getUserHost': function(server, nick, callback) {
@@ -62,6 +74,17 @@ var nickserv = function(dbot) {
                     event.reply(dbot.t('no_hostmask', { 'nick': user }));
                 }
             });
+        },
+
+        '~server': function(event) {
+            var user = event.params[1] || event.user;
+            this.api.getUserServer(event.server, user, function(server) {
+                if(server) {
+                    event.reply(user + ' is on ' + server);
+                } else {
+                    event.reply('We don\'t know who ' + user + ' is.');
+                }
+            });
         }
     };
 
@@ -100,9 +123,23 @@ var nickserv = function(dbot) {
                 delete this.userStack[event.server][nick];
                 callback(host);
             }
+        } else if(event.action == '312') {
+            var params = event.params.split(' '),
+                user = params[1],
+                server = params[2];
+
+                console.log(user);
+                console.log(server);
+                console.log(this.servStack);
+
+            if(_.has(this.servStack, event.server) && _.has(this.servStack[event.server], user)) {
+                var callback = this.servStack[event.server][user];
+                delete this.servStack[event.server][user];
+                callback(server);
+            }
         }
     }.bind(this);
-    this.on = ['NOTICE', '302', '314'];
+    this.on = ['NOTICE', '302', '314', '312'];
 };
 
 exports.fetch = function(dbot) {
