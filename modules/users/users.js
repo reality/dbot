@@ -96,6 +96,7 @@ var users = function(dbot) {
 
     this.listener = function(event) {
         this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
+            console.log(event.rUser);
             event.rUser.currentNick = event.newNick;
             dbot.api.event.emit('new_current_nick', [ event.rUser ]);
 
@@ -207,22 +208,20 @@ var users = function(dbot) {
                     }.bind(this));
                 }.bind(this));
             } else if(event.user) {
-                checkUser(function(user) { // TODO: remove code repeating (is there any reason we can't do this in the first place hmm)
-                    event.rUser = user;
-
-                    if(!_.has(this.userCache[event.server], event.rUser.currentNick)) {
-                        this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
-                    } else if(this.userCache[event.server][event.rUser.currentNick] != event.rUser.id) {
-                        this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
-                    }
+                this.api.resolveUser(event.server, event.user, function(user) {
+                    if(user) event.rUser = user;
 
                     if(event.channel) {
                         this.api.resolveChannel(event.server, event.channel.name, function(channel) {
                             if(channel) event.rChannel = channel;
                             callback();
                         });
+                    } else {
+                        callback();
                     }
                 }.bind(this));
+            } else {
+                callback();
             }
         }.bind(this));
     };
