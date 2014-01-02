@@ -94,6 +94,8 @@ var webInterface = function(dbot) {
     }.bind(this);
 
     this.onLoad = function() {
+        this.reloadPages();
+
         var routes = _.pluck(dbot.modules.web.app.routes.get, 'path'),
             moduleNames = _.keys(dbot.modules);
 
@@ -106,7 +108,6 @@ var webInterface = function(dbot) {
             }
         }.bind(this));
 
-        this.reloadPages();
 
         this.app.get('/', function(req, res) {
             res.render('index', { 
