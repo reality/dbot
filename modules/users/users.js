@@ -97,7 +97,6 @@ var users = function(dbot) {
     this.listener = function(event) {
         this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
             event.rUser.currentNick = event.newNick;
-            dbot.api.event.emit('new_current_nick', [ event.rUser ]);
 
             if(!isKnown) {
                 event.rUser.aliases.push(event.newNick);
@@ -120,20 +119,24 @@ var users = function(dbot) {
             // 6. Update staff channel lists
 
             var checkChannel = function(done) {
-                this.api.resolveChannel(event.server, event.channel.name, function(channel) {
-                    if(!channel) {
-                        this.internalAPI.createChannel(event.server, event.channel.name, done);
-                    } else {
-                        done(channel);
-                    }
-                }.bind(this));
+                if(event.channel) {
+                    this.api.resolveChannel(event.server, event.channel.name, function(channel) {
+                        if(!channel) {
+                            this.internalAPI.createChannel(event.server, event.channel.name, done);
+                        } else {
+                            done(channel);
+                        }
+                    }.bind(this));
+                } else {
+                    done(null);
+                }
             }.bind(this);
             var checkUser = function(done) {
                 this.api.resolveUser(event.server, event.user, function(user) {
                     if(!user) {
                         this.internalAPI.createUser(event.server, event.user, done);
                     } else {
-                        if(event.user != user.currentNick) {
+                        if(event.user !== user.currentNick) {
                             user.currentNick = event.user;
                             this.db.save('users', user.id, user, function() { 
                                 dbot.api.event.emit('new_current_nick', [ user ]);
@@ -189,17 +192,11 @@ var users = function(dbot) {
                 }
             }.bind(this);
 
-            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'NICK', 'PRIVMSG'], event.action)) {
+            if(event.user && _.include(['JOIN', 'MODE', 'NICK', 'PRIVMSG'], event.action)) {
                 checkChannel(function(channel) {
                     event.rChannel = channel;
                     checkUser(function(user) {
                         event.rUser = user;
-
-                        if(!_.has(this.userCache[event.server], event.rUser.currentNick)) {
-                            this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
-                        } else if(this.userCache[event.server][event.rUser.currentNick] != event.rUser.id) {
-                            this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
-                        }
 
                         if(event.channel) {
                             checkChannelUsers(function() {

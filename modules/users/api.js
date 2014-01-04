@@ -24,12 +24,18 @@ var api = function(dbot) {
                     }
 
                     if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
-                        this.userCache[server][nick] = result.id; 
                         user = result;
                     }
                 }.bind(this), function(err) {
+                    if(user) {
+                        if(!_.has(this.userCache[server], nick)) {
+                            this.userCache[server][nick] = user.id;
+                        } else if(this.userCache[server][nick] !== user.id) {
+                            this.userCache[server][nick] = user.id;
+                        }
+                    }
                     callback(user);
-                });
+                }.bind(this));
             }
         },
 
