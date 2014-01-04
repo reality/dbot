@@ -96,7 +96,6 @@ var users = function(dbot) {
 
     this.listener = function(event) {
         this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
-            console.log(event.rUser);
             event.rUser.currentNick = event.newNick;
             dbot.api.event.emit('new_current_nick', [ event.rUser ]);
 
@@ -190,7 +189,7 @@ var users = function(dbot) {
                 }
             }.bind(this);
 
-            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'PRIVMSG'], event.action)) {
+            if(event.user && event.channel && _.include(['JOIN', 'MODE', 'NICK', 'PRIVMSG'], event.action)) {
                 checkChannel(function(channel) {
                     event.rChannel = channel;
                     checkUser(function(user) {
@@ -202,23 +201,14 @@ var users = function(dbot) {
                             this.userCache[event.server][event.rUser.currentNick] = event.rUser.id;
                         }
 
-                        checkChannelUsers(function() {
+                        if(event.channel) {
+                            checkChannelUsers(function() {
+                                callback();
+                            });
+                        } else {
                             callback();
-                        });
+                        }
                     }.bind(this));
-                }.bind(this));
-            } else if(event.user) {
-                this.api.resolveUser(event.server, event.user, function(user) {
-                    if(user) event.rUser = user;
-
-                    if(event.channel) {
-                        this.api.resolveChannel(event.server, event.channel.name, function(channel) {
-                            if(channel) event.rChannel = channel;
-                            callback();
-                        });
-                    } else {
-                        callback();
-                    }
                 }.bind(this));
             } else {
                 callback();
