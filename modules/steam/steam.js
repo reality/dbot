@@ -166,7 +166,7 @@ var steam = function(dbot) {
                                 if(games.total_count != 0) {
                                     event.reply(dbot.t('steam_last_played', {
                                         'user': user.currentNick,
-                                        'game': games.games[0].name
+                                        'game': _.last(games.games).name
                                     }));
                                 } else {
                                     event.reply(dbot.t('steam_not_played', {
