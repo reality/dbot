@@ -49,7 +49,7 @@ var commands = function(dbot) {
                 if(this.config.firstHost) {
                     var first = message.split(' ')[0];
                     dbot.api.users.resolveUser(event.server, first, function(user) {
-                        if(user) {
+                        if(user && _.include(this.config.host_lookup, channelName)) {
                             dbot.api.nickserv.getUserHost(event.server, first, function(host) {
                                 message = message.replace(first, first + ' [' + host + ']'); 
                                 this.api.notify('notify', event.server, event.rUser, channelName, message);
