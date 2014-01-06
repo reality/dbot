@@ -28,7 +28,7 @@ var api = function(dbot) {
                          .value());
                 }
 
-                if(!_.include(allowedNicks, user.primaryNick)) {
+                if(!_.include(allowedNicks, user.primaryNick) && !_.include(allowedNicks, user.currentNick)) {
                     callback(false);
                 } else {
                     if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
