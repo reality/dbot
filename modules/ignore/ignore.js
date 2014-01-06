@@ -276,7 +276,7 @@ var ignore = function(dbot) {
             dbot.api.users.getUser(ignores.id, function(user) {
                 if(user) {
                     _.each(ignores.ignores, function(module) {
-                        dbot.instance.ignoreTag(user.primaryNick, module);
+                        dbot.instance.ignoreTag(user.currentNick, module);
                     });
                 }
             });
@@ -287,7 +287,18 @@ var ignore = function(dbot) {
                 dbot.instance.ignoreTag(channel.name, module);
             });
         }, function(err) { });
-    };
+
+        dbot.api.event.addHook('new_current_nick', function(user, oldNick) {
+            this.api.getUserIgnores(user, function(err, ignores) {
+                if(ignores) {
+                    _.each(ignores.ignores, function(module) {
+                        dbot.instance.removeIgnore(oldNick, module);
+                        dbot.instance.ignoreTag(user.currentNick, module);
+                    });
+                }
+            }.bind(this));
+        }.bind(this));
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {

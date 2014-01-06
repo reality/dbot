@@ -103,7 +103,10 @@ var users = function(dbot) {
             }
 
             this.db.save('users', event.rUser.id, event.rUser, function(err) {
-                dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
+                if(!isKnown) {
+                    dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
+                }
+                dbot.api.event.emit('new_current_nick', [ event.rUser, event.user ]);
             });
         }.bind(this));
     }.bind(this);
@@ -137,9 +140,10 @@ var users = function(dbot) {
                         this.internalAPI.createUser(event.server, event.user, done);
                     } else {
                         if(event.user !== user.currentNick) {
+                            var oldNick = user.currentNick;
                             user.currentNick = event.user;
                             this.db.save('users', user.id, user, function() { 
-                                dbot.api.event.emit('new_current_nick', [ user ]);
+                                dbot.api.event.emit('new_current_nick', [ user, oldNick ]);
                                 done(user); 
                             });
                         } else {
