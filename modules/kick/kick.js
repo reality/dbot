@@ -94,7 +94,7 @@ var kick = function(dbot) {
     
     this.listener = function(event) {
        if(event.kickee == dbot.config.name) {
-            dbot.instance.join(event, event.channel);
+            dbot.instance.join(event, event.channel.name);
             event.reply(dbot.t('kicked_dbot', { 'botname': dbot.config.name }));
             dbot.db.kicks[dbot.config.name] += 1;
         } else {
