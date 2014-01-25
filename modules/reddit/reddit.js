@@ -45,7 +45,7 @@ var reddit = function(dbot) {
             }
             this.ints = [];
 
-            /*this.db.scan('reddit_feeds', function(channel) {
+            this.db.scan('reddit_feeds', function(channel) {
                 if(channel) {
                     channels.push(channel); 
                 }
@@ -73,11 +73,10 @@ var reddit = function(dbot) {
                                 }
                             }.bind(this)); 
                         }.bind(this), feed.interval);
-                        console.log(intervalId);
                         this.ints.push(intervalId);
                     }.bind(this));
                 }.bind(this));
-            }.bind(this));*/
+            }.bind(this));
         }.bind(this)
     };
 
