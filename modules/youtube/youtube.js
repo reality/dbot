@@ -56,7 +56,7 @@ var youtube = function(dbot) {
 
             var link = v.link[0].href.match(this.LinkRegex);
             if(link) {
-                res += ' - http://youtu.be/' + link[2];
+                res += ' - https://youtu.be/' + link[2];
             }
 
             return res;
