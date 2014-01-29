@@ -1,4 +1,5 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    async = require('async');
 
 var pages = function(dbot) {
     var pages = {
@@ -7,30 +8,29 @@ var pages = function(dbot) {
             var key = req.params.key.toLowerCase();
             this.db.read('poll', key, function(err, poll) {
                 if(!err) {
+                console.log(poll);
                     var totalVotes = _.reduce(poll.votes, function(memo, option) {
                         return memo += option;
                     }, 0);
 
                     var voterNicks = [];
-                    /* TODO: Fix stupid fucking async issue bullshit
-                    var voterNicks = _.map(poll.votees, function(vote, id) {
+                    async.each(_.keys(poll.votees), function(id, done) {
                         dbot.api.users.getUser(id, function(user) {
-                            return user.primaryNick;
+                            voterNicks.push(user.primaryNick);
+                            done();
                         });
-                    });*/
-
-                    process.nextTick(function() {
-                        console.log(voterNicks);
+                    }, function() {
                         res.render('polls', { 
                             'name': dbot.config.name, 
                             'description': poll.description, 
                             'votees': voterNicks,
                             'options': poll.votes,
+                            'totalVotes': totalVotes, 
                             locals: { 
-                                'totalVotes': totalVotes, 
                                 'url_regex': RegExp.prototype.url_regex() 
                             }
                         });
+
                     });
                 } else {
                     res.render('error', { 

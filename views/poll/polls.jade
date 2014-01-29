@@ -4,7 +4,7 @@ block content
     div#backlink 
         a(href='/poll/') &laquo; Poll list
     h2 #{description}
-    p Voters (#{locals.totalVotes}): 
+    p Voters (#{votees.length}): 
         -each voter in votees
              |  #{voter}
     ul#votelist
