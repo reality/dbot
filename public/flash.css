@@ -1,23 +1,25 @@
-body { background: #000; font-family: sans-serif }
-
-.stamp {
-    text-align: center;
+body { background: #000; font-family: sans-serif; text-align: center; }
+blink
+{
+	animation:blink 1s;
+	animation-iteration-count: infinite;
+	-webkit-animation:blink 1s;
+	-webkit-animation-iteration-count: infinite;
     color: #FFF;
     font-size: 12em;
 }
-
-.flash {
-    text-decoration: blink;
+@keyframes blink
+{
+	0%{opacity:0.0;}
+	50%{opacity:0.0;}
+	50.01%{opacity:1.0;}
+	100%{opacity:1.0;}
+}
+@-webkit-keyframes blink
+{
+	0%{opacity:0.0;}
+	50%{opacity:0.0;}
+	50.01%{opacity:1.0;}
+	100%{opacity:1.0;}
 }
 
-@-webkit-keyframes blink {  
-  from { opacity: 1.0; }
-  to { opacity: 0.0; }
-}
-
-.flash {
-  -webkit-animation-name: blink;  
-  -webkit-animation-iteration-count: infinite;  
-  -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
-  -webkit-animation-duration: 1s; 
-}
