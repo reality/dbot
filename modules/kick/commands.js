@@ -8,72 +8,75 @@ var commands = function(dbot) {
             var server = event.server,
                 quieter = event.user,
                 minutes = event.input[1],
-                channel = event.input[2],
+                channel = (event.input[2] || event.channel.name).trim(),
                 quietee = event.input[3].trim(),
                 reason = event.input[4] || "N/A";
 
-            if(_.isUndefined(channel)) {
-                channel = event.channel.name;
-            }
-            channel = channel.trim();
+            dbot.api.nickserv.getUserHost(server, quietee, function(host) {
+                // Add host record entry
+                if(host) {
+                    this.hosts[server][quietee] = host;
 
-            if(!_.isUndefined(minutes)) {
-                minutes = parseFloat(minutes.trim());
-                var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
-                dbot.api.timers.addTimeout(msTimeout, function() {
-                    this.api.unquiet(server, quietee, channel);
+                    if(!_.isUndefined(minutes)) {
+                        minutes = parseFloat(minutes.trim());
+                        var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
+                        dbot.api.timers.addTimeout(msTimeout, function() {
+                            if(_.has(this.hosts[server], quietee)) {
+                                this.api.unquiet(server, this.hosts[server][quietee], channel);
 
-                    dbot.api.users.resolveUser(server, dbot.config.name, function(user) {
-                        dbot.api.report.notify('unquiet', server, user, channel,
-                        dbot.t('unquiet_notify', {
-                            'unquieter': dbot.config.name,
-                            'quietee': quietee
+                                dbot.api.users.resolveUser(server, dbot.config.name, function(user) {
+                                    dbot.api.report.notify('unquiet', server, user, channel,
+                                    dbot.t('unquiet_notify', {
+                                        'unquieter': dbot.config.name,
+                                        'quietee': quietee
+                                    }));
+                                });
+                            }
+                        }.bind(this));  
+                        event.reply(dbot.t('tquieted', { 
+                            'quietee': quietee,
+                            'minutes': minutes
                         }));
-                    });
-                }.bind(this));  
-                event.reply(dbot.t('tquieted', { 
-                    'quietee': quietee,
-                    'minutes': minutes
-                }));
-                dbot.api.report.notify('quiet', server, event.rUser, channel,
-                    dbot.t('tquiet_notify', {
-                        'minutes': minutes,
-                        'quieter': event.rUser.primaryNick,
-                        'quietee': quietee,
-                        'reason': reason
-                    })
-                );
-            } else {
-                event.reply(dbot.t('quieted', { 'quietee': quietee }));
-                dbot.api.report.notify('quiet', server, event.rUser, channel,
-                dbot.t('quiet_notify', {
-                    'quieter': quieter,
-                    'quietee': quietee,
-                    'reason': reason
-                }));            
-            }
+                        dbot.api.report.notify('quiet', server, event.rUser, channel,
+                            dbot.t('tquiet_notify', {
+                                'minutes': minutes,
+                                'quieter': event.rUser.primaryNick,
+                                'quietee': quietee,
+                                'reason': reason
+                            })
+                        );
+                    } else {
+                        event.reply(dbot.t('quieted', { 'quietee': quietee }));
+                        dbot.api.report.notify('quiet', server, event.rUser, channel,
+                        dbot.t('quiet_notify', {
+                            'quieter': quieter,
+                            'quietee': quietee,
+                            'reason': reason
+                        }));            
+                    }
 
-            this.api.quiet(server, quietee, channel);
+                    this.api.quiet(server, host, channel);
+                } else {
+                    event.reply(dbot.t('no_user', { 'user': quietee }));
+                }
+            }.bind(this));
         },
 
         '~unquiet': function(event) {
             var server = event.server,
                 quieter = event.user,
-                channel = event.input[1],
+                channel = (event.input[1] || event.channel.name).trim(),
                 quietee = event.input[2].trim();
 
-            if(_.isUndefined(channel)) {
-                channel = event.channel.name;
+            if(_.has(this.hosts[server], quietee)) {
+                this.api.unquiet(server, this.hosts[server][quietee], channel);
+                event.reply(dbot.t('unquieted', { 'quietee': quietee }));
+                dbot.api.report.notify('unquiet', server, event.rUser, channel,
+                dbot.t('unquiet_notify', {
+                    'unquieter': quieter,
+                    'quietee': quietee
+                }));
             }
-            channel = channel.trim();
-
-            this.api.unquiet(server, quietee, channel);
-            event.reply(dbot.t('unquieted', { 'quietee': quietee }));
-            dbot.api.report.notify('unquiet', server, event.rUser, channel,
-            dbot.t('unquiet_notify', {
-                'unquieter': quieter,
-                'quietee': quietee
-            }));
         },
 
         '~ckick': function(event) {

@@ -5,18 +5,21 @@ var kick = function(dbot) {
     if(!_.has(dbot.db, 'tempBans')) dbot.db.tempBans = {};
     this.hosts = dbot.db.hosts;
     this.tempBans = dbot.db.tempBans;
+    _.each(dbot.config.servers, function(v, k) {
+        this.hosts[k] = {};
+    }, this);
     
     this.api = {
         'ban': function(server, host, channel) {
             dbot.instance.connections[server].send('MODE ' + channel + ' +b *!*@' + host);
         },
 
-        'quiet': function(server, user, channel) {
-            dbot.say(server, this.config.chanserv, 'quiet ' + channel + ' ' + user);
+        'quiet': function(server, host, channel) {
+            dbot.instance.connections[server].send('MODE ' + channel + ' +q *!*@' + host);
         },
 
-        'unquiet': function(server, user, channel) {
-            dbot.say(server, this.config.chanserv, 'unquiet ' + channel + ' ' + user);
+        'unquiet': function(server, host, channel) {
+            dbot.instance.connections[server].send('MODE ' + channel + ' -q *!*@' + host);
         },
 
         'kick': function(server, user, channel, msg) {
@@ -24,6 +27,7 @@ var kick = function(dbot) {
         },
 
         'unban': function(server, host, channel) {
+            // TODO: Wrest control from chanserv
             dbot.say(server, this.config.chanserv, 'unban ' + channel + ' *!*@' + host);
         },
 
