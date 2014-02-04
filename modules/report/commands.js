@@ -13,9 +13,13 @@ var commands = function(dbot) {
         },
 
         '~report': function(event) {
-            var channelName = event.input[1],
+            var channelName = (event.input[1] || event.channel),
                 nick = event.input[2],
                 reason = event.input[3].trim();
+
+            if(channelName == event.user) {
+                channelName = dbot.config.servers[event.server].admin_channel;
+            }
 
             if(reason.charAt(reason.length - 1) != '.') reason += '.';
 
@@ -124,7 +128,7 @@ var commands = function(dbot) {
             }.bind(this));
         }
     };
-    commands['~report'].regex = [/^report ([^ ]+) ([^ ]+) (.+)$/, 4];
+    commands['~report'].regex = /^report (#[^ ]+ )?([^ ]+) (.*)$/;
     commands['~notify'].regex = [/^notify ([^ ]+) (.+)$/, 3];
     commands['~nunsub'].regex = [/^nunsub ([^ ]+)$/, 2];
     commands['~ununsub'].regex = [/^ununsub ([^ ]+)$/, 2];

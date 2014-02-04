@@ -1,4 +1,4 @@
 {
-    "~report": "~report [#channel] [username] [reason for reporting]",
+    "~report": "~report ([#channel]) [username] [reason for reporting]",
     "~notify": "~notify [#channel] [message]"
 }
