@@ -190,6 +190,9 @@ var commands = function(dbot) {
                             'admin_channel': adminChannel 
                         }));
                     }
+                    
+                    // err
+                    dbot.say(event.server, 'NickServ', 'FREEZE ' + banee + ' ON ' + reason);
 
                     // Ban the user from all channels
                     var i = 0;
