@@ -70,7 +70,8 @@ var kick = function(dbot) {
                     }, 1000);
                 }.bind(this);
                 unbanChannel(channels);
-                
+
+                dbot.say(server, 'NickServ', 'FREEZE ' + unbanee + ' OFF');
                 callback(null); // Success
             } else {
                 // Attempt to look up the host on-the-fly
