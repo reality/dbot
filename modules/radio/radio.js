@@ -38,10 +38,22 @@ var radio = function(dbot) {
                     }));
                 }, this);
             }.bind(this));
-        }.bind(this)
+
+            stream.on('end', function() {
+                this.listening = false;
+            }.bind(this));
+        }.bind(this),
+
+        'getRadio': function() {
+            dbot.api.timers.addTimer(20000, function() {
+                if(this.listening == false) {
+                    this.internalAPI.startRadio();
+                }
+            }.bind(this));
+        }
     };
     this.onLoad = function() {
-        this.internalAPI.startRadio();
+        this.internalAPI.getRadio();
     }.bind(this);
 };
 
