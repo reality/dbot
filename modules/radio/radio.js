@@ -9,9 +9,11 @@ var _ = require('underscore')._,
 var radio = function(dbot) {
     this.listening = false;
     this.data = false;
+    this.stream = false;
     this.internalAPI = {
         'startRadio': function() {
             var stream = icecast.createReadStream(this.config.stream);
+            this.stream = stream;
 
             stream.on('connect', function() {
                 this.listening = true;
@@ -40,6 +42,7 @@ var radio = function(dbot) {
             }.bind(this));
 
             stream.on('end', function() {
+            this.stream.close();
                 this.listening = false;
             }.bind(this));
         }.bind(this),
@@ -54,6 +57,9 @@ var radio = function(dbot) {
     };
     this.onLoad = function() {
         this.internalAPI.getRadio();
+    }.bind(this);
+    this.onDestroy = function() {
+        this.stream.close();
     }.bind(this);
 };
 
