@@ -50,7 +50,7 @@ var radio = function(dbot) {
                     this.internalAPI.startRadio();
                 }
             }.bind(this));
-        }
+        }.bind(this)
     };
     this.onLoad = function() {
         this.internalAPI.getRadio();
