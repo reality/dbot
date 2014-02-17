@@ -1,0 +1,5 @@
+{
+    "stream": "",
+    "announce": [ { "server": "aberwiki", "name": "#dbot" } ],
+    "outputPrefix": "\u00033radio\u000f"
+}
