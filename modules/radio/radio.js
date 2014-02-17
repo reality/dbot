@@ -42,7 +42,7 @@ var radio = function(dbot) {
             }.bind(this));
 
             stream.on('end', function() {
-            this.stream.end();
+                this.stream.end();
                 this.listening = false;
             }.bind(this));
         }.bind(this),
@@ -59,7 +59,7 @@ var radio = function(dbot) {
         this.internalAPI.getRadio();
     }.bind(this);
     this.onDestroy = function() {
-        this.stream.end();
+        this.stream.abort();
     }.bind(this);
 };
 
