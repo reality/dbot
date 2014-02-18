@@ -1,0 +1,8 @@
+{
+    "now_online": {
+        "en": "Now Online: {name} - {desc} - {url}"
+    },
+    "now_playing": {
+        "en": "Now Playing: {name} - {song} - {url}"
+    }
+}
