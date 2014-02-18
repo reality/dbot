@@ -7,10 +7,10 @@ var _ = require('underscore')._,
     icecast = require('icecast-stack');
 
 var radio = function(dbot) {
-    this.listening = false;
-    this.data = false;
-    this.stream = false;
-    this.internalAPI = {
+	this.listening = false;
+	this.data = false;
+	this.stream = false;
+	this.internalAPI = {
         'startRadio': function() {
             var stream = icecast.createReadStream(this.config.stream);
             this.stream = stream;
@@ -55,6 +55,26 @@ var radio = function(dbot) {
             }.bind(this));
         }.bind(this)
     };
+    
+    //requesting music by pinging the current DJ
+    //dj should be icy-description inside the headers
+    //user should be the requesting user
+    //request should be the event
+    //TODO:pm dj
+        
+	this.commands={
+		'~request music': function(event){
+			var dj=this.data['icy-description'];
+			var user=event.user;
+			var request=event;
+			dbot.say(dbot.t('request',{
+				'dj':dj,
+				'user':user,
+				'song':song
+			}));
+		}
+	};
+    
     this.onLoad = function() {
         this.internalAPI.getRadio();
     }.bind(this);
