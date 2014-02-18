@@ -10,11 +10,11 @@ var udp = function(dbot) {
     server.on("message", function(msg, msginfo) {
         var message = msg.toString();
         console.log(message);
-        if (msginfo.address == dbot.config.udp.address) {
-            dbot.say(dbot.config.udp.server, dbot.config.udp.channel, message);
+        if (msginfo.address == this.config.address) {
+            dbot.say(this.config.server, this.config.channel, message);
         }
-    });
-    server.bind(dbot.config.udp.port);
+    }.bind(this));
+    server.bind(this.config.port);
 };
 
 exports.fetch = function(dbot) {
