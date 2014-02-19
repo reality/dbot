@@ -4,8 +4,7 @@
     },
     "now_playing": {
         "en": "Now Playing: {name} - {song} - {url}"
-    }
-    
+    },
     "request":{
     	"en":"{dj}: User {user} requests '{song}' to be played on tripradio."
     }
