@@ -1,0 +1,8 @@
+{
+    "unit_result": {
+        "en": "{input}: {output}"
+    },
+    "unit_error": {
+        "en": "Something went wrong :( Example:'~convert 5 minutes to s'"
+    }
+}

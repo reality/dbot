@@ -1,0 +1,3 @@
+{
+    "~convert": "~convert [input value] [input unit] to [output unit]"
+}

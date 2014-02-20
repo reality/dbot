@@ -1,0 +1,39 @@
+/**
+ * Module Name: foo
+ * Description: bar.
+ * Requires: foo [bar]
+ */
+
+var _ = require('underscore')._,
+	bar = require('foo');//dependencies
+
+var foo = function(dbot) { //name of module
+
+		this.ApiRoot = 'API_ROOT_HERE';
+		
+		this.internalAPI = {
+        //code for internal api here
+		};
+
+		this.api = {
+		//code for api here
+		};
+
+    	this.commands = {
+        	//code for commands here
+		};
+		
+		this.onLoad = function() {
+        //code for stuff to be done on load here
+        };
+        
+        this.onDestroy = function() {
+        //stuff to be done on destroy here
+    	};
+    }
+
+};
+
+exports.fetch = function(dbot) {
+    return new foo(dbot); //name of module
+};

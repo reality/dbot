@@ -4,5 +4,8 @@
     },
     "now_playing": {
         "en": "Now Playing: {name} - {song} - {url}"
+    },
+    "radio_request":{
+        "en": "User {user} requests '{song}' to be played on the radio."
     }
 }

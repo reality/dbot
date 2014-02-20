@@ -46,7 +46,20 @@ var radio = function(dbot) {
             }.bind(this));
         }.bind(this),
     };
-           
+       
+    this.commands={
+        '~request': function(event){
+            var dj = this.data['icy-description'],
+                song = event.input[1];
+            dbot.say(event.server, dj, dbot.t('radio_request',{
+                'user': event.user,
+                'song': song
+            }));
+            event.reply('Song requested!');
+        }
+    };
+    this.commands['~request'].regex = [/^request ([\d\w\s-]*)/, 2];
+    
     this.onLoad = function() {
         this.internalAPI.startRadio();
         dbot.api.timers.addTimer(20000, function() {

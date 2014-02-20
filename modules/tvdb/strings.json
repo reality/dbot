@@ -1,0 +1,8 @@
+{
+    "tvdb_result": {
+        "en": "{name} - http://thetvdb.com/?id={id}"
+    },
+    "tvdb_error": {
+        "en": "Something went wrong :( Example:'~tvdb How I met your Mother'"
+    }
+}

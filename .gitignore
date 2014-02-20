@@ -1,5 +1,4 @@
 # Ignore the user config files
-config.json
 db.json
 
 # ignore npm

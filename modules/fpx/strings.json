@@ -1,0 +1,8 @@
+{
+    "5px_result":{
+        "en": "{name} - {url}"
+    },
+    "5px_error": {
+        "en": "Something went wrong :( Example: '~r500px'"
+    }
+}

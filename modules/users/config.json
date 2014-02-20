@@ -1,6 +1,6 @@
 {
     "ignorable": false,
-    "dependencies": [ "event" ],
+    "dependencies": [ "event" , "users"],
     "dbKeys": [ "knownUsers" ],
     "dbType": "redis"
 }
