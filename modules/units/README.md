@@ -8,8 +8,10 @@ This module provides a command which allows users to convert units into another
 unit given the international character of networks. Converts time, distance,
 mass, volume and digital values.
 
+### Dependencies
+
 It has following dependencies:
-node-units : https://github.com/brettlangdon/node-units
++ [node-units](https://github.com/brettlangdon/node-units)
 
 ### Commands
 
@@ -21,4 +23,4 @@ Example:
 
 ### TODO
 
-Currency Conversion
++ Currency Conversion
