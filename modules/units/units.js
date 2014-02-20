@@ -19,8 +19,9 @@ var units = function(dbot) {
                     }));
                     var result = unit.convert(query);
                 }
-            } catch (e) {
-                event.reply(dbot.t('error'));
+             	catch (e) {
+                	event.reply(dbot.t('error'));
+            	}
             }
 
         }
