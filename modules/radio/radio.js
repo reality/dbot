@@ -42,24 +42,22 @@ var radio = function(dbot) {
             }.bind(this));
 
             stream.on('end', function() {
-                this.stream.end();
                 this.listening = false;
             }.bind(this));
         }.bind(this),
-
-        'getRadio': function() {
-            dbot.api.timers.addTimer(20000, function() {
-                if(this.listening == false) {
-                    this.internalAPI.startRadio();
-                }
-            }.bind(this));
-        }.bind(this)
     };
+           
     this.onLoad = function() {
-        this.internalAPI.getRadio();
+        this.internalAPI.startRadio();
+        dbot.api.timers.addTimer(20000, function() {
+            if(this.listening == false) {
+                this.internalAPI.startRadio();
+            }
+        }.bind(this));
     }.bind(this);
     this.onDestroy = function() {
-        this.stream.abort();
+        this.stream.end();
+        this.stream.destroy();
     }.bind(this);
 };
 
