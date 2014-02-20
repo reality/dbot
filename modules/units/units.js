@@ -13,11 +13,11 @@ var units = function(dbot) {
         	'~convert': function(event) {
                 var query = event.input[1];
                 try {
+                    var result = unit.convert(query);
                     event.reply(dbot.t('result', {
                         'input': query,
                         'output': result
                     }));
-                    var result = unit.convert(query);
                 }
              	catch (e) {
                 	event.reply(dbot.t('error'));
