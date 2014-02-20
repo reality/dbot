@@ -1,0 +1,8 @@
+{
+    "result": {
+        "en": "{output}"
+    },
+    "error": {
+        "en": "Something went wrong :( Example:'~calculate (2+2)'"
+    }
+}

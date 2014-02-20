@@ -1,0 +1,8 @@
+{
+	"result":{
+		"en": "{name} - {url}"
+	},
+    "error": {
+        "en": "Something went wrong :( Example:'~r500px'"
+    }
+}
