@@ -17,8 +17,8 @@ var fpx = function(dbot) {
                     console.log(error);
                 } else {
                     var name = results.photos[random].name,
-                        url = results.photos[random].image_url;
-                    event.reply(dbot.t('5px_result',{'name':name,'url':url}));
+                        id = results.photos[random].id;
+                    event.reply(dbot.t('5px_result',{'name':name,'id':id}));
                 }
             });
         }
