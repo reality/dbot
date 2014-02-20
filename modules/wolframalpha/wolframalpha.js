@@ -9,7 +9,7 @@ var _ = require('underscore')._,
 
 var wolframalpha = function(dbot) {
     this.commands = {
-        '~calculate': function(event) {
+        '~wr': function(event) {
             var wolfram = new Client(this.config.api_key),
                 query = event.params[1];
             wolfram.query(query, function(err, result) {
@@ -37,6 +37,7 @@ var wolframalpha = function(dbot) {
             });
         }
     };
+    this.commands['~wr'].regex = [/^wr ([\d\w\s-]*)/, 2];
 };
 
 exports.fetch = function(dbot) {
