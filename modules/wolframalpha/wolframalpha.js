@@ -11,7 +11,7 @@ var wolframalpha = function(dbot) {
     this.commands = {
         '~wr': function(event) {
             var wolfram = new Client(this.config.api_key),
-                query = event.params[1];
+                query = event.input[1];
             wolfram.query(query, function(err, result) {
                 if(err) {
                     event.reply(dbot.t('wolf_error'));
