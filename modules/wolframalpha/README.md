@@ -24,10 +24,10 @@ http://products.wolframalpha.com/developers/ for free.
 
 ### Commands
 
-#### ~calculate [(whatever)]
+#### ~wr [(whatever)]
 
 Example:
-+ ~calculate (2+2)
-+ ~calculate (x^2+2x+4)
++ ~wr (2+2)
++ ~wr (x^2+2x+4)
 
 ### TODO

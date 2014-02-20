@@ -3,6 +3,6 @@
         "en": "{output}"
     },
     "wolf_error": {
-        "en": "Something went wrong :( Example:'~calculate (2+2)'"
+        "en": "Something went wrong :( Example:'~wr (2+2)'"
     }
 }
