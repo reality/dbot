@@ -30,9 +30,9 @@ var foo = function(dbot) { //name of module
         				event.reply(dbot.t('error'));
    					} else {
         				// getting photo name and url from results json http://is.gd/hALYmR
-        				var name=results.photos[random].name,
-        					url=results.photos[random].image_url;
-        				event.reply(dbot.t('result',{'name':name,'url'=url}));
+        				var 500px_name=results.photos[random].name,
+        					500px_id=results.photos[random].id;
+        				event.reply(dbot.t('result',{'name':500px_name,'id'=500px_id}));
     				}
 				});
         	

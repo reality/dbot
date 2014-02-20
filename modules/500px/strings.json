@@ -1,6 +1,6 @@
 {
 	"result":{
-		"en": "{name} - {url}"
+		"en": "{name} - http://500px.com/photo/{id}"
 	},
     "error": {
         "en": "Something went wrong :( Example:'~r500px'"
