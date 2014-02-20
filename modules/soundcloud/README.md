@@ -1,4 +1,4 @@
-## Souncloud
+## Soundcloud
 
 Adds various Soundcloud functionality.
 
