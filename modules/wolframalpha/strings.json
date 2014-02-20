@@ -1,8 +1,8 @@
 {
-    "result": {
+    "wolf_result": {
         "en": "{output}"
     },
-    "error": {
+    "wolf_error": {
         "en": "Something went wrong :( Example:'~calculate (2+2)'"
     }
 }

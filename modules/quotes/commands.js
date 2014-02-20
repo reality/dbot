@@ -11,10 +11,6 @@ var commands = function(dbot) {
             var key = event.input[1].toLowerCase().trim(),
                 quote = event.input[2];
 
-			var server=event.server,
-				user=event.rUser;
-			if (dbot.users.api.isKnownUser(server,user,function(x) {return x})==true)
-			{
             this.api.addQuote(key, quote, event.user, function(newCount) {
                 if(newCount) {
                     dbot.api.event.emit('~qadd', [ key, quote ]);
@@ -26,10 +22,6 @@ var commands = function(dbot) {
                     event.reply(dbot.t('quote_exists'));
                 }
             });
-            }
-            else{
-            event.reply(dbot.t('You have no permissions to add quotes. :('));
-            }
         },
 
         /*** Quote Retrieval ***/

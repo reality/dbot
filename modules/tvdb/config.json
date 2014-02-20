@@ -1,4 +1,5 @@
 {
     "ignorable": true,
-    "apiKey": "blah"
+    "api_key": "blah",
+    "outputPrefix": "\u00033TVDB\u000f"
 }

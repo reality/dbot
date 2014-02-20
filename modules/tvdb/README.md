@@ -17,14 +17,13 @@ ignorable and apiKey can be set. A key can be requested at http://thetvdb.com/?t
 ```
 {
     "ignorable": true,
-    "apiKey": "blah"
+    "api_key": "blah"
 }
 ```
 
 ### Commands
 
-
-#### ~tvdb [series]
+     ~tvdb [series]
 Searches for series on theTVDB
 Example:
 + ~tvdb How I met your Mother

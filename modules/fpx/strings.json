@@ -1,0 +1,8 @@
+{
+    "5px_result":{
+        "en": "{name} - http://500px.com/photo/{id}"
+    },
+    "5px_error": {
+        "en": "Something went wrong :( Example: '~r500px'"
+    }
+}

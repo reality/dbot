@@ -17,14 +17,14 @@ ignorable and consumerKey has to be configurated. It can be obtained at http://d
 ```
 {
     "ignorable": true,
-    "consumerKey": "CONSUMERKEY_HERE"
+    "api_key": "CONSUMERKEY_HERE"
 }
 ```
 
 ### Commands
 
 
-#### ~r500px
+     ~r500px
 Responds with a random popular 500px photo.
 Example:
 + ~r500px

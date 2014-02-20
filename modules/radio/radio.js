@@ -7,10 +7,10 @@ var _ = require('underscore')._,
     icecast = require('icecast-stack');
 
 var radio = function(dbot) {
-	this.listening = false;
-	this.data = false;
-	this.stream = false;
-	this.internalAPI = {
+    this.listening = false;
+    this.data = false;
+    this.stream = false;
+    this.internalAPI = {
         'startRadio': function() {
             var stream = icecast.createReadStream(this.config.stream);
             this.stream = stream;
@@ -42,44 +42,35 @@ var radio = function(dbot) {
             }.bind(this));
 
             stream.on('end', function() {
-                this.stream.end();
                 this.listening = false;
             }.bind(this));
         }.bind(this),
-
-        'getRadio': function() {
-            dbot.api.timers.addTimer(20000, function() {
-                if(this.listening == false) {
-                    this.internalAPI.startRadio();
-                }
-            }.bind(this));
-        }.bind(this)
     };
-    
-    //requesting music by pinging the current DJ
-    //dj should be icy-description inside the headers
-    //user should be the requesting user
-    //request should be the event
-    //TODO:pm dj
-        
-	this.commands={
-		'~request music': function(event){
-			var dj=this.data['icy-description'];
-			var user=event.user;
-			var request=event;
-			dbot.say(dbot.t('request',{
-				'dj':dj,
-				'user':user,
-				'song':song
-			}));
-		}
-	};
+       
+    this.commands={
+        '~request': function(event){
+            var dj = this.data['icy-description'],
+                song = event.input[1];
+            dbot.say(event.server, dj, dbot.t('radio_request',{
+                'user': event.user,
+                'song': song
+            }));
+            event.reply('Song requested!');
+        }
+    };
+    this.commands['~request'].regex = [/^request ([\d\w\s-]*)/, 2];
     
     this.onLoad = function() {
-        this.internalAPI.getRadio();
+        this.internalAPI.startRadio();
+        dbot.api.timers.addTimer(20000, function() {
+            if(this.listening == false) {
+                this.internalAPI.startRadio();
+            }
+        }.bind(this));
     }.bind(this);
     this.onDestroy = function() {
-        this.stream.abort();
+        this.stream.end();
+        this.stream.destroy();
     }.bind(this);
 };
 

@@ -19,7 +19,7 @@ appID has to be added into config.json. It can be obtained at
 http://products.wolframalpha.com/developers/ for free.
 `{
     "ignorable": true,
-    "appID": "APP_ID_HERE"
+    "api_key": "APP_ID_HERE"
 }`
 
 ### Commands
