@@ -1,4 +1,5 @@
 {
     "ignorable": true,
-    "api_key": "blah"
+    "api_key": "blah",
+    "outputPrefix": "\u00036wolfram\u000f"
 }
