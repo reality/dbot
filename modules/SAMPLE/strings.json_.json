@@ -1,0 +1,8 @@
+{
+    "foo": {
+        "en": "{output} bar"
+    },
+    "foo2": {
+        "en": "Something went wrong :( Example:'~foo bar'"
+    }
+}
