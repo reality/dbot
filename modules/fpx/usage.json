@@ -1,3 +1,5 @@
 {
-    "~r500px": "~r500px"
+    "~r500px": "~r500px",
+    "~500px": "~500px [nick]",
+    "~last500px": "~last500px [nick]"
 }

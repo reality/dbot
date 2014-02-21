@@ -3,6 +3,9 @@
         "en": "{name} - http://500px.com/photo/{id}"
     },
     "5px_error": {
-        "en": "Something went wrong :( Example: '~r500px'"
+        "en": "Something went wrong :("
+    },
+    "5px_profile": {
+        "en": "{name} has {total} photos uploaded. http://500px.com/{fpx_username}"
     }
 }
