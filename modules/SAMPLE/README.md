@@ -20,7 +20,7 @@ foo
 ### Commands
 
 
-#### ~foo [(bar]
+#### ~foo [bar]
 
 Example:
 + ~foo bar

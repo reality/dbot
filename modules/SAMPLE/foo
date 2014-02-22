@@ -30,7 +30,7 @@ var foo = function(dbot) { //name of module
         this.onDestroy = function() {
         //stuff to be done on destroy here
     	};
-    }
+    
 
 };
 
