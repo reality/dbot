@@ -1,0 +1,8 @@
+{
+    "wiki_result": {
+        "en": "{name}: {description}"
+    },
+    "wiki_error": {
+        "en": "Something went wrong :("
+    }
+}
