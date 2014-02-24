@@ -24,21 +24,21 @@ ignorable and consumerKey has to be configurated. It can be obtained at http://d
 
 ### Commands
 
-####~r500px
+####~r5
 Responds with a random popular 500px photo.
 Example:
-+ ~r500px
++ ~r5
 
-####~500px [user]
+####~5 [user]
 Responds with data of a user, if user left blank posters data will be displayed.
 Example:
-+ ~500px
-+ ~500px reality
++ ~5
++ ~5 reality
 
-####~last500px [user]
+####~last5 [user]
 Responds with the last photo of a user, if user left blank posters last photo will be displayed.
 Example:
-+ ~last500px
-+ ~last500px reality
++ ~last5
++ ~last5 reality
 
 ### TODO

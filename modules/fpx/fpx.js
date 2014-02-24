@@ -57,7 +57,7 @@ var fpx = function(dbot) {
 	}
 	
     this.commands = {
-        '~r500px': function(event) {
+        '~r5': function(event) {
             var random = Math.floor(Math.random() * 30);
             this.api500px.photos.getPopular({'sort': 'created_at', 'rpp': '30'},  function(error, results) {
                 if (error) {
@@ -71,7 +71,7 @@ var fpx = function(dbot) {
             });
         },
         
-        '~500px': function(event) {
+        '~5': function(event) {
             var user = event.rUser;
             if(event.res[0]) {
                 user = event.res[0].user;
@@ -84,7 +84,7 @@ var fpx = function(dbot) {
 			event.reply(dbot.t('5px_profile',{'name'=fpx_name,'total'=fpx_photos,'fpx_username'=fpx_id}));
 		},
 		
-		'~last500px':function(event){
+		'~last5':function(event){
 		    var user = event.rUser;
                 if(event.res[0]) {
                     user = event.res[0].user;
