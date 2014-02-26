@@ -1,0 +1,8 @@
+{
+    "gr_book": {
+        "en": "[{title} by {author} - {rating}] - {link}"
+    },
+    "gr_nobook": {
+        "en": "No books found."
+    }
+}
