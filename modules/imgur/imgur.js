@@ -304,7 +304,7 @@ var imgur = function(dbot) {
         dbot.api.link.addHandler('imgurimage', /https?:\/\/i\.imgur\.com\/([a-zA-Z0-9]+)\.([jpg|png|gif])/, imgurHandler);
         dbot.api.link.addHandler('imgurimage', /https?:\/\/imgur\.com\/([a-zA-Z0-9]+)/, imgurHandler);
 
-        async.timesSeries(this.config.ricachelength, function(n, next) {
+        async.times(this.config.ricachelength, function(n, next) {
             this.api.getGoodRandomImage(function(link, imgData) {
                 this.riCache.push([ link, imgData ]);
                 next();
