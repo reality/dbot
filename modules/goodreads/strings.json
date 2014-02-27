@@ -4,5 +4,11 @@
     },
     "gr_nobook": {
         "en": "No books found."
+    },
+    "gr_books": {
+        "en": "{user} has read {read} books and is currently reading {currently_reading} books."
+    },
+    "gr_unknown": {
+        "en": "Unknown Goodreads username!"
     }
 }

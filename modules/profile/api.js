@@ -78,7 +78,7 @@ var api = function(dbot) {
                 }
             });
         },
-
+        
         'setProperty': function(server, nick, field, value, callback){
             this.api.getProfile(server, nick, function(err, user, profile){
                 if(!err){
