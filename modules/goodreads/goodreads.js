@@ -69,6 +69,7 @@ var goodreads = function(dbot) {
                 if(!_.isUndefined(body) && !err) {
                     parseString(body, function(err, result) {
                         if(result && _.has(result, 'GoodreadsResponse')) {
+                            var shelves = {};
                             result = result['GoodreadsResponse'].user[0].user_shelves[0].user_shelf;
                             _.each(result, function(shelf) {
                                 shelves[shelf.name[0]] = shelf.book_count[0]['_'];
