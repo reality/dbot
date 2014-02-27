@@ -130,7 +130,7 @@ var goodreads = function(dbot) {
             if(event.rProfile && _.has(event.rProfile, 'goodreads')) {
                 if(event.params[1]) {
                     this.internalAPI.getGoodreads(event.server, event.params[1], function(user, gr) {
-                        if(user && lfm) {
+                        if(user && gr) {
                             event.res.push({
                                 'user': user,
                                 'gr': gr  
