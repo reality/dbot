@@ -17,7 +17,7 @@ var quotes = function(dbot) {
                 var ref = this.internalAPI.cleanRef(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
                 if(ref === '-nicks-') {
                     dbot.api.users.getRandomChannelUser(server, channel, function(user) {
-                        quote = quote.replace('~~' + ref + '~~', user.currentNick);
+                        quote = quote.replace('~~' + ref + '~~', user);
                         this.internalAPI.interpolatedQuote(server, channel,
                             username, key, quote, callback);
                     }.bind(this));

@@ -89,22 +89,13 @@ var api = function(dbot) {
         },
 
         'getRandomChannelUser': function(server, cName, callback) {
-            var channel;
-            this.db.search('channel_users', { 
-                'server': server,
-                'name': cName
-            }, function(result) {
-                channel = result; 
-            }, function(err) {
-                if(!err && channel) {
-                    if(!_.isUndefined(channel.users)) {
-                        var randomUser = channel.users[_.random(0, channel.users.length - 1)];
-                        this.api.getUser(randomUser, callback);
-                    } else {
-                        callback(false);
-                    }
-                } 
-            }.bind(this));
+            if(_.has(dbot.instance.connections[server].channels, cName)) {
+                var nicks = _.keys(dbot.instance.connections[server].channels[cName].nicks);
+                var randomUser = nicks[_.random(0, nicks.length -1)]
+                callback(randomUser);
+            } else {
+                callback(false);
+            }
         },
 
         'getAllUsers': function(callback) {
