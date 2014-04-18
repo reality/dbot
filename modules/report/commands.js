@@ -13,7 +13,7 @@ var commands = function(dbot) {
         },
 
         '~report': function(event) {
-            var channelName = (event.input[1] || event.channel),
+            var channelName = (event.input[1].trim() || event.channel),
                 nick = event.input[2],
                 reason = event.input[3].trim();
 
