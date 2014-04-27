@@ -1,0 +1,10 @@
+{
+    "announces": {
+        "aberwiki": {
+            "#test": {
+                "category": "test",
+                "distance": 1
+            }
+        }
+    }
+}
