@@ -10,26 +10,24 @@ var rss = function(dbot) {
     this.intervals = [];
     this.internalAPI = {
         'makeRequest': function(server,channel,name,url) {
-            dbot.say(server,channel,"Starting request for "+name+" with url "+url);
             var req = request(url);
             var feedparser = new FeedParser();
             req.on('error', function (error) {
-                    dbot.say(server,channel,"Request got an error: "+error);
+                    dbot.say(server,channel,"RSS: Request for RSS feed got an error: "+error+" Start self-destruct sequence.");
             });
             req.on('response', function (res) {
                 var stream = this;
 
                 if (res.statusCode != 200){
-                    dbot.say(server,channel,"Request had status code "+res.statusCode);
+                    dbot.say(server,channel,"RSS: RSS server returned status code "+res.statusCode+". Bastard.");
                     return;
                 }
 
                 stream.pipe(feedparser);
-                dbot.say(server,channel,"Request piped to feedparser!");
             });
 
             feedparser.on('error', function(error) {
-                dbot.say(server,channel,"Feedparser got an error: "+error);
+                dbot.say(server,channel,"RSS: Feedparser encountered an error: "+error+";;; Inform administrator!");
             });
             feedparser.on('readable', function() {
                 // This is where the action is!
@@ -38,18 +36,17 @@ var rss = function(dbot) {
                  , item;
 
                 while (item = stream.read()) {
-                    dbot.say(server,channel,"@ "+item.pubdate+": ["+name+"] ["+item.title+"] [Post by "+item.author+" in "+item.categories[0]+"] - "+item.link);
+                    if(item.pubdate - self.lastPosted > 0)
+                        dbot.say(server,channel,"["+name+"] ["+item.title+"] [Post by "+item.author+" in "+item.categories[0]+"] - "+item.link);
                 }
             });
         }.bind(this),
         'reloadFeeds': function() {
-            console.log("rss: reloading feeds...");
             for(var i=0;i<dbot.db.feeds.length;++i) {
                 var server = dbot.db.feeds[i].server, channel = dbot.db.feeds[i].channel, name = dbot.db.feeds[i].name, url = dbot.db.feeds[i].url;
-                console.log("Server: "+server+"; Channel: "+channel+" Loading feed "+i+" named "+name);
                 this.intervals.push(setInterval(function() {
                     self.internalAPI.makeRequest(server,channel,name,url)
-                },30000));
+                },300000));
             }
         }.bind(this)
     };
@@ -60,10 +57,11 @@ var rss = function(dbot) {
                 return;
             }
             dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2]});
-            this.intervals.push(setInterval(function() {self.internalAPI.makeRequest(event.server,event.channel.name,event.params[1],event.params[2])},30000));
+            this.intervals.push(setInterval(function() {self.internalAPI.makeRequest(event.server,event.channel.name,event.params[1],event.params[2])},300000));
             event.reply("Adding RSS feed named "+event.params[1]+" with URL "+event.params[2]);
         },
         '~rsstest': function(event) {
+            event.reply("I posted RSS last @ "+self.lastPosted);
             event.reply("Nothing to test. Go home.");
         },
         '~delrssfeed': function(event) {
@@ -78,6 +76,7 @@ var rss = function(dbot) {
     };
     this.onLoad = function() {
         this.internalAPI.reloadFeeds();
+        self.lastPosted = new Date();
     };
     this.onDestroy = function() {
         for(var i=0;i<this.intervals.length;++i) {
