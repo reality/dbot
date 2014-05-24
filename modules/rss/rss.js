@@ -41,10 +41,7 @@ var rss = function(dbot) {
                     if(item.pubdate.getTime() - feed.lastPosted > 0) {
                         var rss = item;
                         feed.lastPosted = item.pubdate.getTime();
-                        // FIXME: This doesn't work AT ALL
-                        dbot.db.feeds.splice(fid,1);
-                        dbot.db.feeds.push(feed);
-                        //
+                        dbot.db.feeds[fid].lastPosted = feed.lastPosted;
                         var options = {
                             uri: 'https://www.googleapis.com/urlshortener/v1/url',
                             method: 'POST',
@@ -82,7 +79,6 @@ var rss = function(dbot) {
             }
             var now = Date.now();
             dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: now});
-            this.intervals.push(setInterval(function() {self.internalAPI.makeRequest(dbot.db.feeds.length-1,event.server,event.channel.name,event.params[1])},self.pollInterval));
             event.reply("Adding RSS feed named "+event.params[1]+" with URL "+event.params[2]);
         },
         '~rsstest': function(event) {
@@ -95,6 +91,7 @@ var rss = function(dbot) {
                     event.reply("Found feed "+event.params[1]+" you were looking for...");
                     dbot.db.feeds.splice(i,1);
                     event.reply("... removed!");
+                    break;
                 }
             }
         }
