@@ -6,23 +6,22 @@ var FeedParser = require('feedparser')
 , request = require('request');
 
 var rss = function(dbot) {
-    this.pollInterval = 60000;
+    this.pollInterval = 120000;
     var self = this;
-    this.intervals = [];
     this.internalAPI = {
-        'makeRequest': function(id,server,channel,name) {
-            var url = dbot.db.feeds[id].url;
-            var lastPosted = dbot.db.feeds[id].lastPosted;
-            var req = request(url);
+        'makeRequest': function(id,feed) {
+            var fid = id;
+            var req = request(feed.url);
             var feedparser = new FeedParser();
+            //dbot.say(feed.server,feed.channel,"Sending request for feed "+fid+" name "+feed.name+" lP:"+feed.lastPosted);
             req.on('error', function (error) {
-                    dbot.say(server,channel,"RSS: Request for RSS feed got an error: "+error+" Start self-destruct sequence.");
+                    dbot.say(feed.server,feed.channel,"RSS: Request for RSS feed got an error: "+error+" Start self-destruct sequence.");
             });
             req.on('response', function (res) {
                 var stream = this;
 
                 if (res.statusCode != 200){
-                    dbot.say(server,channel,"RSS: RSS server returned status code "+res.statusCode+". Bastard.");
+                    dbot.say(feed.server,feed.channel,"RSS: RSS server returned status code "+res.statusCode+". Bastard.");
                     return;
                 }
 
@@ -30,7 +29,7 @@ var rss = function(dbot) {
             });
 
             feedparser.on('error', function(error) {
-                dbot.say(server,channel,"RSS: Feedparser encountered an error: "+error+";;; Inform administrator!");
+                dbot.say(feed.server,feed.channel,"RSS: Feedparser encountered an error: "+error+";;; Inform administrator!");
             });
             feedparser.on('readable', function() {
                 // This is where the action is!
@@ -39,21 +38,25 @@ var rss = function(dbot) {
                  , item;
 
                 while (item = stream.read()) {
-                    if(item.pubdate - lastPosted > 0) {
-                        lastPosted = item.pubdate;
-                        dbot.say(server,channel,"["+name+"] ["+item.title+"] [Post by "+item.author+" in "+item.categories[0]+"] - "+item.link);
+                    if(item.pubdate.getTime() - feed.lastPosted > 0) {
+                        feed.lastPosted = item.pubdate.getTime();
+                        // FIXME: This doesn't work AT ALL
+                        dbot.db.feeds.splice(fid,1);
+                        dbot.db.feeds.push(feed);
+                        //
+                        dbot.say(feed.server,feed.channel,"["+feed.name+"] ["+item.title+"] [Post by "+item.author+" in "+item.categories[0]+"] - "+item.link);
                     }
                 }
             });
         }.bind(this),
-        'reloadFeeds': function() {
+        'checkFeeds': function() {
+            console.log("Checking feeds...");
             for(var i=0;i<dbot.db.feeds.length;++i) {
-                var server = dbot.db.feeds[i].server, channel = dbot.db.feeds[i].channel, name = dbot.db.feeds[i].name;
-                var id = i;
-                this.intervals.push(setInterval(function() {
-                    self.internalAPI.makeRequest(id,server,channel,name)
-                },self.pollInterval));
+                this.internalAPI.makeRequest(i,dbot.db.feeds[i]);
             }
+        }.bind(this),
+        'reloadFeeds': function() {
+            return setInterval(this.internalAPI.checkFeeds,self.pollInterval);
         }.bind(this)
     };
     this.commands = {
@@ -82,12 +85,10 @@ var rss = function(dbot) {
         }
     };
     this.onLoad = function() {
-        this.internalAPI.reloadFeeds();
+        this.interval = this.internalAPI.reloadFeeds();
     };
     this.onDestroy = function() {
-        for(var i=0;i<this.intervals.length;++i) {
-            clearInterval(this.intervals[i]);
-        }
+        clearInterval(this.interval);
     };
 };
 
