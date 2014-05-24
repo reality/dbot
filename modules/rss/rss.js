@@ -6,10 +6,13 @@ var FeedParser = require('feedparser')
 , request = require('request');
 
 var rss = function(dbot) {
+    this.pollInterval = 60000;
     var self = this;
     this.intervals = [];
     this.internalAPI = {
-        'makeRequest': function(server,channel,name,url) {
+        'makeRequest': function(id,server,channel,name) {
+            var url = dbot.db.feeds[id].url;
+            var lastPosted = dbot.db.feeds[id].lastPosted;
             var req = request(url);
             var feedparser = new FeedParser();
             req.on('error', function (error) {
@@ -36,17 +39,20 @@ var rss = function(dbot) {
                  , item;
 
                 while (item = stream.read()) {
-                    if(item.pubdate - self.lastPosted > 0)
+                    if(item.pubdate - lastPosted > 0) {
+                        lastPosted = item.pubdate;
                         dbot.say(server,channel,"["+name+"] ["+item.title+"] [Post by "+item.author+" in "+item.categories[0]+"] - "+item.link);
+                    }
                 }
             });
         }.bind(this),
         'reloadFeeds': function() {
             for(var i=0;i<dbot.db.feeds.length;++i) {
-                var server = dbot.db.feeds[i].server, channel = dbot.db.feeds[i].channel, name = dbot.db.feeds[i].name, url = dbot.db.feeds[i].url;
+                var server = dbot.db.feeds[i].server, channel = dbot.db.feeds[i].channel, name = dbot.db.feeds[i].name;
+                var id = i;
                 this.intervals.push(setInterval(function() {
-                    self.internalAPI.makeRequest(server,channel,name,url)
-                },300000));
+                    self.internalAPI.makeRequest(id,server,channel,name)
+                },self.pollInterval));
             }
         }.bind(this)
     };
@@ -56,8 +62,9 @@ var rss = function(dbot) {
                 event.reply("GIMME TWO PARAMETERS DUDE");
                 return;
             }
-            dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2]});
-            this.intervals.push(setInterval(function() {self.internalAPI.makeRequest(event.server,event.channel.name,event.params[1],event.params[2])},300000));
+            var now = Date.now();
+            dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: now});
+            this.intervals.push(setInterval(function() {self.internalAPI.makeRequest(dbot.db.feeds.length-1,event.server,event.channel.name,event.params[1])},self.pollInterval));
             event.reply("Adding RSS feed named "+event.params[1]+" with URL "+event.params[2]);
         },
         '~rsstest': function(event) {
@@ -76,7 +83,6 @@ var rss = function(dbot) {
     };
     this.onLoad = function() {
         this.internalAPI.reloadFeeds();
-        self.lastPosted = new Date();
     };
     this.onDestroy = function() {
         for(var i=0;i<this.intervals.length;++i) {
