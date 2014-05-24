@@ -39,12 +39,27 @@ var rss = function(dbot) {
 
                 while (item = stream.read()) {
                     if(item.pubdate.getTime() - feed.lastPosted > 0) {
+                        var rss = item;
                         feed.lastPosted = item.pubdate.getTime();
                         // FIXME: This doesn't work AT ALL
                         dbot.db.feeds.splice(fid,1);
                         dbot.db.feeds.push(feed);
                         //
-                        dbot.say(feed.server,feed.channel,"["+feed.name+"] ["+item.title+"] [Post by "+item.author+" in "+item.categories[0]+"] - "+item.link);
+                        var options = {
+                            uri: 'https://www.googleapis.com/urlshortener/v1/url',
+                            method: 'POST',
+                            json: {
+                                "longUrl": rss.link
+                            }
+                        };
+
+                        request(options, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                dbot.say(feed.server,feed.channel,"["+feed.name+"] ["+rss.title+"] [Post by "+rss.author+" in "+rss.categories[0]+"] - "+body.id);
+                            } else {
+                                dbot.say(feed.server,feed.channel,"RSS: Request to shorten URL returned: "+body.id);
+                            }
+                        });
                     }
                 }
             });
