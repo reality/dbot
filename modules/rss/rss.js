@@ -39,9 +39,10 @@ var rss = function(dbot) {
 
                 while (item = stream.read()) {
                     if(item.pubdate.getTime() - feed.lastPosted > 0) {
+                        if(item.pubdate.getTime() > feed.newTime) {
+                            feed.newTime = item.pubdate.getTime();
+                        }
                         var rss = item;
-                        feed.lastPosted = item.pubdate.getTime();
-                        dbot.db.feeds[fid].lastPosted = feed.lastPosted;
                         var options = {
                             uri: 'https://www.googleapis.com/urlshortener/v1/url',
                             method: 'POST',
@@ -59,6 +60,10 @@ var rss = function(dbot) {
                         });
                     }
                 }
+            });
+            feedparser.on('end', function() {
+                feed.lastPosted = feed.newTime;
+                dbot.db.feeds[fid] = feed;
             });
         }.bind(this),
         'checkFeeds': function() {
@@ -78,7 +83,7 @@ var rss = function(dbot) {
                 return;
             }
             var now = Date.now();
-            dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: now});
+            dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: now, newTime: now});
             event.reply("Adding RSS feed named "+event.params[1]+" with URL "+event.params[2]);
         },
         '~rsstest': function(event) {
