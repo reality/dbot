@@ -18,3 +18,9 @@ block content
         -each nUser in users
           a(href='/notify/'+encodeURIComponent(nUser.name))
             li.quotes #{nUser.name} (#{nUser.count})
+
+    h3 Browse by Tag on #{server}
+    ul#quotelist
+        -each count, tag in tags
+          a(href='/notify/'+encodeURIComponent(tag)+'?t=tag')
+            li.quotes #{tag} (#{count})

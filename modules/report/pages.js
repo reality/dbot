@@ -8,7 +8,8 @@ var pages = function(dbot) {
             var server = req.user.server,
                 userCount = {},
                 users = [],
-                channelCount = {};
+                channelCount = {},
+                tags = {};
 
             this.db.scan('notifies', function(notify) {
                 if(!_.has(userCount, notify.user)) {
@@ -19,6 +20,10 @@ var pages = function(dbot) {
                 }
                 userCount[notify.user]++;
                 channelCount[notify.channel]++;
+                _.each(notify.tags, function(tag) {
+                    if(!_.has(tags, tag)) tags[tag] = 0;
+                    tags[tag]++;
+                });
             }, function() {
                 userCount = _.map(userCount, function(value, key) { 
                     return {
@@ -39,7 +44,8 @@ var pages = function(dbot) {
                     res.render('channels', {
                         'server': server,
                         'users': users,
-                        'channels': channelCount
+                        'channels': channelCount,
+                        'tags': tags
                     });
                 });
             });
@@ -110,16 +116,24 @@ var pages = function(dbot) {
 
         '/notify/:item': function(req, res) {
             var server = req.user.server,
+                type = req.query.t,
                 notifies = [];
 
-            if(req.params.item.charAt(0) == '#') {
-                var channel = req.params.item;
+            console.log(type);
 
-                this.db.search('notifies', {
+            if(req.params.item.charAt(0) == '#') {
+                var item = req.params.item,
+                search = {
                     'server': server,
-                    'channel': channel
-                }, function(notify) {
-                    notifies.push(notify);
+                };
+                if(type != 'tag') search.channel = item;
+
+                this.db.search('notifies', search, function(notify) {
+                    if(type == 'tag') {
+                        if(_.include(notify.tags, item)) notifies.push(notify);
+                    } else {
+                        notifies.push(notify);
+                    }
                 }, function(err) {
                     var pNickCache = {};
                     async.eachSeries(notifies, function(notify, next) {
