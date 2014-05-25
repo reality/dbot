@@ -33,7 +33,7 @@ var report = function(dbot) {
                         channel + "\u000f";
                 }
 
-                message.replace(/(#\w+)/g, '\u000312$1\u000f');
+                message = message.replace(/(#\w+)/g, '\u000312$1\u000f');
 
                 _.each(message.match(/ @([\d\w*|-]+)/g), function(u) {
                     u = u.substr(1);
