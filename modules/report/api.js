@@ -5,7 +5,11 @@ var uuid = require('node-uuid'),
 var api = function(dbot) {
     var api = {
         'notify': function(type, server, user, cName, message) {
-            var id = uuid.v4();
+            var id = uuid.v4(),
+                tags = []; 
+                _.each(message.match(/(#\w+)/g), function(match) {
+                    tags.push(match.toLowerCase());
+                });
             this.db.save('notifies', id, {
                 'id': id,
                 'server': server,
@@ -14,7 +18,7 @@ var api = function(dbot) {
                 'user': user.id,
                 'time': new Date().getTime(),
                 'message': message,
-                'tags': message.match(/(#\w+)/g)
+                'tags': tags 
             }, function() {});
 
             var channel = dbot.instance.connections[server].channels[cName]; 
