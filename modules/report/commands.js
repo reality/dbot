@@ -1,16 +1,37 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    moment = require('moment');
 
 var commands = function(dbot) {
     var commands = {
         '~ncount': function(event) {
             var chanCounts = {},
-                total = 0;
+                total = 0,
+                offString = event.params[1] || null;
+                offset = moment().subtract(offString, 1).valueOf() || null;
+
+                console.log(offset);
+
+            /*if(!offset || !offset.isValid()) {
+                event.reply('Invalid timescale. Try \'week\'');
+                return;
+            }*/
 
             this.db.scan('notifies', function(notify) {
                 if(notify.user == event.rUser.id) {
-                    if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
-                    chanCounts[notify.channel]++;
-                    total++;
+                    if(!offString) {
+                        if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
+                        chanCounts[notify.channel]++;
+                        total++;
+                    } else {
+                    console.log(offset);
+                    console.log(notify.time);
+                    console.log();
+                        if(notify.time > offset) {
+                            if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
+                            chanCounts[notify.channel]++;
+                            total++;
+                        }
+                    }
                 }
             }, function() {
                 var cCounts = _.chain(chanCounts)
@@ -26,11 +47,20 @@ var commands = function(dbot) {
                 }
                 cString = cString.slice(0, -2);
 
-                event.reply(dbot.t('total_notifies', {
-                    'user': event.user,
-                    'count': total,
-                    'cString': cString
-                }));
+                if(offString) {
+                    event.reply(dbot.t('timed_notifies', {
+                        'user': event.user,
+                        'count': total,
+                        'offString': offString,
+                        'cString': cString
+                    }));
+                } else {
+                    event.reply(dbot.t('total_notifies', {
+                        'user': event.user,
+                        'count': total,
+                        'cString': cString
+                    }));
+                }
             });
         },
 

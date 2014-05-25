@@ -84,5 +84,8 @@
     },
     "total_notifies": {
         "en": "{user} has a total of {count} notifies. Channels: {cString}"
+    },
+    "timed_notifies": {
+        "en": "{user} has made {count} notifies in the last {offString}. Channels: {cString}"
     }
 }
