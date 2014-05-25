@@ -13,7 +13,8 @@ var api = function(dbot) {
                 'channel': cName,
                 'user': user.id,
                 'time': new Date().getTime(),
-                'message': message
+                'message': message,
+                'tags': message.match(/(#\w+)/g)
             }, function() {});
 
             var channel = dbot.instance.connections[server].channels[cName]; 
