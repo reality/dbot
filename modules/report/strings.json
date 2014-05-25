@@ -81,5 +81,8 @@
     "not_nunsubbed": {
         "en": "Already subscribed to notifications from {cName}.",
         "de": "Du bist bereits für {cName} Benachrichtigungen angemeldet"
+    },
+    "total_notifies": {
+        "en": "{user} has a total of {count} notifies. Channels: {cString}"
     }
 }

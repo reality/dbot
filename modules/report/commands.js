@@ -2,6 +2,38 @@ var _ = require('underscore')._;
 
 var commands = function(dbot) {
     var commands = {
+        '~ncount': function(event) {
+            var chanCounts = {},
+                total = 0;
+
+            this.db.scan('notifies', function(notify) {
+                if(notify.user == event.rUser.id) {
+                    if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
+                    chanCounts[notify.channel]++;
+                    total++;
+                }
+            }, function() {
+                var cCounts = _.chain(chanCounts)
+                    .pairs()
+                    .sortBy(function(p) { return p[1]; })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                var cString = '';
+                for(var i=0;i<cCounts.length;i++) {
+                    cString += cCounts[i][0] + " (" + cCounts[i][1] + "), ";
+                }
+                cString = cString.slice(0, -2);
+
+                event.reply(dbot.t('total_notifies', {
+                    'user': event.user,
+                    'count': total,
+                    'cString': cString
+                }));
+            });
+        },
+
         '~clearmissing': function(event) {
             if(_.has(this.pending, event.rUser.id)) {
                 var count = this.pending[event.rUser.id].length;
