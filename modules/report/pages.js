@@ -43,7 +43,7 @@ var pages = function(dbot) {
                 }, function() {
                     res.render('channels', {
                         'server': server,
-                        'users': users,
+                        'users': users.sort(),
                         'channels': channelCount,
                         'tags': tags
                     });
