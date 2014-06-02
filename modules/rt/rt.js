@@ -24,6 +24,7 @@ var rt = function(dbot) {
             if(_.has(m, 'directors')) mString += ' [Director: ' + m.directors[0] + ']';
             if(_.has(m, 'genres')) mString += ' [Genre: ' + m.genres[0] + ']';
             if(_.has(m, 'synopsis') && m.synopsis != '') {
+                if(m.synopsis.length > 140) m.synopsis = m.synopsis.substring(0, 140) + '...';
                 mString += ' [Synopsis: ' + m.synopsis + ']';
             } else if(_.has(m, 'critics_consensus')) {
                 mString += ' [Review: ' + m.critics_consensus + ']';
