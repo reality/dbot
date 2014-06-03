@@ -5,46 +5,36 @@ var api = function(dbot) {
         /**
          * Does the user have the correct access level to use the command?
          */
-        'hasAccess': function(user, channel, command, callback) {
-            var accessNeeded = dbot.commands[command].access;
+        'hasAccess': function(event, command, callback) {
+            var accessNeeded = dbot.commands[command].access,
+                allowedNicks,
+                user = event.rUser;
 
-            if(accessNeeded == 'admin' || accessNeeded == 'moderator' ||
-                    accessNeeded == 'power_user' || accessNeeded == 'voice') {
-                var allowedNicks = dbot.config.admins;
-                if(accessNeeded == 'moderator') allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
-                if(accessNeeded == 'power_user') {
-                    allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
-                    allowedNicks = _.union(allowedNicks, dbot.config.power_users);
-                }
-                if(accessNeeded == 'voice') {
-                    allowedNicks = _.union(allowedNicks, dbot.config.moderators); 
-                    allowedNicks = _.union(allowedNicks, dbot.config.power_users);
-                    allowedNicks = _.union(allowedNicks, 
-                        _.chain(channel.nicks)
-                         .filter(function(nick) {
-                            return nick.op == true || nick.voice == true; 
-                          })
-                         .pluck('name')
-                         .value());
-                }
-
-                if(!_.include(allowedNicks, user.primaryNick) && !_.include(allowedNicks, user.currentNick)) {
-                    callback(false);
+            if(_.isUndefined(accessNeeded) || accessNeeded == null) {
+                return callback(true);
+            } else if(!_.isFunction(accessNeeded)) {
+                if(_.has(dbot.access, accessNeeded)) {
+                    accessNeeded = dbot.access[accessNeeded];
                 } else {
-                    if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
-                        dbot.api.nickserv.auth(user.server, user.currentNick, function(result, primary) {
-                            if(result == true && primary == user.primaryNick) {
-                                callback(true);
-                            } else {
-                                callback(false);
-                            }
-                        });
-                    } else {
-                        callback(true);
-                    }
+                    return callback(true);
                 }
+            }
+            allowedNicks = accessNeeded(event);
+
+            if(!_.include(allowedNicks, user.primaryNick) && !_.include(allowedNicks, user.currentNick)) {
+                callback(false);
             } else {
-                callback(true);
+                if(_.has(dbot.modules, 'nickserv') && this.config.useNickserv == true) {
+                    dbot.api.nickserv.auth(user.server, user.currentNick, function(result, primary) {
+                        if(result == true && primary == user.primaryNick) {
+                            callback(true);
+                        } else {
+                            callback(false);
+                        }
+                    });
+                } else {
+                    callback(true);
+                }
             }
         },
 

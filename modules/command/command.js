@@ -58,7 +58,7 @@ var command = function(dbot) {
             }
         } 
        
-        this.api.hasAccess(event.rUser, event.channel, commandName, function(hasAccess) {
+        this.api.hasAccess(event, commandName, function(hasAccess) {
             dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
                 dbot.api.ignore.isUserBanned(event.rUser, commandName, function(isBanned) {
                     if(isBanned) {
@@ -114,6 +114,35 @@ var command = function(dbot) {
         }.bind(this));
     }.bind(this);
     this.on = 'PRIVMSG';
+
+    this.onLoad = function() {
+        // Not sure this is the right place for this. Perhaps they should be in
+        // another file?
+
+        dbot.access = {
+            'admin': function(event) {
+                return dbot.config.admins;
+            },
+
+            'moderator': function(event) {
+                return [].concat(dbot.access.admin(event), dbot.config.moderators);
+            },
+
+            'power_user': function(event) {
+                return [].concat(dbot.access.admin(event), dbot.access.moderator(event), dbot.config.power_users);
+            },
+
+            'voice': function(event) {
+                return [].concat(dbot.access.admin(event), dbot.access.moderator(event), dbot.access.power_user(event),
+                    _.chain(event.channel.nicks)
+                     .filter(function(nick) {
+                         return nick.op == true || nick.voice == true; 
+                      })
+                      .pluck('name')
+                      .value());
+            }
+        };
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {
