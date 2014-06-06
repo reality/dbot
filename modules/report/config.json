@@ -6,7 +6,7 @@
     "requireWebLogin": true,
     "webAccess": "regular",
     "pageAccess": {
-        "/report/:server/:channel": "power_users"
+        "/report/:server/:channel": "power_user"
     },
     "colours": {
         "wherever": {

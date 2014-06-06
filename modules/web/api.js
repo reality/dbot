@@ -22,34 +22,34 @@ var api = function(dbot) {
         'hasAccess': function(req, res, next) {
             var path = req.route.path,
                 module = dbot.pages[path].module,
-                mConfig = dbot.config.modules[module];
+                mConfig = dbot.config.modules[module],
+                accessNeeded,
+                allowedNicks;
 
             if(mConfig.requireWebLogin == true) {
                 if(req.isAuthenticated()) {
-                    var accessNeeded = 'regular';
-                    if(_.has(mConfig, 'pageAccess') && _.has(mConfig.pageAccess, path)) {
+                    if(_.has(mConfig.pageAccess, path)) {
                         accessNeeded = mConfig.pageAccess[path];
                     } else if(!_.isUndefined(mConfig.webAccess)) {
                         accessNeeded = mConfig.webAccess; 
                     }
 
-                    if(accessNeeded != 'regular') {
-                        var allowedUsers = dbot.config.admins;
-                        if(mConfig.webAccess == 'moderators') {
-                            allowedUsers = _.union(allowedUsers, dbot.config.moderators);
-                        }
-                        if(mConfig.webAccess == 'power_users') {
-                            allowedUsers = _.union(allowedUsers, dbot.config.moderators);
-                            allowedUsers = _.union(allowedUsers, dbot.config.power_users);
-                        }
-
-                        if(_.include(allowedUsers, req.user.primaryNick)) {
-                            return next();
-                        } else {
-                            res.redirect('/');
-                        }
-                    } else {
+                    if(!_.isUndefined(accessNeeded) || accessNeeded == null) {
                         return next();
+                    }
+
+                    if(!_.isFunction(accessNeeded)) {
+                        if(_.has(dbot.access, accessNeeded)) {
+                            accessNeeded = dbot.access[accessNeeded];
+                        } else {
+                            return next();
+                        }
+                    }
+
+                    if(_.include(allowedUsers, req.user.primaryNick)) {
+                        return next();
+                    } else {
+                        res.redirect('/');
                     }
                 } else {
                     res.render('login', {
