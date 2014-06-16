@@ -3,7 +3,8 @@
  * Description: Allows to read RSS feeds
  */
 var FeedParser = require('feedparser')
-, request = require('request');
+, request = require('request')
+, _ = require('underscore')._;
 
 var rss = function(dbot) {
     this.pollInterval = 120000;
@@ -54,7 +55,7 @@ var rss = function(dbot) {
                         request(options, function (error, response, body) {
                             if (!error && response.statusCode === 200) {
                                 var rString = "["+feed.name+"] ["+rss.title+"] "; 
-                                if(rss.author && rss.categories[0]) {
+                                if(rss.author !== null && !_.isUndefined(rss.categories[0])) {
                                     rString += "[Post by "+rss.author+" in "+rss.categories[0]+"] ";
                                 }
                                 rString += "- "+body.id;
