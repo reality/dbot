@@ -52,8 +52,13 @@ var rss = function(dbot) {
                         };
 
                         request(options, function (error, response, body) {
-                            if (!error && response.statusCode == 200) {
-                                dbot.say(feed.server,feed.channel,"["+feed.name+"] ["+rss.title+"] [Post by "+rss.author+" in "+rss.categories[0]+"] - "+body.id);
+                            if (!error && response.statusCode === 200) {
+                                var rString = "["+feed.name+"] ["+rss.title+"] "; 
+                                if(rss.author && rss.categories[0]) {
+                                    rString += "[Post by "+rss.author+" in "+rss.categories[0]+"] ";
+                                }
+                                rString += "- "+body.id;
+                                dbot.say(feed.server,feed.channel, rString);
                             } else {
                                 dbot.say(feed.server,feed.channel,"RSS: Request to shorten URL returned: "+body.id);
                             }
