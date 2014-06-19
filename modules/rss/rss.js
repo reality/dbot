@@ -8,6 +8,8 @@ var FeedParser = require('feedparser'),
 
 var rss = function(dbot) {
     this.pollInterval = 120000;
+    this.titleCache = [];
+    var self = this;
 
     this.internalAPI = {
         'makeRequest': function(id,feed) {
@@ -50,26 +52,32 @@ var rss = function(dbot) {
                             feed.newTime = item.pubdate.getTime();
                         }
                         var rss = item;
-                        var options = {
-                            uri: 'https://www.googleapis.com/urlshortener/v1/url',
-                            method: 'POST',
-                            json: {
-                                "longUrl": rss.link
-                            }
-                        };
 
-                        request(options, function (error, response, body) {
-                            if (!error && response.statusCode === 200) {
-                                var rString = "["+feed.name+"] ["+rss.title+"] "; 
-                                if(rss.author !== null && !_.isUndefined(rss.categories[0])) {
-                                    rString += "[Post by "+rss.author+" in "+rss.categories[0]+"] ";
+                        if(!_.include(self.titleCache, rss.title)) {
+                            var options = {
+                                uri: 'https://www.googleapis.com/urlshortener/v1/url',
+                                method: 'POST',
+                                json: {
+                                    "longUrl": rss.link
                                 }
-                                rString += "- "+body.id;
-                                dbot.say(feed.server,feed.channel, rString);
-                            } else {
-                                dbot.say(feed.server,feed.channel,"RSS: Request to shorten URL returned: "+body.id);
+                            };
+
+                            request(options, function (error, response, body) {
+                                if (!error && response.statusCode === 200) {
+                                    var rString = "["+feed.name+"] ["+rss.title+"] "; 
+                                    if(rss.author !== null && !_.isUndefined(rss.categories[0])) {
+                                        rString += "[Post by "+rss.author+" in "+rss.categories[0]+"] ";
+                                    }
+                                    rString += "- "+body.id;
+                                    dbot.say(feed.server,feed.channel, rString);
+                                }
+                            });
+
+                            if(self.titleCache.length > 30) {
+                                self.titleCache.splice(0, 1); 
                             }
-                        });
+                            self.titleCache.push(feed.title);
+                        }
                     }
                 }
             });
