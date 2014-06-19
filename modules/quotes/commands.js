@@ -105,7 +105,8 @@ var commands = function(dbot) {
                     this.internalAPI.resetRemoveTimer(event, key, removedQuote);
                     event.reply(dbot.t('removed_from', {
                         'quote': removedQuote, 
-                        'category': key
+                        'category': key,
+                        'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
                     }));
                 }.bind(this);
 
@@ -138,7 +139,8 @@ var commands = function(dbot) {
                     this.internalAPI.resetRemoveTimer(event, key, quote);
                     event.reply(dbot.t('removed_from', {
                         'category': key, 
-                        'quote': quote
+                        'quote': quote,
+                        'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
                     }));
                 }.bind(this);
 

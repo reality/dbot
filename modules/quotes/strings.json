@@ -90,14 +90,14 @@
         "it": "Smettila di scoglionare con spam. Ripprova tra qualche minuto..."
     },
     "removed_from": {
-        "en": "'{quote}' removed from {category}",
-        "es": "'{quote}' quitado de {category}",
-        "na'vi": "'{quote}'(it/ti) 'ìyaku {category}",
-        "cy": "'{quote}' wedi ei ddileu o {category}",
-        "nl": "{quote} verwijderd uit {category}",
-        "de": "'{quote} aus {category} gelöscht",
-        "fr": "'{quote}' enlevé(e) {category}",
-        "it": "'{quote}' rimossa da {category}"
+        "en": "'{quote}' removed from {category} - {link}",
+        "es": "'{quote}' quitado de {category} - {link}",
+        "na'vi": "'{quote}'(it/ti) 'ìyaku {category} - {link}",
+        "cy": "'{quote}' wedi ei ddileu o {category} - {link}",
+        "nl": "{quote} verwijderd uit {category} - {link}",
+        "de": "'{quote} aus {category} gelöscht - {link}",
+        "fr": "'{quote}' enlevé(e) {category} - {link}",
+        "it": "'{quote}' rimossa da {category} - {link}"
     },
     "q_not_exist_under": {
         "en": "'{quote}' doesn't exist under '{category}'.",
