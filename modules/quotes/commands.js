@@ -16,7 +16,8 @@ var commands = function(dbot) {
                     dbot.api.event.emit('~qadd', [ key, quote ]);
                     event.reply(dbot.t('quote_saved', {
                         'category': key, 
-                        'count': newCount
+                        'count': newCount,
+                        'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
                     }));
                 } else {
                     event.reply(dbot.t('quote_exists'));

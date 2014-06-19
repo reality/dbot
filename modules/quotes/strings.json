@@ -130,14 +130,14 @@
         "it": "La citazone esiste già nella base dei data. Iniziare l' incenerimento"
     },
     "quote_saved": {
-        "en": "Quote saved in '{category}' ({count}).",
-        "es": "Cita guardada en '{category}' ({count}).",
-        "na'vi": "Oe zayerok '{category}'mì ({count}).",
-        "cy": "Dyfyniad wedi ei gadw yn '{category}' ({count}).",
-        "nl": "Quote opgeslagen in '{category}' ({count}).",
-        "de": "Zitat in '{category}' gespeichert ({count}).",
-        "fr": "Citation sauvegardée dans '{category}' ({count}).",
-        "it": "Citazione memorizzata in '{category}' ({count})."
+        "en": "Quote saved in '{category}' ({count}) - {link}",
+        "es": "Cita guardada en '{category}' ({count}) - {link}",
+        "na'vi": "Oe zayerok '{category}'mì ({count}) - {link}",
+        "cy": "Dyfyniad wedi ei gadw yn '{category}' ({count}) - {link}",
+        "nl": "Quote opgeslagen in '{category}' ({count}) - {link}",
+        "de": "Zitat in '{category}' gespeichert ({count}) - {link}",
+        "fr": "Citation sauvegardée dans '{category}' ({count}) - {link}",
+        "it": "Citazione memorizzata in '{category}' ({count}) - {link}"
     },
     "quote_replace": {
         "en": "No replacing arrays, you whore.",
