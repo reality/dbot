@@ -76,7 +76,7 @@ var rss = function(dbot) {
                             if(self.titleCache.length > 30) {
                                 self.titleCache.splice(0, 1); 
                             }
-                            self.titleCache.push(feed.title);
+                            self.titleCache.push(rss.title);
                         }
                     }
                 }
