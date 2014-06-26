@@ -28,7 +28,7 @@ var api = function(dbot) {
 
             if(mConfig.requireWebLogin == true) {
                 if(req.isAuthenticated()) {
-                    if(_.has(mConfig.pageAccess, path)) {
+                    if(_.has(mConfig, 'pageAccess') && _.has(mConfig.pageAccess, path)) {
                         accessNeeded = mConfig.pageAccess[path];
                     } else if(!_.isUndefined(mConfig.webAccess)) {
                         accessNeeded = mConfig.webAccess; 
