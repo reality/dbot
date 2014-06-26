@@ -168,7 +168,7 @@ var reddit = function(dbot) {
         '~question': function(event) {
             this.api.getTopPosts('askreddit', function(err, posts) {
                 if(!err) {
-                    var qPost = _.random(0, posts.length - 1); 
+                    var qPost = posts[_.random(0, posts.length - 1)]; 
                     event.reply('Question: ' + qPost.title.trim());
                 }
             });
