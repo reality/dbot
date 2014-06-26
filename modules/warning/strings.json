@@ -16,5 +16,14 @@
         "fr": "Attention : {warner} a donné un avertissement à {warnee} pour \"{reason}.\". Plus d'informations peuvent être trouvées ici : {url}",
         "it": "Attenzione : {warner} ha dato un' avvertenza a {warnee} per \"{reason}.\". Ulterior informazioni si trovano a {url}",
         "de": "{warner} hat {warnee} für \"{reason}.\" verwarnt. Mehr Informationen sind auf {url} erhältlich"
+    },
+    "warning_not_found": {
+        "en": "Specified warning not found."
+    },
+    "warning_removed": {
+        "en": "Warning removed."
+    },
+    "warnee_not_found": {
+        "en": "{user} not found."
     }
 }

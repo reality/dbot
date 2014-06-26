@@ -2,19 +2,16 @@ var _ = require('underscore')._;
     uuid = require('node-uuid');
 
 var warning = function(dbot) {
-    this.commands = {
-        '~warn': function(event) {
-            var warner = event.rUser,
-                server = event.server,
-                reason = event.input[2],
-                adminChannel = dbot.config.servers[server].admin_channel || event.channel.name;
-
-            dbot.api.users.resolveUser(server, event.input[1], function(warnee) {
+    this.api = {
+        'warn': function(server, warner, user, reason, channel, callback) {
+            var adminChannel = dbot.config.servers[server].admin_channel || channel.name;
+            
+            dbot.api.users.resolveUser(server, user, function(warnee) {
                 if(warnee) {
                     var id = uuid.v4();
                     this.db.save('warnings', id, {
                         'id': id,
-                        'server': event.server,
+                        'server': server,
                         'warnee': warnee.id,
                         'warner': warner.id,
                         'reason': reason,
@@ -28,11 +25,48 @@ var warning = function(dbot) {
                                 + warnee.primaryNick)
                         });
 
-                        dbot.api.report.notify('warn', event.server, event.rUser, adminChannel, notifyString);
+                        dbot.api.report.notify('warn', server, warner, adminChannel, notifyString);
                         dbot.say(server, adminChannel, notifyString);
+
+                        callback(null);
                     });
                 } else {
+                    callback(true);
+                }
+            }.bind(this));
+        }
+    };
+
+    this.commands = {
+        '~warn': function(event) {
+            var warner = event.rUser,
+                server = event.server,
+                reason = event.input[2];
+
+            this.api.warn(server, warner, event.input[1], reason, event.channel, function(err) {
+                if(err) {
                     event.reply(dbot.t('warnee_not_found', { 'user': event.input[1] }));
+                }
+            });
+        },
+
+        '~rmwarning': function(event) {
+            var warning = null;
+            dbot.api.users.resolveUser(event.server, event.input[1], function(warnee) {
+                if(warnee) {
+                    this.db.search('warnings', { 'warnee': warnee.id, 'reason': event.input[2] }, function(result) {
+                        warning = result;
+                    }, function(err) {
+                        if(!err && warning) {
+                            this.db.del('warnings', warning.id, function(err) {
+                                event.reply(dbot.t('warning_removed'));
+                            });
+                        } else {
+                            event.reply(dbot.t('warning_not_found'));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('warning_not_found'));
                 }
             }.bind(this));
         },
@@ -67,6 +101,8 @@ var warning = function(dbot) {
 
     this.commands['~warn'].regex = [/warn ([^ ]+) (.+)/, 3];
     this.commands['~warn'].access = 'power_user';
+    this.commands['~rmwarning'].regex = [/^rmwarning ([\d\w\s\-]+?)[ ]?=[ ]?(.+)$/, 3];
+    this.commands['~rmwarning'].access = 'power_user';
 };
 
 exports.fetch = function(dbot) {
