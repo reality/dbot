@@ -144,10 +144,36 @@ var reddit = function(dbot) {
                     callback(true, null);
                 }
             });
+        },
+
+        'getTopPosts': function(sr, callback) {
+            request.get({
+                'url': this.ApiRoot + 'r/' + sr + '/top.json',
+                'json': true,
+                'headers': {
+                    'User-Agent': this.UserAgent
+                }
+            }, function(err, response, body) {
+                if(!err && body && body.kind === 'Listing') {
+                    var posts = _.pluck(body.data.children, 'data');
+                    callback(null, posts);
+                } else {
+                    callback(true, null);
+                }
+            });
         }
     };
 
     this.commands = {
+        '~question': function(event) {
+            this.api.getTopPosts('askreddit', function(err, posts) {
+                if(!err) {
+                    var qPost = _.random(0, posts.length - 1); 
+                    event.reply('Question: ' + qPost.title.trim());
+                }
+            });
+        },
+
         '~addredditfeed': function(event) {
             var channel = event.input[1],
                 subreddit = event.input[2].replace('r/', ''),
