@@ -57,7 +57,7 @@ var commands = function(dbot) {
 
                     this.api.quiet(server, host, channel);
 
-                    if(reason !== "N/A") {
+                    if(reason.indexOf('#warn') !== -1) {
                         dbot.api.warning.warn(server, event.rUser, quietee, 
                             'Quieted in ' + channel + ' for ' + reason, channel,
                             function() {});
