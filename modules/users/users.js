@@ -11,6 +11,10 @@ var users = function(dbot) {
     _.each(dbot.config.servers, function(v, k) {
         this.userCache[k] = {};
     }.bind(this));
+    this.chanCache = {};
+    _.each(dbot.config.servers, function(v, k) {
+        this.chanCache[k] = {};
+    }.bind(this));
 
     /*** Internal API ***/
     this.internalAPI = {

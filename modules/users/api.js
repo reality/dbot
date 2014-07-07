@@ -68,6 +68,10 @@ var api = function(dbot) {
         },
 
         'resolveChannel': function(server, channelName, callback) {
+            if(_.has(this.chanCache[server], channelName)) {
+                return this.api.getChannel(this.chanCache[server][channelName], callback);
+            }
+
             var channel = false;
             this.db.search('channel_users', {
                 'server': server,
@@ -76,9 +80,10 @@ var api = function(dbot) {
                 channel = result;
             }, function(err) {
                 if(!err) {
+                    this.chanCache[server][channelName] = channel.id;
                     callback(channel);
                 }
-            });
+            }.bind(this));
         },
 
         'getChannel': function(uuid, callback) {
