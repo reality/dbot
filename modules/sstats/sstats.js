@@ -180,7 +180,9 @@ var sstats = function(dbot) {
                             if(_.isObject(stat)) {
                                 _.each(ouStats[key], function(stat, sKey) {
                                     _.each(ouStats[key][sKey], function(stat, ssKey) {
+                                    if(_.has(nuStats[key][sKey], ssKey)) {
                                         nuStats[key][sKey][ssKey] += stat; 
+                                    }
                                     });
                                 });
                             } else {
