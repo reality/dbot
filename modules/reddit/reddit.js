@@ -59,7 +59,7 @@ var reddit = function(dbot) {
                                 if(!err && posts.length > 0) {
                                     _.each(posts, function(post) {
                                          dbot.say(channel.server, channel.channel, dbot.t('about_post', {
-                                            'title': post.title.trim(),
+                                            'title': _.unescape(post.title.trim()),
                                             'poster': post.author,
                                             'subreddit': post.subreddit,
                                             'comments': post.num_comments,
