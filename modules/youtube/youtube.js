@@ -64,7 +64,7 @@ var youtube = function(dbot) {
     };
 
     this.commands = {
-        '~youtube': function(event) {
+        '~yt': function(event) {
             this.api.search(event.input[1], function(body) {
                 if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
                     event.reply(this.internalAPI.formatLink(body.feed.entry[0]));
@@ -74,7 +74,7 @@ var youtube = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~youtube'].regex = [/^youtube (.+)$/, 2];
+    this.commands['~yt'].regex = [/^youtube (.+)$/, 2];
 
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, this.LinkRegex,
