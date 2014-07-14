@@ -59,7 +59,7 @@ var reddit = function(dbot) {
                                 if(!err && posts.length > 0) {
                                     _.each(posts, function(post) {
                                          dbot.say(channel.server, channel.channel, dbot.t('about_post', {
-                                            'title': post.title.trim(),
+                                            'title': _.unescape(post.title.trim()),
                                             'poster': post.author,
                                             'subreddit': post.subreddit,
                                             'comments': post.num_comments,
@@ -260,7 +260,7 @@ var reddit = function(dbot) {
                 this.api.getPostInfo(matches[4], function(info) {
                     if(info) {
                         var infoString = dbot.t('about_post', {
-                            'title': info.title.trim(),
+                            'title': _.unescape(info.title.trim()),
                             'poster': info.author,
                             'subreddit': info.subreddit,
                             'comments': info.num_comments,
@@ -297,7 +297,7 @@ var reddit = function(dbot) {
                 this.api.getPostInfo(match[2], function(info) {
                     if(info) {
                         var infoString = dbot.t('about_post', {
-                            'title': info.title.trim(),
+                            'title': _.unescape(info.title.trim()),
                             'poster': info.author,
                             'subreddit': info.subreddit,
                             'comments': info.num_comments,
