@@ -74,7 +74,7 @@ var youtube = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~yt'].regex = [/^youtube (.+)$/, 2];
+    this.commands['~yt'].regex = [/^yt (.+)$/, 2];
 
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, this.LinkRegex,
