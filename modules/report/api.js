@@ -19,7 +19,9 @@ var api = function(dbot) {
                 'time': new Date().getTime(),
                 'message': message,
                 'tags': tags 
-            }, function() {});
+            }, function(err, notify) {
+                dbot.api.event.emit('new_notify', [ notify, user.primaryNick ]);
+            });
 
             var channel = dbot.instance.connections[server].channels[cName]; 
             var ops = _.filter(channel.nicks, function(user) {

@@ -15,7 +15,6 @@ var report = function(dbot) {
                     next();
                 }, 1000);
             });
-            dbot.api.event.emit('new_notify', [ message ]);
         },
 
         'formatNotify': function(type, server, user, channel, message) {
