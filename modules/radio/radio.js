@@ -32,13 +32,15 @@ var radio = function(dbot) {
 
             stream.on('metadata', function(metadata) {
                 var title = icecast.parseMetadata(metadata).StreamTitle;
-                _.each(this.config.announce, function(a) {
-                    dbot.say(a.server, a.name, dbot.t('now_playing', {
-                        'name': this.data['icy-name'],
-                        'song': title,
-                        'url': this.data['icy-url']
-                    }));
-                }, this);
+                if(!_.isUndefined(title)) {
+                    _.each(this.config.announce, function(a) {
+                        dbot.say(a.server, a.name, dbot.t('now_playing', {
+                            'name': this.data['icy-name'],
+                            'song': title,
+                            'url': this.data['icy-url']
+                        }));
+                    }, this);
+                }
             }.bind(this));
 
             stream.on('end', function() {
@@ -65,12 +67,12 @@ var radio = function(dbot) {
             });
         }
     };
-    this.commands['~request'].regex = [/^request ([\d\w\s-]*)/, 2];
+    this.commands['~request'].regex = [/^request (.*)/, 2];
     
     this.onLoad = function() {
         this.internalAPI.startRadio();
         dbot.api.timers.addTimer(20000, function() {
-            if(this.listening == false) {
+            if(this.listening === false) {
                 this.internalAPI.startRadio();
             }
         }.bind(this));
