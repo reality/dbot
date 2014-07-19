@@ -1,5 +1,5 @@
 {
-    "stream": "",
-    "announce": [ { "server": "aberwiki", "name": "#dbot" } ],
+    "stream": "http://tripsit.fm:8000",
+    "announce": [ { "server": "tripsit", "name": "#tripbot" } ],
     "outputPrefix": "\u00033radio\u000f"
 }

@@ -51,11 +51,18 @@ var radio = function(dbot) {
         '~request': function(event){
             var dj = this.data['icy-description'],
                 song = event.input[1];
-            dbot.say(event.server, dj, dbot.t('radio_request',{
-                'user': event.user,
-                'song': song
-            }));
-            event.reply('Song requested!');
+
+            dbot.api.users.resolveUser(event.server, dj, function(user) {
+                if(user) {
+                    dbot.say(event.server, user.currentNick, dbot.t('radio_request',{
+                        'user': event.user,
+                        'song': song
+                    }));
+                    event.reply('Song request sent to DJ ' + user.currentNick + '!');
+                } else {
+                    event.reply('Couldn\'t find DJ ' + dj + ' on IRC :(');
+                }
+            });
         }
     };
     this.commands['~request'].regex = [/^request ([\d\w\s-]*)/, 2];
