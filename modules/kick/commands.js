@@ -116,7 +116,7 @@ var commands = function(dbot) {
                 banee = event.input[2],
                 reason = event.input[3],
                 adminChannel = dbot.config.servers[server].admin_channel,
-                channels = _.keys(dbot.instance.connections.[server].channels),
+                channels = _.keys(dbot.instance.connections[server].channels),
                 network = event.server;
 
             if(this.config.network_name[event.server]) {
