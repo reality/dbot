@@ -15,7 +15,7 @@
     "admins": [ "batman" ],
     "moderators": [ "whatever" ],
     "power_users": [],
-    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "youare", "timers", "stats", "users", "link" ],
+    "moduleNames": [ "ignore", "admin", "command", "dice", "js", "kick", "quotes", "spelling", "users", "youare", "timers", "sstats", "link" ],
     "language": "en",
     "debugMode": false,
     "debugLevel": 1,
