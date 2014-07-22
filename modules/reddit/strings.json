@@ -14,6 +14,9 @@
         "it": "[Messaggio di {poster} su {subreddit} — Commenti: {comments}, Punteggio: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}"
 
     },
+    "about_new_post": {
+        "en": "[{title}] [Post by {poster} in {subreddit}] — {url}"
+    },
     "about_comment": {
         "en": "[Comment by {poster} in {subreddit} — Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)]",
         "cy": "[Sylw gan {poster} yn {subreddit} - Sgôr: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)]",

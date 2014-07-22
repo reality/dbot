@@ -58,7 +58,7 @@ var reddit = function(dbot) {
                             this.api.getNewPosts(feed.subreddit, checkTimes[channel.id][feed.subreddit], function(err, posts) {
                                 if(!err && posts.length > 0) {
                                     _.each(posts, function(post) {
-                                         dbot.say(channel.server, channel.channel, dbot.t('about_post', {
+                                         dbot.say(channel.server, channel.channel, dbot.t('about_new_post', {
                                             'title': _.unescape(post.title.trim()),
                                             'poster': post.author,
                                             'subreddit': post.subreddit,
