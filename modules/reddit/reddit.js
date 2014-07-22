@@ -174,6 +174,15 @@ var reddit = function(dbot) {
             });
         },
 
+        '~squestion': function(event) {
+            this.api.getNewPosts('askscience', 0, function(err, posts) {
+                if(!err) {
+                    var qPost = posts[_.random(0, posts.length - 1)]; 
+                    event.reply('Question: ' + qPost.title.trim());
+                }
+            });
+        },
+
         '~addredditfeed': function(event) {
             var channel = event.input[1],
                 subreddit = event.input[2].replace('r/', ''),
