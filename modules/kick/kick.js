@@ -14,6 +14,14 @@ var kick = function(dbot) {
             dbot.instance.connections[server].send('MODE ' + channel + ' -q *!*@' + host);
         },
 
+        'devoice': function(server, nick, channel) {
+            dbot.instance.connections[server].send('MODE ' + channel + ' -v ' +nick);
+        },
+
+        'voice': function(server, nick, channel) {
+            dbot.instance.connections[server].send('MODE ' + channel + ' +v ' +nick);
+        },
+
         'kick': function(server, user, channel, msg) {
             dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
         },

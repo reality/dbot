@@ -20,9 +20,13 @@ var commands = function(dbot) {
                     if(!_.isUndefined(minutes)) {
                         minutes = parseFloat(minutes.trim());
                         var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
+                        var vStatus = dbot.instance.connections[server].channels[channel].nicks[quietee].voice;
                         dbot.api.timers.addTimeout(msTimeout, function() {
                             if(_.has(this.hosts[server], quietee)) {
                                 this.api.unquiet(server, this.hosts[server][quietee], channel);
+                                if(vStatus === true) {
+                                    this.api.voice(server, quietee, channel);
+                                }
 
                                 dbot.api.users.resolveUser(server, dbot.config.name, function(user) {
                                     dbot.api.report.notify('unquiet', server, user, channel,
@@ -55,6 +59,9 @@ var commands = function(dbot) {
                         }));            
                     }
 
+                    if(dbot.instance.connections[server].channels[channel].nicks[quietee].voice === true) {
+                        this.api.devoice(server, quietee, channel);
+                    }
                     this.api.quiet(server, host, channel);
 
                     if(reason.indexOf('#warn') !== -1) {
