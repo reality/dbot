@@ -16,7 +16,7 @@ var lastfm = function(dbot) {
             dbot.api.profile.getProfile(server, nick, function(err, user, profile) {
                 if(user) {
                     if(profile && _.has(profile.profile, 'lastfm')) {
-                        callback(user, profile.profile.lastfm);
+                        callback(user, profile.profile.lastfm.toLowerCase(););
                     } else {
                         callback(user, null);
                     }
