@@ -1,7 +1,8 @@
 var fs = require('fs'),
     _ = require('underscore')._,
     jsbot = require('./jsbot/jsbot'),
-    DatabaseDriver = require('./database').DatabaseDriver;
+    DatabaseDriver = require('./database').DatabaseDriver,
+    async = require('async');
 require('./snippets');
 
 var DBot = function() {
@@ -43,9 +44,13 @@ var DBot = function() {
          this.instance.addConnection(name, server.server, server.port,
                 this.config.admin, function(event) {
             var server = this.config.servers[event.server];
-            for(var i=0;i<server.channels.length;i++) {
-                this.instance.join(event, server.channels[i]);
-            }
+
+            async.eachSeries(server.channels, function(channel, next) {
+                setTimeout(function() {
+                    this.instance.join(event, channel);
+                    next();
+                }.bind(this), 5000);
+            }.bind(this));
         }.bind(this), server.nickserv, server.password);        
     }, this);
 
