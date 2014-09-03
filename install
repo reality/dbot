@@ -17,15 +17,17 @@ fi
 npm install feedparser node-units tvdb crypto-js 500px process async wordnik node-uuid underscore request sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
 
 cd public/
-wget http://twitter.github.com/bootstrap/assets/bootstrap.zip
-unzip bootstrap.zip
+#wget http://twitter.github.com/bootstrap/assets/bootstrap.zip
+wget https://github.com/twbs/bootstrap/releases/download/v3.2.0/bootstrap-3.2.0-dist.zip
+unzip bootstrap-3.2.0-dist.zip
 rm bootstrap.zip
 
 mkdir d3
 cd d3
-wget http://d3js.org/d3.v3.zip
-unzip d3.v3.zip
-rm d3.v3.zip
+#wget http://d3js.org/d3.v3.zip
+wget https://github.com/mbostock/d3/releases/download/v3.4.11/d3.zip
+unzip d3.zip
+rm d3.zip
 
 cd ../..
 
