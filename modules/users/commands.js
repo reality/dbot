@@ -65,7 +65,7 @@ var commands = function(dbot) {
 
         '~setaliasparent': function(event) {
             var newPrimary = event.params[1];
-            this.api.resolveUser(event.server, newPrimary, function(user) {
+            this.api.resolveUser(event.server, newPrimary, function(err, user) {
                 if(user) {
                     if(user.primaryNick !== newPrimary) {
                         this.internalAPI.reparentUser(user, newPrimary, function() {
@@ -78,9 +78,9 @@ var commands = function(dbot) {
                         event.reply(dbot.t('already_primary', { 'user': newPrimary }));
                     }
                 } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimary }));
                 }
-            });
+            }.bind(this));
         },
 
         '~rmalias': function(event) {
@@ -107,11 +107,11 @@ var commands = function(dbot) {
             this.api.resolveUser(event.server, oldNick, function(err, oldUser) {
                 if(oldUser) {
                     this.api.resolveUser(event.server, newNick, function(err, newUser) {
-                        if(newUser) {
+                        if(newUser && newUser.id !== oldUser.id) {
                             this.internalAPI.mergeUsers(oldUser, newUser, function() {
                                  event.reply(dbot.t('merged_users', {
-                                     'old_user': secondaryUser,
-                                     'new_user': primaryUser
+                                     'old_user': oldNick,
+                                     'new_user': newNick 
                                  }));
                             });
                         } else {

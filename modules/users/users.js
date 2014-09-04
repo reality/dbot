@@ -35,7 +35,7 @@ var users = function(dbot) {
                 'user': user.id
             }, function(err, result) {
                 if(!err) {
-                    dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
+                    dbot.api.event.emit('new_user_alias', [ user, alias ]);
                     callback(null, result);
                 } else {
                     callback(true, null);
@@ -67,9 +67,15 @@ var users = function(dbot) {
         // Merge two user records and aliases
         'mergeUsers': function(oldUser, newUser, callback) {
             this.db.search('user_aliases', { 'user': oldUser.id }, function(alias) {
-                alias.user = newUser.id;
-                this.db.save('user_aliases', alias.id, alias, function(){});
-            }.bind(this), function(){});
+                if(alias.alias === newUser.primaryNick) {
+                    this.db.del('user_aliases', alias.id, function(){});
+                } else {
+                    alias.user = newUser.id;
+                    this.db.save('user_aliases', alias.id, alias, function(){});
+                }
+            }.bind(this), function(){
+                this.internalAPI.createAlias(oldUser.primaryNick, newUser, function(){}); 
+            }.bind(this));
 
             this.db.del('users', oldUser.id, function(err) {
                 if(!err) {
@@ -99,13 +105,14 @@ var users = function(dbot) {
     // Track nick changes
     this.listener = function(event) {
         // Update current nick
-        this.internalAPI.updateCurrentNick(event.rUser, event.newNick, function(){});
-
-        // Add new alias record if nick is not already claimed
-        this.api.resolveUser(event.server, event.newNick, function(err, user) {
-            if(!user) {
-                this.internalAPI.createAlias(event.newNick, event.rUser, function(){});
-            }
+        this.api.resolveUser(event.server, event.user, function(err, user) {
+        console.log(user);
+            this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+            this.api.resolveUser(event.server, event.newNick, function(err, eUser) {
+                if(!eUser) {
+                    this.internalAPI.createAlias(event.newNick, user, function(){});
+                }
+            }.bind(this));
         }.bind(this));
     }.bind(this);
     this.on = ['NICK'];

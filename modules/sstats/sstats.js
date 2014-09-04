@@ -44,7 +44,7 @@ var sstats = function(dbot) {
                     .value();
 
                 async.eachSeries(pCounts, function(pCount, next) {
-                    dbot.api.users.getUser(pCount[0], function(user) {
+                    dbot.api.users.getUser(pCount[0], function(err, user) {
                         pCount[0] = user.primaryNick; next();
                     });
                 }, function() {
@@ -54,14 +54,9 @@ var sstats = function(dbot) {
         }.bind(this),
 
         'channelHighscore': function(key, server, channel, property, callback) {
-            dbot.api.users.resolveChannel(server, channel, function(channel) {
-                if(channel) {
-                    var newProperty = 'channels.' + channel.id + '.' + property;
-                    this.internalAPI.highscore(key, newProperty, callback);
-                } else {
-                    callback(null);
-                }
-            }.bind(this));
+            var cId = channel + '.' + server;
+            var newProperty = 'channels.' + cId + '.' + property;
+            this.internalAPI.highscore(key, newProperty, callback);
         }.bind(this),
 
         'formatHighscore': function(string, pCounts) {
@@ -78,6 +73,7 @@ var sstats = function(dbot) {
         event.uStats.lines++;
 
         var message = event.message.replace(/[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g, "");
+        var cId = event.channel + '.' + event.server;
         var words = message.split(' '),
             wCount = words.length,
             capitals = 0,
@@ -98,18 +94,18 @@ var sstats = function(dbot) {
         event.cStats.capitals += capitals;
         event.cStats.curses += curses;
 
-        if(!_.has(event.uStats.channels, event.rChannel.id)) {
-            event.uStats.channels[event.rChannel.id] = { 
+        if(!_.has(event.uStats.channels, cId)) {
+            event.uStats.channels[cId] = { 
                 'lines': 1,
                 'words': wCount,
                 'capitals': capitals,
                 'curses': curses
             };
         } else {
-            event.uStats.channels[event.rChannel.id].lines++;
-            event.uStats.channels[event.rChannel.id].words += wCount;
-            event.uStats.channels[event.rChannel.id].capitals += capitals;
-            event.uStats.channels[event.rChannel.id].curses += curses;
+            event.uStats.channels[cId].lines++;
+            event.uStats.channels[cId].words += wCount;
+            event.uStats.channels[cId].capitals += capitals;
+            event.uStats.channels[cId].curses += curses;
         }
 
         // Look for tracked words.
@@ -124,9 +120,9 @@ var sstats = function(dbot) {
                 this.api.getTrackedWord(word, function(tWord) {
                     if(tWord) {
                         tWord.total += count;
-                        if(!_.has(tWord.channels, event.rChannel.id)) tWord.channels[event.rChannel.id] = 0;
+                        if(!_.has(tWord.channels, cId)) tWord.channels[cId] = 0;
                         if(!_.has(tWord.users, event.rUser.id)) tWord.users[event.rUser.id] = 0;
-                        tWord.channels[event.rChannel.id] += count;
+                        tWord.channels[cId] += count;
                         tWord.users[event.rUser.id] += count;
                         this.db.save('tracked_words', word, tWord, function() {}); 
                     }
@@ -158,13 +154,14 @@ var sstats = function(dbot) {
 
         // Preload channel stats
         dbot.instance.addPreEmitHook(function(event, callback) {
-            if(!event.rChannel) return callback();
-            this.api.getChannelStats(event.rChannel.id, function(cStats) {
+            if(!event.channel) return callback();
+            var id = event.channel + '.' + event.server;
+            this.api.getChannelStats(id, function(cStats) {
                 if(cStats) {
                     event.cStats = cStats;
                     callback();
                 } else {
-                    this.api.createChannelStats(event.rChannel.id, function(cStats) {
+                    this.api.createChannelStats(id, function(cStats) {
                         event.cStats = cStats;
                         callback();
                     });
