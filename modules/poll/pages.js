@@ -15,7 +15,7 @@ var pages = function(dbot) {
 
                     var voterNicks = [];
                     async.each(_.keys(poll.votees), function(id, done) {
-                        dbot.api.users.getUser(id, function(user) {
+                        dbot.api.users.getUser(id, function(err, user) {
                             voterNicks.push(user.primaryNick);
                             done();
                         });

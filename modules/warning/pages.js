@@ -21,7 +21,7 @@ var pages = function(dbot) {
                 if(!_.include(userIds, warning.warnee)) userIds.push(warning.warnee);
             }, function(err) {
                 async.eachSeries(userIds, function(id, callback) {
-                    dbot.api.users.getUser(id, function(user) {
+                    dbot.api.users.getUser(id, function(err, user) {
                         userNicks.push(user.primaryNick); 
                         callback(false);
                     });
@@ -47,9 +47,8 @@ var pages = function(dbot) {
                 }, function(warning) {
                     warnings.push(warning);
                 }, function(err) {
-                    console.log(warnings);
                     async.eachSeries(warnings, function(warning, callback) {
-                        dbot.api.users.getUser(warning.warner, function(user) {
+                        dbot.api.users.getUser(warning.warner, function(err, user) {
                             warning.warner = user.primaryNick;
                             callback(false);
                         });

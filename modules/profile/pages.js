@@ -7,7 +7,7 @@ var pages = function(dbot) {
             var connection = req.params.connection;
             var nick = req.params.user;
 
-            dbot.api.users.resolveUser(connection, nick, function(user){
+            dbot.api.users.resolveUser(connection, nick, function(err, user){
                 if(user){
                     dbot.api.profile.getProfile(connection, user.primaryNick, function(err, user, profile){
                         if(!err){
@@ -45,7 +45,7 @@ var pages = function(dbot) {
             dbot.api.profile.getAllProfiles(function(profiles){
                 var thumbnails = [];
                 _.each(profiles, function(profile){
-                    var nick = dbot.api.users.getUser(profile.id, function(user){
+                    var nick = dbot.api.users.getUser(profile.id, function(err, user){
                         if(user){
 
                             /*TODO(@tmenari / @samstudio8)

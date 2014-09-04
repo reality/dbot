@@ -187,7 +187,7 @@ var lastfm = function(dbot) {
                             .value();
 
                         async.each(scrobbliest, function(item, done) {
-                            dbot.api.users.getUser(item.user, function(user) {
+                            dbot.api.users.getUser(item.user, function(err, user) {
                                 item.user = user; 
                                 done();
                             });
@@ -327,9 +327,9 @@ var lastfm = function(dbot) {
 
                 async.each(tastiest, function(pair, done) {
                     if(!_.isObject(pair.p1)) { // fix this
-                        dbot.api.users.getUser(pair.p1, function(user) {
+                        dbot.api.users.getUser(pair.p1, function(err, user) {
                             pair.p1 = user;
-                            dbot.api.users.getUser(pair.p2, function(user) {
+                            dbot.api.users.getUser(pair.p2, function(err, user) {
                                 pair.p2 = user;
                                 done();
                             });
