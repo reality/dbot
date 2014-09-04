@@ -3,7 +3,7 @@ var _ = require('underscore')._;
 var commands = function(dbot) {
     this.commands = {
         '~alias': function(event) {
-            var nick = event.input[1] || event.user;
+            var nick = event.params[1] || event.user;
             this.api.resolveUser(event.server, nick, function(err, user) {
                 if(user) {
                     this.api.getUserAliases(user.id, function(err, aliases) {
@@ -37,8 +37,8 @@ var commands = function(dbot) {
         },
 
         '~addalias': function(event) {
-            var nick = event.input[1],
-                alias = event.input[2];
+            var nick = event.params[1],
+                alias = event.params[2];
 
             this.api.resolveUser(event.server, nick, function(err, user) {
                 if(user) {
@@ -61,6 +61,51 @@ var commands = function(dbot) {
                     event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
             }.bind(this));
+        },
+
+        '~setaliasparent': function(event) {
+            var newPrimary = event.params[1];
+            this.api.resolveUser(event.server, newPrimary, function(user) {
+                if(user) {
+                    if(user.primaryNick !== newPrimary) {
+                        this.internalAPI.reparentUser(user, newPrimary, function() {
+                            event.reply(dbot.t('aliasparentset', {
+                                'newParent': newPrimary,
+                                'newAlias': user.primaryNick
+                            }));
+                        });
+                    } else {
+                        event.reply(dbot.t('already_primary', { 'user': newPrimary }));
+                    }
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            });
+        },
+
+        '~rmalias': function(event) {
+            var alias = event.params[1];
+
+            this.api.resolveUser(event.server, alias, function(err, user) {
+                if(user) { // Retrieving user record via alias proves existence of alias record
+                    this.internalAPI.removeAlias(event.server, alias, function(err) {
+                        event.reply(dbot.t('alias_removed', {
+                            'primary': user.primaryNick,
+                            'alias': alias
+                        }));
+                    });
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            });
         }
     };
+    this.commands['~setaliasparent'].access = 'moderator';
+    this.commands['~addalias'].access = 'moderator';
+    this.commands['~rmalias'].access = 'moderator';
+    this.commands['~mergeusers'].access = 'moderator';
+};
+
+exports.fetch = function(dbot) {
+    return commands(dbot);
 };

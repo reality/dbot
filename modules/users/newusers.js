@@ -43,6 +43,15 @@ var users = function(dbot) {
             });
         },
 
+        // Remove an alias record
+        'removeAlias': function(server, alias) {
+            var id = alias + '.' + server;
+            this.db.del('user_aliases', id, function(err) {
+                callback(err);
+            });
+        },
+
+        // Update current nick of user record
         'updateCurrentNick': function(user, newNick, callback) {
             user.currentNick = newNick;
             this.db.save('users', user.id, user, function(err, result) {
@@ -53,6 +62,35 @@ var users = function(dbot) {
                     callback(true, null);
                 }
             });
+        },
+
+        // Merge two user records and aliases
+        'mergeUsers': function(oldUser, newUser, callback) {
+            this.db.search('user_aliases', { 'user': oldUser.id }, function(alias) {
+                alias.user = newUser.id;
+                this.db.save('user_aliases', alias.id, alias, function(){});
+            }.bind(this), function(){});
+
+            this.db.del('users', oldUser.id, function(err) {
+                if(!err) {
+                    dbot.api.event.emit('merged_users', [
+                        oldUser,
+                        newUser
+                    ]);
+                    callback(null);
+                } else {
+                    callback(true);
+                }
+            });
+        },
+
+        // Set a new nick as the parent for a user (so just recreate and merge)
+        'reparentUser': function(user, newPrimary, callback) {
+            this.internalAPI.createUser(user.server, newPrimary, function(err, newUser) {
+                this.internalAPI.mergeUsers(user, newUser, function(err) {
+                    callback(err);
+                });
+            }.bind(this));
         }
     };
 
@@ -73,6 +111,7 @@ var users = function(dbot) {
     this.on = ['NICK'];
 
     /*** Pre-emit ***/
+
     this.onLoad = function() {
         // Create non-existing users and update current nicks
         var checkUser = function(done) {
@@ -80,15 +119,24 @@ var users = function(dbot) {
                 if(!user) {
                     this.internalAPI.createUser(event.server, event.user, done);
                 } else {
-                    this.internalAPI.updateCurrentNick(user, event.user, done);
+                    if(user.currentNick !== event.user) {
+                        this.internalAPI.updateCurrentNick(user, event.user, done);
+                    } else {
+                        done(null, user);
+                    }
                 }
             }.bind(this));
         };
 
         dbot.instance.addPreEmitHook(function(event, callback) {
             if(event.user && _.include(['JOIN', 'PRIVMSG'], event.action)) {
-                checkUser(callback);
+                checkUser(function(err, user) {
+                    event.rUser = user; 
+                    callback(null);
+                });
+            } else {
+                callback(null);
             }
         });
-    };
+    }.bind(this);
 };
