@@ -28,7 +28,7 @@ var api = function(dbot) {
         },
 
         'getProfile': function(server, nick, callback){
-            dbot.api.users.resolveUser(server, nick, function(user){
+            dbot.api.users.resolveUser(server, nick, function(err, user){
                 if(user){
                     this.db.read('profiles', user.id, function(err, profile){
                         if(!err){

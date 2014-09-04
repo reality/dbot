@@ -54,7 +54,7 @@ var radio = function(dbot) {
             var dj = this.data['icy-description'],
                 song = event.input[1];
 
-            dbot.api.users.resolveUser(event.server, dj, function(user) {
+            dbot.api.users.resolveUser(event.server, dj, function(err, user) {
                 if(user) {
                     dbot.say(event.server, user.currentNick, dbot.t('radio_request',{
                         'user': event.user,

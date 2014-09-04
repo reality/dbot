@@ -85,7 +85,7 @@ var commands = function(dbot) {
 
             if(reason.charAt(reason.length - 1) != '.') reason += '.';
 
-            dbot.api.users.resolveUser(event.server, nick, function(reportee) {
+            dbot.api.users.resolveUser(event.server, nick, function(err, reportee) {
                 if(_.has(event.allChannels, channelName)) {
                     if(reportee) {
                         this.api.notify('report', event.server, event.rUser,
@@ -114,7 +114,7 @@ var commands = function(dbot) {
             if(_.has(event.allChannels, channelName)) {
                 if(this.config.firstHost) {
                     var first = message.split(' ')[0];
-                    dbot.api.users.resolveUser(event.server, first, function(user) {
+                    dbot.api.users.resolveUser(event.server, first, function(err, user) {
                         if(user && _.include(this.config.host_lookup, channelName)) {
                             dbot.api.nickserv.getUserHost(event.server, first, function(host) {
                                 message = message.replace(first, first + ' [' + host + ']'); 
