@@ -140,3 +140,7 @@ var users = function(dbot) {
         });
     }.bind(this);
 };
+
+exports.fetch = function(dbot) {
+    return new users(dbot);
+};

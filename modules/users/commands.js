@@ -9,24 +9,24 @@ var commands = function(dbot) {
                     this.api.getUserAliases(user.id, function(err, aliases) {
                         var including = _.first(aliases, 10).join(', ');
 
-                        if(nick === user.primaryNick) {
-                            if(aliases.length === 0) {
-                                event.reply(dbot.t('primary_no_alias', { 
-                                    'user': user.primaryNick,
-                                    'currentNick': user.currentNick
-                                }));
-                            } else {
-                                event.reply(dbot.t('primary', { 
-                                    'user': user.primaryNick,
-                                    'currentNick': user.currentNick,
-                                    'count': aliases.length,
-                                    'including': including
-                                }));
-                            }
-                        } else {
+                        if(nick !== user.primaryNick) {
                             event.reply(dbot.t('alias', { 
                                 'alias': nick, 
                                 'user': user.primaryNick
+                            }));
+                        }
+
+                        if(aliases.length === 0) {
+                            event.reply(dbot.t('primary_no_alias', { 
+                                'user': user.primaryNick,
+                                'currentNick': user.currentNick
+                            }));
+                        } else {
+                            event.reply(dbot.t('primary', { 
+                                'user': user.primaryNick,
+                                'currentNick': user.currentNick,
+                                'count': aliases.length,
+                                'including': including
                             }));
                         }
                     });
@@ -69,7 +69,7 @@ var commands = function(dbot) {
                 if(user) {
                     if(user.primaryNick !== newPrimary) {
                         this.internalAPI.reparentUser(user, newPrimary, function() {
-                            event.reply(dbot.t('aliasparentset', {
+                            event.reply(dbot.t('alias_parent_set', {
                                 'newParent': newPrimary,
                                 'newAlias': user.primaryNick
                             }));
@@ -98,6 +98,30 @@ var commands = function(dbot) {
                     event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
             });
+        },
+
+        '~mergeusers': function(event) {
+            var oldNick = event.params[1],
+                newNick = event.params[2];
+
+            this.api.resolveUser(event.server, oldNick, function(err, oldUser) {
+                if(oldUser) {
+                    this.api.resolveUser(event.server, newNick, function(err, newUser) {
+                        if(newUser) {
+                            this.internalAPI.mergeUsers(oldUser, newUser, function() {
+                                 event.reply(dbot.t('merged_users', {
+                                     'old_user': secondaryUser,
+                                     'new_user': primaryUser
+                                 }));
+                            });
+                        } else {
+                            event.reply(dbot.t('unknown_alias', { 'alias': newNick }));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': oldNick }));
+                }
+            }.bind(this));
         }
     };
     this.commands['~setaliasparent'].access = 'moderator';

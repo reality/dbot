@@ -63,3 +63,7 @@ var api = function(dbot) {
         }
     };
 };
+
+exports.fetch = function(dbot) {
+    return api(dbot);
+};
