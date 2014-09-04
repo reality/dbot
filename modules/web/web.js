@@ -4,7 +4,11 @@ var express = require('express'),
     flash = require('connect-flash'),
     _ = require('underscore')._,
     fs = require('fs'),
-    LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy,
+    cookieParser = require('cookie-parser');
+    bodyParser = require('body-parser');
+    expressSession = require('express-session');
+    methodOverride = require('method-override');
 
 var webInterface = function(dbot) {
     this.config = dbot.config.modules.web;
@@ -14,15 +18,14 @@ var webInterface = function(dbot) {
 
     this.app.use(express.static(this.pub));
     this.app.set('view engine', 'jade');
-    this.app.use(express.cookieParser());
-    this.app.use(express.bodyParser());
-    this.app.use(express.methodOverride());
-    this.app.use(express.session({ 'secret': 'wat' }));
+    this.app.use(cookieParser());
+    this.app.use(methodOverride());
+    this.app.use(expressSession({ 'secret': 'wat' }));
+    this.app.use(bodyParser());
     this.app.use(flash());
 
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    this.app.use(this.app.router);
 
     passport.serializeUser(function(user, done) {
         done(null, user.id);
@@ -46,7 +49,7 @@ var webInterface = function(dbot) {
             'Please provide a valid server (Servers: ' +
             _.keys(dbot.config.servers).join(', ') + ')' });
 
-        dbot.api.users.resolveUser(server, username, function(user) {
+        dbot.api.users.resolveUser(server, username, function(err, user) {
             if(user) {
                 this.api.getWebUser(user.id, function(webUser) {
                     if(webUser) {
@@ -95,8 +98,7 @@ var webInterface = function(dbot) {
 
     this.onLoad = function() {
         this.reloadPages();
-
-        var routes = _.pluck(dbot.modules.web.app.routes.get, 'path'),
+        var routes = _.pluck(_.without(_.pluck(this.app._router.stack, 'route'), undefined), 'path'),
             moduleNames = _.keys(dbot.modules);
 
         _.each(moduleNames, function(moduleName) {

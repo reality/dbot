@@ -39,7 +39,7 @@ var pages = function(dbot) {
             var server = req.params.server,
                 user = req.params.uid;
 
-            dbot.api.users.resolveUser(server, user, function(user) {
+            dbot.api.users.resolveUser(server, user, function(err, user) {
                 var warnings = [];
                 this.db.search('warnings', {
                     'server': server,
@@ -54,7 +54,6 @@ var pages = function(dbot) {
                             callback(false);
                         });
                     }, function(err) {
-                        console.log(warnings);
                         res.render('warnings', {
                             'name': dbot.config.name,
                             'server': server,
