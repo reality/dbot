@@ -4,7 +4,7 @@
  */
 var _ = require('underscore')._;
 
-var charybdis = function(dbot) {
+var atheme = function(dbot) {
     this.commands = {
         '~chanserv': function(event) {
             if(_.has(this.config.chanserv, event.input[1])) {
@@ -22,10 +22,10 @@ var charybdis = function(dbot) {
             }
         }
     };
-    this.commands['~chanserv'].regex = [/^chanserv (\+.)/, 2]
-    this.commands['~chanmode'].regex = [/^chanmode (\+.)/, 2]
+    this.commands['~chanserv'].regex = [/^chanserv (\+.)/, 2];
+    this.commands['~chanmode'].regex = [/^chanmode (\+.)/, 2];
 };
 
 exports.fetch = function(dbot) {
-    return new charybdis(dbot);
+    return new atheme(dbot);
 };
