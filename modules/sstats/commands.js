@@ -155,7 +155,7 @@ var commands = function(dbot) {
         },
 
         '~last': function(event) {
-            dbot.api.users.resolveUser(event.server, event.params[1], function(user) {
+            dbot.api.users.resolveUser(event.server, event.params[1], function(err, user) {
                 if(user) {
                     this.api.getUserStats(user.id, function(uStats) {
                         if(uStats && uStats.last) {

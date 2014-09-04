@@ -20,7 +20,10 @@ var sstats = function(dbot) {
         // repetition
         'highscore': function(key, property, callback) {
             var pList = {}, 
+                pPointer = property;
+            if(!_.isArray(pPointer)) {
                 pPointer = property.split('.');
+            }
 
             this.db.scan(key, function(item) {
                 var id = item.id;
@@ -55,7 +58,7 @@ var sstats = function(dbot) {
 
         'channelHighscore': function(key, server, channel, property, callback) {
             var cId = channel + '.' + server;
-            var newProperty = 'channels.' + cId + '.' + property;
+            var newProperty = ['channels', cId, property];
             this.internalAPI.highscore(key, newProperty, callback);
         }.bind(this),
 
