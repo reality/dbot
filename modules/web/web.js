@@ -4,11 +4,11 @@ var express = require('express'),
     flash = require('connect-flash'),
     _ = require('underscore')._,
     fs = require('fs'),
-    LocalStrategy = require('passport-local').Strategy,
-    cookieParser = require('cookie-parser');
-    bodyParser = require('body-parser');
-    expressSession = require('express-session');
-    methodOverride = require('method-override');
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    expressSession = require('express-session'),
+    methodOverride = require('method-override'),
+    LocalStrategy = require('passport-local').Strategy;
 
 var webInterface = function(dbot) {
     this.config = dbot.config.modules.web;
@@ -19,9 +19,10 @@ var webInterface = function(dbot) {
     this.app.use(express.static(this.pub));
     this.app.set('view engine', 'jade');
     this.app.use(cookieParser());
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ 'extended': true }));
     this.app.use(methodOverride());
     this.app.use(expressSession({ 'secret': 'wat' }));
-    this.app.use(bodyParser());
     this.app.use(flash());
 
     this.app.use(passport.initialize());
@@ -32,7 +33,7 @@ var webInterface = function(dbot) {
     });
 
     passport.deserializeUser(function(id, done) {
-        dbot.api.users.getUser(id, function(user) {
+        dbot.api.users.getUser(id, function(err, user) {
             done(null, user);
         });
     });
