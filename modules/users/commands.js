@@ -1,7 +1,7 @@
 var _ = require('underscore')._;
 
 var commands = function(dbot) {
-    this.commands = {
+    var commands = {
         '~alias': function(event) {
             var nick = event.params[1] || event.user;
             this.api.resolveUser(event.server, nick, function(err, user) {
@@ -124,10 +124,12 @@ var commands = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~setaliasparent'].access = 'moderator';
-    this.commands['~addalias'].access = 'moderator';
-    this.commands['~rmalias'].access = 'moderator';
-    this.commands['~mergeusers'].access = 'moderator';
+    commands['~setaliasparent'].access = 'moderator';
+    commands['~addalias'].access = 'moderator';
+    commands['~rmalias'].access = 'moderator';
+    commands['~mergeusers'].access = 'moderator';
+
+    return commands;
 };
 
 exports.fetch = function(dbot) {

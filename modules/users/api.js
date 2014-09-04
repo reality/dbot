@@ -1,7 +1,7 @@
 var _ = require('underscore')._;
 
 var api = function(dbot) {
-    this.api = {
+    var api = {
         // Retrieve a user record given a server and nickname
         'resolveUser': function(server, nick, callback) {
             var id = nick + '.' + server;
@@ -62,6 +62,8 @@ var api = function(dbot) {
             });
         }
     };
+
+    return api;
 };
 
 exports.fetch = function(dbot) {

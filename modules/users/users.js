@@ -24,7 +24,7 @@ var users = function(dbot) {
                     callback(true, null);
                 }
             });
-        },
+        }.bind(this),
 
         // Add new user alias
         'createAlias': function(alias, user, callback) {
@@ -41,7 +41,7 @@ var users = function(dbot) {
                     callback(true, null);
                 }
             });
-        },
+        }.bind(this),
 
         // Remove an alias record
         'removeAlias': function(server, alias) {
@@ -49,7 +49,7 @@ var users = function(dbot) {
             this.db.del('user_aliases', id, function(err) {
                 callback(err);
             });
-        },
+        }.bind(this),
 
         // Update current nick of user record
         'updateCurrentNick': function(user, newNick, callback) {
@@ -62,7 +62,7 @@ var users = function(dbot) {
                     callback(true, null);
                 }
             });
-        },
+        }.bind(this),
 
         // Merge two user records and aliases
         'mergeUsers': function(oldUser, newUser, callback) {
@@ -82,7 +82,7 @@ var users = function(dbot) {
                     callback(true);
                 }
             });
-        },
+        }.bind(this),
 
         // Set a new nick as the parent for a user (so just recreate and merge)
         'reparentUser': function(user, newPrimary, callback) {
@@ -91,7 +91,7 @@ var users = function(dbot) {
                     callback(err);
                 });
             }.bind(this));
-        }
+        }.bind(this)
     };
 
     /*** Listener ***/
@@ -114,7 +114,7 @@ var users = function(dbot) {
 
     this.onLoad = function() {
         // Create non-existing users and update current nicks
-        var checkUser = function(done) {
+        var checkUser = function(event, done) {
             this.api.resolveUser(event.server, event.user, function(err, user) {
                 if(!user) {
                     this.internalAPI.createUser(event.server, event.user, done);
@@ -126,11 +126,11 @@ var users = function(dbot) {
                     }
                 }
             }.bind(this));
-        };
+        }.bind(this);
 
         dbot.instance.addPreEmitHook(function(event, callback) {
             if(event.user && _.include(['JOIN', 'PRIVMSG'], event.action)) {
-                checkUser(function(err, user) {
+                checkUser(event, function(err, user) {
                     event.rUser = user; 
                     callback(null);
                 });
