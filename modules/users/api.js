@@ -43,23 +43,6 @@ var api = function(dbot) {
                     callback(true, null);
                 }
             });
-        },
-
-        // Retrieve a channel record given a server and a channel name
-        'resolveChannel': function(server, channel, callback) {
-            var id = channel + '.' + server;
-            this.api.getChannel(id, callback);
-        },
-
-        // Retrieve a channel record given its ID
-        'getChannel': function(id, callback) {
-            this.db.read('channels', id, function(err, result) {
-                if(!err) {
-                    callback(null, result);
-                } else {
-                    callback(true, null);
-                }
-            });
         }
     };
 

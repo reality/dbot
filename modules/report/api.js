@@ -33,7 +33,6 @@ var api = function(dbot) {
             }, this);
             ops = _.pluck(ops, 'name');
 
-/** TODO
             dbot.api.users.resolveChannel(server, cName, function(channel) {
                 if(channel) {
                     var perOps = channel.op;
@@ -72,7 +71,6 @@ var api = function(dbot) {
                     }.bind(this));
                 }
             }.bind(this));
-**/
         }, 
 
         'notifyUsers': function(server, users, message) {

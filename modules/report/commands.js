@@ -75,9 +75,10 @@ var commands = function(dbot) {
         },
 
         '~report': function(event) {
-            var channelName = (event.input[1].trim() || event.channel),
+            var channelName = (event.input[1] || event.channel.toString()),
                 nick = event.input[2],
                 reason = event.input[3].trim();
+            channelName = channelName.trim();
 
             if(channelName == event.user) {
                 channelName = dbot.config.servers[event.server].admin_channel;
