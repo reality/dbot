@@ -1,216 +1,109 @@
-var _ = require('underscore')._,
-    moment = require('moment-timezone');
+var _ = require('underscore')._;
 
 var commands = function(dbot) {
-    var commands = {
+    this.commands = {
         '~alias': function(event) {
-            var nick = event.params[1].trim() || event.user;
-            this.api.resolveUser(event.server, nick, function(user) {
+            var nick = event.params[1] || event.user;
+            this.api.resolveUser(event.server, nick, function(err, user) {
                 if(user) {
-                    if(nick == user.primaryNick) {
-                        var aliases = _.first(user.aliases, 10);
-                        var including = 'including: ' + aliases.join(', ') + '.';
+                    this.api.getUserAliases(user.id, function(err, aliases) {
+                        var including = _.first(aliases, 10).join(', ');
 
-                        if(user.aliases.length != 0) {
-                            event.reply(dbot.t('primary', { 
-                                'user': nick,
-                                'currentNick': user.currentNick,
-                                'count': user.aliases.length,
-                            }) + including);
-                        } else {
-                            event.reply(dbot.t('primary', { 
-                                'user': nick, 
-                                'currentNick': user.currentNick,
-                                'count': user.aliases.length 
-                            }).slice(0, -2) + ".");
-                        }
-                    } else {
-                        event.reply(dbot.t('alias', { 
-                            'alias': nick, 
-                            'user': user.primaryNick
-                        }));
-                    }
-                } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
-                }
-            });
-        },
-        
-        '~timezone': function(event) {
-            if(event.params[1]) {
-                try {
-                    moment().tz(event.params[1]);
-                } catch(err) {
-                    return event.reply('Invalid timezone. See http://momentjs.com/timezone/');
-                }
-
-                event.rUser.timezone = event.params[1];
-                this.db.save('users', event.rUser.id, event.rUser, function() {
-                    event.reply('Timezone updated.');
-                });
-            } else {
-                event.reply('Current timezone: ' + event.rUser.timezone);
-            }
-        },
-
-        '~time': function(event) {
-            var nick = event.params[1].trim();
-            this.api.resolveUser(event.server, nick, function(user) {
-                if(user) {
-                    if(user.timezone) {
-                        var fDate = moment.tz(user.timezone).format('MMMM Do YYYY HH:mm:ss');                 
-                        event.reply('The time for ' + user.primaryNick + ' is: ' + fDate);
-                    } else {
-                        event.reply(user.primaryNick + ' doesn\'t have a timezone set. They can do this with ~timezone.');
-                    }
-                } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
-                }
-            });
-        },
-
-        '~setmobilealias': function(event) {
-            if(_.include(event.rUser.aliases, event.params[1])) {
-                if(!_.has(event.rUser, 'mobile')) event.rUser.mobile = [];
-                if(!_.include(event.rUser.mobile, event.params[1])) {
-                    event.rUser.mobile.push(event.params[1]);
-                    this.db.save('users', event.rUser.id, event.rUser, function(err) {
-                        event.reply(dbot.t('added_mobile_alias', { 'alias': event.params[1] })); 
-                    });
-                } else {
-                    event.reply(dbot.t('already_mobile', { 'alias': event.params[1] })); 
-                }
-            } else {
-                event.reply(dbot.t('unknown_alias', { 'alias': event.params[1] }));
-            }
-        },
-
-        '~addalias': function(event) {
-            var nick = event.input[1],
-                alias = event.input[2];
-
-            this.api.resolveUser(event.server, nick, function(user) {
-                if(user) {
-                    if(!_.include(user.aliases, alias)) {
-                        user.aliases.push(alias);
-                        this.db.save('users', user.id, user, function(err) {
-                            if(!err) {
-                                event.reply(dbot.t('alias_added', {
+                        if(nick === user.primaryNick) {
+                            if(aliases.length === 0) {
+                                event.reply(dbot.t('primary_no_alias', { 
                                     'user': user.primaryNick,
-                                    'alias': alias
+                                    'currentNick': user.currentNick
+                                }));
+                            } else {
+                                event.reply(dbot.t('primary', { 
+                                    'user': user.primaryNick,
+                                    'currentNick': user.currentNick,
+                                    'count': aliases.length,
+                                    'including': including
                                 }));
                             }
-                        });
-                    } else {
-                        event.reply(dbot.t('alias_exists', { 'alias': alias }));
-                    }
+                        } else {
+                            event.reply(dbot.t('alias', { 
+                                'alias': nick, 
+                                'user': user.primaryNick
+                            }));
+                        }
+                    });
                 } else {
                     event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
             }.bind(this));
         },
 
-        '~removealias': function(event) {
+        '~addalias': function(event) {
+            var nick = event.params[1],
+                alias = event.params[2];
+
+            this.api.resolveUser(event.server, nick, function(err, user) {
+                if(user) {
+                    this.api.resolveUser(event.server, alias, function(err, aUser) {
+                        if(!aUser) {
+                            this.internalAPI.createAlias(alias, user, function(err) {
+                                event.reply(dbot.t('alias_added', {
+                                    'user': user.primaryNick,
+                                    'alias': alias
+                                }));
+                            });
+                        } else {
+                            event.reply(dbot.t('alias_exists', {
+                                'alias': alias,
+                                'user': aUser.primaryNick
+                            }));
+                        }
+                    });
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            }.bind(this));
+        },
+
+        '~setaliasparent': function(event) {
+            var newPrimary = event.params[1];
+            this.api.resolveUser(event.server, newPrimary, function(user) {
+                if(user) {
+                    if(user.primaryNick !== newPrimary) {
+                        this.internalAPI.reparentUser(user, newPrimary, function() {
+                            event.reply(dbot.t('aliasparentset', {
+                                'newParent': newPrimary,
+                                'newAlias': user.primaryNick
+                            }));
+                        });
+                    } else {
+                        event.reply(dbot.t('already_primary', { 'user': newPrimary }));
+                    }
+                } else {
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
+                }
+            });
+        },
+
+        '~rmalias': function(event) {
             var alias = event.params[1];
 
-            this.api.resolveUser(event.server, alias, function(user) {
-                if(user) {
-                    user.aliases = _.without(user.aliases, alias);
-                    user.mobile = _.without(user.mobile, alias);
-                    this.db.save('users', user.id, user, function(err) {
+            this.api.resolveUser(event.server, alias, function(err, user) {
+                if(user) { // Retrieving user record via alias proves existence of alias record
+                    this.internalAPI.removeAlias(event.server, alias, function(err) {
                         event.reply(dbot.t('alias_removed', {
                             'primary': user.primaryNick,
                             'alias': alias
                         }));
                     });
                 } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': alias }));
+                    event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
-            }.bind(this));
-        },
-
-        '~setaliasparent': function(event) {
-            var newPrimary = event.params[1].trim();
-            this.api.resolveUser(event.server, newPrimary, function(user) {
-                if(user && user.primaryNick != newPrimary) {
-                    var newAlias = user.primaryNick;
-                    user.primaryNick = newPrimary;
-                    user.aliases = _.without(user.aliases, newPrimary);
-                    user.aliases.push(newAlias);
-
-                    this.db.save('users', user.id, user, function(err) {
-                        if(!err) {
-                            event.reply(dbot.t('aliasparentset', {
-                                'newParent': newPrimary,
-                                'newAlias': newAlias
-                            }));
-                            dbot.api.event.emit('~setaliasparent', {
-                                'server': event.server,
-                                'alias': newAlias 
-                            });
-                        } 
-                    });
-                } else {
-                    event.reply(dbot.t('unknown_alias', { 'alias': newPrimary }));
-                }
-            }.bind(this));
-        },
-
-        '~mergeusers': function(event) {
-            var primaryUser = event.params[1];
-            var secondaryUser = event.params[2];
-
-            this.api.resolveUser(event.server, primaryUser, function(user) {
-                if(user) {
-                    this.api.resolveUser(event.server, secondaryUser, function(oldUser) {
-                        if(oldUser) {
-                            user.aliases.push(oldUser.primaryNick);
-                            user.aliases = _.union(user.aliases, oldUser.aliases);
-                            this.internalAPI.mergeChannelUsers(oldUser, user);
-                            this.db.del('users', oldUser.id, function(err) {
-                                if(!err) {
-                                    this.db.save('user_redirs', oldUser.id, user.id, function() {});
-                                    this.db.save('users', user.id, user, function(err) {
-                                        if(!err) {
-                                            if(_.has(this.userCache, event.server) && _.has(this.userCache[event.server], oldUser.currentNick)) {
-                                                delete this.userCache[event.server][oldUser.currentNick];
-                                            }
-                                            event.reply(dbot.t('merged_users', { 
-                                                'old_user': secondaryUser,
-                                                'new_user': primaryUser
-                                            }));
-                                            dbot.api.event.emit('~mergeusers', [
-                                                event.server,
-                                                oldUser,
-                                                user
-                                            ]);
-                                        }
-                                    }.bind(this));
-                                }
-                            }.bind(this));
-                        } else {
-                            event.reply(dbot.t('unprimary_error', { 'nick': secondaryUser }));
-                        }
-                    }.bind(this));
-                } else {
-                    event.reply(dbot.t('unprimary_error', { 'nick': primaryUser }));
-                }
-            }.bind(this));
+            });
         }
     };
-    
-    commands['~alias'].regex = [/^alias ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~time'].regex = [/^time ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~setaliasparent'].regex = [/^setaliasparent ([\d\w[\]{}^|\\`_-]+?)/, 2];
-    commands['~mergeusers'].regex = [/^mergeusers ([\d\w[\]{}^|\\`_-]+?)\s*?([\d\w[\]{}^|\\`_-]+?)/, 3];
-    commands['~addalias'].regex = [/^addalias ([\d\w[\]{}^|\\`_-]+?) ([\d\w[\]{}^|\\`_-]+?)$/, 3];
-    
-    commands['~setaliasparent'].access = 'moderator';
-    commands['~mergeusers'].access = 'moderator';
-    commands['~addalias'].access = 'moderator';
-    commands['~removealias'].access = 'moderator';
-    
-    return commands;
+    this.commands['~setaliasparent'].access = 'moderator';
+    this.commands['~addalias'].access = 'moderator';
+    this.commands['~rmalias'].access = 'moderator';
+    this.commands['~mergeusers'].access = 'moderator';
 };
 
 exports.fetch = function(dbot) {
