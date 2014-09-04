@@ -41,9 +41,6 @@ var api = function(dbot) {
                     this.db.read('nunsubs', channel.id, function(err, nunsubs) {
                         async.eachSeries(ops, function(nick, next) {
                             dbot.api.users.resolveUser(server, nick, function(user) {
-                                if(!_.include(user.mobile, user.currentNick)) {
-                                    perOps = _.without(perOps, user.id);
-                                }
                                 if(nunsubs && _.include(nunsubs.users, user.id)) {
                                     ops = _.without(ops, user.currentNick);
                                 }
