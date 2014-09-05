@@ -10,7 +10,7 @@ var atheme = function(dbot) {
     this.api = {
         'getChannelFlags': function(server, channel, callback) {
             if(!_.has(this.flagStack, server)) this.flagStack[server] = {};
-            if(_.has(flagStack[server], channel)) { // Already an active flag call
+            if(_.has(this.flagStack[server], channel)) { // Already an active flag call
                 this.flagStack[server][channel].callbacks.push(callback);
             } else {
                 this.flagStack[server][channel] = {
@@ -52,9 +52,9 @@ var atheme = function(dbot) {
     this.commands['~chanmode'].regex = [/^chanmode (\+.)/, 2];
 
     this.listener = function(event) {
-        if(event.user === 'chanserv') {
-            var flags = event.message.match(/(\d+)\s+([^ ]+)\s+(\+\w+)\s+\((\#.+)\)/),
-                end = event.message.match(/End of (\#.+) FLAGS listing./);
+        if(event.user === 'ChanServ') {
+            var flags = event.params.match(/(\d+)\s+([^ ]+)\s+(\+\w+)\s+\((\#\w+)\)/),
+                end = event.params.match(/end of \u0002(\#\w+)\u0002 flags listing/i);
 
             if(flags && _.has(this.flagStack[event.server], flags[4])) {
                 this.flagStack[event.server][flags[4]].flags[flags[2]] = flags[3];
@@ -62,7 +62,7 @@ var atheme = function(dbot) {
                 if(_.has(this.flagStack[event.server], end[1])) {
                     _.each(this.flagStack[event.server][end[1]].callbacks, function(callback) {
                         callback(null, this.flagStack[event.server][end[1]].flags);
-                    });
+                    }.bind(this));
                     delete this.flagStack[event.server][end[1]];
                 }
             }
