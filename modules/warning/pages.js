@@ -22,7 +22,11 @@ var pages = function(dbot) {
             }, function(err) {
                 async.eachSeries(userIds, function(id, callback) {
                     dbot.api.users.getUser(id, function(err, user) {
-                        userNicks.push(user.primaryNick); 
+                        if(user) {
+                            userNicks.push(user.primaryNick); 
+                        } else {
+                            userNicks.push(id); 
+                        }
                         callback(false);
                     });
                 }, function(err) {

@@ -9,6 +9,7 @@ var api = function(dbot) {
          * TODO(@samstudio8) Migrate to internalAPI
          */
         "createProfile": function(user, callback){
+            if(!callback) callback = function(){};
             if(user){
                 this.db.create('profiles', user.id, {
                     'id': user.id,
