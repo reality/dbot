@@ -106,13 +106,14 @@ var users = function(dbot) {
     this.listener = function(event) {
         // Update current nick
         this.api.resolveUser(event.server, event.user, function(err, user) {
-        console.log(user);
-            this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
-            this.api.resolveUser(event.server, event.newNick, function(err, eUser) {
-                if(!eUser) {
-                    this.internalAPI.createAlias(event.newNick, user, function(){});
-                }
-            }.bind(this));
+            if(user) {
+                this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+                this.api.resolveUser(event.server, event.newNick, function(err, eUser) {
+                    if(!eUser) {
+                        this.internalAPI.createAlias(event.newNick, user, function(){});
+                    }
+                }.bind(this));
+            }
         }.bind(this));
     }.bind(this);
     this.on = ['NICK'];

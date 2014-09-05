@@ -43,6 +43,26 @@ var api = function(dbot) {
                     callback(true, null);
                 }
             });
+        },
+
+        // Check if a nick is online under a given alias
+        'isOnline': function(server, channel, nick, callback) {
+            this.api.resolveUser(server, nick, function(err, user) {
+                if(user) {
+                    this.api.getUserAliases(user.id, function(err, aliases) {
+                        aliases.push(nick);
+
+                        var onlineNicks = _.keys(dbot.instance.connections[server].channels[channel].nicks);
+                        var isOnline = _.any(onlineNicks, function(nick) {
+                            return _.include(aliases, nick);
+                        }, this);
+
+                        callback(null, user, isOnline);
+                    });
+                } else {
+                    callback(true, null, null);
+                }
+            }.bind(this));
         }
     };
 
