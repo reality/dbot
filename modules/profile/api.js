@@ -14,11 +14,7 @@ var api = function(dbot) {
                     'id': user.id,
                     'profile': this.config.schema.profile,
                     'preferences': this.config.schema.preferences
-                }, function(err, result){
-                    if(err){
-                        console.log(err);
-                    }
-                });
+                }, callback);
             }
         },
   
@@ -32,11 +28,17 @@ var api = function(dbot) {
                 if(user){
                     this.db.read('profiles', user.id, function(err, profile){
                         if(!err){
-                            callback(false, user, profile);
+                            if(profile) {
+                                callback(false, user, profile);
+                            } else {
+                                this.api.createProfile(user, function(err, profile) {
+                                    callback(null, user, profile);
+                                });
+                            }
                         } else {
                             callback(true, user, null);
                         }
-                    });
+                    }.bind(this));
                 }
                 else{
                     callback(true, null, null);
@@ -44,10 +46,16 @@ var api = function(dbot) {
             }.bind(this));
         },
 
-        'getProfileByUUID': function(uuid, callback){
-            this.db.read('profiles', uuid, function(err, profile){
-                callback(profile);
-            });
+        'getProfileByUser': function(user, callback){
+            this.db.read('profiles', user.id, function(err, profile){
+                if(profile) {
+                    callback(profile);
+                } else {
+                    this.api.createProfile(user, function(err, profile) {
+                        callback(profile);
+                    });
+                }
+            }.bind(this));
         },
 
         'getAllProfiles': function(callback){

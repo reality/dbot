@@ -44,7 +44,7 @@ var api = function(dbot) {
                 }
             });
         },
-
+        
         // Check if a nick is online under a given alias
         'isOnline': function(server, channel, nick, callback) {
             this.api.resolveUser(server, nick, function(err, user) {
