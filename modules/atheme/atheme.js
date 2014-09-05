@@ -1,6 +1,6 @@
 /**
- * Module Name: charybdis
- * Description: charybdis and atheme mode references
+ * Module Name: atheme
+ * Description: atheme mode references & retrieve channel flags
  */
 var _ = require('underscore')._;
 
