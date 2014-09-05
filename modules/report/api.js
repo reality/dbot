@@ -94,20 +94,6 @@ var api = function(dbot) {
                                     next();
                                 }); 
                             }, function() {
-                                offlineUsers = perOps;
-                                if(!_.include(this.config.noMissingChans, cName)) {
-                                    _.each(offlineUsers, function(id) {
-                                        if(!this.pending[id]) this.pending[id] = [];
-                                        this.pending[id].push({
-                                            'time': new Date().gettime(),
-                                            'channel': cname,
-                                            'user': user.primarynick,
-                                            'message': message
-                                        });
-                                        this.pnotify[id] = true;
-                                    }.bind(this));
-                                }
-                                
                                 message = this.internalAPI.formatNotify(type, server,
                                     user, cName, message);
                                 this.internalAPI.notify(server, ops, message);
