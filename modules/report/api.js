@@ -53,7 +53,7 @@ var api = function(dbot) {
                             this.pending[op.id].push({
                                 'time': new Date().getTime(),
                                 'channel': cName,
-                                'user': op.id,
+                                'user': user.id,
                                 'message': message
                             });
                             this.pNotify[op.id] = true;
