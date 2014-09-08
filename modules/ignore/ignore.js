@@ -273,7 +273,7 @@ var ignore = function(dbot) {
         dbot.instance.clearIgnores();
 
         this.db.scan('ignores', function(ignores) {
-            dbot.api.users.getUser(ignores.id, function(user) {
+            dbot.api.users.getUser(ignores.id, function(err, user) {
                 if(user) {
                     _.each(ignores.ignores, function(module) {
                         dbot.instance.ignoreTag(user.currentNick, module);
