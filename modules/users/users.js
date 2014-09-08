@@ -44,7 +44,7 @@ var users = function(dbot) {
         }.bind(this),
 
         // Remove an alias record
-        'removeAlias': function(server, alias) {
+        'removeAlias': function(server, alias, callback) {
             var id = alias + '.' + server;
             this.db.del('user_aliases', id, function(err) {
                 callback(err);

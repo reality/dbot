@@ -1,3 +1,5 @@
+var _ = require('underscore')._;
+
 var api = function(dbot) {
     return {
         'getUrl': function(path) {
