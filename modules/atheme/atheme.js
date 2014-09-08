@@ -54,7 +54,7 @@ var atheme = function(dbot) {
     this.listener = function(event) {
         if(event.user === 'ChanServ') {
             var flags = event.params.match(/(\d+)\s+([^ ]+)\s+(\+\w+)\s+\((\#[\w\.]+)\)/),
-                end = event.params.match(/end of \u0002(\#\w+)\u0002 flags listing/i);
+                end = event.params.match(/end of \u0002(\#[\w\.]+)\u0002 flags listing/i);
 
             if(flags && _.has(this.flagStack[event.server], flags[4])) {
                 this.flagStack[event.server][flags[4]].flags[flags[2]] = flags[3];

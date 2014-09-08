@@ -97,7 +97,7 @@ var commands = function(dbot) {
                 } else {
                     event.reply(dbot.t('unknown_alias', { 'alias': nick }));
                 }
-            });
+            }.bind(this));
         },
 
         '~mergeusers': function(event) {
