@@ -16,11 +16,14 @@ var quotes = function(dbot) {
             if(quoteRefs) {
                 var ref = this.internalAPI.cleanRef(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
                 if(ref === '-nicks-') {
-                    dbot.api.users.getRandomChannelUser(server, channel, function(user) {
-                        quote = quote.replace('~~' + ref + '~~', user);
+                    if(_.has(dbot.instance.connections[server].channels, channel)) {
+                        var nicks =
+                        _.keys(dbot.instance.connections[server].channels[channel].nicks);
+                        var randomUser = nicks[_.random(0, nicks.length -1)];
+                        quote = quote.replace('~~' + ref + '~~', randomUser);
                         this.internalAPI.interpolatedQuote(server, channel,
                             username, key, quote, callback);
-                    }.bind(this));
+                    }
                 } else if(ref === '-nick-') {
                     quote = quote.replace('~~' + ref + '~~', username);
                     this.internalAPI.interpolatedQuote(server, channel,
