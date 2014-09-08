@@ -16,7 +16,7 @@ var ignore = function(dbot) {
             this.api.getUserIgnores(user, function(err, ignores) {
                 var isImpeded = false;
                 if(!err && ignores) {
-                    if(_.has(dbot.commands, item)) {
+                    if(_.has(dbot.commands, item) && !_.include(ignores[by], item)) {
                         item = dbot.commands[item].module;
                     }
                     if(_.include(ignores[by], item)) {
