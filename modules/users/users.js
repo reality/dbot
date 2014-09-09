@@ -107,10 +107,12 @@ var users = function(dbot) {
         // Update current nick
         this.api.resolveUser(event.server, event.user, function(err, user) {
             if(user) {
-                this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
                 this.api.resolveUser(event.server, event.newNick, function(err, eUser) {
                     if(!eUser) {
                         this.internalAPI.createAlias(event.newNick, user, function(){});
+                        this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+                    } else if(user.id === eUser.id) {
+                        this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
                     }
                 }.bind(this));
             }
