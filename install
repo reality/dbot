@@ -3,12 +3,12 @@ cat LICENCE
 git submodule init
 git submodule update
 
-if [ ! -e /usr/bin/node ]  && [ ! -e /usr/local/bin/node ];
+if [ ! -e /usr/bin/node ]  && [ ! -e /usr/local/bin/node ] && [ ! -e /usr/local/bin/node ] && [ ! -e /usr/sbin/node ];
 then
     echo 'node.js is not installed. Please install it before running install.sh.'
     exit 1
 fi
-if [ ! -e /usr/bin/npm ] && [ ! -e /usr/local/bin/npm ];
+if [ ! -e /usr/bin/npm ] && [ ! -e /usr/local/bin/npm ] && [ ! -e /usr/sbin/npm ];
 then
     echo 'npm is not installed. Please install it before running install.sh'
     exit 1
@@ -38,7 +38,7 @@ then
     vim config.json
 fi
 
-read -p "Setup complete. Run depressionbot now? [y/N]"
+read -p "Setup complete. Run dbot now? [y/N]"
 if [[ ! $REPLY =~ ^[Yy]$ ]]
 then
     echo 'Okay. To run the bot, use "node run.js"'
