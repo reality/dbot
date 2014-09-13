@@ -329,6 +329,14 @@ DBot.prototype.reloadModules = function() {
                 this.commands[cName.substring(1)] = command;
             }
         }, this);
+
+        _.each(this.usage, function(command, cName) {
+            if(cName.charAt(0) == '~') {
+                delete this.usage[cName];
+                this.usage[cName.substring(1)] = command;
+            }
+        }, this);
+
     }.bind(this));
 
     this.save();
