@@ -1,0 +1,6 @@
+{
+    "~md5": "~md5 [text]",
+    "~sha1": "~sha1 [text]",
+    "~sha256": "~sha256 [text]",
+    "~aes": "~aes \"[text]\" \"[key]\""
+}
