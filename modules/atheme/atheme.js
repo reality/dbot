@@ -6,6 +6,7 @@ var _ = require('underscore')._;
 
 var atheme = function(dbot) {
     this.flagStack = {};
+    this.hostStack = {};
 
     this.api = {
         'getChannelFlags': function(server, channel, callback) {
@@ -26,6 +27,28 @@ var atheme = function(dbot) {
                         callback(true, null);
                     });
                     delete this.flagStack[server][channel];
+                }
+            }.bind(this), 10000);
+        },
+
+        'getVHosts': function(server, mask, callback) {
+            if(!_.has(this.hostStack, server)) this.hostStack[server] = {};
+            if(_.has(this.hostStack[server], mask)) { // Already an active host call
+                this.hostStack[server][channel].callbacks.push(callback);
+            } else {
+                this.hostStack[server][mask] = {
+                    'users': [],
+                    'callbacks': [ callback ]
+                };
+            }
+
+            dbot.say(server, 'hostserv', 'LISTVHOST ' + mask);
+            setTimeout(function() { // Delete callback if no response
+                if(_.has(this.hostStack[server], mask)) {
+                    _.each(this.hostStack[server][mask].callbacks, function(callback) {
+                        callback(true, null);
+                    });
+                    delete this.hostStack[server][mask];
                 }
             }.bind(this), 10000);
         }
@@ -66,6 +89,22 @@ var atheme = function(dbot) {
                     delete this.flagStack[event.server][end[1]];
                 }
             }
+        } else if(event.user === 'HostServ') {
+            _.each(this.hostStack[event.server], function(el, mask) {
+                if(event.params.match(mask)) {
+                    var user = event.params.match(/- ([^ ]+)/),
+                        end = event.params.match(/matches for pattern/);
+
+                    if(user) {
+                        this.hostStack[event.server][mask].users.push(user[1]);
+                    } else if(end) {
+                        _.each(this.hostStack[event.server][mask].callbacks, function(callback) {
+                            callback(null, this.hostStack[event.server][mask].users);
+                        }, this);
+                        delete this.hostStack[event.server][mask];
+                    }
+                }
+            }, this);
         }
     }.bind(this);
     this.on = 'NOTICE';
