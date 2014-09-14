@@ -2,7 +2,8 @@
  * Module Name: atheme
  * Description: atheme mode references & retrieve channel flags
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    async = require('async');
 
 var atheme = function(dbot) {
     this.flagStack = {};
@@ -28,7 +29,7 @@ var atheme = function(dbot) {
                     });
                     delete this.flagStack[server][channel];
                 }
-            }.bind(this), 10000);
+            }.bind(this), 20000);
         },
 
         'getVHosts': function(server, mask, callback) {
@@ -50,7 +51,7 @@ var atheme = function(dbot) {
                     });
                     delete this.hostStack[server][mask];
                 }
-            }.bind(this), 10000);
+            }.bind(this), 2000);
         }
     };
 
@@ -83,10 +84,31 @@ var atheme = function(dbot) {
                 this.flagStack[event.server][flags[4]].flags[flags[2]] = flags[3];
             } else if(end) {
                 if(_.has(this.flagStack[event.server], end[1])) {
-                    _.each(this.flagStack[event.server][end[1]].callbacks, function(callback) {
-                        callback(null, this.flagStack[event.server][end[1]].flags);
+                    // Parse wildcard hostmasks to nicks
+                    var allFlags = this.flagStack[event.server][end[1]].flags,
+                        hostMasks = {};
+
+                    _.each(allFlags, function(f, u) { // TODO: combine to one loop
+                        if(u.indexOf('*!*@') !== -1) {
+                            hostMasks[u] = f;
+                            delete allFlags[u];
+                        }
+                    });
+
+                    async.each(_.keys(hostMasks), function(hostMask, done) {
+                        this.api.getVHosts(event.server, hostMask.split('@')[1], function(err, users) {
+                            _.each(users, function(user) {
+                                allFlags[user] = hostMasks[hostMask];
+                            });
+                            done();
+                        });
+                    }.bind(this), function() {
+                    console.log('DONE');
+                        _.each(this.flagStack[event.server][end[1]].callbacks, function(callback) {
+                            callback(null, this.flagStack[event.server][end[1]].flags);
+                        }.bind(this));
+                        delete this.flagStack[event.server][end[1]];
                     }.bind(this));
-                    delete this.flagStack[event.server][end[1]];
                 }
             }
         } else if(event.user === 'HostServ') {
