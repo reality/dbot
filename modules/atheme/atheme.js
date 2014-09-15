@@ -51,7 +51,7 @@ var atheme = function(dbot) {
                     });
                     delete this.hostStack[server][mask];
                 }
-            }.bind(this), 2000);
+            }.bind(this), 5000);
         }
     };
 
@@ -104,6 +104,7 @@ var atheme = function(dbot) {
                         });
                     }.bind(this), function() {
                     console.log('DONE');
+console.log(allFlags);
                         _.each(this.flagStack[event.server][end[1]].callbacks, function(callback) {
                             callback(null, this.flagStack[event.server][end[1]].flags);
                         }.bind(this));

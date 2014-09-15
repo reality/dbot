@@ -40,7 +40,7 @@ var api = function(dbot) {
                     async.each(ops, function(op, done) {
                         dbot.api.users.isOnline(server, cName, op, function(err, user, online) {
                             if(!err && !online) offlineOps[op] = user;
-                            if(user.currentNick !== op) {
+                            if(user && user.currentNick !== op) {
                                 ops = _.without(ops, op);
                                 ops.push(user.currentNick);
                             }
