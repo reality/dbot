@@ -47,6 +47,10 @@ var rss = function(dbot) {
                     item;
 
                 while (item = stream.read()) {
+                    // If the feed does not give a pubdate for this post, ignore it...
+                    if(!item.pubdate) {
+                        return;
+                    }
                     if(item.pubdate.getTime() - feed.lastPosted > 0) {
                         if(item.pubdate.getTime() > feed.newTime) {
                             feed.newTime = item.pubdate.getTime();
