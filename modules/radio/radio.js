@@ -21,13 +21,15 @@ var radio = function(dbot) {
 
             stream.on('response', function(res) {
                 this.data = res.headers;
-                _.each(this.config.announce, function(a) {
-                    dbot.say(a.server, a.name, dbot.t('now_online', {
-                        'name': res.headers['icy-name'],
-                        'desc': res.headers['icy-description'],
-                        'url': res.headers['icy-url']
-                    }));
-                });
+                if(res.headers['icy-name']) {
+                    _.each(this.config.announce, function(a) {
+                        dbot.say(a.server, a.name, dbot.t('now_online', {
+                            'name': res.headers['icy-name'],
+                            'desc': res.headers['icy-description'],
+                            'url': res.headers['icy-url']
+                        }));
+                    });
+                }
             }.bind(this));
 
             stream.on('metadata', function(metadata) {
