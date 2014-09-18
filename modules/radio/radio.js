@@ -32,7 +32,7 @@ var radio = function(dbot) {
 
             stream.on('metadata', function(metadata) {
                 var title = icecast.parseMetadata(metadata).StreamTitle;
-                if(!_.isUndefined(title)) { // sowwy jesus
+                if(!_.isUndefined(title) && this.data['icy-name']) { // sowwy jesus
                     _.each(this.config.announce, function(a) {
                         dbot.say(a.server, a.name, dbot.t('now_playing', {
                             'name': this.data['icy-name'],
