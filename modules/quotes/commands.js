@@ -14,11 +14,18 @@ var commands = function(dbot) {
             this.api.addQuote(key, quote, event.user, function(newCount) {
                 if(newCount) {
                     dbot.api.event.emit('~qadd', [ key, quote ]);
-                    event.reply(dbot.t('quote_saved', {
-                        'category': key, 
-                        'count': newCount,
-                        'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
-                    }));
+                    if(_.has(dbot.modules, 'web')) {
+                        event.reply(dbot.t('quote_saved', {
+                            'category': key, 
+                            'count': newCount,
+                            'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                        }));
+                    } else {
+                        event.reply(dbot.t('quote_saved', {
+                            'category': key, 
+                            'count': newCount
+                        }));
+                    }
                 } else {
                     event.reply(dbot.t('quote_exists'));
                 }
@@ -103,11 +110,18 @@ var commands = function(dbot) {
                     removedQuote;
                 var quoteRemoved = function(err) {
                     this.internalAPI.resetRemoveTimer(event, key, removedQuote);
-                    event.reply(dbot.t('removed_from', {
-                        'quote': removedQuote, 
-                        'category': key,
-                        'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
-                    }));
+                    if(_.has(dbot.modules, 'web')) {
+                        event.reply(dbot.t('removed_from', {
+                            'quote': removedQuote, 
+                            'category': key,
+                            'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                        }));
+                    } else {
+                        event.reply(dbot.t('removed_from', {
+                            'quote': removedQuote, 
+                            'category': key 
+                        }));
+                    }
                 }.bind(this);
 
                 this.db.search('quote_category', { 'name': key }, function(result) {
@@ -137,11 +151,18 @@ var commands = function(dbot) {
                     category = false;
                 var quoteRemoved = function(err) {
                     this.internalAPI.resetRemoveTimer(event, key, quote);
-                    event.reply(dbot.t('removed_from', {
-                        'category': key, 
-                        'quote': quote,
-                        'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
-                    }));
+                    if(_.has(dbot.modules, 'web')) {
+                        event.reply(dbot.t('removed_from', {
+                            'category': key, 
+                            'quote': quote,
+                            'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                        }));
+                    } else {
+                         event.reply(dbot.t('removed_from', {
+                            'category': key, 
+                            'quote': quote
+                        }));
+                    }
                 }.bind(this);
 
                 this.db.search('quote_category', { 'name': key }, function(result) {
