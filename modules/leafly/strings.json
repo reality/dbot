@@ -1,0 +1,8 @@
+{
+    "strain": {
+        "en": "{name} tastes of {flavours} - {link}"
+    },
+    "no_strains": {
+        "en": "No strains found :("
+    }
+}
