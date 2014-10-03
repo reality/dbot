@@ -131,7 +131,7 @@ var atheme = function(dbot) {
             }
         } else { // PRIVMSG
             var akill = event.message.match(/([^ ]+) AKILL:ADD: ([^ ]+) \(reason: (.+)(\) )\(duration: ([^,)]+)/);
-            if(event.channel === '#services' && akill) {
+            if(event.channel == '#services' && akill) {
                 var channel = dbot.config.servers[server].admin_channel;
                 dbot.api.report.notify('ban', 'tripsit', akill[1], channel, dbot.t('akill', {
                     'host': akill[2],
