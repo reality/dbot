@@ -35,11 +35,14 @@ var api = function(dbot) {
                                         return k;
                                    }
                                }.bind(this));
+		ops = _.without(ops, undefined);
+console.log(ops);
                     this.db.read('nunsubs', cName + '.' + server, function(err, nunsubs) {
                         if(nunsubs) {
                             _.each(nunsubs.users, function(user) {
                                 var uPart = user.split('.')[0];
                                 if(_.include(ops, uPart)) {
+console.log('removing ' + uPart);
                                     ops = _.without(ops, uPart);
                                 }
                             });

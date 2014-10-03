@@ -1,5 +1,5 @@
 {
-    "stream": "http://tripsit.fm:8000",
-    "announce": [ { "server": "tripsit", "name": "#tripbot" } ],
+    "stream": "http://radio.tripsit.me:8000/tripradio",
+    "announce": [ { "server": "tripsit", "name": "#drugs" } ],
     "outputPrefix": "\u00033radio\u000f"
 }
