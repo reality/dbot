@@ -66,6 +66,9 @@ var api = function(dbot) {
         }
     };
 
+    api['getUserAliases'].external = true;
+    api['getUserAliases'].extMap = [ 'id', 'callback' ];
+
     return api;
 };
 

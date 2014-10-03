@@ -51,7 +51,7 @@ var atheme = function(dbot) {
                     });
                     delete this.hostStack[server][mask];
                 }
-            }.bind(this), 2000);
+            }.bind(this), 5000);
         }
     };
 
@@ -95,8 +95,7 @@ var atheme = function(dbot) {
                                 delete allFlags[u];
                             }
                         });
-
-                        async.each(_.keys(hostMasks), function(hostMask, done) {
+			async.each(_.keys(hostMasks), function(hostMask, done) {
                             this.api.getVHosts(event.server, hostMask.split('@')[1], function(err, users) {
                                 _.each(users, function(user) {
                                     allFlags[user] = hostMasks[hostMask];
@@ -109,7 +108,7 @@ var atheme = function(dbot) {
                                 callback(null, this.flagStack[event.server][end[1]].flags);
                             }.bind(this));
                             delete this.flagStack[event.server][end[1]];
-                        }.bind(this));
+			}.bind(this));
                     }
                 }
             } else if(event.user === 'HostServ') {
