@@ -213,7 +213,7 @@ var commands = function(dbot) {
                         .value();
 
                     async.eachSeries(pCounts, function(pCount, next) {
-                        dbot.api.users.getUser(pCount[0], function(user) {
+                        dbot.api.users.getUser(pCount[0], function(err, user) {
                             pCount[0] = user.primaryNick; next();
                         });
                     }, function() {
