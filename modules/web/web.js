@@ -129,7 +129,8 @@ var webInterface = function(dbot) {
 
         this.app.post('/login', passport.authenticate('local', {
             'failureRedirect': '/login', 
-            'failureFlash': true
+            'failureFlash': true,
+            'routes': dbot.modules.web.indexLinks
         }), function(req, res) {
             if(req.body.redirect) {
                 res.redirect(req.body.redirect);
