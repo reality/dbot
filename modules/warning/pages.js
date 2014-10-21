@@ -10,6 +10,7 @@ var pages = function(dbot) {
                 'name': dbot.config.name,
                 'servers': _.keys(dbot.config.servers)
             });
+console.log('YE');
         },
 
         '/warning/:server': function(req, res) {
@@ -42,9 +43,11 @@ var pages = function(dbot) {
         '/warning/:server/:uid': function(req, res) {
             var server = req.params.server,
                 user = req.params.uid;
+console.log('YE YE');
 
             dbot.api.users.resolveUser(server, user, function(err, user) {
                 var warnings = [];
+		if(user) {
                 this.db.search('warnings', {
                     'server': server,
                     'warnee': user.id
@@ -64,6 +67,7 @@ var pages = function(dbot) {
                         });
                     });
                 });
+		}
             }.bind(this));
         }
     };
