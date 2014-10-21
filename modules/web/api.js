@@ -28,7 +28,6 @@ var api = function(dbot) {
                 accessNeeded,
                 allowedNicks;
 
-console.log('haxess called');
             if(mConfig.requireWebLogin == true) {
                 if(req.isAuthenticated()) {
                     if(_.has(mConfig, 'pageAccess') && _.has(mConfig.pageAccess, path)) {
@@ -49,7 +48,7 @@ console.log('haxess called');
                         }
                     }
 
-                    if(_.include(allowedUsers, req.user.primaryNick)) {
+                    if(_.include(accessNeeded(), req.user.primaryNick)) {
                         return next();
                     } else {
                         res.redirect('/');

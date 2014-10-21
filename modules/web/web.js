@@ -34,6 +34,18 @@ var webInterface = function(dbot) {
 
     passport.deserializeUser(function(id, done) {
         dbot.api.users.getUser(id, function(err, user) {
+            // Get user access level. Sigh.
+            if(user) {
+                user.access = 'user';
+                if(_.include(dbot.config.admins, user.primaryNick)) {
+                    user.access = 'admin';
+                } else if(_.include(dbot.config.moderators, user.primaryNick)) {
+                    user.access = 'moderator';
+                } else if(_.include(dbot.config.power_users, user.primaryNick)) {
+                    user.access = 'power_user';
+                }
+            }
+            console.log(user);
             done(null, user);
         });
     });
@@ -76,10 +88,10 @@ var webInterface = function(dbot) {
         for(var p in pages) {
             if(_.has(pages, p)) {
                 var func = pages[p],
-                    mod = func.module;
+                    mod = func.module,
+                    type = func.type || 'get';
 
-console.log('adding ' + p);
-                this.app.get(p, this.api.hasAccess, (function(req, resp) {
+                this.app[type](p, this.api.hasAccess, (function(req, resp) {
                     // Crazy shim to seperate module views.
                     var shim = Object.create(resp);
                     shim.render = (function(view, one, two) {
