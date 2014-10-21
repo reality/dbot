@@ -129,14 +129,18 @@ var atheme = function(dbot) {
                 }, this);
             }
         } else { // PRIVMSG
+console.log(event.message);
             var akill = event.message.match(/([^ ]+) AKILL:ADD: ([^ ]+) \(reason: (.+)(\) )\(duration: ([^,)]+)/);
             if(event.channel == '#services' && akill) {
-                var channel = dbot.config.servers[server].admin_channel;
-                dbot.api.report.notify('ban', 'tripsit', akill[1], channel, dbot.t('akill', {
-                    'host': akill[2],
-                    'reason': akill[3],
-                    'duration': akill[4]
-                }));
+console.log(akill);
+                var channel = dbot.config.servers[event.server].admin_channel;
+		dbot.api.users.getUser(akill[1] + '.' + event.server, function(err, user) {
+			dbot.api.report.notify('ban', 'tripsit', user, channel, dbot.t('akill', {
+			    'host': akill[2],
+			    'reason': akill[3],
+			    'duration': akill[5]
+			}));
+		});
             }
         }
     }.bind(this);

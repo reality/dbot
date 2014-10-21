@@ -35,7 +35,7 @@ var users = function(dbot) {
                 'user': user.id
             }, function(err, result) {
                 if(!err) {
-                    dbot.api.event.emit('new_user_alias', [ user, alias ]);
+                    dbot.api.event.emit('new_user_alias', [ result, alias ]);
                     callback(null, result);
                 } else {
                     callback(true, null);

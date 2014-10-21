@@ -78,6 +78,7 @@ var webInterface = function(dbot) {
                 var func = pages[p],
                     mod = func.module;
 
+console.log('adding ' + p);
                 this.app.get(p, this.api.hasAccess, (function(req, resp) {
                     // Crazy shim to seperate module views.
                     var shim = Object.create(resp);
@@ -123,14 +124,15 @@ var webInterface = function(dbot) {
         this.app.get('/login', function(req, res) {
             res.render('login', {
                 'user': req.user,
-                'message': req.flash('error')
+                'message': req.flash('error'),
+		'routes': this.indexLinks
             });
-        });
+        }.bind(this));
 
         this.app.post('/login', passport.authenticate('local', {
             'failureRedirect': '/login', 
             'failureFlash': true,
-            'routes': dbot.modules.web.indexLinks
+            'routes': this.indexLinks
         }), function(req, res) {
             if(req.body.redirect) {
                 res.redirect(req.body.redirect);

@@ -28,6 +28,7 @@ var api = function(dbot) {
                 accessNeeded,
                 allowedNicks;
 
+console.log('haxess called');
             if(mConfig.requireWebLogin == true) {
                 if(req.isAuthenticated()) {
                     if(_.has(mConfig, 'pageAccess') && _.has(mConfig.pageAccess, path)) {
@@ -56,7 +57,8 @@ var api = function(dbot) {
                 } else {
                     res.render('login', {
                         'message': 'You need to log in to access this module.',
-                        'redirect': req.originalUrl
+                        'redirect': req.originalUrl,
+			'routes': dbot.modules.web.indexLinks
                     });
                 }
             } else {
