@@ -44,13 +44,10 @@ var DBot = function() {
          this.instance.addConnection(name, server.server, server.port,
                 this.config.admin, function(event) {
             var server = this.config.servers[event.server];
-
-            async.eachSeries(server.channels, function(channel, next) {
-                setTimeout(function() {
-                    this.instance.join(event, channel);
-                    next();
-                }.bind(this), 5000);
-            }.bind(this));
+            
+            _.each(server.channels, function(channel) {
+                this.instance.join(event, channel);
+            }, this);
         }.bind(this), server.nickserv, server.password);        
     }, this);
 
