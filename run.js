@@ -44,13 +44,10 @@ var DBot = function() {
          this.instance.addConnection(name, server.server, server.port,
                 this.config.admin, function(event) {
             var server = this.config.servers[event.server];
-
-            async.eachSeries(server.channels, function(channel, next) {
-                setTimeout(function() {
-                    this.instance.join(event, channel);
-                    next();
-                }.bind(this), 5000);
-            }.bind(this));
+            
+            _.each(server.channels, function(channel) {
+                this.instance.join(event, channel);
+            }, this);
         }.bind(this), server.nickserv, server.password);        
     }, this);
 
@@ -329,6 +326,14 @@ DBot.prototype.reloadModules = function() {
                 this.commands[cName.substring(1)] = command;
             }
         }, this);
+
+        _.each(this.usage, function(command, cName) {
+            if(cName.charAt(0) == '~') {
+                delete this.usage[cName];
+                this.usage[cName.substring(1)] = command;
+            }
+        }, this);
+
     }.bind(this));
 
     this.save();

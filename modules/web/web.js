@@ -4,6 +4,10 @@ var express = require('express'),
     flash = require('connect-flash'),
     _ = require('underscore')._,
     fs = require('fs'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    expressSession = require('express-session'),
+    methodOverride = require('method-override'),
     LocalStrategy = require('passport-local').Strategy;
 
 var webInterface = function(dbot) {
@@ -14,22 +18,34 @@ var webInterface = function(dbot) {
 
     this.app.use(express.static(this.pub));
     this.app.set('view engine', 'jade');
-    this.app.use(express.cookieParser());
-    this.app.use(express.bodyParser());
-    this.app.use(express.methodOverride());
-    this.app.use(express.session({ 'secret': 'wat' }));
+    this.app.use(cookieParser());
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ 'extended': true }));
+    this.app.use(methodOverride());
+    this.app.use(expressSession({ 'secret': 'wat' }));
     this.app.use(flash());
 
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    this.app.use(this.app.router);
 
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
 
     passport.deserializeUser(function(id, done) {
-        dbot.api.users.getUser(id, function(user) {
+        dbot.api.users.getUser(id, function(err, user) {
+            // Get user access level. Sigh.
+            if(user) {
+                user.access = 'user';
+                if(_.include(dbot.config.admins, user.primaryNick)) {
+                    user.access = 'admin';
+                } else if(_.include(dbot.config.moderators, user.primaryNick)) {
+                    user.access = 'moderator';
+                } else if(_.include(dbot.config.power_users, user.primaryNick)) {
+                    user.access = 'power_user';
+                }
+            }
+            console.log(user);
             done(null, user);
         });
     });
@@ -46,7 +62,7 @@ var webInterface = function(dbot) {
             'Please provide a valid server (Servers: ' +
             _.keys(dbot.config.servers).join(', ') + ')' });
 
-        dbot.api.users.resolveUser(server, username, function(user) {
+        dbot.api.users.resolveUser(server, username, function(err, user) {
             if(user) {
                 this.api.getWebUser(user.id, function(webUser) {
                     if(webUser) {
@@ -72,9 +88,10 @@ var webInterface = function(dbot) {
         for(var p in pages) {
             if(_.has(pages, p)) {
                 var func = pages[p],
-                    mod = func.module;
+                    mod = func.module,
+                    type = func.type || 'get';
 
-                this.app.get(p, this.api.hasAccess, (function(req, resp) {
+                this.app[type](p, this.api.hasAccess, (function(req, resp) {
                     // Crazy shim to seperate module views.
                     var shim = Object.create(resp);
                     shim.render = (function(view, one, two) {
@@ -95,8 +112,7 @@ var webInterface = function(dbot) {
 
     this.onLoad = function() {
         this.reloadPages();
-
-        var routes = _.pluck(dbot.modules.web.app.routes.get, 'path'),
+        var routes = _.pluck(_.without(_.pluck(this.app._router.stack, 'route'), undefined), 'path'),
             moduleNames = _.keys(dbot.modules);
 
         _.each(moduleNames, function(moduleName) {
@@ -120,13 +136,15 @@ var webInterface = function(dbot) {
         this.app.get('/login', function(req, res) {
             res.render('login', {
                 'user': req.user,
-                'message': req.flash('error')
+                'message': req.flash('error'),
+		'routes': this.indexLinks
             });
-        });
+        }.bind(this));
 
         this.app.post('/login', passport.authenticate('local', {
             'failureRedirect': '/login', 
-            'failureFlash': true
+            'failureFlash': true,
+            'routes': this.indexLinks
         }), function(req, res) {
             if(req.body.redirect) {
                 res.redirect(req.body.redirect);

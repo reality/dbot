@@ -6,7 +6,7 @@ var warning = function(dbot) {
         'warn': function(server, warner, user, reason, channel, callback) {
             var adminChannel = dbot.config.servers[server].admin_channel || channel.name;
             
-            dbot.api.users.resolveUser(server, user, function(warnee) {
+            dbot.api.users.resolveUser(server, user, function(err, warnee) {
                 if(warnee) {
                     var id = uuid.v4();
                     this.db.save('warnings', id, {
@@ -52,7 +52,7 @@ var warning = function(dbot) {
 
         '~rmwarning': function(event) {
             var warning = null;
-            dbot.api.users.resolveUser(event.server, event.input[1], function(warnee) {
+            dbot.api.users.resolveUser(event.server, event.input[1], function(err, warnee) {
                 if(warnee) {
                     this.db.search('warnings', { 'warnee': warnee.id, 'reason': event.input[2] }, function(result) {
                         warning = result;
@@ -75,7 +75,7 @@ var warning = function(dbot) {
             var warnee = event.params[1],
                 server = event.server;
 
-            dbot.api.users.resolveUser(server, warnee, function(warnee) {
+            dbot.api.users.resolveUser(server, warnee, function(err, warnee) {
                 var warnings = 0;
                 this.db.search('warnings', { 
                     'server': server,

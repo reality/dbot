@@ -1,3 +1,5 @@
+var _ = require('underscore')._;
+
 var api = function(dbot) {
     return {
         'getUrl': function(path) {
@@ -46,7 +48,7 @@ var api = function(dbot) {
                         }
                     }
 
-                    if(_.include(allowedUsers, req.user.primaryNick)) {
+                    if(_.include(accessNeeded(), req.user.primaryNick)) {
                         return next();
                     } else {
                         res.redirect('/');
@@ -54,7 +56,8 @@ var api = function(dbot) {
                 } else {
                     res.render('login', {
                         'message': 'You need to log in to access this module.',
-                        'redirect': req.originalUrl
+                        'redirect': req.originalUrl,
+			'routes': dbot.modules.web.indexLinks
                     });
                 }
             } else {

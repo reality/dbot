@@ -5,46 +5,41 @@ var _ = require('underscore')._,
 var commands = function(dbot) {
     var commands = {
         '~words': function(event) {
-            var getWords = function(user) {
-                this.api.getUserStats(user.id, function(uStats) {
-                    if(uStats) {
-                        var output = dbot.t('sstats_uwords', {
-                            'user': user.primaryNick,
-                            'words': uStats.words,
-                            'curses': uStats.curses,
-                            'capitals': uStats.capitals,
-                            'date': moment(uStats.creation).format('DD/MM/YYYY')
-                        });
-                        if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
-                            ucStats = uStats.channels[event.rChannel.id];
-                            output += dbot.t('sstats_ucwords', {
-                                'channel': event.channel,
-                                'words': ucStats.words,
-                                'curses': ucStats.curses,
-                                'capitals': ucStats.capitals
-                            });
-                        }
-                        event.reply(output);
-                    } else {
-                        event.reply(dbot.t('sstats_noustats'));
-                    }
-                });
-            }.bind(this);
-
+            var id = event.rUser.primaryNick + '.' + event.server,
+                user = event.rUser.currentNick,
+                cId = event.channel + '.' + event.server;
             if(event.params[1]) {
-                dbot.api.users.resolveUser(event.server, event.params[1], function(user) {
-                    if(user) {
-                        getWords(user);
-                    } else {
-                        event.reply(dbot.t('sstats_unknown_user'));
-                    }
-                });
-            } else {
-                getWords(event.rUser);
+                id = event.params[1] + '.' + event.server;
+                user = event.params[1];
             }
+
+            this.api.getUserStats(id, function(uStats) {
+                if(uStats) {
+                    var output = dbot.t('sstats_uwords', {
+                        'user': user,
+                        'words': uStats.words,
+                        'curses': uStats.curses,
+                        'capitals': uStats.capitals,
+                        'date': moment(uStats.creation).format('DD/MM/YYYY')
+                    });
+                    if(_.has(uStats.channels, cId)) {
+                        ucStats = uStats.channels[cId];
+                        output += dbot.t('sstats_ucwords', {
+                            'channel': event.channel,
+                            'words': ucStats.words,
+                            'curses': ucStats.curses,
+                            'capitals': ucStats.capitals
+                        });
+                    }
+                    event.reply(output);
+                } else {
+                    event.reply(dbot.t('sstats_noustats'));
+                }
+            });
         },
 
         '~lines': function(event) {
+            var cId = event.channel + '.' + event.server;
             var getLines = function(user) {
                 this.api.getUserStats(user.id, function(uStats) {
                     if(uStats) {
@@ -53,10 +48,10 @@ var commands = function(dbot) {
                             'lines': uStats.lines,
                             'date': moment(uStats.creation).format('DD/MM/YYYY')
                         });
-                        if(event.rChannel && _.has(uStats.channels, event.rChannel.id)) {
+                        if(_.has(uStats.channels, cId)) {
                             output += dbot.t('sstats_uclines', { 
                                 'channel': event.channel,
-                                'lines': uStats.channels[event.rChannel.id].lines 
+                                'lines': uStats.channels[cId].lines 
                             });
                         }
                         event.reply(output);
@@ -160,7 +155,7 @@ var commands = function(dbot) {
         },
 
         '~last': function(event) {
-            dbot.api.users.resolveUser(event.server, event.params[1], function(user) {
+            dbot.api.users.resolveUser(event.server, event.params[1], function(err, user) {
                 if(user) {
                     this.api.getUserStats(user.id, function(uStats) {
                         if(uStats && uStats.last) {
@@ -218,7 +213,7 @@ var commands = function(dbot) {
                         .value();
 
                     async.eachSeries(pCounts, function(pCount, next) {
-                        dbot.api.users.getUser(pCount[0], function(user) {
+                        dbot.api.users.getUser(pCount[0], function(err, user) {
                             pCount[0] = user.primaryNick; next();
                         });
                     }, function() {

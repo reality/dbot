@@ -2,7 +2,7 @@ var _ = require('underscore')._,
     request = require('request');
 
 var commands = function(dbot) {
-    return {
+    var commands = {
         'usage': function(event) {
             var commandName = event.params[1];
             if(_.has(dbot.usage, commandName)) {
@@ -60,6 +60,9 @@ var commands = function(dbot) {
            }
         }
     };
+    commands['usage'].regex = [/usage ([^ ]+)/, 2];
+
+    return commands;
 };
 
 exports.fetch = function(dbot) {

@@ -16,7 +16,7 @@ var ignore = function(dbot) {
             this.api.getUserIgnores(user, function(err, ignores) {
                 var isImpeded = false;
                 if(!err && ignores) {
-                    if(_.has(dbot.commands, item)) {
+                    if(_.has(dbot.commands, item) && !_.include(ignores[by], item)) {
                         item = dbot.commands[item].module;
                     }
                     if(_.include(ignores[by], item)) {
@@ -273,7 +273,7 @@ var ignore = function(dbot) {
         dbot.instance.clearIgnores();
 
         this.db.scan('ignores', function(ignores) {
-            dbot.api.users.getUser(ignores.id, function(user) {
+            dbot.api.users.getUser(ignores.id, function(err, user) {
                 if(user) {
                     _.each(ignores.ignores, function(module) {
                         dbot.instance.ignoreTag(user.currentNick, module);

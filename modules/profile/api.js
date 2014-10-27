@@ -9,16 +9,13 @@ var api = function(dbot) {
          * TODO(@samstudio8) Migrate to internalAPI
          */
         "createProfile": function(user, callback){
+            if(!callback) callback = function(){};
             if(user){
                 this.db.create('profiles', user.id, {
                     'id': user.id,
                     'profile': this.config.schema.profile,
                     'preferences': this.config.schema.preferences
-                }, function(err, result){
-                    if(err){
-                        console.log(err);
-                    }
-                });
+                }, callback);
             }
         },
   
@@ -28,15 +25,21 @@ var api = function(dbot) {
         },
 
         'getProfile': function(server, nick, callback){
-            dbot.api.users.resolveUser(server, nick, function(user){
+            dbot.api.users.resolveUser(server, nick, function(err, user){
                 if(user){
                     this.db.read('profiles', user.id, function(err, profile){
                         if(!err){
-                            callback(false, user, profile);
+                            if(profile) {
+                                callback(false, user, profile);
+                            } else {
+                                this.api.createProfile(user, function(err, profile) {
+                                    callback(null, user, profile);
+                                });
+                            }
                         } else {
                             callback(true, user, null);
                         }
-                    });
+                    }.bind(this));
                 }
                 else{
                     callback(true, null, null);
@@ -44,10 +47,16 @@ var api = function(dbot) {
             }.bind(this));
         },
 
-        'getProfileByUUID': function(uuid, callback){
-            this.db.read('profiles', uuid, function(err, profile){
-                callback(profile);
-            });
+        'getProfileByUser': function(user, callback){
+            this.db.read('profiles', user.id, function(err, profile){
+                if(profile) {
+                    callback(profile);
+                } else {
+                    this.api.createProfile(user, function(err, profile) {
+                        callback(profile);
+                    });
+                }
+            }.bind(this));
         },
 
         'getAllProfiles': function(callback){

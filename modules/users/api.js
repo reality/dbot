@@ -1,168 +1,73 @@
-var _ = require('underscore')._,
-    uuid = require('node-uuid'),
-    databank = require('databank');
+var _ = require('underscore')._;
 
 var api = function(dbot) {
-    var escapeRegexen = function(str) {
-        return (str+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-    };
-
     var api = {
-        // Return a user record given a primary nick or an alias
-        'resolveUser': function(server, nick, callback, lc) {
-            var user = false;
-            if(lc) nick = nick.toLowerCase();
-            if(_.has(this.userCache[server], nick)) {
-                this.api.getUser(this.userCache[server][nick], callback);
-            } else {
-                this.db.search('users', { 'server': server }, function(result) {
-                    if(lc) {
-                        result.primaryNick = result.primaryNick.toLowerCase();
-                        _.each(result.aliases, function(v, k) {
-                            result.aliases[k] = v.toLowerCase();
-                        });
-                    }
-
-                    if(result.primaryNick == nick || _.include(result.aliases, nick)) { 
-                        user = result;
-                    }
-                }.bind(this), function(err) {
-                    if(user) {
-                        if(!_.has(this.userCache[server], nick)) {
-                            this.userCache[server][nick] = user.id;
-                        } else if(this.userCache[server][nick] !== user.id) {
-                            this.userCache[server][nick] = user.id;
+        // Retrieve a user record given a server and nickname
+        'resolveUser': function(server, nick, callback) {
+            var id = nick + '.' + server;
+            this.api.getUser(id, function(err, result) {
+                if(!err) {
+                    callback(null, result);
+                } else {
+                    this.db.read('user_aliases', id, function(err, result) {
+                        if(!err) {
+                            this.api.getUser(result.user, callback);
+                        } else {
+                            callback(true, null);
                         }
-                    }
-                    callback(user);
-                }.bind(this));
-            }
-        },
-
-        // Return many user records given primary nicks of aliases
-        'resolveUsers': function(server, nicks, callback) {
-            var users = [];
-            this.db.search('users', { 'server': server }, function(result) {
-                var pNicks = result.aliases.slice(0).unshift(result.primaryNick);
-                for(var i=0;i<pNicks.length;i++) {
-                    var n = _.indexOf(nicks, pNicks[i]);
-                    if(n != -1) {
-                        users.push(result);
-                        nicks = _.without(nicks, nicks[n]);
-                        break;
-                    }
-                }
-            }, function(err) {
-                if(!err) {
-                    callback(users, nicks);
-                }
-            });
-        },
-
-        // Return a user record given a UUID
-        'getUser': function(uuid, callback) {
-            this.db.read('users', uuid, function(err, user) {
-                if(err) user = false;
-                callback(user);
-            });
-        },
-
-        'resolveChannel': function(server, channelName, callback) {
-            if(_.has(this.chanCache[server], channelName)) {
-                return this.api.getChannel(this.chanCache[server][channelName], callback);
-            }
-
-            var channel = false;
-            this.db.search('channel_users', {
-                'server': server,
-                'name': channelName
-            }, function(result) {
-                channel = result;
-            }, function(err) {
-                if(!err) {
-                    this.chanCache[server][channelName] = channel.id;
-                    callback(channel);
+                    }.bind(this));
                 }
             }.bind(this));
         },
 
-        'getChannel': function(uuid, callback) {
-            this.db.read('channel_users', uuid, function(err, channel) {
-                if(err) channel = false;
-                callback(channel);
-            });
-        },
-
-        'getRandomChannelUser': function(server, cName, callback) {
-            if(_.has(dbot.instance.connections[server].channels, cName)) {
-                var nicks = _.keys(dbot.instance.connections[server].channels[cName].nicks);
-                var randomUser = nicks[_.random(0, nicks.length -1)]
-                callback(randomUser);
-            } else {
-                callback(false);
-            }
-        },
-
-        'getAllUsers': function(callback) {
-            var users = [];
-            this.db.scan('users', function(user) {
-                users.push(user); 
-            }, function(err) {
+        // Retrive a user record given its ID
+        'getUser': function(id, callback) {
+            this.db.read('users', id, function(err, result) {
                 if(!err) {
-                    callback(users);
-                }
-            });
-        },
-
-        'getAllChannels': function(callback) {
-            var channels = [];
-            this.db.scan('channel_users', function(channel) {
-                channels.push(channel);
-            }, function(err) {
-                if(!err) {
-                    callback(channels);
-                }
-            });
-        },
-
-        'isOnline': function(server, nick, channel, callback) {
-            this.api.resolveUser(server, nick, function(user) {
-                var possiNicks = [user].concat(user.aliases);
-
-                if(_.has(dbot.instance.connections[server].channels, channel)) {
-                    var onlineNicks = dbot.instance.connections[server].channels[channel].nicks;
-                    var isOnline = _.any(onlineNicks, function(nick) {
-                        nick = nick.name;
-                        return _.include(possiNicks, nick); 
-                    }, this);
-
-                    callback(isOnline);
-                }
-            });
-        },
-
-        'isKnownUser': function(server, nick, callback) {
-            this.api.resolveUser(server, nick, function(isKnown) {
-                if(isKnown == false) {
-                    callback(false);
+                    callback(null, result); 
                 } else {
-                    callback(true);
+                    callback(true, null);
                 }
             });
+        },
+
+        // Retrieve user aliases given a user ID
+        'getUserAliases': function(id, callback) {
+            var aliases = [];
+            this.db.search('user_aliases', { 'user': id }, function(result) {
+                aliases.push(result.alias);
+            }, function(err) {
+                if(!err) {
+                    callback(null, aliases);
+                } else {
+                    callback(true, null);
+                }
+            });
+        },
+        
+        // Check if a nick is online under a given alias
+        'isOnline': function(server, channel, nick, callback) {
+            this.api.resolveUser(server, nick, function(err, user) {
+                if(user) {
+                    this.api.getUserAliases(user.id, function(err, aliases) {
+                        aliases.push(nick);
+
+                        var onlineNicks = _.keys(dbot.instance.connections[server].channels[channel].nicks);
+                        var isOnline = _.any(onlineNicks, function(nick) {
+                            return _.include(aliases, nick);
+                        }, this);
+
+                        callback(null, user, isOnline);
+                    });
+                } else {
+                    callback(true, null, null);
+                }
+            }.bind(this));
         }
     };
 
-    api['resolveUser'].external = true;
-    api['resolveUser'].extMap = [ 'server', 'nick', 'callback' ];
-
-    api['getChannel'].external = true;
-    api['getChannel'].extMap = [ 'server', 'channel', 'callback' ];
-
-    api['getAllUsers'].external = true;
-    api['getAllUsers'].extMap = [ 'callback' ];
-
-    api['getAllChannels'].external = true;
-    api['getAllChannels'].extMap = [ 'callback' ];
+    api['getUserAliases'].external = true;
+    api['getUserAliases'].extMap = [ 'id', 'callback' ];
 
     return api;
 };

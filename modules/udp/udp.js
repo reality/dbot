@@ -14,7 +14,9 @@ var udp = function(dbot) {
             dbot.say(this.config.server, this.config.channel, message);
         }
     }.bind(this));
-    server.bind(this.config.port);
+    this.onLoad = function() {
+        server.bind(this.config.port);
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {

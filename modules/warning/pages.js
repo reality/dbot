@@ -10,6 +10,7 @@ var pages = function(dbot) {
                 'name': dbot.config.name,
                 'servers': _.keys(dbot.config.servers)
             });
+console.log('YE');
         },
 
         '/warning/:server': function(req, res) {
@@ -21,8 +22,12 @@ var pages = function(dbot) {
                 if(!_.include(userIds, warning.warnee)) userIds.push(warning.warnee);
             }, function(err) {
                 async.eachSeries(userIds, function(id, callback) {
-                    dbot.api.users.getUser(id, function(user) {
-                        userNicks.push(user.primaryNick); 
+                    dbot.api.users.getUser(id, function(err, user) {
+                        if(user) {
+                            userNicks.push(user.primaryNick); 
+                        } else {
+                            userNicks.push(id); 
+                        }
                         callback(false);
                     });
                 }, function(err) {
@@ -38,23 +43,23 @@ var pages = function(dbot) {
         '/warning/:server/:uid': function(req, res) {
             var server = req.params.server,
                 user = req.params.uid;
+console.log('YE YE');
 
-            dbot.api.users.resolveUser(server, user, function(user) {
+            dbot.api.users.resolveUser(server, user, function(err, user) {
                 var warnings = [];
+		if(user) {
                 this.db.search('warnings', {
                     'server': server,
                     'warnee': user.id
                 }, function(warning) {
                     warnings.push(warning);
                 }, function(err) {
-                    console.log(warnings);
                     async.eachSeries(warnings, function(warning, callback) {
-                        dbot.api.users.getUser(warning.warner, function(user) {
+                        dbot.api.users.getUser(warning.warner, function(err, user) {
                             warning.warner = user.primaryNick;
                             callback(false);
                         });
                     }, function(err) {
-                        console.log(warnings);
                         res.render('warnings', {
                             'name': dbot.config.name,
                             'server': server,
@@ -62,6 +67,7 @@ var pages = function(dbot) {
                         });
                     });
                 });
+		}
             }.bind(this));
         }
     };

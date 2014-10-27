@@ -75,9 +75,10 @@ var commands = function(dbot) {
         },
 
         '~report': function(event) {
-            var channelName = (event.input[1].trim() || event.channel),
+            var channelName = (event.input[1] || event.channel.toString()),
                 nick = event.input[2],
                 reason = event.input[3].trim();
+            channelName = channelName.trim();
 
             if(channelName == event.user) {
                 channelName = dbot.config.servers[event.server].admin_channel;
@@ -85,7 +86,7 @@ var commands = function(dbot) {
 
             if(reason.charAt(reason.length - 1) != '.') reason += '.';
 
-            dbot.api.users.resolveUser(event.server, nick, function(reportee) {
+            dbot.api.users.resolveUser(event.server, nick, function(err, reportee) {
                 if(_.has(event.allChannels, channelName)) {
                     if(reportee) {
                         this.api.notify('report', event.server, event.rUser,
@@ -114,7 +115,7 @@ var commands = function(dbot) {
             if(_.has(event.allChannels, channelName)) {
                 if(this.config.firstHost) {
                     var first = message.split(' ')[0];
-                    dbot.api.users.resolveUser(event.server, first, function(user) {
+                    dbot.api.users.resolveUser(event.server, first, function(err, user) {
                         if(user && _.include(this.config.host_lookup, channelName)) {
                             dbot.api.nickserv.getUserHost(event.server, first, function(host) {
                                 message = message.replace(first, first + ' [' + host + ']'); 
@@ -138,56 +139,54 @@ var commands = function(dbot) {
         },
 
         '~nunsub': function(event) {
-            var cName = event.input[1];
+            var cName = event.input[1],
+                cId = event.input[1] + '.' + event.server;
             
-            dbot.api.users.resolveChannel(event.server, cName, function(channel) {
-                if(channel) {
-                    this.db.read('nunsubs', channel.id, function(err, nunsubs) {
-                        if(!nunsubs) {
-                            var nunsubs = {
-                                'id': channel.id,
-                                'users': []
-                            }
-                        } 
-
-                        if(!_.include(nunsubs, event.rUser.id)) {
-                            nunsubs.users.push(event.rUser.id); 
-                            this.db.save('nunsubs', channel.id, nunsubs, function() {
-                                var reply = dbot.t('nunsubbed', { 'cName': cName })
-                                if(_.has(this.config.chan_redirs, cName)) {
-                                    reply += dbot.t('n_also_found', { 'afaName' : this.config.chan_redirs[cName] });
-                                }
-                                event.reply(reply); 
-                            }.bind(this));
-                        } else {
-                            event.reply(dbot.t('already_nunsubbed', { 'cName': cName }));
+            if(_.has(dbot.instance.connections[event.server].channels, cName)) {
+                this.db.read('nunsubs', cId, function(err, nunsubs) {
+                    if(!nunsubs) {
+                        var nunsubs = {
+                            'id': cId,
+                            'users': []
                         }
-                    }.bind(this));
-                } else {
-                    event.reply('Channel not known.');
-                }
-            }.bind(this));
+                    } 
+
+                    if(!_.include(nunsubs, event.rUser.id)) {
+                        nunsubs.users.push(event.rUser.id); 
+                        this.db.save('nunsubs', cId, nunsubs, function() {
+                            var reply = dbot.t('nunsubbed', { 'cName': cName })
+                            if(_.has(this.config.chan_redirs, cName)) {
+                                reply += dbot.t('n_also_found', { 'afaName' : this.config.chan_redirs[cName] });
+                            }
+                            event.reply(reply); 
+                        }.bind(this));
+                    } else {
+                        event.reply(dbot.t('already_nunsubbed', { 'cName': cName }));
+                    }
+                }.bind(this));
+            } else {
+                event.reply('Channel not known.');
+            }
         },
         
         '~ununsub': function(event) {
-            var cName = event.input[1];
+            var cName = event.input[1],
+                cId = event.input[1] + '.' + event.server;
 
-            dbot.api.users.resolveChannel(event.server, cName, function(channel) {
-                if(channel) {
-                    this.db.read('nunsubs', channel.id, function(err, nunsubs) {
-                        if(!_.isUndefined(nunsubs) && _.include(nunsubs.users, event.rUser.id)) {
-                            nunsubs.users = _.without(nunsubs.users, event.rUser.id);
-                            this.db.save('nunsubs', channel.id, nunsubs, function() {
-                                event.reply(dbot.t('ununsubbed', { 'cName': cName }));
-                            });
-                        } else {
-                            event.reply(dbot.t('not_nunsubbed', { 'cName': cName }));
-                        }
-                    }.bind(this));
-                } else {
-                    event.reply('Channel not known.');
-                }
-            }.bind(this));
+            if(_.has(dbot.instance.connections[event.server].channels, cName)) {
+                this.db.read('nunsubs', cId, function(err, nunsubs) {
+                    if(!_.isUndefined(nunsubs) && _.include(nunsubs.users, event.rUser.id)) {
+                        nunsubs.users = _.without(nunsubs.users, event.rUser.id);
+                        this.db.save('nunsubs', cId, nunsubs, function() {
+                            event.reply(dbot.t('ununsubbed', { 'cName': cName }));
+                        });
+                    } else {
+                        event.reply(dbot.t('not_nunsubbed', { 'cName': cName }));
+                    }
+                }.bind(this));
+            } else {
+                event.reply('Channel not known.');
+            }
         }
     };
     commands['~report'].regex = /^report (#[^ ]+ )?([^ ]+) (.*)$/;

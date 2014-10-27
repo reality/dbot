@@ -8,22 +8,23 @@
         "fr": "{alias} est un alias de {user}",
         "it": "{alias} è un alias di {user}"
     },
-    "added_mobile_alias": {
-        "en": "{alias} added as a mobile alias.",
-        "de": "{alias} als mobiler Benutzer hinzugefügt."
-    },
-    "already_mobile": {
-        "en": "{alias} is already a mobile alias.",
-        "de": "{alias} ist bereits ein mobiler Benutzer."
-    },
     "primary": {
-        "en": "{user} (currently {currentNick}) is a primary user with {count} aliases, ",
-        "na'vi": "{user} ({currentNick}) lu txin ulte {count}a stxo lu poru, ",
-        "nl": "{user} ({currentNick})  is een primaire gebruiker met {count} aliassen, ",
+        "en": "{user} (currently {currentNick}) is a primary user with {count} aliases, including {including}.",
+        "na'vi": "{user} ({currentNick}) lu txin ulte {count}a stxo lu poru, {including}",
+        "nl": "{user} ({currentNick})  is een primaire gebruiker met {count} aliassen, {including}",
         "cy": "Mae {user} ({currentNick}) yn ddefnyddiwr gynradd gyda {count} enwau eraill, ",
-        "de": "{user} ({currentNick}) ist ein Benutzer mit {count} Nicknamen, ",
-        "fr": "{user} (actuellement {currentNick}) est un utilisateur primaire avec {count} alias, ",
-        "it": "{user} (attualmente {currentNick}) è un utente primario con {count} alias, "
+        "de": "{user} ({currentNick}) ist ein Benutzer mit {count} Nicknamen, {including}",
+        "fr": "{user} (actuellement {currentNick}) est un utilisateur primaire avec {count} alias, {including}",
+        "it": "{user} (attualmente {currentNick}) è un utente primario con{count} alias, {including}"
+    },
+    "primary_no_alias": {
+        "en": "{user} (currently {currentNick}) is a primary user.",
+        "na'vi": "{user} ({currentNick}) lu txin ulte",
+        "nl": "{user} ({currentNick})  is een primaire gebruiker",
+        "cy": "Mae {user} ({currentNick}) yn ddefnyddiwr gynradd",
+        "de": "{user} ({currentNick}) ist ein Benutzer",
+        "fr": "{user} (actuellement {currentNick}) est un utilisateur primaire",
+        "it": "{user} (attualmente {currentNick}) è un utente primario"
     },
     "unknown_alias": {
         "en": "{alias} does not currently exist as an alias or known user.",
@@ -39,7 +40,7 @@
         "de": "Alias {alias} von {primary} entfernt.",
         "it": "Tolto alias {alias} da {primary}."
     },
-    "aliasparentset": {
+    "alias_parent_set": {
         "en": "{newParent} is now the parent user, and {newAlias} is an alias.",
         "na'vi": "{newParent} lu sa'sem set ulte {newAlias} lu stxo set nìteng.",
         "cy": "Mae {newParent} ydy defnyddiwr rhiant nawr, a {alias} ydy enw arall.",
@@ -47,15 +48,6 @@
         "de": "{newParent} ist nun der Hauptname und {newAlias} ist ein Nickname.",
         "fr": "{newParent} est maintenant le même utilisateur parent, et {newAlias} est un alias.",
         "it": "{newParent} è adesso l' utente genitore e {newAlias} è un alias."
-    },
-    "unprimary_error": {
-        "en": "{nick} isn't recorded as a primary user.",
-        "na'vi": "fo sute txin ke lu.",
-        "cy": "Nid yw un o'r defnyddwyr hynny yn cael ei gofnodi ar hyn o bryd fel defnyddiwr gynradd.",
-        "nl": "Een van deze gebruikers is nog niet bekend als een primaire gebruiker.",
-        "de": "Einer dieser Benutzer ist nicht als Hauptbenutzer gespeichert.",
-        "fr": "{nick} n'est pas enregistré en tant qu'utilisateur primaire.",
-        "it": "{nick} non è registrato come utente principale."
     },
     "merged_users": {
         "en": "{old_user} and their aliases have been merged into {new_user}.",

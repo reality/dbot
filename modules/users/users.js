@@ -2,224 +2,153 @@
  * Name: Users
  * Description: Track known users
  */
-var _ = require('underscore')._,
-    uuid = require('node-uuid'),
-    async = require('async');
+var _ = require('underscore')._;
 
 var users = function(dbot) {
-    this.userCache = {};
-    _.each(dbot.config.servers, function(v, k) {
-        this.userCache[k] = {};
-    }.bind(this));
-    this.chanCache = {};
-    _.each(dbot.config.servers, function(v, k) {
-        this.chanCache[k] = {};
-    }.bind(this));
-
     /*** Internal API ***/
+
     this.internalAPI = {
+        // Create new user record
         'createUser': function(server, nick, callback) {
-            var id = uuid.v4();
+            var id = nick + '.' + server; 
             this.db.create('users', id, {
                 'id': id,
-                'primaryNick': nick,
-                'currentNick': nick,
                 'server': server,
-                'channels': [],
-                'aliases': [],
-                'mobile': []
+                'primaryNick': nick,
+                'currentNick': nick
             }, function(err, result) {
                 if(!err) {
                     dbot.api.event.emit('new_user', [ result ]);
-                    callback(result);
+                    callback(null, result);
+                } else {
+                    callback(true, null);
                 }
             });
         }.bind(this),
 
-        'createChannel': function(server, name, callback) {
-            var id = uuid.v4();
-            this.db.create('channel_users', id, {
+        // Add new user alias
+        'createAlias': function(alias, user, callback) {
+            var id = alias + '.' + user.server;
+            this.db.create('user_aliases', id, {
                 'id': id,
-                'server': server,
-                'name': name,
-                'users': [],
-                'op': [],
-                'voice': []
+                'alias': alias,
+                'user': user.id
             }, function(err, result) {
                 if(!err) {
-                    dbot.api.event.emit('new_channel', [ result ]);
-                    callback(result);
+                    dbot.api.event.emit('new_user_alias', [ result, alias ]);
+                    callback(null, result);
+                } else {
+                    callback(true, null);
                 }
             });
         }.bind(this),
 
-        'addChannelUser': function(channel, user, staff, callback) {
-            if(!_.include(channel.users, user.id)) {
-                channel.users.push(user.id);
-            }
-            if(!_.include(user.channels, channel.id)) {
-                user.channels.push(channel.id);
-            }
+        // Remove an alias record
+        'removeAlias': function(server, alias, callback) {
+            var id = alias + '.' + server;
+            this.db.del('user_aliases', id, function(err) {
+                callback(err);
+            });
+        }.bind(this),
 
-            if(!channel.op) channel.op = [];
-            if(!channel.voice) channel.voice = [];
+        // Update current nick of user record
+        'updateCurrentNick': function(user, newNick, callback) {
+            user.currentNick = newNick;
+            this.db.save('users', user.id, user, function(err, result) {
+                if(!err) {
+                    dbot.api.event.emit('new_current_nick', [ user, newNick ]);
+                    callback(null, result);
+                } else {
+                    callback(true, null);
+                }
+            });
+        }.bind(this),
 
-            if(staff.op) {
-                channel.op.push(user.id);
-            } else if(staff.voice) {
-                channel.voice.push(user.id);
-            }
+        // Merge two user records and aliases
+        'mergeUsers': function(oldUser, newUser, callback) {
+            this.db.search('user_aliases', { 'user': oldUser.id }, function(alias) {
+                if(alias.alias === newUser.primaryNick) {
+                    this.db.del('user_aliases', alias.id, function(){});
+                } else {
+                    alias.user = newUser.id;
+                    this.db.save('user_aliases', alias.id, alias, function(){});
+                }
+            }.bind(this), function(){
+                this.internalAPI.createAlias(oldUser.primaryNick, newUser, function(){}); 
+            }.bind(this));
 
-            this.db.save('users', user.id, user, function(err) {
-                this.db.save('channel_users', channel.id, channel, function(err) {
-                    dbot.api.event.emit('new_channel_user', [ user, channel ]);
+            this.db.del('users', oldUser.id, function(err) {
+                if(!err) {
+                    dbot.api.event.emit('merged_users', [
+                        oldUser,
+                        newUser
+                    ]);
+                    callback(null);
+                } else {
+                    callback(true);
+                }
+            });
+        }.bind(this),
+
+        // Set a new nick as the parent for a user (so just recreate and merge)
+        'reparentUser': function(user, newPrimary, callback) {
+            this.internalAPI.createUser(user.server, newPrimary, function(err, newUser) {
+                this.internalAPI.mergeUsers(user, newUser, function(err) {
                     callback(err);
                 });
             }.bind(this));
-        }.bind(this),
-
-        'mergeChannelUsers': function(oldUser, newUser) {
-            newUser.channels = _.union(oldUser.channels, newUser.channels);
-            _.each(newUser.channels, function(uuid) {
-                this.api.getChannel(uuid, function(channel) {
-                    if(_.include(channel.users, oldUser.id)) {
-                        channel.users = _.without(channel.users, oldUser.id);
-                    }
-                    if(!_.include(channel.users, newUser.id)) {
-                        channel.users.push(newUser.id);
-                    }
-                    this.db.save('channel_users', channel.id, channel, function(err) {
-                        if(err) {
-                            // QQ
-                        }
-                    });
-                }.bind(this));
-            }, this);
         }.bind(this)
     };
 
+    /*** Listener ***/
+
+    // Track nick changes
     this.listener = function(event) {
-        this.api.isKnownUser(event.server, event.newNick, function(isKnown) {
-            event.rUser.currentNick = event.newNick;
-
-            if(!isKnown) {
-                event.rUser.aliases.push(event.newNick);
+        // Update current nick
+        this.api.resolveUser(event.server, event.user, function(err, user) {
+            if(user) {
+                this.api.resolveUser(event.server, event.newNick, function(err, eUser) {
+                    if(!eUser) {
+                        this.internalAPI.createAlias(event.newNick, user, function(){});
+                        this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+                    } else if(user.id === eUser.id) {
+                        this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+                    }
+                }.bind(this));
             }
-
-            this.db.save('users', event.rUser.id, event.rUser, function(err) {
-                if(!isKnown) {
-                    dbot.api.event.emit('new_user_alias', [ event.rUser, event.newNick ]);
-                }
-                dbot.api.event.emit('new_current_nick', [ event.rUser, event.user ]);
-            });
         }.bind(this));
     }.bind(this);
     this.on = ['NICK'];
 
+    /*** Pre-emit ***/
+
     this.onLoad = function() {
-        dbot.instance.addPreEmitHook(function(event, callback) {
-            // 1. Attempt to resolve channel
-            // 2. Create channel if it doesn't exist
-            // 3. Attempt to resolve user
-            // 4. Create user if it doesn't exist
-            // 5. Make sure channel objects are up to date
-            // 6. Update staff channel lists
-
-            var checkChannel = function(done) {
-                if(event.channel) {
-                    this.api.resolveChannel(event.server, event.channel.name, function(channel) {
-                        if(!channel) {
-                            this.internalAPI.createChannel(event.server, event.channel.name, done);
-                        } else {
-                            done(channel);
-                        }
-                    }.bind(this));
+        // Create non-existing users and update current nicks
+        var checkUser = function(event, done) {
+            this.api.resolveUser(event.server, event.user, function(err, user) {
+                if(!user) {
+                    this.internalAPI.createUser(event.server, event.user, done);
                 } else {
-                    done(null);
-                }
-            }.bind(this);
-            var checkUser = function(done) {
-                this.api.resolveUser(event.server, event.user, function(user) {
-                    if(!user) {
-                        this.internalAPI.createUser(event.server, event.user, done);
+                    if(user.currentNick !== event.user) {
+                        this.internalAPI.updateCurrentNick(user, event.user, done);
                     } else {
-                        if(event.user !== user.currentNick) {
-                            var oldNick = user.currentNick;
-                            user.currentNick = event.user;
-                            this.db.save('users', user.id, user, function() { 
-                                dbot.api.event.emit('new_current_nick', [ user, oldNick ]);
-                                done(user); 
-                            });
-                        } else {
-                            done(user);
-                        }
+                        done(null, user);
                     }
-                }.bind(this));
-            }.bind(this);
-            var checkChannelUsers = function(done) {
-                var needsUpdating = false;
-
-                if(!_.include(event.rUser.channels, event.rChannel.id)) {
-                    event.rUser.channels.push(event.rChannel.id);
-                    event.rChannel.users.push(event.rUser.id);
-                    dbot.api.event.emit('new_channel_user', [ event.rUser, event.rChannel ]);
-
-                    // since it's not in event.channel yet we have to do this here
-                    this.db.save('users', event.rUser.id, event.rUser, function() {
-                        this.db.save('channel_users', event.rChannel.id, event.rChannel, function() {});
-                    }.bind(this));
-
-                    return done();
                 }
+            }.bind(this));
+        }.bind(this);
 
-                if(!_.has(event.channel, 'nicks') || !_.has(event.channel.nicks, event.rUser.currentNick)) {
-                    return done();
-                }
-                var cUser = event.channel.nicks[event.rUser.currentNick];
-
-                if(!_.include(event.rChannel.op, event.rUser.id) && cUser.op) {
-                    event.rChannel.op.push(event.rUser.id);
-                    needsUpdating = true;
-                } else if(!_.include(event.rChannel.voice, event.rUser.id) && cUser.voice) {
-                    event.rChannel.voice.push(event.rUser.id);
-                    needsUpdating = true;
-                } else if(_.include(event.rChannel.op, event.rUser.id) && !cUser.op) {
-                    event.rChannel.op = _.without(event.rChannel.op, event.rUser.id);
-                    needsUpdating = true;
-                } else if(_.include(event.rChannel.voice, event.rUser.id) && !cUser.voice) {
-                    event.rChannel.voice = _.without(event.rChannel.voice, event.rUser.id);
-                    needsUpdating = true;
-                }
-
-                if(needsUpdating) {
-                    this.db.save('users', event.rUser.id, event.rUser, function() {
-                        this.db.save('channel_users', event.rChannel.id, event.rChannel, done);
-                    }.bind(this));
-                } else {
-                    done();
-                }
-            }.bind(this);
-
-            if(event.user && _.include(['JOIN', 'MODE', 'NICK', 'PRIVMSG'], event.action)) {
-                checkChannel(function(channel) {
-                    event.rChannel = channel;
-                    checkUser(function(user) {
-                        event.rUser = user;
-
-                        if(event.channel) {
-                            checkChannelUsers(function() {
-                                callback();
-                            });
-                        } else {
-                            callback();
-                        }
-                    }.bind(this));
-                }.bind(this));
+        dbot.instance.addPreEmitHook(function(event, callback) {
+            if(event.user && _.include(['JOIN', 'PRIVMSG'], event.action)) {
+                checkUser(event, function(err, user) {
+                    event.rUser = user; 
+                    callback(null);
+                });
             } else {
-                callback();
+                callback(null);
             }
-        }.bind(this));
-    };
+        });
+    }.bind(this);
 };
 
 exports.fetch = function(dbot) {

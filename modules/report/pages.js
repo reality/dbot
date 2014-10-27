@@ -33,7 +33,7 @@ var pages = function(dbot) {
                 });
 
                 async.eachSeries(userCount, function(userCount, next) {
-                    dbot.api.users.getUser(userCount.id, function(user) {
+                    dbot.api.users.getUser(userCount.id, function(err, user) {
                         if(user) {
                             userCount['name'] = user.primaryNick;
                             users.push(userCount);
@@ -72,7 +72,7 @@ var pages = function(dbot) {
                     });
                 }.bind(this), function() {
                     async.each(notifications, function(notify, done) {
-                        dbot.api.users.getUser(notify.user, function(user) {
+                        dbot.api.users.getUser(notify.user, function(err, user) {
                             if(user) notify.user = user.primaryNick;
                             done();
                         });
@@ -138,7 +138,7 @@ var pages = function(dbot) {
                     var pNickCache = {};
                     async.eachSeries(notifies, function(notify, next) {
                         if(!_.has(pNickCache, notify.user)) {
-                            dbot.api.users.getUser(notify.user, function(user) {
+                            dbot.api.users.getUser(notify.user, function(err, user) {
                                 pNickCache[notify.user] = user.primaryNick;
                                 notify.user = user.primaryNick; 
                                 next();
@@ -163,7 +163,7 @@ var pages = function(dbot) {
             } else {
                 var username = req.params.item;
 
-                dbot.api.users.resolveUser(server, username, function(user) {
+                dbot.api.users.resolveUser(server, username, function(err, user) {
                     this.db.search('notifies', {
                         'user': user.id
                     }, function(notify) {

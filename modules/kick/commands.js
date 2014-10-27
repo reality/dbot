@@ -28,7 +28,7 @@ var commands = function(dbot) {
                                     this.api.voice(server, quietee, channel);
                                 }
 
-                                dbot.api.users.resolveUser(server, dbot.config.name, function(user) {
+                                dbot.api.users.resolveUser(server, dbot.config.name, function(err, user) {
                                     dbot.api.report.notify('unquiet', server, user, channel,
                                     dbot.t('unquiet_notify', {
                                         'unquieter': dbot.config.name,

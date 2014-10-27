@@ -21,18 +21,20 @@ var radio = function(dbot) {
 
             stream.on('response', function(res) {
                 this.data = res.headers;
-                _.each(this.config.announce, function(a) {
-                    dbot.say(a.server, a.name, dbot.t('now_online', {
-                        'name': res.headers['icy-name'],
-                        'desc': res.headers['icy-description'],
-                        'url': res.headers['icy-url']
-                    }));
-                });
+                if(res.headers['icy-name']) {
+                    _.each(this.config.announce, function(a) {
+                        dbot.say(a.server, a.name, dbot.t('now_online', {
+                            'name': res.headers['icy-name'],
+                            'desc': res.headers['icy-description'],
+                            'url': res.headers['icy-url']
+                        }));
+                    });
+                }
             }.bind(this));
 
             stream.on('metadata', function(metadata) {
                 var title = icecast.parseMetadata(metadata).StreamTitle;
-                if(title != 'undefined') { // sowwy jesus
+                if(!_.isUndefined(title) && this.data['icy-name']) { // sowwy jesus
                     _.each(this.config.announce, function(a) {
                         dbot.say(a.server, a.name, dbot.t('now_playing', {
                             'name': this.data['icy-name'],
@@ -54,7 +56,7 @@ var radio = function(dbot) {
             var dj = this.data['icy-description'],
                 song = event.input[1];
 
-            dbot.api.users.resolveUser(event.server, dj, function(user) {
+            dbot.api.users.resolveUser(event.server, dj, function(err, user) {
                 if(user) {
                     dbot.say(event.server, user.currentNick, dbot.t('radio_request',{
                         'user': event.user,

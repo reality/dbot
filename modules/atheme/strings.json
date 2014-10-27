@@ -1,0 +1,5 @@
+{
+    "akill": {
+        "en": "{host} has been AKilled for {duration} due to \"{reason}\""
+    }
+}
