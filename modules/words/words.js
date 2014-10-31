@@ -13,6 +13,21 @@ var words = function(dbot) {
             });
         },
 
+        '~like': function(event) {
+            var query = event.params[1];
+            this.wn.word(query, {}, function(err, word) {
+                if(!err && word) {
+                    word.related({
+                        'limit': 10
+                    }, function(err, related) {
+                        event.reply('Words related to ' + query + ': ' +
+                            related[0].words.join(', ') + '.');
+                    });
+                }
+            });
+            
+        },
+
         '~etymology': function(event) {
             var query = event.params[1];
             this.wn.etymologies(encodeURIComponent(query), {
