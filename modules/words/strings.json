@@ -1,0 +1,17 @@
+{
+    "def": {
+        "en": "{word}: {definition}."
+    },
+    "no_def": {
+        "en": "No definitions found for {word}."
+    },
+    "no_word": {
+        "en": "{word} not known."
+    },
+    "no_example": {
+        "en": "No examples found for {word}."
+    },
+    "no_similar": {
+        "en": "No related words found for {word}"
+    }
+}

@@ -6,9 +6,12 @@ var words = function(dbot) {
             var query = event.params[1];
             this.wn.definitions(encodeURIComponent(query), function(err, defs) {
                 if(!err && defs[0]) {
-                    event.reply(query + ': ' + defs[0].text);
+                    event.reply(dbot.t('def', {
+                        'word': query,
+                        'definition': defs[0].text
+                    }));
                 } else {
-                    event.reply('No definitions found for ' + query);
+                    event.reply(dbot.t('no_def', { 'word': query }));
                 }
             });
         },
@@ -21,17 +24,56 @@ var words = function(dbot) {
                         'limit': 10
                     }, function(err, related) {
                         if(related[0]) {
-                            event.reply('Words related to ' + query + ': ' +
-                                related[0].words.join(', ') + '.');
+                            event.reply(dbot.t('def', {
+                                'word': 'Words related to ' + query,
+                                'definition': related[0].words.join(', ') + '.'
+                            }));
                         } else {
-                            event.reply('No similar words found.');
+                            event.reply(dbot.t('no_similar', { 'word': query }));
                         }
                     });
                 } else {
-                    event.reply('Unknown word.');
+                    event.reply(dbot.t('no_word', { 'word': query }));
                 }
             });
-            
+        },
+
+        '~example': function(event) {
+            var query = event.params[1];
+            this.wn.word(query, {}, function(err, word) {
+                if(!err && word) {
+                    word.topExample({}, function(err, example) {
+                        if(!err && example) {
+                            var rep = new RegExp(query, 'g');
+                            event.reply(dbot.t('def', {
+                                'word': query + ' example',
+                                'definition': example.text.replace(rep, '\u00033'+query+'\u000f')
+                            }));
+                        } else {
+                            event.reply(dbot.t('no_example', { 'word': query }));
+                        }
+                    });
+                } else {
+                    event.reply(dbot.t('no_word', { 'word': query }));
+                }
+            });
+        },
+
+        '~rw': function(event) {
+           this.wn.randomWord(function(err, word) {
+                if(!err && word) {
+                    this.wn.definitions(encodeURIComponent(word.word), function(err, defs) {
+                        if(!err && defs[0]) {
+                            event.reply(dbot.t('def', {
+                                'word': word.word,
+                                'definition': defs[0].text
+                            }));
+                        } else {
+                            event.reply(dbot.t('no_def', { 'word': query }));
+                        }
+                    });
+                }
+           }.bind(this));
         },
 
         '~etymology': function(event) {

@@ -1,3 +1,4 @@
 {
-    "api_key": "http://developer.wordnik.com/"
+    "api_key": "http://developer.wordnik.com/",
+    "outputPrefix": "\u000311words\u000f"
 }
