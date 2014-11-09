@@ -214,7 +214,10 @@ var commands = function(dbot) {
 
                     async.eachSeries(pCounts, function(pCount, next) {
                         dbot.api.users.getUser(pCount[0], function(err, user) {
-                            pCount[0] = user.primaryNick; next();
+                            if(user) {
+                              pCount[0] = user.primaryNick;
+                            }
+                            next();
                         });
                     }, function() {
                         event.reply(this.internalAPI.formatHighscore('Top ' + word + ' users: ', pCounts));

@@ -76,25 +76,29 @@ var warning = function(dbot) {
                 server = event.server;
 
             dbot.api.users.resolveUser(server, warnee, function(err, warnee) {
-                var warnings = 0;
-                this.db.search('warnings', { 
-                    'server': server,
-                    'warnee': warnee.id
-                }, function(warning) {
-                    warnings++; 
-                }, function(err) {
-                    if(warnings > 0) {
-                        event.reply(dbot.t('warning_info', {
-                            'user': warnee.primaryNick,
-                            'num': warnings,
-                            'url': dbot.api.web.getUrl('warning/' + server + '/'
-                                + warnee.primaryNick)
-                        })); 
-                    } else {
-                        event.reply(dbot.t('no_warnings', { 'user':
-                            warnee.primaryNick }));
-                    }
-                });
+                if(warnee) {
+			var warnings = 0;
+			this.db.search('warnings', { 
+			    'server': server,
+			    'warnee': warnee.id
+			}, function(warning) {
+			    warnings++; 
+			}, function(err) {
+			    if(warnings > 0) {
+				event.reply(dbot.t('warning_info', {
+				    'user': warnee.primaryNick,
+				    'num': warnings,
+				    'url': dbot.api.web.getUrl('warning/' + server + '/'
+					+ warnee.primaryNick)
+				})); 
+			    } else {
+				event.reply(dbot.t('no_warnings', { 'user':
+				    warnee.primaryNick }));
+			    }
+			});
+		} else {
+				event.reply(event.params[1] + ' not found.');
+		}
             }.bind(this));
         }
     };
