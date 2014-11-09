@@ -17,6 +17,9 @@
         "it": "Attenzione : {warner} ha dato un' avvertenza a {warnee} per \"{reason}.\". Ulterior informazioni si trovano a {url}",
         "de": "{warner} hat {warnee} für \"{reason}.\" verwarnt. Mehr Informationen sind auf {url} erhältlich"
     },
+    "warn_user": {
+        "en": "You have been issued a warning by {warner} for \"{reason}\". You can join {admin_channel} for more information or to discuss."
+    },
     "warning_not_found": {
         "en": "Specified warning not found."
     },
