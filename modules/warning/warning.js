@@ -28,6 +28,14 @@ var warning = function(dbot) {
                         dbot.api.report.notify('warn', server, warner, adminChannel, notifyString);
                         dbot.say(server, adminChannel, notifyString);
 
+                        var uString = dbot.t('warn_user', {
+                            'warner': warner.primaryNick,
+                            'reason': reason,
+                            'admin_channel': dbot.config.servers[server].admin_channel
+                        });
+
+                        dbot.say(server, warnee.currentNick, uString);
+
                         callback(null);
                     });
                 } else {
