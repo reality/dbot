@@ -1,4 +1,5 @@
-var Wordnik = require('wordnik');
+var Wordnik = require('wordnik'),
+    parseString = require('xml2js').parseString;
 
 var words = function(dbot) {
     this.commands = {
@@ -78,13 +79,22 @@ var words = function(dbot) {
 
         '~etymology': function(event) {
             var query = event.params[1];
-            this.wn.etymologies(encodeURIComponent(query), {
-                'format': 'json' 
-            }, function(err, defs) {
-                if(!err && defs[0]) {
-                    event.reply(query + ' etymology: ' + defs[0]);
+            this.wn.word(query, {}, function(err, word) {
+                if(!err && word) { 
+                    word.etymologies({},function(err, origin) {
+                        if(!err && origin[0]) {
+                            parseString(origin[0], function(err, string) {
+                                event.reply(dbot.t('origin', {  
+                                    'word': query,
+                                    'origin': string.ety._
+                                }));
+                            });
+                        } else {
+                            event.reply(dbot.t('no_def', { 'word': query }));
+                        }
+                    });
                 } else {
-                    event.reply('No etymology found for ' + query);
+                    event.reply(dbot.t('no_word', { 'word': query }));
                 }
             });
         },

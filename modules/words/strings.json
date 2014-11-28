@@ -13,5 +13,8 @@
     },
     "no_similar": {
         "en": "No related words found for {word}"
+    },
+    "origin": {
+        "en": "{word} origin: {origin}"
     }
 }
