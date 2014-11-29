@@ -65,6 +65,7 @@ var words = function(dbot) {
                 if(!err && word) {
                     this.wn.definitions(encodeURIComponent(word.word), function(err, defs) {
                         if(!err && defs[0]) {
+                        console.log(defs[0].toString());
                             if(!defs[0].toString().match(/plural/i)) {
                                 event.reply(dbot.t('def', {
                                     'word': word.word,
