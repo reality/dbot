@@ -71,7 +71,7 @@ var words = function(dbot) {
                                     'definition': defs[0].text
                                 }));
                             } else {
-                                this.commands['rw'](event);
+                                dbot.commands['rw'](event);
                             }
                         } else {
                             event.reply(dbot.t('no_def', { 'word': query }));
