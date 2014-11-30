@@ -76,7 +76,7 @@ var words = function(dbot) {
                         } else {
                             event.reply(dbot.t('no_def', { 'word': query }));
                         }
-                    });
+                    }.bind(this));
                 }
            }.bind(this));
         },
