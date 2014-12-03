@@ -65,18 +65,18 @@ var words = function(dbot) {
                 if(!err && word) {
                     this.wn.definitions(encodeURIComponent(word.word), function(err, defs) {
                         if(!err && defs[0]) {
-                            if(!String(defs[0]).match(/plural/i)) {
+                            if(!defs[0].text.match(/plural/i) && !defs[0].text.match(/participle/i)) {
                                 event.reply(dbot.t('def', {
                                     'word': word.word,
                                     'definition': defs[0].text
                                 }));
                             } else {
-                                this.commands['rw'](event);
+                                dbot.commands['rw'](event);
                             }
                         } else {
                             event.reply(dbot.t('no_def', { 'word': query }));
                         }
-                    });
+                    }.bind(this));
                 }
            }.bind(this));
         },
