@@ -18,7 +18,7 @@ var commands = function(dbot) {
                         event.reply(dbot.t('quote_saved', {
                             'category': key, 
                             'count': newCount,
-                            'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                            'link': ''
                         }));
                     } else {
                         event.reply(dbot.t('quote_saved', {
@@ -114,7 +114,7 @@ var commands = function(dbot) {
                         event.reply(dbot.t('removed_from', {
                             'quote': removedQuote, 
                             'category': key,
-                            'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                            'link': ''
                         }));
                     } else {
                         event.reply(dbot.t('removed_from', {
@@ -155,7 +155,7 @@ var commands = function(dbot) {
                         event.reply(dbot.t('removed_from', {
                             'category': key, 
                             'quote': quote,
-                            'link': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                            'link': ''
                         }));
                     } else {
                          event.reply(dbot.t('removed_from', {
@@ -379,7 +379,7 @@ var commands = function(dbot) {
                     if(_.has(dbot.modules, 'web')) {
                         event.reply(dbot.t('quote_link', {
                             'category': key, 
-                            'url': dbot.api.web.getUrl('quotes/' + encodeURIComponent(key))
+                            'url': ''
                         }));
                     } else {
                         event.reply(dbot.t('web_not_configured'));
