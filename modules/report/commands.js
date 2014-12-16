@@ -64,6 +64,43 @@ var commands = function(dbot) {
             });
         },
 
+        '~ustatus': function(event) {
+            var user = event.input[1];
+
+            dbot.api.users.resolveUser(event.server, user, function(err, user) {
+                if(user) {
+                    var ban = null,
+                        quiet = 0
+                        warn = 0;
+
+// i'll fix it later
+                    dbot.modules.report.db.search('notifies', {
+                        'server': event.server
+                    }, function(notify) {
+                        if(notify.message.match('banned ' + user.primaryNick) || notify.message.match('issued a warning to ' + user.primaryNick) || notify.message.match('has quieted ' + user.primaryNick)) {
+                            if(notify.type == 'ban') {
+                                ban = notify.time;
+                            } else if(notify.type == 'quiet') {
+                                quiet++;
+                            } else if(notify.type == 'warn') {
+                                warn++;
+                            }
+                        }
+                    }, function() {
+                        if(ban) {
+                            event.reply(user.primaryNick + ' was banned on ' + new Date(ban).toUTCString());
+                        } else if(quiet != 0 || warn != 0) {
+                            event.reply(user.primaryNick + ' has been warned ' + warn + ' times, and quieted ' + quiet + ' times.');
+                        } else {
+                            event.reply(user.primaryNick + ' has no record.');
+                        }
+                    });
+                } else {
+                    event.reply('never heard of em');
+                }
+            }.bind(this));
+        },
+
         '~clearmissing': function(event) {
             if(_.has(this.pending, event.rUser.id)) {
                 var count = this.pending[event.rUser.id].length;
@@ -193,6 +230,7 @@ var commands = function(dbot) {
     commands['~notify'].regex = [/^notify ([^ ]+) (.+)$/, 3];
     commands['~nunsub'].regex = [/^nunsub ([^ ]+)$/, 2];
     commands['~ununsub'].regex = [/^ununsub ([^ ]+)$/, 2];
+    commands['~ustatus'].regex = [/^ustatus ([^ ]+)$/, 2];
 
     return commands;
 };
