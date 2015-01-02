@@ -54,7 +54,7 @@ var commands = function(dbot) {
                     .first(10)
                     .value();
 
-                var cttring = '';
+                var tString = '';
                 for(var i=0;i<tCounts.length;i++) {
                     tString += tCounts[i][0] + " (" + tCounts[i][1] + "), ";
                 }
