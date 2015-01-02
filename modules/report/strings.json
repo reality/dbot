@@ -83,9 +83,9 @@
         "de": "Du bist bereits für {cName} Benachrichtigungen angemeldet"
     },
     "total_notifies": {
-        "en": "{user} has a total of {count} notifies. Channels: {cString}"
+        "en": "{user} has a total of {count} notifies. Channels: {cString}. Types: {tString}."
     },
     "timed_notifies": {
-        "en": "{user} has made {count} notifies in the last {offString}. Channels: {cString}"
+        "en": "{user} has made {count} notifies in the last {offString}. Channels: {cString}. Types: {tString}"
     }
 }

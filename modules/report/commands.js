@@ -5,11 +5,10 @@ var commands = function(dbot) {
     var commands = {
         '~ncount': function(event) {
             var chanCounts = {},
+                typeCounts = {},
                 total = 0,
                 offString = event.params[1] || null;
                 offset = moment().subtract(offString, 1).valueOf() || null;
-
-                console.log(offset);
 
             /*if(!offset || !offset.isValid()) {
                 event.reply('Invalid timescale. Try \'week\'');
@@ -20,15 +19,16 @@ var commands = function(dbot) {
                 if(notify.user == event.rUser.id) {
                     if(!offString) {
                         if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
+                        if(!_.has(typeCounts, notify.type)) typeCounts[notify.type] = 0;
                         chanCounts[notify.channel]++;
+                        typeCounts[notify.type]++;
                         total++;
                     } else {
-                    console.log(offset);
-                    console.log(notify.time);
-                    console.log();
                         if(notify.time > offset) {
                             if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
+                            if(!_.has(typeCounts, notify.type)) typeCounts[notify.type] = 0;
                             chanCounts[notify.channel]++;
+                            typeCounts[notify.type]++;
                             total++;
                         }
                     }
@@ -47,18 +47,33 @@ var commands = function(dbot) {
                 }
                 cString = cString.slice(0, -2);
 
+                var tCounts = _.chain(typeCounts)
+                    .pairs()
+                    .sortBy(function(p) { return p[1]; })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                var cttring = '';
+                for(var i=0;i<tCounts.length;i++) {
+                    tString += tCounts[i][0] + " (" + tCounts[i][1] + "), ";
+                }
+                tString = tString.slice(0, -2);
+
                 if(offString) {
                     event.reply(dbot.t('timed_notifies', {
                         'user': event.user,
                         'count': total,
                         'offString': offString,
-                        'cString': cString
+                        'cString': cString,
+                        'tString': tString
                     }));
                 } else {
                     event.reply(dbot.t('total_notifies', {
                         'user': event.user,
                         'count': total,
-                        'cString': cString
+                        'cString': cString,
+                        'tString': tString
                     }));
                 }
             });
