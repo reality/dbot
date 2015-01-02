@@ -86,6 +86,6 @@
         "en": "{user} has a total of {count} notifies. Channels: {cString}. Types: {tString}."
     },
     "timed_notifies": {
-        "en": "{user} has made {count} notifies in the last {offString}. Channels: {cString}. Types: {tString}"
+        "en": "{user} has made {count} notifies in the last {offString}. Channels: {cString}. Types: {tString}."
     }
 }
