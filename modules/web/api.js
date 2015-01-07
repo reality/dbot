@@ -4,6 +4,7 @@ var api = function(dbot) {
     return {
         'getUrl': function(path) {
             if(path.charAt(0) == '/') path = path.substr(1);
+            path = encodeURIComponent(path);
             if(this.config.externalPath) {
                 return this.config.externalPath + '/' + path;
             } else {
