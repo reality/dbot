@@ -12,24 +12,18 @@ var reddit = function(dbot) {
 
     this.internalAPI = {
         'getChannelFeeds': function(server, cName, callback) {
-            dbot.api.users.resolveChannel(server, cName, function(channel) {
-                if(channel) {
-                    this.db.read('reddit_feeds', channel.id, function(err, cFeeds) {
-                        if(err || !cFeeds) {
-                            callback(null, {
-                                'id': channel.id,
-                                'server': server,
-                                'channel': cName,
-                                'feeds': {}
-                            });
-                        } else {
-                           callback(null, cFeeds); 
-                        }
+            this.db.read('reddit_feeds', cName + '.' + server, function(err, cFeeds) {
+                if(err || !cFeeds) {
+                    callback(null, {
+                        'id': cName + '.' + server,
+                        'server': server,
+                        'channel': cName,
+                        'feeds': {}
                     });
                 } else {
-                    callback('NoSuchChannel', null);
+                   callback(null, cFeeds); 
                 }
-            }.bind(this));
+            });
         }.bind(this),
 
         'updateChannelFeeds': function(cFeeds, callback) {
