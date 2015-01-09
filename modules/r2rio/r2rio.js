@@ -18,15 +18,15 @@ var gmaps = function(dbot) {
                     'key': this.config.api_key,
                     'oName': from,
                     'dName': to,
-                    'currencyCode': 'GBP'
+                    'currencyCode': event.rProfile.currency || 'gbp'
                 },
                 'json': true
             }, function(err, response, body) {
                 if(!err && body && _.has(body, 'routes') && _.has(body.routes[0], 'duration') && _.has(body.routes[0], 'indicativePrice')) {
                     var route = body.routes[0];
                     event.reply('If you left right now, it would take you ' + Math.floor(route.duration / 60) + ' hours and ' + 
-                        (route.duration % 60) + ' minutes to get the ' + Math.floor(route.distance) + 'KM from ' + from + ' to ' + to + ', and cost you about £' + 
-                        route.indicativePrice.price);
+                        (route.duration % 60) + ' minutes to get the ' + Math.floor(route.distance) + 'KM from ' + from + ' to ' + to + ', and cost you about ' + 
+                        route.indicativePrice.price + route.indicativePrice.currency);
                 } else {
                     event.reply('Apparently one cannot get from ' + from + ' to ' + to + ' using public transport. Do you accept the challenge?');
                 }
