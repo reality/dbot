@@ -1,0 +1,26 @@
+{
+    "dict": "/usr/share/dict/british-english",
+    "puzzles": [
+        {
+            "type": "start",
+            "part": "en"
+        },
+        {
+            "type": "start",
+            "part": "re"
+        },
+        {
+            "type": "end",
+            "part": "tain"
+        },
+        {
+            "type": "end",
+            "part": "ter"
+        },
+        {
+            "type": "start",
+            "part": "under"
+        }
+    ],
+    "allowed_chans": [ "#realitree" ]
+}
