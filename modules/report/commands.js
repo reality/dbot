@@ -295,6 +295,8 @@ var commands = function(dbot) {
     commands['~ununsub'].regex = [/^ununsub ([^ ]+)$/, 2];
     commands['~ustatus'].regex = [/^ustatus ([^ ]+)$/, 2];
     commands['~sustatus'].regex = [/^sustatus ([^ ]+)$/, 2];
+    commands['~ustatus'].access = 'power_user';
+    commands['~sustatus'].access = 'power_user';
 
     return commands;
 };
