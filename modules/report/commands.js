@@ -79,6 +79,54 @@ var commands = function(dbot) {
             });
         },
 
+        '~sustatus': function(event) {
+            var user = event.input[1];
+
+            dbot.api.users.resolveUser(event.server, user, function(err, user) {
+                if(user) {
+                    var ban = null,
+                        quiet = 0,
+                        warn = 0,
+                        quiets = [],
+                        warns = [];
+
+// i'll fix it later
+                    dbot.modules.report.db.search('notifies', {
+                        'server': event.server
+                    }, function(notify) {
+                        if(notify.message.match('banned ' + user.primaryNick) || notify.message.match('issued a warning to ' + user.primaryNick) || notify.message.match('has quieted ' + user.primaryNick)) {
+                            if(notify.type == 'ban') {
+                                ban = notify.time;
+                            } else if(notify.type == 'quiet') {
+                                quiet++;
+                                quiets.push(notify.message);
+                            } else if(notify.type == 'warn') {
+                                warn++;
+                                warns.push(notify.message);
+                            }
+                        }
+                    }, function() {
+                        if(ban) {
+                            event.reply(user.primaryNick + ' was banned on ' + new Date(ban).toUTCString());
+                        } else if(quiet != 0 || warn != 0) {
+                            event.reply(user.primaryNick + ' has been warned ' + warn + ' times, and quieted ' + quiet + ' times.');
+                            _.each(quiets, function(message) {
+                                event.reply(message);
+                            });
+                            _.each(warns, function(message) {
+                                event.reply(message);
+                            });
+                        } else {
+                            event.reply(user.primaryNick + ' has no record.');
+                        }
+                    });
+                } else {
+                    event.reply('never heard of em');
+                }
+            }.bind(this));
+
+        },
+
         '~ustatus': function(event) {
             var user = event.input[1];
 
@@ -246,6 +294,7 @@ var commands = function(dbot) {
     commands['~nunsub'].regex = [/^nunsub ([^ ]+)$/, 2];
     commands['~ununsub'].regex = [/^ununsub ([^ ]+)$/, 2];
     commands['~ustatus'].regex = [/^ustatus ([^ ]+)$/, 2];
+    commands['~sustatus'].regex = [/^sustatus ([^ ]+)$/, 2];
 
     return commands;
 };
