@@ -8,34 +8,96 @@ var fs = require('fs'),
 var wordcrimes = function(dbot) {
     this.game = null;
 
+    this.internalAPI = {
+        'createPuzzle': function(channel) {
+ //           if(_.random(0, 3) === 1) {
+                return this.internalAPI.createAnagramPuzzle(channel);
+  //          }
+
+            var puzzle = this.puzzles[_.random(0, this.puzzles.length -1)],
+                solutions = _.filter(this.dict, function(word) {
+                    if(puzzle.type === 'start') {
+                        return word.match('^' + puzzle.part);
+                    } else if(puzzle.type === 'end') {
+                        return word.match(puzzle.part + '$');
+                    }
+                });
+
+            this.game = {
+                'puzzle': puzzle,
+                'solutions': solutions,
+                'channel': channel,
+                'found': [],
+                'scores': {}
+            };
+
+            return true;
+        }.bind(this),
+
+        'createAnagramPuzzle': function(channel) {
+            var randomV = function(len) {
+                var chars = "aeiou";
+                return len ? chars.charAt(~~(Math.random()*chars.length)) + randomV(len-1) : "";
+            };
+            var randomC = function(len) {
+                var chars = "bcdfghklmnpqrstvwxyz";
+                return len ? chars.charAt(~~(Math.random()*chars.length)) + randomC(len-1) : "";
+            };
+            var puzzle = {
+                'type': 'anagram',
+                'part': (randomV(3) + randomC(6)).split('').sort(function(){return 0.5-Math.random();}).join('')
+            };
+
+            var partArr = puzzle.part.split(''),
+                solutions = _.filter(this.dict, function(word) {
+                    return (word.length > 1 && _.difference(word.split(''), partArr).length === 0); 
+                });
+
+            if(solutions.length < 30) {
+                return this.internalAPI.createAnagramPuzzle(channel); 
+            }
+
+            this.game = {
+                'puzzle': puzzle,
+                'solutions': solutions,
+                'channel': channel,
+                'found': [],
+                'scores': {}
+            };
+
+            return true;
+
+        }.bind(this)
+    };
+
     this.commands = {
         '~startgame': function(event) {
-            if(!this.game && _.include(this.config.allowed_chans, event.channel.name)) {
+            if(_.isNull(this.game) && _.include(this.config.allowed_chans, event.channel.name)) {
+                this.game = {};
                 event.reply('WORD GAME STARTING IN 5 SECONDS');
                 setTimeout(function() {
-                    var puzzle = this.puzzles[_.random(0, this.puzzles.length -1)],
-                        solutions = _.filter(this.dict, function(word) {
-                            if(puzzle.type === 'start') {
-                                return word.match('^' + puzzle.part);
-                            } else if(puzzle.type === 'end') {
-                                return word.match(puzzle.part + '$');
-                            }
-                        });
+                    this.internalAPI.createPuzzle(event.channel.name); 
+                    
+                    var game = this.game;
 
-                    this.game = {
-                        'puzzle': puzzle,
-                        'solutions': solutions,
-                        'channel': event.channel.name,
-                        'found': [],
-                        'scores': {}
-                    };
-
-                    if(puzzle.type === 'start') {
-                        event.reply('NAME ALL THE WORDS YOU CAN THINK OF THAT START WITH ' + puzzle.part);
-                    } else if(puzzle.type === 'end') {
-                        event.reply('NAME ALL THE WORDS YOU CAN THINK OF THAT END IN ' + puzzle.part);
+                    if(game.puzzle.type === 'start') {
+                        event.reply('NAME ALL THE WORDS YOU CAN THINK OF THAT START WITH ' + game.puzzle.part);
+                    } else if(game.puzzle.type === 'end') {
+                        event.reply('NAME ALL THE WORDS YOU CAN THINK OF THAT END IN ' + game.puzzle.part);
+                    } else if(game.puzzle.type === 'anagram') {
+                        event.reply('NAME ALL THE ANAGRAMS OF ' + game.puzzle.part);
                     }
 
+                   /* setTimeout(function() {
+                        if(!_.isNull(this.game)) {
+                            event.reply('30 SECONDS REMAINING');
+                        }
+                    }.bind(this), 30000);*/
+                    setTimeout(function() {
+                        if(!_.isNull(this.game)) {
+                            event.reply('10 SECONDS REMAINING');
+                        }
+                    }.bind(this), 20000);
                     setTimeout(function() {
                         if(!_.isNull(this.game)) {
                             if(this.game.found.length > 0) {
@@ -47,8 +109,10 @@ var wordcrimes = function(dbot) {
                             }
                             this.game = null;
                         }
-                    }.bind(this), 40000);
+                    }.bind(this), 30000);
                 }.bind(this), 5000);
+            } else {
+                event.reply('GAME ALREADY RUNNING');
             }
         }
     };

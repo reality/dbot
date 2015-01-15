@@ -2,12 +2,256 @@
     "dict": "/usr/share/dict/british-english",
     "puzzles": [
         {
+            "type": "end",
+            "part": "er"
+        },
+        {
+            "type": "end",
+            "part": "or"
+        },
+        {
+            "type": "end",
+            "part": "ance"
+        },
+        {
+            "type": "end",
+            "part": "ence"
+        },
+        {
+            "type": "end",
+            "part": "ant"
+        },
+        {
+            "type": "end",
+            "part": "ent"
+        },
+        {
+            "type": "end",
+            "part": "ee"
+        },
+        {
+            "type": "end",
+            "part": "ess"
+        },
+        {
+            "type": "end",
+            "part": "ian"
+        },
+        {
+            "type": "end",
+            "part": "ism"
+        },
+        {
+            "type": "end",
+            "part": "ics"
+        },
+        {
+            "type": "end",
+            "part": "ist"
+        },
+        {
+            "type": "end",
+            "part": "ity"
+        },
+        {
+            "type": "end",
+            "part": "ment"
+        },
+        {
+            "type": "end",
+            "part": "ness"
+        },
+        {
+            "type": "end",
+            "part": "ship"
+        },
+        {
+            "type": "end",
+            "part": "tion"
+        },
+        {
+            "type": "end",
+            "part": "ation"
+        },
+        {
+            "type": "end",
+            "part": "ate"
+        },
+        {
+            "type": "end",
+            "part": "ify"
+        },
+        {
+            "type": "end",
+            "part": "ize"
+        },
+        {
+            "type": "end",
+            "part": "able"
+        },
+        {
+            "type": "end",
+            "part": "ible"
+        },
+        {
+            "type": "end",
+            "part": "al"
+        },
+        {
+            "type": "end",
+            "part": "ful"
+        },
+        {
+            "type": "end",
+            "part": "ish"
+        },
+        {
+            "type": "end",
+            "part": "ive"
+        },
+        {
+            "type": "end",
+            "part": "ous"
+        },
+        {
+            "type": "end",
+            "part": "ious"
+        },
+        {
+            "type": "end",
+            "part": "ly"
+        },
+        {
+            "type": "end",
+            "part": "ally"
+        },
+        {
             "type": "start",
-            "part": "en"
+            "part": "anti"
+        },
+        {
+            "type": "start",
+            "part": "bi"
+        },
+        {
+            "type": "start",
+            "part": "contra"
+        },
+        {
+            "type": "start",
+            "part": "di"
+        },
+        {
+            "type": "start",
+            "part": "dis"
+        },
+        {
+            "type": "start",
+            "part": "ex"
+        },
+        {
+            "type": "start",
+            "part": "extra"
+        },
+        {
+            "type": "start",
+            "part": "hyper"
+        },
+        {
+            "type": "start",
+            "part": "in"
+        },
+        {
+            "type": "start",
+            "part": "inter"
+        },
+        {
+            "type": "start",
+            "part": "intra"
+        },
+        {
+            "type": "start",
+            "part": "intro"
+        },
+        {
+            "type": "start",
+            "part": "macro"
+        },
+        {
+            "type": "start",
+            "part": "micro"
+        },
+        {
+            "type": "start",
+            "part": "mis"
+        },
+        {
+            "type": "start",
+            "part": "mono"
+        },
+        {
+            "type": "start",
+            "part": "multi"
+        },
+        {
+            "type": "start",
+            "part": "neo"
+        },
+        {
+            "type": "start",
+            "part": "non"
+        },
+        {
+            "type": "start",
+            "part": "omni"
+        },
+        {
+            "type": "start",
+            "part": "poly"
+        },
+        {
+            "type": "start",
+            "part": "post"
+        },
+        {
+            "type": "start",
+            "part": "pre"
         },
         {
             "type": "start",
             "part": "re"
+        },
+        {
+            "type": "start",
+            "part": "retro"
+        },
+        {
+            "type": "start",
+            "part": "semi"
+        },
+        {
+            "type": "start",
+            "part": "sub"
+        },
+        {
+            "type": "start",
+            "part": "super"
+        },
+        {
+            "type": "start",
+            "part": "tri"
+        },
+        {
+            "type": "start",
+            "part": "un"
+        },
+        {
+            "type": "start",
+            "part": "uni"
+        },
+        {
+            "type": "start",
+            "part": "en"
         },
         {
             "type": "end",
@@ -22,5 +266,5 @@
             "part": "under"
         }
     ],
-    "allowed_chans": [ "#realitree" ]
+    "allowed_chans": [ "#realitree", "#realitwo" ]
 }
