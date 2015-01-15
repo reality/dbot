@@ -1,7 +1,18 @@
-extends ../layout    
-
-block content
+!!!
+html(lang='#{curr839}')
+  head
+    meta(charset='utf-8')
+    script(type="text/javascript", src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js")
+    link(rel="stylesheet", type="text/css", href="http://fonts.googleapis.com/css?family=Source+Sans+Pro")
+    link(rel="stylesheet", type="text/css", href="/bootstrap/css/bootstrap.min.css")   
+    link(rel='stylesheet', type='text/css', href='/styles.css')    
+    link(rel="stylesheet", href="/project.css")
+    script(src="../project.js")
+  body  
     div.container
+      div#page
+        div#title #{pagetitle}
+        div.container#main
           p.intro #{dquote}
           section#git
             h2 #{development} 
