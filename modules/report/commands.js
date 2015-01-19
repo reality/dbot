@@ -1,6 +1,6 @@
 var _ = require('underscore')._,
     moment = require('moment'),
-    asynx = require('async');
+    async = require('async');
 
 var commands = function(dbot) {
     var commands = {
