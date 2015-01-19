@@ -113,7 +113,7 @@ var commands = function(dbot) {
                         if(quiet != 0 || warn != 0 || report != 0) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
-                            _.each(_.sort(_.keys(items)), function(time) {
+                            _.each(_.keys(items).sort(), function(time) {
                                 event.reply('[' + moment(new Date(time)).format('dd/mm/YYYY') + '] ' + items[time]); 
                             });
 
