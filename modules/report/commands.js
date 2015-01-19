@@ -1,5 +1,6 @@
 var _ = require('underscore')._,
-    moment = require('moment');
+    moment = require('moment'),
+    asynx = require('async');
 
 var commands = function(dbot) {
     var commands = {
@@ -113,11 +114,12 @@ var commands = function(dbot) {
                         if(quiet != 0 || warn != 0 || report != 0) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
-                            _.each(_.keys(items).sort(function(a, b) {
+                            async.eachSeries(_.keys(items).sort(function(a, b) {
                                 return parseInt(new Date(a).getTime()) - parseInt(new Date(b).getTime());
-                            }), function(time) {
+                            }), function(time, next) {
                                 event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
-                            });
+                                setTimeout(next, 1000); 
+                            }, function(){});
 
                             if(ban) {
                                 event.reply(user.primaryNick + ' was banned on ' + new Date(ban).toUTCString());
