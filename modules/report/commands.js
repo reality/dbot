@@ -114,7 +114,7 @@ var commands = function(dbot) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
                             _.each(_.keys(items).sort(), function(time) {
-                                event.reply('[' + moment(new Date(time)).format('dd/mm/YYYY') + '] ' + items[time]); 
+                                event.reply('[' + moment(time).format('DD/MM/YYYY') + '] ' + items[time]); 
                             });
 
                             if(ban) {
