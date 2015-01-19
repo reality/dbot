@@ -88,9 +88,7 @@ var commands = function(dbot) {
                         quiet = 0,
                         warn = 0,
                         report = 0,
-                        quiets = [],
-                        warns = [],
-                        reports = [];
+                        items = {};
 
 // i'll fix it later
                     dbot.modules.report.db.search('notifies', {
@@ -104,27 +102,21 @@ var commands = function(dbot) {
                                 ban = notify.time;
                             } else if(notify.type == 'quiet') {
                                 quiet++;
-                                quiets.push(notify.message);
                             } else if(notify.type == 'warn') {
                                 warn++;
-                                warns.push(notify.message);
                             } else if(notify.type == 'report') {
                                 report++;
-                                reports.push(notify.message);
                             }
+                            items[notify.time] = notify.message;
                         }
                     }, function() {
-                        if(quiet != 0 || warn != 0) {
+                        if(quiet != 0 || warn != 0 || report != 0) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
-                            _.each(quiets, function(message) {
-                                event.reply(message);
+
+                            _.each(_.sort(_.keys(items)), function(time) {
+                                event.reply('[' + moment(new Date(time)).format('dd/mm/YYYY') + '] ' + items[time]); 
                             });
-                            _.each(warns, function(message) {
-                                event.reply(message);
-                            });
-                            _.each(reports, function(message) {
-                                event.reply(message);
-                            });
+
                             if(ban) {
                                 event.reply(user.primaryNick + ' was banned on ' + new Date(ban).toUTCString());
                             }
