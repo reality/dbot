@@ -117,6 +117,7 @@ var commands = function(dbot) {
                                 return parseInt(new Date(a).getTime()) - parseInt(new Date(b).getTime());
                             }), function(time) {
                                 event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                console.log('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                             });
 
                             if(ban) {
