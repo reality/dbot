@@ -4,7 +4,8 @@
  * command and then runs that command, given the user isn't banned from or
  * ignoring that command.
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    cDomain = require('domain').create();
 
 var command = function(dbot) {
     /**
@@ -72,18 +73,20 @@ var command = function(dbot) {
                     } else if(!isIgnoring && _.has(dbot.commands, commandName) && !dbot.commands[commandName].disabled) {
                         if(this.api.applyRegex(commandName, event)) {
                             try {
-                                var command = dbot.commands[commandName],
-                                    results;
-                                if(_.has(command, 'resolver')) {
-                                    event.res = [];
-                                    command.resolver(event, function(err) {
-                                        if(!err) {
-                                            results = command.apply(dbot.modules[command.module], [event]);
-                                        }
-                                    });
-                                } else {
-                                    results = command.apply(dbot.modules[command.module], [event]);
-                                }
+                                cDomain.run(function() {
+                                    var command = dbot.commands[commandName],
+                                        results;
+                                    if(_.has(command, 'resolver')) {
+                                        event.res = [];
+                                        command.resolver(event, function(err) {
+                                            if(!err) {
+                                                results = command.apply(dbot.modules[command.module], [event]);
+                                            }
+                                        });
+                                    } else {
+                                        results = command.apply(dbot.modules[command.module], [event]);
+                                    }
+                                });
                             } catch(err) {
                                 if(dbot.config.debugMode == true) {
                                     var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
@@ -118,6 +121,15 @@ var command = function(dbot) {
     this.onLoad = function() {
         // Not sure this is the right place for this. Perhaps they should be in
         // another file?
+
+        cDomain.on('error', function(err) {
+            console.log(err); // Hmm
+            if(_.has(dbot.modules, 'log')) {
+                // can't really get context
+                var server = _.keys(dbot.config.servers)[0];
+                dbot.api.log.log(server, dbot.config.name, '[\u00034ERR\u000f] ' + err.message);
+            }
+        });
 
         dbot.access = {
             'admin': function(event) {
