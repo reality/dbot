@@ -17,16 +17,14 @@ fi
 npm install googlemaps feedparser node-units tvdb crypto-js method-override 500px process async wordnik node-uuid underscore request sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
 
 cd public/
-#wget http://twitter.github.com/bootstrap/assets/bootstrap.zip
-wget https://github.com/twbs/bootstrap/releases/download/v3.2.0/bootstrap-3.2.0-dist.zip
-unzip bootstrap-3.2.0-dist.zip
-mv bootstrap-3.2.0-dist bootstrap
-rm bootstrap-3.2.0-dist.zip
+wget https://github.com/twbs/bootstrap/releases/download/v3.3.2/bootstrap-3.3.2-dist.zip
+unzip bootstrap-3.3.2-dist.zip
+mv bootstrap-3.3.2-dist bootstrap
+rm bootstrap-3.3.2-dist.zip
 
 mkdir d3
 cd d3
-#wget http://d3js.org/d3.v3.zip
-wget https://github.com/mbostock/d3/releases/download/v3.4.11/d3.zip
+wget https://github.com/mbostock/d3/releases/download/v3.5.3/d3.zip
 unzip d3.zip
 rm d3.zip
 
@@ -36,7 +34,8 @@ if [ ! -f config.json ];
 then
     echo 'Creating configuration file...'
     cp config.json.sample config.json
-    vim config.json
+    $EDITOR config.json # Open config file with EDITOR variable, but if not available:
+    if [[ $? != 0 ]]; then vim config.json; fi # Find the return code from previous command, if failed then use vim to edit.
 fi
 
 read -p "Setup complete. Run dbot now? [y/N]"
