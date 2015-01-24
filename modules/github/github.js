@@ -46,14 +46,11 @@ var github = function(dbot) {
                 }
                 // TODO: move this shizz into an api call
                 var longurl = "http://github.com/" + repo;
-                request({method: 'POST', uri: 'http://git.io', form:{url: longurl}}, function(error, response, body){
-                    event.reply(dbot.t('location')+" "+response.headers["location"]);
-                });
+                event.reply(dbot.t('location')+" "+longurl);
             });
         }, 
         '~gstatus': function(event) {
             data = this.api.githubStatus(function(data){
-                console.log(data);
                 event.reply(dbot.t("status"+data["status"]));
                 event.reply(data["body"]);
             }.bind(this));
@@ -87,10 +84,6 @@ var github = function(dbot) {
                         bar += "]";
                         str += " is " + bar + progress + "% complete";
 
-                        var longurl = "http://github.com/" + repo + "/issues?milestone=" + milestone["number"];
-                        request({method: 'POST', uri: 'http://git.io', form:{url: longurl}}, function(error, response, body){
-                            event.reply(response.headers["location"]);
-                        });
                         event.reply(str);
                         break;
                     }
@@ -146,8 +139,7 @@ var github = function(dbot) {
                             data = data[0];
                         }
                     }
-                    if (data["pull_request"]["html_url"]){
-                        console.log(data["pull_request"]["html_url"]);
+                    if (_.has(data["pull_request"], "html_url")){
                         data["pull_request"] = " with code";
                     } else {
                         data["pull_request"] = "";
