@@ -10,6 +10,12 @@ var api = function(dbot) {
                 _.each(message.match(/(#\w+)/g), function(match) {
                     tags.push(match.toLowerCase());
                 });
+
+            if(_.has(this.config.full_redirs, cName)) {
+                message = '(redirect from ' + cName + ') ' + message;
+                cName = this.config.full_redirs[cName];
+            }
+
             this.db.save('notifies', id, {
                 'id': id,
                 'server': server,
