@@ -3,6 +3,9 @@
     "dependencies": [ "command", "report", "users" ],
     "ignorable": true,
     "countSilently": true,
+    "quietBans": [
+        "#wherever"
+    ],
     "network_name": {
         "aberwiki": "OAOSIDL"
     },
