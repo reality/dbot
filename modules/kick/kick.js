@@ -28,7 +28,8 @@ var kick = function(dbot) {
 
         'unban': function(server, host, channel) {
             // TODO: Wrest control from chanserv
-            dbot.say(server, this.config.chanserv, 'unban ' + channel + ' *!*@' + host);
+            //dbot.say(server, this.config.chanserv, 'unban ' + channel + ' *!*@' + host);
+            dbot.instance.connections[server].send('MODE ' + channel + ' -b *!*@' + host);
         },
 
         'networkUnban': function(server, unbanee, unbanner, callback) {
