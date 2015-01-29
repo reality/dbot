@@ -20,8 +20,11 @@
     "chan_redirs": {
         "#chan": "#chan-notify"
     },
-    "host_lookup": [
+    "full_redirs": {
+        "#chan": "#chan-fullnotify"
+    },
+    "host_lookup": {
         "#chan"
-    ],
+    },
     "noMissingChans": []
 }
