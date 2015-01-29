@@ -51,11 +51,13 @@ console.log('removing ' + uPart);
                         var offlineOps = {};
                         async.each(ops, function(op, done) {
                             dbot.api.users.isOnline(server, cName, op, function(err, user, online) {
+				if(user) {
                                 if(!err && !online) offlineOps[op] = user;
                                 if(user.currentNick !== op) {
                                     ops = _.without(ops, op);
                                     ops.push(user.currentNick);
                                 }
+				}
                                 done();
                             });
                         }, function() {
@@ -92,31 +94,12 @@ console.log('removing ' + uPart);
                     }
                 }, this);
                 ops = _.pluck(ops, 'name');
-
-                dbot.api.users.resolveChannel(server, cName, function(channel) {
-                    if(channel) {
-                        var perOps = channel.op;
-                        if(this.config.notifyVoice) perOps = _.union(perOps, channel.voice);
-
-                        this.db.read('nunsubs', cName + '.' + server, function(err, nunsubs) {
-                            async.eachSeries(ops, function(nick, next) {
-                                dbot.api.users.resolveUser(server, nick, function(user) {
-                                    if(nunsubs && _.include(nunsubs.users, user.id)) {
-                                        ops = _.without(ops, user.currentNick);
-                                    }
-                                    next();
-                                }); 
-                            }, function() {
-                                message = this.internalAPI.formatNotify(type, server,
-                                    user, cName, message);
-                                this.internalAPI.notify(server, ops, message);
-                                if(_.has(this.config.chan_redirs, cName)) {
-                                    dbot.say(server, this.config.chan_redirs[cName], message);
-                                }
-                            }.bind(this)); 
-                        }.bind(this));
-                    }
-                }.bind(this));
+			message = this.internalAPI.formatNotify(type, server,
+			    user, cName, message);
+			this.internalAPI.notify(server, ops, message);
+			if(_.has(this.config.chan_redirs, cName)) {
+			    dbot.say(server, this.config.chan_redirs[cName], message);
+			}
             }
         }, 
 
