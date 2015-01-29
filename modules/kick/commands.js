@@ -28,9 +28,7 @@ var commands = function(dbot) {
                                 } else {
                                     this.api.unquiet(server, this.hosts[server][quietee], channel);
                                 }
-                                if(vStatus === true) {
-                                    this.api.voice(server, quietee, channel);
-                                }
+                                this.api.voice(server, quietee, channel);
 
                                 dbot.api.users.resolveUser(server, dbot.config.name, function(err, user) {
                                     dbot.api.report.notify('unquiet', server, user, channel,
@@ -63,9 +61,7 @@ var commands = function(dbot) {
                         }));            
                     }
 
-                    if(dbot.instance.connections[server].channels[channel].nicks[quietee].voice === true) {
-                        this.api.devoice(server, quietee, channel);
-                    }
+                    this.api.devoice(server, quietee, channel);
 
                     if(_.include(this.config.quietBans, channel)) {
                         this.api.ban(server, this.hosts[server][quietee], channel);
