@@ -25,10 +25,10 @@ var commands = function(dbot) {
                             if(_.has(this.hosts[server], quietee)) {
                                 if(_.include(this.config.quietBans, channel)) {
                                     this.api.unban(server, this.hosts[server][quietee], channel);
+                                this.api.voice(server, quietee, channel);
                                 } else {
                                     this.api.unquiet(server, this.hosts[server][quietee], channel);
                                 }
-                                this.api.voice(server, quietee, channel);
 
                                 dbot.api.users.resolveUser(server, dbot.config.name, function(err, user) {
                                     dbot.api.report.notify('unquiet', server, user, channel,
@@ -65,6 +65,7 @@ var commands = function(dbot) {
 
                     if(_.include(this.config.quietBans, channel)) {
                         this.api.ban(server, this.hosts[server][quietee], channel);
+                                this.api.voice(server, quietee, channel);
                     } else {
                         this.api.quiet(server, host, channel);
                     }
@@ -87,7 +88,11 @@ var commands = function(dbot) {
                 quietee = event.input[2].trim();
 
             if(_.has(this.hosts[server], quietee)) {
-                this.api.unquiet(server, this.hosts[server][quietee], channel);
+                if(_.include(this.config.quietBans, channel)) {
+                    this.api.unban(server, this.hosts[server][quietee], channel);
+                } else {
+                    this.api.unquiet(server, this.hosts[server][quietee], channel);
+                }
                 event.reply(dbot.t('unquieted', { 'quietee': quietee }));
                 dbot.api.report.notify('unquiet', server, event.rUser, channel,
                 dbot.t('unquiet_notify', {
