@@ -13,7 +13,10 @@ var karma = function(dbot) {
         }.bind(this),
 
         'setKarma': function(item, value, callback) {
-            this.db.save('karma', item.toLowerCase(), value, callback);
+            this.db.save('karma', item.toLowerCase(), {
+                'item': item,
+                'karma': value
+            }, callback);
         }.bind(this)
     };
 
@@ -21,6 +24,7 @@ var karma = function(dbot) {
         'karma': function(event) {
             var item = event.params[1] || event.user;
             this.internalAPI.getKarma(event.server, target, function(err, karma) {
+                karma = karma.karma;
                 event.reply(dbot.t('karma', {
                     'item': item,
                     'karma': karma
@@ -38,6 +42,51 @@ var karma = function(dbot) {
                     'value': value
                 }));
             });
+        }, 
+
+        'unkarmaiest': function(event) {
+            var karmas = {};
+            this.db.scan('karma', function(karma) {
+                if(karma && !_.isUndefined(karma.item)) {
+                    karmas[karma.item] = karma.karma;
+                }
+            }.bind(this), function(err) {
+                var qSizes = _.chain(karmas)
+                    .pairs()
+                    .sortBy(function(category) { return category[1]; })
+                    .first(10)
+                    .value();
+
+                var qString = 'Unkarmaiest: ';
+                for(var i=0;i<qSizes.length;i++) {
+                    qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
+                }
+
+                event.reply(qString.slice(0, -2));
+            });
+        },
+
+        'karmaiest': function(event) {
+            var karmas = {};
+            this.db.scan('karma', function(karma) {
+                if(karma && !_.isUndefined(karma.item)) {
+                    karmas[karma.item] = karma.karma;
+                }
+            }.bind(this), function(err) {
+                var qSizes = _.chain(karmas)
+                    .pairs()
+                    .sortBy(function(category) { return category[1]; })
+                    .reverse()
+                    .first(10)
+                    .value();
+
+                var qString = 'Karmaiest: ';
+                for(var i=0;i<qSizes.length;i++) {
+                    qString += qSizes[i][0] + " (" + qSizes[i][1] + "), ";
+                }
+
+                event.reply(qString.slice(0, -2));
+            });
         }
     };
     this.commands.setkarma.access = 'admin';
@@ -53,6 +102,8 @@ var karma = function(dbot) {
             this.internalAPI.getKarma(match[1], function(err, karma) {
                 if(!karma) {
                     karma = 0;
+                } else {
+                    karma = karma.karma;
                 }
 
                 if(match[2] === '--') {
@@ -65,7 +116,7 @@ var karma = function(dbot) {
                     this.lastKarma[event.rUser.id] = Date.now(); 
                     event.reply(dbot.t('newkarma', {
                         'item': match[1],
-                        'value': karma 
+                        'value': karma.karma 
                     }));
                 }.bind(this));
             }.bind(this));
