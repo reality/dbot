@@ -26,11 +26,14 @@ var karma = function(dbot) {
             this.internalAPI.getKarma(item, function(err, karma) {
                 if(karma) {
                     karma = karma.karma;
-                    event.reply(dbot.t('karma', {
-                        'item': item,
-                        'karma': karma
-                    }));
+                } else {
+                    karma = 0;
                 }
+
+                event.reply(dbot.t('karma', {
+                    'item': item,
+                    'karma': karma
+                }));
             });
         },
 
