@@ -104,6 +104,8 @@ var karma = function(dbot) {
                 return event.reply('Try again in a few seconds : - )');
             } else if(event.rUser.currentNick.toLowerCase === match[1].toLowerCase() || event.rUser.primaryNick.toLowerCase() === match[1].toLowerCase()) {
                 return event.reply('Stop playing with yourself : - )');
+            } else if(event.channel == event.user) {
+                return event.reply('Don\'t be a Secretive Sally : - )');
             }
 
             this.internalAPI.getKarma(match[1], function(err, karma) {
