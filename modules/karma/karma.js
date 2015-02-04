@@ -24,7 +24,7 @@ var karma = function(dbot) {
         'karma': function(event) {
             var item = event.params[1] || event.user;
             this.internalAPI.getKarma(item, function(err, karma) {
-                if(karma) {
+                if(!err && karma) {
                     karma = karma.karma;
                 } else {
                     karma = 0;
