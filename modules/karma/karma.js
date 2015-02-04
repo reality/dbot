@@ -45,6 +45,7 @@ var karma = function(dbot) {
     this.listener = function(event) {
         var match = event.message.match(/^(.+)(\+\+|\-\-)$/);
         if(match) {
+            match[1] = match[1].replace(/(\+|\-)/g,'');
             if(_.has(this.lastKarma, event.rUser.id) && this.lastKarma[event.rUser.id] + 5000 > Date.now()) {
                 return event.reply('Try again in a few seconds : - )');
             }
