@@ -1,0 +1,5 @@
+{
+    "announce": [ { "server": "tripsit", "name": "#dbot" } ],
+    "dbKeys": [ "karma" ],
+    "dbType": "redis"
+}
