@@ -14,7 +14,7 @@ var karma = function(dbot) {
 
         'setKarma': function(item, value, callback) {
             this.db.save('karma', item.toLowerCase(), {
-                'item': item,
+                'item': item.toLowerCase(),
                 'karma': value
             }, callback);
         }.bind(this)
