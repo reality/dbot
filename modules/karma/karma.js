@@ -23,7 +23,7 @@ var karma = function(dbot) {
     this.commands = {
         'karma': function(event) {
             var item = event.params[1] || event.user;
-            this.internalAPI.getKarma(event.server, item, function(err, karma) {
+            this.internalAPI.getKarma(item, function(err, karma) {
                 if(karma) {
                     karma = karma.karma;
                     event.reply(dbot.t('karma', {
