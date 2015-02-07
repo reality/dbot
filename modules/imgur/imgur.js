@@ -120,7 +120,7 @@ var imgur = function(dbot) {
         },
 
         'getGoodRandomImage': function(callback) {
-            this.api.getRandomImage(function(url, slug, hash) {
+            this.api.getRandomImage(function(url, slug, hash, fbman) {
                 this.api.getImageInfo(slug, function(imgData) {
                     if(!_.isUndefined(imgData) && 
                             imgData.data && 
