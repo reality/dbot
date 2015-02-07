@@ -90,7 +90,8 @@ var imgur = function(dbot) {
             var testSlug = random(5);
             var testUrl = 'http://i.imgur.com/' + 
                 testSlug +
-                '.' + ext[_.random(0, ext.length - 1)];
+                '.' + ext[_.random(0, ext.length - 1)],
+		fbman = false;
             dbot.db.imgur.totalHttpRequests += 1;
 
             request(testUrl, function(error, response, body) {
@@ -101,6 +102,7 @@ var imgur = function(dbot) {
                     if(_.has(dbot.modules, 'quotes')){
                         // autoadd: {"abcdef": "facebookman"}
                         if(_.has(dbot.config.modules.imgur.autoadd,hash)){
+				fbman = true;
                             var category = this.config.autoadd[hash];
                             if (_.contains(category, testUrl)){
                                 // there's probably less than 62^5 chance of this happening
@@ -110,7 +112,7 @@ var imgur = function(dbot) {
                             }
                         }
                     }
-                    callback(testUrl, testSlug, hash);
+                    callback(testUrl, testSlug, hash, fbman);
                 } else {
                     this.api.getRandomImage(callback);
                 }
@@ -127,7 +129,9 @@ var imgur = function(dbot) {
                                 return imgData.data.height == res.h && imgData.data.width == res.w;
                             })) {
                         callback(url, imgData);
-                    } else {
+                    } else if(fbman === true) {
+		    	callback(url, imgData);
+		    } else {
                         this.api.getGoodRandomImage(callback);
                     }
                 }.bind(this));
