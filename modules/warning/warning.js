@@ -34,7 +34,9 @@ var warning = function(dbot) {
                             'admin_channel': dbot.config.servers[server].admin_channel
                         });
 
-                        dbot.say(server, warnee.currentNick, uString);
+                        if(reason.indexOf('#quiet') === -1 && reason.indexOf('#note') === -1) {
+                            dbot.say(server, warnee.currentNick, uString);
+			}
 
                         callback(null);
                     });
