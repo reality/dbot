@@ -8,30 +8,26 @@ var databank = require('databank'),
  */
 var DatabaseDriver = function(config) {
     this.config = config;
-    this.databanks = {};
+    this.databank = null;
 };
 
 /**
  * Connect to or create a new DataBank
  */
 DatabaseDriver.prototype.createDB = function(name, driver, schema, callback) {
-    if(!_.has(this.databanks, name)) {
         var params = { 'schema': schema };
 
         if(driver == 'redis' && _.has(this.config, 'redisPort')) params.port = this.config.redisPort;
         if(driver == 'disk') params.dir = 'db';
 
-        this.databanks[name] = Databank.get(driver, params);
-        this.databanks[name].connect({}, function(err) {
+        this.databank = Databank.get(driver, params);
+        this.databank.connect({}, function(err) {
             if(err) {
                 console.log('Didn\'t manage to connect to the data source - ' + err);
             } else {
-                callback(this.databanks[name]);
+                callback(this.databank);
             }
         }.bind(this));
-    } else {
-        callback(this.databanks[name]);
-    }
 };
 
 exports.DatabaseDriver = DatabaseDriver;

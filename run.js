@@ -147,6 +147,7 @@ DBot.prototype.reloadModules = function() {
     this.stringMap = {};
     this.usage = {};
     this.reloadConfig();
+    this.ddb.createDB(name, this.config.dbType, {}, function(db) {});
     
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
@@ -214,9 +215,6 @@ DBot.prototype.reloadModules = function() {
                     this.db[dbKey] = {};
                 }
             }, this);
-        } else {
-            // Just use the name of the module for now, add dbKey iteration later
-            this.ddb.createDB(name, config.dbType, {}, function(db) {});
         }
     }
 
@@ -235,7 +233,7 @@ DBot.prototype.reloadModules = function() {
                 }
 
                 module.name = name;
-                module.db = this.ddb.databanks[name];
+                module.db = this.ddb.databank;
                 module.config = this.config.modules[name];
 
                 // Load the module data

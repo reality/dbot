@@ -19,6 +19,7 @@
     "language": "en",
     "debugMode": false,
     "debugLevel": 1,
+    "dbType": "redis",
     "redisPort": 6379,
     "timezone": "Europe/London",
     "repoRoot": "https://github.com/reality/depressionbot/",
