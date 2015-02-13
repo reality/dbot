@@ -65,7 +65,6 @@ var commands = function(dbot) {
 
                     if(_.include(this.config.quietBans, channel)) {
                         this.api.ban(server, this.hosts[server][quietee], channel);
-                                this.api.voice(server, quietee, channel);
                     } else {
                         this.api.quiet(server, host, channel);
                     }
