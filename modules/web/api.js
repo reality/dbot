@@ -37,7 +37,7 @@ var api = function(dbot) {
                         accessNeeded = mConfig.webAccess; 
                     }
 
-                    if(!_.isUndefined(accessNeeded) || accessNeeded == null) {
+                    if(_.isUndefined(accessNeeded) || accessNeeded == null) {
                         return next();
                     }
 
