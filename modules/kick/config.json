@@ -13,5 +13,5 @@
     "document_bans": false,
     "dbType": "redis",
     "requireWebLogin": true,
-    "webAccess": "power_users"
+    "webAccess": "power_user"
 }

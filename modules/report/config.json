@@ -4,7 +4,7 @@
     "dependencies": [ "users" ],
     "dbType": "redis",
     "requireWebLogin": true,
-    "webAccess": "regular",
+    "webAccess": "power_user",
     "pageAccess": {
         "/report/:server/:channel": "power_user"
     },
