@@ -68,16 +68,18 @@ console.log('removing ' + uPart);
                             });
                         }, function() {
                             // Queue notifies for offline ops
-                            _.each(offlineOps, function(op) {
-                                if(!this.pending[op.id]) this.pending[op.id] = [];
-                                this.pending[op.id].push({
-                                    'time': new Date().getTime(),
-                                    'channel': cName,
-                                    'user': user.id,
-                                    'message': message
-                                });
-                                this.pNotify[op.id] = true;
-                            }, this);
+                            if(!_.include(this.config.noMissingChans, cName)) {
+                                _.each(offlineOps, function(op) {
+                                    if(!this.pending[op.id]) this.pending[op.id] = [];
+                                    this.pending[op.id].push({
+                                        'time': new Date().getTime(),
+                                        'channel': cName,
+                                        'user': user.id,
+                                        'message': message
+                                    });
+                                    this.pNotify[op.id] = true;
+                                }, this);
+                            }
 
                             // Send notifies to online ops
                             ops = _.difference(ops, _.keys(offlineOps));
