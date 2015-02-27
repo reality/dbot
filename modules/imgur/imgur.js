@@ -197,7 +197,7 @@ var imgur = function(dbot) {
 
             var postImage = function(link, imgData) {
                 var info = this.internalAPI.infoString(imgData);
-                event.reply(local + ': ' + link + ' [' + info + ']');
+                event.reply(this.config.outputPrefix + ' ' + local + ': ' + link + ' [' + info + ']');
             }.bind(this);
             var newCacheImage = function(link, imgData) {
                 this.riCache.push([link, imgData]);
@@ -222,7 +222,7 @@ var imgur = function(dbot) {
             this.api.getRandomImage(function(link, slug) {
                 this.api.getImageInfo(slug, function(imgData) {
                     var info = this.internalAPI.infoString(imgData);
-                    event.reply(local + ': ' + link + ' [' + info + ']');
+                    event.reply(this.config.outputPrefix + ' ' + local + ': ' + link + ' [' + info + ']');
                 }.bind(this));
             }.bind(this));
         },
@@ -243,7 +243,7 @@ var imgur = function(dbot) {
                 if(!_.isUndefined(body) && body.data && body.data[0] != undefined) {
                     var num = _.random(0, body.data.length - 1);
                     this.api.getGalleryInfo(body.data[num].id, function(gal) {
-                        event.reply(local + ': ' + gal.data.link + ' [' + 
+                        event.reply(this.config.outputPrefix + ' ' + local + ': ' + gal.data.link + ' [' + 
                             this.internalAPI.galleryInfoString(gal) + ']');
                     }.bind(this));
                 }
