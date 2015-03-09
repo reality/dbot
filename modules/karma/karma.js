@@ -100,9 +100,10 @@ var karma = function(dbot) {
         var match = event.message.match(/^(.+)(\+\+|\-\-)$/);
         if(event.user !== dbot.config.name && match && match[1].length < 25) {
             match[1] = match[1].replace(/(\+|\-)/g,'').replace(/:/g,'').trim();
+
             if(_.has(this.lastKarma, event.rUser.id) && this.lastKarma[event.rUser.id] + 5000 > Date.now()) {
                 return event.reply('Try again in a few seconds : - )');
-            } else if(event.rUser.currentNick.toLowerCase === match[1].toLowerCase() || event.rUser.primaryNick.toLowerCase() === match[1].toLowerCase()) {
+            } else if(event.rUser.currentNick.toLowerCase() === match[1].toLowerCase() || event.rUser.primaryNick.toLowerCase() === match[1].toLowerCase()) {
                 return event.reply('Stop playing with yourself : - )');
             } else if(event.channel == event.user) {
                 return event.reply('Don\'t be a Secretive Sally : - )');
