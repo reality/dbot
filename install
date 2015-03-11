@@ -24,7 +24,7 @@ rm bootstrap-3.3.2-dist.zip
 
 mkdir d3
 cd d3
-wget https://github.com/mbostock/d3/releases/download/v3.5.3/d3.zip
+wget https://github.com/mbostock/d3/releases/download/v3.5.5/d3.zip
 unzip d3.zip
 rm d3.zip
 
