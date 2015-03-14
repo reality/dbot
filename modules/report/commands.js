@@ -302,8 +302,8 @@ var commands = function(dbot) {
                 if(host) {
                     var results = [];
                     this.db.scan('notifies', function(notify) {
+                        event.reply(notify.host);
                         if(notify && _.has(notify, 'host') && notify.host === host) {
-                        event.reply('found');
                             results.push(notify.message);
                         }
                     }, function() {
