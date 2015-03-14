@@ -302,7 +302,9 @@ var commands = function(dbot) {
                 if(host) {
                     var results = [];
                     this.db.scan('notifies', function(notify) {
-                        console.log(notify); 
+                        if(notify && _.has(notify, 'host') && notify.host == host) {
+                            results.push(notify.message);
+                        }
                     }, function() {
                         event.reply(nick + ' has sought help ' + result.length + ' times under the host ' + notify.host); 
                         _.each(results, function(n) {
@@ -318,7 +320,7 @@ var commands = function(dbot) {
                         event.reply(out);
                     });
                 }
-            });
+            }.bind(this));
         }
     };
     commands['~report'].regex = /^report (#[^ ]+ )?([^ ]+) (.*)$/;
