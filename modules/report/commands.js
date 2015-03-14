@@ -132,7 +132,7 @@ var commands = function(dbot) {
                                 console.log('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                             });
 
-                            if(latest_ban != 0) {
+                            if(latest_ban.time != 0) {
                                 if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
                                     event.reply('Current Ban Status: Banned since ' + moment(latest_ban.time).fromNow() + ' (since ' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
                                     event.reply('Reason: ' + latest_ban.message);
