@@ -134,12 +134,12 @@ var commands = function(dbot) {
 
                             if(latest_ban != 0) {
                                 if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
-                                    event.reply('Current Ban Status: Banned for ' + moment(latest_ban.time).fromNow() + ' (since ' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
+                                    event.reply('Current Ban Status: Banned since ' + moment(latest_ban.time).fromNow() + ' (since ' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
                                     event.reply('Reason: ' + latest_ban.message);
                                 } else {
                                     var a = moment(latest_ban.time);
                                     var b = moment(latest_unban.time);
-                                    event.reply('Current Ban Status: Unbanned on ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.from(b));
+                                    event.reply('Current Ban Status: Unbanned since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.from(b));
                                     event.reply('Most recent ban reason: ' + latest_ban.message);
                                 }
                             } else {
