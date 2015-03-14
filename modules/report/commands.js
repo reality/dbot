@@ -139,7 +139,7 @@ var commands = function(dbot) {
                                 } else {
                                     var a = moment(latest_ban.time);
                                     var b = moment(latest_unban.time);
-                                    event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.diff(b));
+                                    event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.diff(b, 'days'));
                                     event.reply('Most recent ban reason: ' + latest_ban.message);
                                 }
                             } else {
