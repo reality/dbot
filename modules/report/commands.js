@@ -226,7 +226,7 @@ var commands = function(dbot) {
                         if(user && _.include(this.config.host_lookup, channelName)) {
                             dbot.api.nickserv.getUserHost(event.server, first, function(host) {
                                 message = message.replace(first, first + ' [' + host + ']'); 
-                                this.api.notify('notify', event.server, event.rUser, channelName, message);
+                                this.api.notify('notify', event.server, event.rUser, channelName, message, host);
                             }.bind(this)); 
                         } else {
                             this.api.notify('notify', event.server, event.rUser, channelName, message);

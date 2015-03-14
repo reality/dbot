@@ -4,7 +4,7 @@ var uuid = require('node-uuid'),
 
 var api = function(dbot) {
     var api = {
-        'notify': function(type, server, user, cName, message) {
+        'notify': function(type, server, user, cName, message, host) {
             var id = uuid.v4(),
                 tags = []; 
                 _.each(message.match(/(#\w+)/g), function(match) {
@@ -24,6 +24,7 @@ var api = function(dbot) {
                 'user': user.id,
                 'time': new Date().getTime(),
                 'message': message,
+                'host': host, // Host of the target, if passed
                 'tags': tags 
             }, function(err, notify) {
                 dbot.api.event.emit('new_notify', [ notify, user.primaryNick ]);
