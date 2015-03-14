@@ -306,7 +306,7 @@ var commands = function(dbot) {
                             results.push(notify.message);
                         }
                     }, function() {
-                        event.reply(nick + ' has sought help ' + results.length + ' times under the host ' + notify.host); 
+                        event.reply(nick + ' has sought help ' + results.length + ' times under the host ' + host); 
                         _.each(results, function(n) {
                             event.reply(n); 
                         });
