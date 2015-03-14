@@ -84,7 +84,10 @@ var commands = function(dbot) {
 
             dbot.api.users.resolveUser(event.server, user, function(err, user) {
                 if(user) {
-                    var ban = null,
+                    var ban = 0,
+                        latest_ban = 0,
+                        latest_unban = 0,
+                        unban = 0,
                         quiet = 0,
                         warn = 0,
                         report = 0,
@@ -95,11 +98,20 @@ var commands = function(dbot) {
                         'server': event.server
                     }, function(notify) {
                         if(notify.message.match('banned ' + user.primaryNick) || 
+                           notify.message.match(user.primaryNick + ' has been unbanned') || 
                            notify.message.match('issued a warning to ' + user.primaryNick) || 
                            notify.message.match('has quieted ' + user.primaryNick) ||
                            notify.message.match('has reported ' + user.primaryNick)) {
                             if(notify.type == 'ban') {
-                                ban = notify.time;
+                                ban++;
+                                if(notify.time > latest_ban.time) {
+                                    latest_ban = notify;
+                                }
+                            } else if(notify.type == 'unban') {
+                                unban++;
+                                if(notify.time > latest_unban.time) {
+                                    latest_unban = notify;
+                                }
                             } else if(notify.type == 'quiet') {
                                 quiet++;
                             } else if(notify.type == 'warn') {
@@ -120,8 +132,18 @@ var commands = function(dbot) {
                                 console.log('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                             });
 
-                            if(ban) {
-                                event.reply(user.primaryNick + ' was banned on ' + new Date(ban).toUTCString());
+                            if(latest_ban != 0) {
+                                if(latest_unban == 0 || (latest_unban != 0 && latest_unban.time < latest_ban.time)) {
+                                    event.reply('Current Ban Status: Banned for ' + moment(latest_ban.time).fromNow() + ' (since ' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
+                                    event.reply('Reason: ' + latest_ban.message);
+                                } else {
+                                    var a = moment(latest_ban.time);
+                                    var b = moment(latest_unban.time);
+                                    event.reply('Current Ban Status: Unbanned on ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.from(b));
+                                    event.reply('Most recent ban reason: ' + latest_ban.message);
+                                }
+                            } else {
+                                event.reply('Current Ban Status: Never banned (probably)');
                             }
                         } else {
                             event.reply(user.primaryNick + ' has no record.');
