@@ -85,8 +85,8 @@ var commands = function(dbot) {
             dbot.api.users.resolveUser(event.server, user, function(err, user) {
                 if(user) {
                     var ban = 0,
-                        latest_ban = 0,
-                        latest_unban = 0,
+                        latest_ban = {'time':0},
+                        latest_unban = {'time':0},
                         unban = 0,
                         quiet = 0,
                         warn = 0,
@@ -133,7 +133,7 @@ var commands = function(dbot) {
                             });
 
                             if(latest_ban != 0) {
-                                if(latest_unban == 0 || (latest_unban != 0 && latest_unban.time < latest_ban.time)) {
+                                if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
                                     event.reply('Current Ban Status: Banned for ' + moment(latest_ban.time).fromNow() + ' (since ' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
                                     event.reply('Reason: ' + latest_ban.message);
                                 } else {
