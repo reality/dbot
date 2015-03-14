@@ -302,11 +302,11 @@ var commands = function(dbot) {
                 if(host) {
                     var results = [];
                     this.db.scan('notifies', function(notify) {
-                        if(notify && _.has(notify, 'host') && notify.host == host) {
+                        if(notify && _.has(notify, 'host') && (notify.host == host || notify.message.split(' ')[0] == nick)) {
                             results.push(notify.message);
                         }
                     }, function() {
-                        event.reply(nick + ' has sought help ' + results.length + ' times under the host ' + host); 
+                        event.reply(nick + ' has sought help ' + results.length + ' times under the host ' + host + ' or nick ' + nick); 
                         _.each(results, function(n) {
                             event.reply(n); 
                         });
