@@ -134,16 +134,16 @@ var commands = function(dbot) {
 
                             if(latest_ban.time != 0) {
                                 if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
-                                    event.reply('Current Ban Status: Banned since ' + moment(latest_ban.time).fromNow() + ' (since ' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
+                                    event.reply('Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
                                     event.reply('Reason: ' + latest_ban.message);
                                 } else {
                                     var a = moment(latest_ban.time);
                                     var b = moment(latest_unban.time);
-                                    event.reply('Current Ban Status: Unbanned since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.from(b));
+                                    event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + a.diff(b));
                                     event.reply('Most recent ban reason: ' + latest_ban.message);
                                 }
                             } else {
-                                event.reply('Current Ban Status: Never banned (probably)');
+                                event.reply('Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f');
                             }
                         } else {
                             event.reply(user.primaryNick + ' has no record.');
