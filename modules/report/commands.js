@@ -294,6 +294,33 @@ var commands = function(dbot) {
             } else {
                 event.reply('Channel not known.');
             }
+        },
+
+        '~concerning': function(event) {
+            var nick = event.params[1].trim();
+            dbot.api.nickserv.getUserHost(event.server, nick, function(host) {
+                if(host) {
+                    var results = [];
+                    this.db.scan('notifies', function(notify) {
+                        if(notify && notify.host === host) {
+                            results.push(notify.message);
+                        }
+                    }, function() {
+                        event.reply(nick + ' has sought help ' + result.length + ' times under the host ' + notify.host); 
+                        _.each(results, function(n) {
+                            event.reply(n); 
+                        });
+                    });
+                } else {
+                    dbot.api.quotes.getQuote('deal with it', function(quote) {
+                        var out = 'Couldn\'t find user\'s host, but that doesn\'t necessarily mean they don\'t exist. This is the lazy way of doing it for now... ';
+                        if(quote) {
+                            out += quote;
+                        }
+                        event.reply(out);
+                    });
+                }
+            });
         }
     };
     commands['~report'].regex = /^report (#[^ ]+ )?([^ ]+) (.*)$/;
@@ -304,6 +331,7 @@ var commands = function(dbot) {
     commands['~sustatus'].regex = [/^sustatus ([^ ]+)$/, 2];
     commands['~ustatus'].access = 'power_user';
     commands['~sustatus'].access = 'power_user';
+    commands['~sustatus'].access = 'concerning';
 
     return commands;
 };
