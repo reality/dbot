@@ -298,13 +298,12 @@ var commands = function(dbot) {
 
         '~concerning': function(event) {
             var nick = event.params[1].trim();
-            event.reply('starting');
             dbot.api.nickserv.getUserHost(event.server, nick, function(host) {
                 if(host) {
-            event.reply('got host');
                     var results = [];
                     this.db.scan('notifies', function(notify) {
                         if(notify && notify.host === host) {
+                        event.reply('found');
                             results.push(notify.message);
                         }
                     }, function() {
