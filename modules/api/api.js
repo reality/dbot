@@ -52,7 +52,7 @@ var api = function(dbot) {
                         args[callbackIndex] = function() {
                             body.data = Array.prototype.slice.call(arguments, 0);
                             if(_.isObject(body.data[0]) && _.has(body.data[0], 'err')) {
-                                body.err = body.data.err;
+                                body.err = body.data[0].err;
                             }
                             res.json(body);
                         };
