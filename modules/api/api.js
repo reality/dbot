@@ -51,6 +51,7 @@ var api = function(dbot) {
                     if(callbackIndex != -1) {
                         args[callbackIndex] = function() {
                             body.data = Array.prototype.slice.call(arguments, 0);
+                            console.log(body);
                             if(_.isObject(body.data) && _.has(body.data, 'err')) {
                                 body.err = body.data.err;
                             }
