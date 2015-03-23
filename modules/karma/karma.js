@@ -124,7 +124,18 @@ var karma = function(dbot) {
 
                 this.internalAPI.setKarma(match[1], karma, function(err, karma) {
                     this.lastKarma[event.rUser.id] = Date.now(); 
-                    event.reply(dbot.t('newkarma', {
+                    var pre;
+                    if(karma.karma > 0) {
+                        pre = '[\u00039karma\u000f]';
+                        karma.karma = '[\u00039'+karma.karma+'\u000f]';
+                    } else if(karma.karma < 0) {
+                        pre = '[\u00034karma\u000f]';
+                        karma.karma = '[\u00034'+karma.karma+'\u000f]';
+                    } else {
+                        pre = '[\u00036karma\u000f]';
+                        karma.karma = '[\u00036'+karma.karma+'\u000f]';
+                    }
+                    event.reply(pre + ' ' + dbot.t('newkarma', {
                         'item': match[1],
                         'value': karma.karma 
                     }));
