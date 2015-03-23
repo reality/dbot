@@ -1,6 +1,6 @@
 {
     "karma": {
-        "en": "{item} has {karma} karma"
+        "en": "[karma] {item} has {karma} karma"
     },
     "newkarma": {
         "en": "{item} now has{value} karma"
