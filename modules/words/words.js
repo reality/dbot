@@ -120,7 +120,7 @@ var words = function(dbot) {
             }
 
             if(Math.floor(Math.random() * (6)) == 1) {
-                dbot.api.quotes.getQuote('should_responses', function(q) {
+                dbot.api.quotes.getInterpolatedQuote('should_responses', event.server, event.channel.name, event.user, 'should_responses', function(q) {
                     event.reply(pre + ' should ' + q);     
                 });
             } else {
