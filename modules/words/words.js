@@ -113,6 +113,7 @@ var words = function(dbot) {
 
     this.listener = function(event) {
         var matchOne = event.message.match(new RegExp(dbot.config.name + ': should (\\w+) (.+) or (.*)\\?', 'i')); 
+        var matchTwo = event.message.match(new RegExp(dbot.config.name + ': should (\\w+) (.+)\\?', 'i'));
         if(matchOne) {
             var pre = matchOne[1];
             if(pre == 'i' || pre == 'I') {
@@ -125,6 +126,20 @@ var words = function(dbot) {
                 });
             } else {
                 event.reply(pre + ' should ' + matchOne[_.random(2, 3)].replace(/,/,'').replace(/should/,''));
+            }
+        } else if(matchTwo) { // I know i can do it in the one regex shut up
+            var pre = matchTwo[1];
+            if(pre == 'i' || pre == 'I') {
+                pre = 'You';
+            }
+
+            if(Math.floor(Math.random() * (6)) == 1) {
+                dbot.api.quotes.getInterpolatedQuote(event.server, event.channel.name, event.user, 'should_responses', function(q) {
+                    event.reply(pre + ' should ' + q);     
+                });
+            } else {
+                var choice = [ '', 'not '];
+                event.reply(pre + ' should ' + choice[_.random(0, 1)] + matchTwo[2].replace(/,/,'').replace(/should/,''));
             }
         }
     };
