@@ -119,7 +119,7 @@ var words = function(dbot) {
                 pre = 'You';
             }
 
-            if(Math.floor(Math.random() * (26)) == 1) {
+            if(Math.floor(Math.random() * (6)) == 1) {
                 dbot.api.quotes.getQuote('should_responses', function(q) {
                     event.reply(pre + ' should ' + q);     
                 });
