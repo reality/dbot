@@ -114,7 +114,7 @@ var words = function(dbot) {
     this.listener = function(event) {
         var matchOne = event.message.match(new RegExp(dbot.config.name + ': should (\\w+) (.+) or (.*)\\?', 'i')); 
         if(matchOne) {
-            var pre = matcOneh[1];
+            var pre = matchOne[1];
             if(pre == 'i' || pre == 'I') {
                 pre = 'You';
             }
