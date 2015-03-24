@@ -111,6 +111,26 @@ var words = function(dbot) {
     };
     this.commands['~jimble'].regex = [/^jimble (.+)$/, 2];
 
+    this.listener = function(event) {
+        var matchOne = event.message.match(new RegExp(dbot.config.name +
+                ': should (\w+) (.+) or (.*)\?', 'i')); 
+        if(matchOne) {
+            var pre = match[1];
+            if(pre == 'i' || pre == 'I') {
+                pre = 'You';
+            }
+
+            if(Math.floor(Math.random() * (26)) == 1) {
+                dbot.api.quotes.getQuote('should_responses', function(q) {
+                    event.reply(pre + ' should ' + q);     
+                });
+            } else {
+                event.reply(pre + ' should ' + match[_.random(2, 3)].replace(/,/,'').replace(/should/,''));
+            }
+        }
+    };
+    this.on = 'PRIVMSG';
+
     this.onLoad = function() {
         this.wn = new Wordnik({
             'api_key': this.config.api_key
