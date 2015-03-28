@@ -177,6 +177,27 @@ var reddit = function(dbot) {
             });
         },
 
+        '~r': function(event) {
+            var sr = event.params[1].trim();
+            this.api.getNewPosts(sr, 0, function(err, posts) {
+                if(!err) {
+                    var qPost = posts[_.random(0, posts.length -1)];
+                    event.reply(dbot.t('about_post', {
+                            'title': _.unescape(qPost.title.trim()),
+                            'poster': qPost.author,
+                            'subreddit': qPost.subreddit,
+                            'comments': qPost.num_comments,
+                            'score': qPost.score,
+                            'up': qPost.ups,
+                            'down': qPost.downs,
+                            'url': qPost.url
+                        }));
+                } else {
+                    event.reply('Could not find that subreddit');
+                }
+            });
+        },
+
         '~addredditfeed': function(event) {
             var channel = event.input[1],
                 subreddit = event.input[2].replace('r/', ''),
