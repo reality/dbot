@@ -2,9 +2,9 @@ var april = function(dbot) {
     this.listener = function(event) {
         var match = event.message.match(/^i'?( a)?m (an? )?([^ ]+)/i);
         if(match && event.channel == '#april') {
-            dbot.say(event.server, 'operserv', 'svsnick ' + event.user + ' ' + match[2]);
+            dbot.say(event.server, 'operserv', 'svsnick ' + event.user + ' ' + match[3]);
             setTimeout(function() {
-                event.reply('Hi ' + match[2] + ', I\'m tripbot!');
+                event.reply('Hi ' + match[3] + ', I\'m tripbot!');
             }, 1000);
         }
     }
