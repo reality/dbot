@@ -4,7 +4,7 @@ var april = function(dbot) {
         if(match) {
             dbot.say(event.server, 'operserv', 'svsnick ' + event.user + ' ' + match[3]);
             setTimeout(function() {
-                event.reply('Hi ' + match[3] + ', I\'m ' + dbot.config.name);
+                event.reply('Hi ' + match[3] + ', I\'m ' + dbot.config.name + '!');
             }, 1000);
         }
     }
