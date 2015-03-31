@@ -1,11 +1,11 @@
 var april = function(dbot) {
     this.listener = function(event) {
-        var match = event.message.match(/^i'm ([^ ]+)$/i);
+        var match = event.message.match(/^i'm (a )?([^ ]+)$/i);
         if(match && event.channel == '#april') {
             dbot.say(event.server, 'operserv', 'svsnick ' + event.user + ' ' + match[1]);
             setTimeout(function() {
-                event.reply('Hi ' + match[1] + ', I\'m tripbot!');
-            }, 2000);
+                event.reply('Hi ' + match[2] + ', I\'m tripbot!');
+            }, 1000);
         }
     }
     this.on = 'PRIVMSG';
