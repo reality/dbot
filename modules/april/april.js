@@ -1,6 +1,6 @@
 var april = function(dbot) {
     this.listener = function(event) {
-        var match = event.message.match(/^i'm (a )?([^ ]+)$/i);
+        var match = event.message.match(/^i'm (an? )?([^ ]+)$/i);
         if(match && event.channel == '#april') {
             dbot.say(event.server, 'operserv', 'svsnick ' + event.user + ' ' + match[2]);
             setTimeout(function() {
