@@ -49,13 +49,13 @@ var commands = function(dbot){
                     if(tz) {
                         event.reply('The time for ' + event.params[1] + ' in ' + tz + ' is ' + moment().tz(tz).format('HH:mm:ss on DD/MM/YYYY'));
                     } else {
-                        event.reply(user.currentNick + ' needs to set a timezone with ~timezone');
+                        event.reply(user.currentNick + ' needs to set a timezone with "~set timezone x"');
                     }
                 } else {
                     if(!user) {
                         event.reply('No idea who that is mate');
                     } else {
-                        event.reply(user.currentNick + ' needs to set a timezone with ~timezone');
+                        event.reply(user.currentNick + ' needs to set a timezone with "~set timezone x"');
                     }
                 }
             });
