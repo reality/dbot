@@ -47,7 +47,7 @@ var commands = function(dbot){
                 if(!err) {
                     var tz = profile.profile.timezone;
                     if(tz) {
-                        event.reply('The time for ' + event.params[1] + ' is ' + moment().tz(tz).format('HH:mm:ss on DD/MM/YYYY'));
+                        event.reply('The time for ' + event.params[1] + ' in ' + tz + ' is ' + moment().tz(tz).format('HH:mm:ss on DD/MM/YYYY'));
                     } else {
                         event.reply(user.currentNick + ' needs to set a timezone with ~timezone');
                     }
