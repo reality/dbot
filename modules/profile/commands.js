@@ -43,7 +43,7 @@ var commands = function(dbot){
         },
 
         '~time': function(event) {
-            dbot.api.users.getProfile(event.server, event.params[1], function(err, user, profile) {
+            dbot.api.profile.getProfile(event.server, event.params[1], function(err, user, profile) {
                 if(!err) {
                     var tz = profile.profile.timezome;
                     if(tz) {
