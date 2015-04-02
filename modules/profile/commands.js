@@ -1,4 +1,5 @@
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    moment = require('moment-timezone');
 
 var commands = function(dbot){
     var commands = {
