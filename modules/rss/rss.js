@@ -93,6 +93,10 @@ var rss = function(dbot) {
 
         'checkFeeds': function() {
             console.log("Checking feeds...");
+            if(dbot.db.feeds == null) {
+                console.log("No active feeds...");
+                return;
+            }
             for(var i=0;i<dbot.db.feeds.length;++i) {
                 this.internalAPI.makeRequest(i,dbot.db.feeds[i]);
             }
@@ -110,13 +114,17 @@ var rss = function(dbot) {
                 return;
             }
             var now = Date.now();
+            if(dbot.db.feeds == null)
+                dbot.db.feeds = [];
             dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: now, newTime: now});
             event.reply("Adding RSS feed named "+event.params[1]+" with URL "+event.params[2]);
         },
 
         '~rsstest': function(event) {
             event.reply("I posted RSS last @ "+this.lastPosted);
-            event.reply("Nothing to test. Go home.");
+            event.reply("Checking feeds manually...");
+            this.internalAPI.checkFeeds();
+            event.reply("Call got through!");
         },
 
         '~delrssfeed': function(event) {
