@@ -13,6 +13,7 @@ var rss = function(dbot) {
 
     this.internalAPI = {
         'makeRequest': function(id,feed) {
+            dbot.say(feed.server,feed.channel,"RSS: I am making a request for feed "+feed.name+" to "+feed.url+" and I like it.");
             var fid = id,
                 req = request(feed.url),
                 feedparser = new FeedParser();
@@ -25,7 +26,6 @@ var rss = function(dbot) {
 
             req.on('response', function (res) {
                 var stream = this;
-
                 if (res.statusCode !== 200){
                     dbot.say(feed.server,feed.channel,"RSS: RSS server returned status code "+res.statusCode+". Bastard.");
                     return;
@@ -51,12 +51,17 @@ var rss = function(dbot) {
                     if(!item.pubdate) {
                         return;
                     }
+                    if(dbot.config.debugMode) {
+                        dbot.say(feed.server,feed.channel,"RSS: Should post question: Is "+(item.pubdate.getTime()-feed.lastPosted)+" > 0?");
+                    }
                     if(item.pubdate.getTime() - feed.lastPosted > 0) {
                         if(item.pubdate.getTime() > feed.newTime) {
                             feed.newTime = item.pubdate.getTime();
                         }
                         var rss = item;
-
+                        if(dbot.config.debugMode) {
+                            dbot.say(feed.server,feed.channel,"RSS: I shall post a new link! PERFECT.");
+                        }
                         if(!_.include(self.titleCache, rss.title)) {
                             var options = {
                                 uri: 'https://www.googleapis.com/urlshortener/v1/url',
@@ -74,6 +79,14 @@ var rss = function(dbot) {
                                     }
                                     rString += "- "+body.id;
                                     dbot.say(feed.server,feed.channel, rString);
+                                } else {
+                                    var rString = "["+feed.name+"] ["+rss.title+"] "; 
+                                    if(rss.author !== null && !_.isUndefined(rss.categories[0])) {
+                                        rString += "[Post by "+rss.author+" in "+rss.categories[0]+"] ";
+                                    }
+                                    rString += "- "+rss.link;
+                                    dbot.say(feed.server,feed.channel, rString);
+                                    console.log("RSS: Url shortener request returned error statuscode "+response.statusCode+": "+body.error.message);
                                 }
                             });
 
@@ -116,7 +129,7 @@ var rss = function(dbot) {
             var now = Date.now();
             if(dbot.db.feeds == null)
                 dbot.db.feeds = [];
-            dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: now, newTime: now});
+            dbot.db.feeds.push({server:event.server, channel:event.channel.name, name:event.params[1], url:event.params[2], lastPosted: 0, newTime: 0});
             event.reply("Adding RSS feed named "+event.params[1]+" with URL "+event.params[2]);
         },
 
