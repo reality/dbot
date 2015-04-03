@@ -13,7 +13,6 @@ var rss = function(dbot) {
 
     this.internalAPI = {
         'makeRequest': function(id,feed) {
-            dbot.say(feed.server,feed.channel,"RSS: I am making a request for feed "+feed.name+" to "+feed.url+" and I like it.");
             var fid = id,
                 req = request(feed.url),
                 feedparser = new FeedParser();
