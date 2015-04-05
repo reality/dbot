@@ -37,10 +37,19 @@ var remind = function(dbot) {
                 event.reply("The timer will be at "+then);
             }
             var cb = function() {
-            if(message)
-                event.reply(user+": This is your reminder. You left a message: "+message);
-            else
-                event.reply(user+": This is your reminder. You did not leave a message.");
+            if(message) {
+                if(event.user === user) {
+                    event.reply(user+": This is your reminder. You left a message: "+message);
+                } else {
+                    event.reply(user+": This is your reminder. "+event.user+" left a message: "+message);
+                }
+            } else {
+                if(event.user === user) {
+                    event.reply(user+": This is your reminder. You did not leave a message.");
+                } else {
+                    event.reply(user+": This is your reminder. "+event.user+" did not leave a message.");
+                }
+            }
             };
             dbot.api.timers.addTimeout(then,cb,null);
             if(message)
@@ -56,14 +65,14 @@ var remind = function(dbot) {
                 event.reply("You need to give me a user and time dude.");
                 return;
             }
-            this.internalAPI.doReminder(event,event.params[1],event.params[2],event.params[3]);
+            this.internalAPI.doReminder(event,event.params[1],event.params[2],event.params.splice(3, event.params.length-1).join(' ').trim());
         },
         '~remindme': function(event) {
             if(event.params.length < 2) {
                 event.reply("You need to give me a time dude.");
                 return;
             }
-            this.internalAPI.doReminder(event,event.user,event.params[1],event.params[2]);
+            this.internalAPI.doReminder(event,event.user,event.params[1],event.params.splice(2, event.params.length-1).join(' ').trim());
         }
     };
 };
