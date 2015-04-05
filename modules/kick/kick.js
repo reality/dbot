@@ -128,6 +128,16 @@ var kick = function(dbot) {
     this.on = 'KICK';
 
     this.onLoad = function() {
+        if(!_.has(dbot.db, 'hosts')) {
+            dbot.db.hosts = {};
+            _.each(dbot.config.servers, function(v, k) {
+                dbot.db.hosts[k] = {};
+            }, this);
+        }
+        if(!_.has(dbot.db, 'tempBans')) dbot.db.tempBans = {};
+        this.hosts = dbot.db.hosts;
+        this.tempBans = dbot.db.tempBans;
+        
         _.each(this.tempBans, function(bans, server) {
             _.each(bans, function(timeout, nick) {
                 timeout = new Date(timeout);
@@ -138,16 +148,6 @@ var kick = function(dbot) {
         if(_.has(dbot.modules, 'web')) {
             dbot.api.web.addIndexLink('/bans', 'Ban List');
         }
-
-        if(!_.has(dbot.db, 'hosts')) {
-            dbot.db.hosts = {};
-            _.each(dbot.config.servers, function(v, k) {
-                dbot.db.hosts[k] = {};
-            }, this);
-        }
-        if(!_.has(dbot.db, 'tempBans')) dbot.db.tempBans = {};
-        this.hosts = dbot.db.hosts;
-        this.tempBans = dbot.db.tempBans;
     }.bind(this);
 };
 
