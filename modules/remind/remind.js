@@ -60,13 +60,14 @@ var remind = function(dbot) {
                         dbot.say(server,channel,target+": This is your reminder. "+starter+" did not leave a message.");
                     }
                 }
+                dbot.say(server,channel,"REMOTE THE FUCKING TIMER NOW!");
             };
             dbot.api.timers.addTimeout(time,cb,null);
             dbot.say(server,channel,"Timer queued for "+time);
         }.bind(this),
         'saveTimer': function(server,channel,time,starter,target,message) {
             var hash = this.internalAPI.getHashForTime(time);
-            dbot.db.remindTimers[hash] = {server:server, channel:channel, time:time.valueOf(), starter:starter, target:target, message:message};
+            dbot.db.remindTimers[hash] = {server:server, channel:channel.name, time:time.valueOf(), starter:starter, target:target, message:message};
         }.bind(this),
         'getHashForTime': function(time) {
             var md5 = crypto.createHash('md5');
@@ -99,8 +100,9 @@ var remind = function(dbot) {
             dbot.db.remindTimers = {};
             return;
         }
-        for(var i=0;i<Object.keys(dbot.db.remindTimers).length;++i) {
-            dbot.say("tripsit","#epow0","Found saved timer "+dbot.db.remindTimers[i]);
+        for(var prop in dbot.db.remindTimers) {
+            dbot.say("tripsit","#epow0","Found saved timer "+prop);
+            this.internalAPI.startTimer(prop.server,prop.channel,prop.time,prop.starter,prop.target,prop.message);
         }
     };
 };
