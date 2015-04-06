@@ -46,6 +46,7 @@ var remind = function(dbot) {
                 event.reply("I've set the timer.");
         }.bind(this),
         'startTimer': function(server, channel, time, starter, target, message) {
+            dbot.say(server,channel,"startTimer called!");
             var cb = function() {
                 if(message) {
                     if(starter === target) {
@@ -100,8 +101,16 @@ var remind = function(dbot) {
             dbot.db.remindTimers = {};
             return;
         }
-        for(var prop in dbot.db.remindTimers) {
-            dbot.say("tripsit","#epow0","Found saved timer "+prop);
+        dbot.say("tripsit","#epow0","dbot.db.remindTimers has length "+Object.keys(dbot.db.remindTimers).length);
+        for(var i=0;i<Object.keys(dbot.db.remindTimers).length;++i) {
+            dbot.say("tripsit","#epow0","Found saved timer "+Object.keys(dbot.db.remindTimers)[i]);
+            var prop = dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
+            dbot.say("tripsit","#epow0","I will pass: prop.server "+prop.server+" prop.channel "+prop.channel+" prop.time "+prop.time+" prop.starter "+prop.starter+" prop.target "+prop.target+" prop.message "+prop.message);
+            if(parseInt(prop.time) < Date.now().valueOf()) {
+                dbot.say("tripsit","#epow0","This timer is old I shall delete it.");
+                delete dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
+                continue;
+            }
             this.internalAPI.startTimer(prop.server,prop.channel,prop.time,prop.starter,prop.target,prop.message);
         }
     };
