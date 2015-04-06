@@ -35,18 +35,16 @@ var remind = function(dbot) {
                 timeinseconds += this.internalAPI.getSeconds(number,interval);
             }
             var then = new Date(now + (timeinseconds*1000));
-            if(dbot.config.debugMode) {
+            if(dbot.config.debugMode)
                 event.reply("The timer will be at "+then);
-            }
             this.internalAPI.startTimer(event.server,event.channel,then,event.user,user,message);
             this.internalAPI.saveTimer(event.server,event.channel,then,event.user,user,message);
             if(message)
-                event.reply("I've set the timer with message "+message);
+                event.reply("I have set the timer with your message \""+message+"\"");
             else
-                event.reply("I've set the timer.");
+                event.reply("I have set the timer.");
         }.bind(this),
         'startTimer': function(server, channel, time, starter, target, message) {
-            dbot.say(server,channel,"startTimer called!");
             var cb = function() {
                 if(message) {
                     if(starter === target) {
@@ -61,10 +59,14 @@ var remind = function(dbot) {
                         dbot.say(server,channel,target+": This is your reminder. "+starter+" did not leave a message.");
                     }
                 }
-                dbot.say(server,channel,"REMOTE THE FUCKING TIMER NOW!");
+                var hash = self.internalAPI.getHashForTime(time);
+                if(dbot.config.debugMode)
+                    dbot.say(server,channel,"Removing timer with hash "+hash);
+                delete dbot.db.remindTimers[hash];
             };
             dbot.api.timers.addTimeout(time,cb,null);
-            dbot.say(server,channel,"Timer queued for "+time);
+            if(dbot.config.debugMode)
+                dbot.say(server,channel,"Timer queued for "+time);
         }.bind(this),
         'saveTimer': function(server,channel,time,starter,target,message) {
             var hash = this.internalAPI.getHashForTime(time);
@@ -97,21 +99,20 @@ var remind = function(dbot) {
 
     this.onLoad = function() {
         if(!dbot.db.remindTimers) {
-            dbot.say("tripsit","#epow0","dbot.db.remindTimers is "+dbot.db.remindTimers);
             dbot.db.remindTimers = {};
             return;
         }
-        dbot.say("tripsit","#epow0","dbot.db.remindTimers has length "+Object.keys(dbot.db.remindTimers).length);
         for(var i=0;i<Object.keys(dbot.db.remindTimers).length;++i) {
-            dbot.say("tripsit","#epow0","Found saved timer "+Object.keys(dbot.db.remindTimers)[i]);
+            if(dbot.config.debugMode)
+                console.log("Found saved timer "+Object.keys(dbot.db.remindTimers)[i]);
             var prop = dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
-            dbot.say("tripsit","#epow0","I will pass: prop.server "+prop.server+" prop.channel "+prop.channel+" prop.time "+prop.time+" prop.starter "+prop.starter+" prop.target "+prop.target+" prop.message "+prop.message);
             if(parseInt(prop.time) < Date.now().valueOf()) {
-                dbot.say("tripsit","#epow0","This timer is old I shall delete it.");
+                if(dbot.config.debugMode)
+                    console.log("This timer is old I shall delete it.");
                 delete dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
                 continue;
             }
-            this.internalAPI.startTimer(prop.server,prop.channel,prop.time,prop.starter,prop.target,prop.message);
+            this.internalAPI.startTimer(prop.server,prop.channel,new Date(prop.time),prop.starter,prop.target,prop.message);
         }
     };
 };
