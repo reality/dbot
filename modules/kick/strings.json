@@ -50,43 +50,43 @@
         "it": "Non dare pedata a {botname}"
     },
     "ckicked": {
-        "en": "{kicker} has kicked {kickee}. The reason given was: \"{reason}.\"",
-        "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "Achtung: {kicker} hat {kickee} von {channel} verwiesen. Grund: \"{reason}.\"",
-        "fr": "Attention : {kicker} a kické {kickee} de {channel}. Raison donnée : \"{reason}.\"",
-        "it": "Attenzione : {kicker} ha dato una pedata a {kickee} di {channel}. Motivo : \"{reason}.\""
+        "en": "{kicker} has kicked {kickee}. The reason given was: \"{reason}\".",
+        "cy": "Sylw: {kicker} wedi cicio'r {kickee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}\".",
+        "de": "Achtung: {kicker} hat {kickee} von {channel} verwiesen. Grund: \"{reason}\".",
+        "fr": "Attention : {kicker} a kické {kickee} de {channel}. Raison donnée : \"{reason}\".",
+        "it": "Attenzione : {kicker} ha dato una pedata a {kickee} di {channel}. Motivo : \"{reason}\"."
     },
     "cbanned": {
-        "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}.\"",
-        "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}.\"",
-        "fr": "Attention : {banner} a banni {banee} de {channel}. Raison donnée : \"{reason}.\"",
-        "it": "Attenzione : {banner} ha bandito {banee} da {channel}. Motivo  : \"{reason}.\""
+        "en": "Attention: {banner} has banned {banee} from {channel}. The reason given was \"{reason}\".",
+        "cy": "Sylw: {banner} wedi gwahardd {banee} o {channel}. Y rheswm a roddwyd oedd: \"{reason}\".",
+        "de": "Achtung: {banner} hat {banee} von {channel} gebannt. Grund: \"{reason}\".",
+        "fr": "Attention : {banner} a banni {banee} de {channel}. Raison donnée : \"{reason}\".",
+        "it": "Attenzione : {banner} ha bandito {banee} da {channel}. Motivo  : \"{reason}\"."
     },
     "tbanned": {
-        "en": "Attention: {banner} has banned {banee} from the {network} network for {hours} hours. The reason given was \"{reason}.\"",
-        "de": "Achtung: {banner} hat {banee} vom {network} Netzwerk für {hours} Stunden verbannt. Der Grund war \"{reason}.\"",
-        "fr": "Attention : {banner} a banni {banee} du réseau {network} pour {hours} heures. Raison donnée : \"{reason}.\"",
-        "it": "Attenzione : {banner} ha bandito {banee} dalla rete {network} per {hours} ora/e. Motivo : \"{reason}.\""
+        "en": "Attention: {banner} has banned {banee} from the {network} network for {hours} hours. The reason given was \"{reason}\".",
+        "de": "Achtung: {banner} hat {banee} vom {network} Netzwerk für {hours} Stunden verbannt. Der Grund war \"{reason}\".",
+        "fr": "Attention : {banner} a banni {banee} du réseau {network} pour {hours} heures. Raison donnée : \"{reason}\".",
+        "it": "Attenzione : {banner} ha bandito {banee} dalla rete {network} per {hours} ora/e. Motivo : \"{reason}\"."
     },
     "tbanned_notify": {
-        "en": "You have been banned from the {network} network for {hours} hours by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban.",
-        "de": "Du wurdest von {banner} im {network} Netzwerk für {hours} verbannt. Der Grund war \"{reason}.\" Du kannst {admin_channel} beitreten um mehr Informatonen zu erhalten oder über die Verbannung zu diskutieren.",
-        "fr": "Vous avez été banni du réseau {network} pour {hours} heures par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
-        "it": "Sei stato bandito dalla rete {network} per {hours} ora/e da {banner}. Motivo: \"{reason}.\" Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
+        "en": "You have been banned from the {network} network for {hours} hours by {banner}. The reason given was \"{reason}\". You can join {admin_channel} for more information or to discuss the ban.",
+        "de": "Du wurdest von {banner} im {network} Netzwerk für {hours} verbannt. Der Grund war \"{reason}\". Du kannst {admin_channel} beitreten um mehr Informatonen zu erhalten oder über die Verbannung zu diskutieren.",
+        "fr": "Vous avez été banni du réseau {network} pour {hours} heures par {banner}. La raison donnée était \"{reason}\". Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
+        "it": "Sei stato bandito dalla rete {network} per {hours} ora/e da {banner}. Motivo: \"{reason}\". Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
     },
     "nbanned": {
-        "en": "Attention: {banner} has banned {banee} from the {network} network. The reason given was \"{reason}.\"",
-        "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}.\"",
-        "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}.\"",
-        "fr": "Attention : {banner} a banni {banee} du réseau {network}. Raison donnée : \"{reason}.\"",
-        "it": "Attentione : {banner} ha bandito {banee} dalla rete {network}. Motivo : \"{reason}.\""
+        "en": "Attention: {banner} has banned {banee} from the {network} network. The reason given was \"{reason}\".",
+        "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}\".",
+        "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}\".",
+        "fr": "Attention : {banner} a banni {banee} du réseau {network}. Raison donnée : \"{reason}\".",
+        "it": "Attentione : {banner} ha bandito {banee} dalla rete {network}. Motivo : \"{reason}\"."
     },
     "nbanned_notify": {
-        "en": "You have been banned from the {network} network by {banner}. The reason given was \"{reason}.\" You can join {admin_channel} for more information or to discuss the ban.",
-        "de": "Du wurdest von {banner} im {network} Netzwerk verbannt. Der Grund war \"{reason}.\" Du kannst {admin_channel} beitreten um mehr Informatonen zu erhalten oder über die Verbannung zu diskutieren.",
-        "fr": "Vous avez été banni du réseau {network} par {banner}. La raison donnée était \"{reason}.\" Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
-        "it": "Sei stato bandito dalla rete {network} da {banner}. Motivo: \"{reason}.\" Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
+        "en": "You have been banned from the {network} network by {banner}. The reason given was \"{reason}\". You can join {admin_channel} for more information or to discuss the ban.",
+        "de": "Du wurdest von {banner} im {network} Netzwerk verbannt. Der Grund war \"{reason}\". Du kannst {admin_channel} beitreten um mehr Informatonen zu erhalten oder über die Verbannung zu diskutieren.",
+        "fr": "Vous avez été banni du réseau {network} par {banner}. La raison donnée était \"{reason}\". Vous pouvez rejoindre {admin_channel} pour plus d'information or pour discuter du ban.",
+        "it": "Sei stato bandito dalla rete {network} da {banner}. Motivo: \"{reason}\". Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
     },
    "no_user": {
         "en": "{user} doesn't seem to be online on this server.",
