@@ -6,21 +6,19 @@ var _ = require('underscore')._,
     request = require('request');
 
 var youtube = function(dbot) {
-    this.ApiRoot = 'https://gdata.youtube.com/feeds/api';
-    this.params = {
-        'alt': 'json',
-        'v': 2
-    };
+    this.ApiRoot = 'https://www.googleapis.com/youtube/v3/';
     this.LinkRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
     this.api = {
         'search': function(term, callback) {
             var qs = _.clone(this.params);
-            request.get(this.ApiRoot + '/videos', {
-                'qs': _.extend(qs, { 
+            request.get(this.ApiRoot + 'search', {
+                'qs': {
+                    'key': this.config.api_key,
                     'q': term,
-                    'max-results': 1
-                }),
+                    'maxResults': 1,
+                    'part': "snippet"
+                },
                 'json': true
             }, function(error, response, body) {
                 callback(body); 
@@ -30,33 +28,22 @@ var youtube = function(dbot) {
 
     this.internalAPI = {
         'formatLink': function(v) {
-            var seconds = v['media$group']['yt$duration'].seconds,
-                minutes = Math.floor(seconds / 60),
-                seconds = ((seconds%60 < 10) ? "0"+seconds%60 : seconds%60);
-
-            if(!_.has(v, 'yt$rating')) {
-                v['yt$rating'] = {
-                    'numLikes': 0,
-                    'numDislikes': 0
-                };
-            }
-            if(!_.has(v, 'yt$statistics')) {
-                v['yt$statistics'] = { 'viewCount': 0 };
-            }
+            var time = v.contentDetails.duration.match(/^PT(\d+)M(\d+)S$/),
+                seconds = time[2],
+                minutes = time[1];
 
             var res = dbot.t('yt_video', {
-                'title': v.title['$t'],
-                'plays': v['yt$statistics'].viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
-                'author': v.author[0].name['$t'],
-                'likes': v['yt$rating'].numLikes,
-                'dislikes': v['yt$rating'].numDislikes,
+                'title': v.snippet.title,
+                'plays': v.statistics.viewCount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
+                'author': v.snippet.channelTitle,
+                'likes': v.statistics.likeCount,
+                'dislikes': v.statistics.dislikeCount,
                 'minutes': minutes,
                 'seconds': seconds
             });
 
-            var link = v.link[0].href.match(this.LinkRegex);
-            if(link) {
-                res += ' - https://youtu.be/' + link[2];
+            if(v.id) {
+                res += ' - https://youtu.be/' + v.id;
             }
 
             return res;
@@ -66,8 +53,20 @@ var youtube = function(dbot) {
     this.commands = {
         '~yt': function(event) {
             this.api.search(event.input[1], function(body) {
-                if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                    event.reply(this.internalAPI.formatLink(body.feed.entry[0]));
+                if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                    request.get(this.ApiRoot + 'videos', {
+                        'qs': {
+                            'key': this.config.api_key,
+                            'id': body.items[0].id.videoId,
+                            'maxResults': 1,
+                            'part': "snippet,contentDetails,statistics,status"
+                        },
+                        'json': true
+                    }, function(error, response, body) {
+                        if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                            event.reply(this.internalAPI.formatLink(body.items[0]));
+                        }
+                    }.bind(this));
                 } else {
                     event.reply(dbot.t('yt_noresults'));
                 }
@@ -79,12 +78,17 @@ var youtube = function(dbot) {
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, this.LinkRegex,
             function(match, name, callback) {
-                request.get(this.ApiRoot + '/videos/' + match[2], {
-                    'qs': this.params,
+                request.get(this.ApiRoot + 'videos', {
+                    'qs': {
+                        'key': this.config.api_key,
+                        'id': match[2],
+                        'maxResults': 1,
+                        'part': "snippet,contentDetails,statistics,status"
+                    },
                     'json': true
                 }, function(error, response, body) {
-                    if(_.isObject(body) && _.has(body, 'entry')) {
-                        callback(this.internalAPI.formatLink(body.entry));
+                    if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                        callback(this.internalAPI.formatLink(body.items[0]));
                     }
                 }.bind(this));
             }.bind(this));
