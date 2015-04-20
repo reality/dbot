@@ -29,7 +29,7 @@ var youtube = function(dbot) {
     this.internalAPI = {
         'formatLink': function(v) {
             var time = v.contentDetails.duration.match(/^PT(\d+)M(\d+)S$/),
-                seconds = time[2],
+                seconds =((time[2]%60 < 10) ? "0"+time[2]%60 : time[2]%60),
                 minutes = time[1];
 
             var res = dbot.t('yt_video', {
