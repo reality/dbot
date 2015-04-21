@@ -56,7 +56,7 @@ console.log('removing ' + uPart);
                         }
 
                         var offlineOps = {};
-                        async.each(ops, function(op, done) {
+                        async.eachSeries(ops, function(op, done) {
                             dbot.api.users.isOnline(server, cName, op, function(err, user, online) {
 				if(user) {
                                 if(!err && !online) offlineOps[op] = user;
@@ -93,7 +93,7 @@ console.log('removing ' + uPart);
                         }.bind(this));
                     }.bind(this));
                 }.bind(this));
-            } else {
+            } else { // no atheme
                 var channel = dbot.instance.connections[server].channels[cName]; 
                 var ops = _.filter(channel.nicks, function(user) {
                     if(this.config.notifyVoice) {
