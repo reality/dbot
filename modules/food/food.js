@@ -35,9 +35,11 @@ var food = function(dbot) {
     this.listener = function(event) {
         var match = event.message.match(new RegExp(dbot.config.name + ': what should i (have|eat|make)\\??( for (dinner|lunch|breakfast))?\\??', 'i'));
         if(match) {
+            var page = _.random(0, 200);
             request.get('http://food2fork.com/api/search', {
                 'qs': { 
                     'key': this.config.api_key,
+                    'page': page
                 },
                 'json': true
             }, function(error, response, body) {
