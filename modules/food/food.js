@@ -33,7 +33,7 @@ var food = function(dbot) {
     this.commands['~recipe'].regex = [/^recipe (.+)$/, 2];
 
     this.listener = function(event) {
-        var match = event.message.match(new RegExp(dbot.config.name + ': what should i (have|eat|make)\\??( for dinner)?\\??', 'i'));
+        var match = event.message.match(new RegExp(dbot.config.name + ': what should i (have|eat|make)\\??( for (dinner|lunch|breakfast))?\\??', 'i'));
         if(match) {
             request.get('http://food2fork.com/api/search', {
                 'qs': { 
