@@ -30,7 +30,7 @@ var food = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~recipe'].regex = [/^food (.+)$/, 2];
+    this.commands['~recipe'].regex = [/^recipe (.+)$/, 2];
 };
 
 exports.fetch = function(dbot) {
