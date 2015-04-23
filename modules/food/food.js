@@ -45,7 +45,7 @@ var food = function(dbot) {
                     var num = _.random(0, body.recipes.length - 1),
                         recipe = body.recipes[num];
 
-                    event.reply('You should make ' + recipe.title + '. See: ' + recipe.source_url);
+                    event.reply(event.user + ': You should make ' + recipe.title + '. See: ' + recipe.source_url);
                 }
             }.bind(this));
         }
