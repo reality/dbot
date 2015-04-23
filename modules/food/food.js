@@ -8,7 +8,7 @@ var _ = require('underscore')._,
 
 var food = function(dbot) {
     this.commands = {
-        '~food': function(event) {
+        '~recipe': function(event) {
             request.get('http://food2fork.com/api/search', {
                 'qs': { 
                     'key': this.config.api_key,
@@ -30,7 +30,7 @@ var food = function(dbot) {
             }.bind(this));
         }
     };
-    this.commands['~food'].regex = [/^food (.+)$/, 2];
+    this.commands['~recipe'].regex = [/^food (.+)$/, 2];
 };
 
 exports.fetch = function(dbot) {
