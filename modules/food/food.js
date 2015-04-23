@@ -49,7 +49,7 @@ var food = function(dbot) {
                 }
             }.bind(this));
         }
-    };
+    }.bind(this);
     this.on = 'PRIVMSG';
 };
 
