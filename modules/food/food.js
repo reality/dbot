@@ -12,7 +12,7 @@ var food = function(dbot) {
             request.get('http://food2fork.com/api/search', {
                 'qs': { 
                     'key': this.config.api_key,
-                    'search': event.input[1]
+                    'q': event.input[1]
                 },
                 'json': true
             }, function(error, response, body) {
