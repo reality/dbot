@@ -50,6 +50,7 @@ var food = function(dbot) {
             }.bind(this));
         }
     };
+    this.on = 'PRIVMSG';
 };
 
 exports.fetch = function(dbot) {
