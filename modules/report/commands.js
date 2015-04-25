@@ -126,12 +126,14 @@ var commands = function(dbot) {
                         if(quiet != 0 || warn != 0 || report != 0) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
-                            _.each(_.keys(items).sort(function(a, b) {
+                            var sTimes = _.keys(items).sort(function(a, b) {
                                 return moment(a).unix() - moment(b).unix();
-                            }), function(time) {
+                            });
+                            
+                            _.each(sTimes, function(time) {
                                 event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                             });
-                            event.reply(_.keys(items).join(', '));
+                            event.reply(sTimes.join(', '));
 
                             if(latest_ban.time != 0) {
                                 if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
