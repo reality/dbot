@@ -133,7 +133,7 @@ var commands = function(dbot) {
                                     return parseInt(a) - parseInt(b);
                                 });
                                 
-                                if(sTimes.length > 50) { 
+                                if(sTimes.length < 50) { 
                                     _.each(sTimes, function(time) {
                                         event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                                     });
