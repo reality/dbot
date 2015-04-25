@@ -95,17 +95,16 @@ var commands = function(dbot) {
                             report = 0,
                             items = {};
                         aliases.push(user.primaryNick);
-                        console.log(aliases);
 
                         dbot.modules.report.db.search('notifies', {
                             'server': event.server
                         }, function(notify) {
                             _.each(aliases, function(alias) {
-                                if(notify.message.match('banned ' + alias + ' ') || 
-                                   notify.message.match(' ' + alias + ' has been unbanned') || 
-                                   notify.message.match('issued a warning to ' + alias + ' ') || 
-                                   notify.message.match('has quieted ' + alias + ' ') ||
-                                   notify.message.match('has reported ' + alias + ' ')) {
+                                if(notify.message.indexOf('banned ' + alias + ' ') != -1 || 
+                                   notify.message.indexOf(' ' + alias + ' has been unbanned') != -1 || 
+                                   notify.message.indexOf('issued a warning to ' + alias + ' ') != -1 || 
+                                   notify.message.indexOf('has quieted ' + alias + ' ') != -1 ||
+                                   notify.message.indexOf('has reported ' + alias + ' ') != -1) {
                                     if(notify.type == 'ban') {
                                         ban++;
                                         if(notify.time > latest_ban.time) {
