@@ -14,7 +14,7 @@ then
     exit 1
 fi
 
-npm install googlemaps feedparser node-units tvdb crypto-js method-override 500px process async wordnik node-uuid underscore request sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
+npm install googlemaps feedparser node-units tvdb method-override 500px process async wordnik node-uuid underscore request sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
 
 cd public/
 wget https://github.com/twbs/bootstrap/releases/download/v3.3.2/bootstrap-3.3.2-dist.zip
