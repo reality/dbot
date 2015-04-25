@@ -131,7 +131,7 @@ var commands = function(dbot) {
                             }), function(time) {
                                 event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                             });
-                            event.reply(items.join(', '));
+                            event.reply(_.keys(items).join(', '));
 
                             if(latest_ban.time != 0) {
                                 if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
