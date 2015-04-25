@@ -95,6 +95,7 @@ var commands = function(dbot) {
                             report = 0,
                             items = {};
                         aliases.push(user.primaryNick);
+                        console.log(aliases);
 
                         dbot.modules.report.db.search('notifies', {
                             'server': event.server
