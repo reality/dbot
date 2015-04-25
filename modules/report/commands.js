@@ -100,11 +100,11 @@ var commands = function(dbot) {
                             'server': event.server
                         }, function(notify) {
                             _.each(aliases, function(alias) {
-                                if(notify.message.match('banned ' + alias) || 
-                                   notify.message.match(alias + ' has been unbanned') || 
-                                   notify.message.match('issued a warning to ' + alias) || 
-                                   notify.message.match('has quieted ' + alias) ||
-                                   notify.message.match('has reported ' + alias)) {
+                                if(notify.message.match('banned ' + alias + ' ') || 
+                                   notify.message.match(' ' + alias + ' has been unbanned') || 
+                                   notify.message.match('issued a warning to ' + alias + ' ') || 
+                                   notify.message.match('has quieted ' + alias + ' ') ||
+                                   notify.message.match('has reported ' + alias + ' ')) {
                                     if(notify.type == 'ban') {
                                         ban++;
                                         if(notify.time > latest_ban.time) {
@@ -134,7 +134,7 @@ var commands = function(dbot) {
                                 });
                                 
                                 _.each(sTimes, function(time) {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                    //event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                                 });
 
                                 if(latest_ban.time != 0) {
