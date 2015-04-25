@@ -133,9 +133,13 @@ var commands = function(dbot) {
                                     return parseInt(a) - parseInt(b);
                                 });
                                 
-                                _.each(sTimes, function(time) {
-                                    //event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
-                                });
+                                if(sTimes.length > 50) { 
+                                    _.each(sTimes, function(time) {
+                                        event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                    });
+                                } else {
+                                    event.reply('There are too many to show without killing everyone :S');
+                                }
 
                                 if(latest_ban.time != 0) {
                                     if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
