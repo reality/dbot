@@ -125,11 +125,11 @@ var commands = function(dbot) {
                         if(quiet != 0 || warn != 0 || report != 0) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
-                            _.each(_.keys(items).sort(function(a, b) {
+                            async.eachSeries(_.keys(items).sort(function(a, b) {
                                 return moment(a).unix() - moment(b).unix();
-                            }), function(time) {
+                            }), function(time, next) {
                                 event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
-                                console.log('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                setTimeout(next, 500);
                             });
 
                             if(latest_ban.time != 0) {
