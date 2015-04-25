@@ -85,72 +85,76 @@ var commands = function(dbot) {
 
             dbot.api.users.resolveUser(event.server, user, function(err, user) {
                 if(user) {
-                    var ban = 0,
-                        latest_ban = {'time':0},
-                        latest_unban = {'time':0},
-                        unban = 0,
-                        quiet = 0,
-                        warn = 0,
-                        report = 0,
-                        items = {};
+                    dbot.api.users.getUserAliases(user.id, function(err, aliases) {
+                        var ban = 0,
+                            latest_ban = {'time':0},
+                            latest_unban = {'time':0},
+                            unban = 0,
+                            quiet = 0,
+                            warn = 0,
+                            report = 0,
+                            items = {};
+                        aliases.push(user.primaryNick);
 
-// i'll fix it later
-                    dbot.modules.report.db.search('notifies', {
-                        'server': event.server
-                    }, function(notify) {
-                        if(notify.message.match('banned ' + user.primaryNick) || 
-                           notify.message.match(user.primaryNick + ' has been unbanned') || 
-                           notify.message.match('issued a warning to ' + user.primaryNick) || 
-                           notify.message.match('has quieted ' + user.primaryNick) ||
-                           notify.message.match('has reported ' + user.primaryNick)) {
-                            if(notify.type == 'ban') {
-                                ban++;
-                                if(notify.time > latest_ban.time) {
-                                    latest_ban = notify;
+                        dbot.modules.report.db.search('notifies', {
+                            'server': event.server
+                        }, function(notify) {
+                            _.each(aliases, function(alias) {
+                                if(notify.message.match('banned ' + alias) || 
+                                   notify.message.match(alias + ' has been unbanned') || 
+                                   notify.message.match('issued a warning to ' + alias) || 
+                                   notify.message.match('has quieted ' + alias) ||
+                                   notify.message.match('has reported ' + alias)) {
+                                    if(notify.type == 'ban') {
+                                        ban++;
+                                        if(notify.time > latest_ban.time) {
+                                            latest_ban = notify;
+                                        }
+                                    } else if(notify.type == 'unban') {
+                                        unban++;
+                                        if(notify.time > latest_unban.time) {
+                                            latest_unban = notify;
+                                        }
+                                    } else if(notify.type == 'quiet') {
+                                        quiet++;
+                                    } else if(notify.type == 'warn') {
+                                        warn++;
+                                    } else if(notify.type == 'report') {
+                                        report++;
+                                    }
+                                    items[notify.time] = notify.message;
                                 }
-                            } else if(notify.type == 'unban') {
-                                unban++;
-                                if(notify.time > latest_unban.time) {
-                                    latest_unban = notify;
-                                }
-                            } else if(notify.type == 'quiet') {
-                                quiet++;
-                            } else if(notify.type == 'warn') {
-                                warn++;
-                            } else if(notify.type == 'report') {
-                                report++;
-                            }
-                            items[notify.time] = notify.message;
-                        }
-                    }, function() {
-                        if(quiet != 0 || warn != 0 || report != 0) {
-                            event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
-
-                            var sTimes = _.keys(items).sort(function(a, b) {
-                                return parseInt(a) - parseInt(b);
                             });
-                            
-                            _.each(sTimes, function(time) {
-                                event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
-                            });
+                        }, function() {
+                            if(quiet != 0 || warn != 0 || report != 0) {
+                                event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
-                            if(latest_ban.time != 0) {
-                                if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
-                                    event.reply('Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
-                                    event.reply('Reason: ' + latest_ban.message);
+                                var sTimes = _.keys(items).sort(function(a, b) {
+                                    return parseInt(a) - parseInt(b);
+                                });
+                                
+                                _.each(sTimes, function(time) {
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                });
+
+                                if(latest_ban.time != 0) {
+                                    if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
+                                        event.reply('Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
+                                        event.reply('Reason: ' + latest_ban.message);
+                                    } else {
+                                        var a = moment(latest_ban.time);
+                                        var b = moment(latest_unban.time);
+                                        event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + b.diff(a, 'days') + ' days');
+                                        event.reply('Most recent ban reason: ' + latest_ban.message);
+                                    }
                                 } else {
-                                    var a = moment(latest_ban.time);
-                                    var b = moment(latest_unban.time);
-                                    event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + b.diff(a, 'days') + ' days');
-                                    event.reply('Most recent ban reason: ' + latest_ban.message);
+                                    event.reply('Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f');
                                 }
                             } else {
-                                event.reply('Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f');
+                                event.reply(user.primaryNick + ' has no record.');
                             }
-                        } else {
-                            event.reply(user.primaryNick + ' has no record.');
-                        }
-                    });
+                        });
+                    }.bind(this));
                 } else {
                     event.reply('never heard of em');
                 }
