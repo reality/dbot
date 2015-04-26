@@ -1,22 +1,36 @@
 var ctcp = function(dbot) {
-    var commands = {
-        "\x01VERSION\x01": function(event) {
-            // the current client version
-            event.replyNotice("\x01VERSION " + dbot.config.version + "\x01");
-        },
-        "\x01CLIENTINFO\x01": function(event){
-            // a list of all supported CTCP commands
-            event.replyNotice("\x01CLIENTINFO SOURCE VERSION USERINFO\x01");
-        },
-        "\x01SOURCE\x01": function(event){
-            event.replyNotice("\x01SOURCE https://github.com/reality/depressionbot\x01");
-        },
-        "\x01USERINFO\x01": function(event){
-            // a "witty" saying set by the user
-            event.replyNotice("\z01USERINFO " + dbot.config.name + "\x01");
+    this.listener = function(event) {
+        var matches = event.message.match(/\u0001[\w]+\u0001/);
+        if(matches) {
+            // We need the CTCP command
+            var question = matches[0];
+            // Cut \u0001 characters from command
+            question = question.slice(1,question.length-1);
+            switch(question) {
+                case 'CLIENTINFO':
+                    event.replyNotice("\u0001CLIENTINFO SOURCE VERSION USERINFO\u0001");
+                    break;
+                case 'FINGER':
+                    event.replyNotice("\u0001FINGER STOP FINGERING ME BRO\u0001");
+                    break;
+                case 'SOURCE':
+                    event.replyNotice("\u0001SOURCE "+dbot.config.repoRoot+"\u0001");
+                    break;
+                case 'TIME':
+                    var d = new Date();
+                    event.replyNotice("\u0001TIME "+d.toISOString()+"\u0001");
+                    break;
+                case 'USERINFO':
+                    event.replyNotice("\u0001USERINFO "+dbot.config.name+"\u0001");
+                    break;
+                case 'VERSION':
+                    event.replyNotice("\u0001VERSION "+dbot.config.version+"\u0001");
+                    break;
+                default:
+                    event.replyNotice("\u0001"+question+" Idk what you want. Try CLIENTINFO.\u0001");
+            }
         }
-    }
-    this.commands = commands;
+    };
     this.on = 'PRIVMSG';
 };
 
