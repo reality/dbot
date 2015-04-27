@@ -33,7 +33,8 @@ var youtube = function(dbot) {
                 var seconds =((time[2]%60 < 10) ? "0"+time[2]%60 : time[2]%60),
                     minutes = time[1];
             } else {
-                seconds =((time[1]%60 < 10) ? "0"+time[1]%60 : time[1]%60);
+                var seconds =((time[1]%60 < 10) ? "0"+time[1]%60 : time[1]%60),
+                    minutes = 0;
             }
 
             var res = dbot.t('yt_video', {
