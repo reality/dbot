@@ -221,11 +221,10 @@ var lastfm = function(dbot) {
                                     });
                                     var term = track.name + ' ' + track.artist.name;
                                     dbot.api.youtube.search(term, function(body) {
-                                        if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                                            var v = body.feed.entry[0];
-                                                link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
+                                       if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                                            var link = body.items[0].id
                                             if(link) {
-                                                output += ' - http://youtu.be/' + link[2];
+                                                output += ' - http://youtu.be/' + link;
                                             }
                                         }
                                         event.reply(output);
@@ -274,11 +273,10 @@ var lastfm = function(dbot) {
                         });
                     }
                     dbot.api.youtube.search(term, function(body) {
-                        if(_.isObject(body) && _.has(body, 'feed') && _.has(body.feed, 'entry')) {
-                            var v = body.feed.entry[0];
-                                link = v.link[0].href.match(dbot.modules.youtube.LinkRegex);
+                        if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                                var link = body.items[0].id
                             if(link) {
-                                output += ' - http://youtu.be/' + link[2];
+                                output += ' - http://youtu.be/' + link;
                             }
                         }
                         event.reply(output);
