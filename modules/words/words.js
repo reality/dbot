@@ -107,7 +107,11 @@ var words = function(dbot) {
             event.reply(event.params[1].split('').sort(function() { 
                 return (Math.round(Math.random()) - 0.5);
             }).join(''));  
-        } 
+        },
+
+        '~merge': function(event) {
+            var a = event.params[1]; var b = event.params[2]; event.reply(a.slice(0,_.random(1,a.length)) + b.slice(_.random(b.length-1)));
+        }
     };
     this.commands['~jimble'].regex = [/^jimble (.+)$/, 2];
 
