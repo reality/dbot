@@ -67,6 +67,18 @@ var radio = function(dbot) {
                     event.reply('Couldn\'t find DJ ' + dj + ' on IRC :(');
                 }
             });
+        },
+
+        '~nowplaying': function(event) {
+            if(this.listening) {
+                event.reply(dbot.say(a.server, a.name, dbot.t('now_playing', {
+                    'name': this.data['icy-name'],
+                    'song': title,
+                    'url': this.data['icy-url']
+                })));
+            } else {
+                event.reply('Radio not playing.');
+            }
         }
     };
     this.commands['~request'].regex = [/^request (.*)/, 2];
