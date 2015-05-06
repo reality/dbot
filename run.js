@@ -3,7 +3,7 @@ var fs = require('fs'),
     jsbot = require('./jsbot/jsbot'),
     DatabaseDriver = require('./database').DatabaseDriver,
     async = require('async');
-require('./snippets');
+    require('./snippets');
 
 var DBot = function() {
     

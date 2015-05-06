@@ -33,12 +33,12 @@ var radio = function(dbot) {
             }.bind(this));
 
             stream.on('metadata', function(metadata) {
-                var title = icecast.parseMetadata(metadata).StreamTitle;
+                this.title = icecast.parseMetadata(metadata).StreamTitle;
                 if(!_.isUndefined(title) && this.data['icy-name']) { // sowwy jesus
                     _.each(this.config.announce, function(a) {
                         dbot.say(a.server, a.name, dbot.t('now_playing', {
                             'name': this.data['icy-name'],
-                            'song': title,
+                            'song': this.title,
                             'url': this.data['icy-url']
                         }));
                     }, this);
@@ -73,7 +73,7 @@ var radio = function(dbot) {
             if(this.listening) {
                 event.reply(dbot.say(a.server, a.name, dbot.t('now_playing', {
                     'name': this.data['icy-name'],
-                    'song': title,
+                    'song': this.title,
                     'url': this.data['icy-url']
                 })));
             } else {
