@@ -9,6 +9,7 @@ var _ = require('underscore')._,
 var radio = function(dbot) {
     this.listening = false;
     this.data = false;
+    this.title = false;
     this.stream = false;
     this.internalAPI = {
         'startRadio': function() {
@@ -34,7 +35,7 @@ var radio = function(dbot) {
 
             stream.on('metadata', function(metadata) {
                 this.title = icecast.parseMetadata(metadata).StreamTitle;
-                if(!_.isUndefined(title) && this.data['icy-name']) { // sowwy jesus
+                if(!_.isUndefined(this.title) && this.data['icy-name']) { // sowwy jesus
                     _.each(this.config.announce, function(a) {
                         dbot.say(a.server, a.name, dbot.t('now_playing', {
                             'name': this.data['icy-name'],
