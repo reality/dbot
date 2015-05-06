@@ -72,11 +72,11 @@ var radio = function(dbot) {
 
         '~nowplaying': function(event) {
             if(this.listening) {
-                event.reply(dbot.say(a.server, a.name, dbot.t('now_playing', {
+                event.reply(dbot.t('now_playing', {
                     'name': this.data['icy-name'],
                     'song': this.title,
                     'url': this.data['icy-url']
-                })));
+                }));
             } else {
                 event.reply('Radio not playing.');
             }
