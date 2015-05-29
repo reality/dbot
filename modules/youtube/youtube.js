@@ -29,12 +29,18 @@ var youtube = function(dbot) {
     this.internalAPI = {
         'formatLink': function(v) {
             var time = v.contentDetails.duration.match(/^PT(\d+)?M?(\d+)S$/);
-            if(time[1]) {
-                var seconds =((time[2]%60 < 10) ? "0"+time[2]%60 : time[2]%60),
-                    minutes = time[1];
+            if(time) {
+              if(time[1]) {
+                  var seconds =((time[2]%60 < 10) ? "0"+time[2]%60 : time[2]%60),
+                      minutes = time[1];
+              } else {
+                  var seconds =((time[1]%60 < 10) ? "0"+time[1]%60 : time[1]%60),
+                      minutes = 0;
+              }
             } else {
-                var seconds =((time[1]%60 < 10) ? "0"+time[1]%60 : time[1]%60),
-                    minutes = 0;
+              minutes = 'id';
+              seconds = 'fk';
+              console.log(v.contentDetails.duration);
             }
 
             var res = dbot.t('yt_video', {
