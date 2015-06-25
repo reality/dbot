@@ -36,7 +36,7 @@ console.log('sending msg to ' + nick);
                 message = message.replace(/(#[\w\-]+)/g, '\u000312$1\u000f');
 
                 _.each(_.union(message.match(/ @([\d\w*|-]+)/g), message.match(/([\d\w*|-]+)@ ?/g)), function(u) {
-                    u = u.replace(/\s|@/g/, '');
+                    u = u.replace(/\s|@/g, '');
                     message = message.replace(u, colours['nicks'] + u + "\u000f");
                     notifier += '[' + colours['nicks'] + u + '\u000f]';
                 });
