@@ -17,12 +17,13 @@ var atheme = function(dbot) {
             } else {
                 this.flagStack[server][channel] = {
                     'flags': {},
-                    'callbacks': [ callback ]
+                    'callbacks': [ callback ],
+                    'timeout': null
                 };
             }
 
             dbot.say(server, 'chanserv', 'FLAGS ' + channel);
-            setTimeout(function() { // Delete callback if no response
+            this.flagStack[server][channel].timeout = setTimeout(function() { // Delete callback if no response
                 if(_.has(this.flagStack[server], channel)) {
                     _.each(this.flagStack[server][channel].callbacks, function(callback) {
                         callback(true, null);
@@ -95,7 +96,7 @@ var atheme = function(dbot) {
                                 delete allFlags[u];
                             }
                         });
-			async.each(_.keys(hostMasks), function(hostMask, done) {
+                        async.each(_.keys(hostMasks), function(hostMask, done) {
                             this.api.getVHosts(event.server, hostMask.split('@')[1], function(err, users) {
                                 _.each(users, function(user) {
                                     allFlags[user] = hostMasks[hostMask];
@@ -103,12 +104,12 @@ var atheme = function(dbot) {
                                 done();
                             });
                         }.bind(this), function() {
-                        console.log('DONE');
-                            _.each(this.flagStack[event.server][end[1]].callbacks, function(callback) {
-                                callback(null, this.flagStack[event.server][end[1]].flags);
-                            }.bind(this));
-                            delete this.flagStack[event.server][end[1]];
-			}.bind(this));
+                          _.each(this.flagStack[event.server][end[1]].callbacks, function(callback) {
+                              callback(null, this.flagStack[event.server][end[1]].flags);
+                          }.bind(this));
+                          clearTimeout(this.flagStack[event.server][end[1]].timeout);
+                          delete this.flagStack[event.server][end[1]];
+                        }.bind(this));
                     }
                 }
             } else if(event.user === 'HostServ') {
