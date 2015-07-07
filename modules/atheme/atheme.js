@@ -18,13 +18,14 @@ var atheme = function(dbot) {
                 this.flagStack[server][channel] = {
                     'flags': {},
                     'callbacks': [ callback ],
-                    'timeout': null
+                    'timeout': null,
+                    'working': false
                 };
             }
 
             dbot.say(server, 'chanserv', 'FLAGS ' + channel);
             this.flagStack[server][channel].timeout = setTimeout(function() { // Delete callback if no response
-                if(_.has(this.flagStack[server], channel)) {
+                if(_.has(this.flagStack[server], channel) && this.flagStack[server][channel].working == false) {
                     _.each(this.flagStack[server][channel].callbacks, function(callback) {
                         callback(true, null);
                     });
@@ -87,6 +88,7 @@ var atheme = function(dbot) {
                     this.flagStack[event.server][flags[4]].flags[flags[2]] = flags[3];
                 } else if(end) {
                     if(_.has(this.flagStack[event.server], end[1])) {
+                      this.flagStack[event.server][end[1]].working = true;
                         // Parse wildcard hostmasks to nicks
                         var allFlags = this.flagStack[event.server][end[1]].flags,
                             hostMasks = {};
