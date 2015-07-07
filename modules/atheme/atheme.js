@@ -40,12 +40,13 @@ var atheme = function(dbot) {
             } else {
                 this.hostStack[server][mask] = {
                     'users': [],
-                    'callbacks': [ callback ]
+                    'callbacks': [ callback ],
+                    'timeout': null
                 };
             }
 
             dbot.say(server, 'hostserv', 'LISTVHOST ' + mask);
-            setTimeout(function() { // Delete callback if no response
+            this.hostStack[server][mask].timeout = setTimeout(function() { // Delete callback if no response
                 if(_.has(this.hostStack[server], mask)) {
                     _.each(this.hostStack[server][mask].callbacks, function(callback) {
                         callback(true, null);
@@ -124,6 +125,7 @@ var atheme = function(dbot) {
                             _.each(this.hostStack[event.server][mask].callbacks, function(callback) {
                                 callback(null, this.hostStack[event.server][mask].users);
                             }, this);
+                            clearTimeout(this.hostStack[event.server][mask].timeout);
                             delete this.hostStack[event.server][mask];
                         }
                     }
