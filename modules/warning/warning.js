@@ -81,6 +81,24 @@ var warning = function(dbot) {
             }.bind(this));
         },
 
+        '~rmlastwarning': function(event) {
+            var lastWarning = null;
+            dbot.api.users.resolveUser(event.server, event.params[1], function(err, warnee) {
+              this.db.search('warnings', { 'server': event.server, 'warnee': warnee.id }, function(warning) {
+                if(!lastWarning || (lastWarning && lastWarning.time < warning.time)) {
+                  lastWarning = warning;
+                }
+              }, function(err) {
+                if(!lastWarning) {
+                  event.reply('Looks like ' + event.params[1] + ' has no warnings.');
+                } else {
+                  this.db.del('warnings', lastWarning.id, function(err) {
+                      event.reply(dbot.t('warning_removed') + ' - ' + lastWarning.reason);
+                  });
+                }
+              }.bind(this));
+            }.bind(this));
+        },
         '~warnings': function(event) {
             var warnee = event.params[1],
                 server = event.server;
@@ -117,6 +135,7 @@ var warning = function(dbot) {
     this.commands['~warn'].access = 'power_user';
     this.commands['~rmwarning'].regex = [/^rmwarning ([\d\w\s\-]+?)[ ]?=[ ]?(.+)$/, 3];
     this.commands['~rmwarning'].access = 'power_user';
+    this.commands['~rmlastwarning'].access = 'power_user';
 };
 
 exports.fetch = function(dbot) {
