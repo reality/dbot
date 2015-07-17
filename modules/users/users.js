@@ -2,7 +2,8 @@
  * Name: Users
  * Description: Track known users
  */
-var _ = require('underscore')._;
+var _ = require('underscore')._,
+    moment = require('moment');
 
 var users = function(dbot) {
     /*** Internal API ***/
