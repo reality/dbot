@@ -340,7 +340,7 @@ var commands = function(dbot) {
                     }, function() {
                         event.reply(nick + ' has sought help ' + results.length + ' times under the host ' + host + ' or nick ' + nick); 
                         _.each(results, function(n) {
-                            event.reply('[' + moment(parseInt(n.time)).format('DD/MM/YYYY') + '][' + n.user.split('.')[0] + '] ' + n.message); 
+                            event.reply('[' + moment(parseInt(n.time)).format('DD/MM/YYYY HH:mm:ss') + '][' + n.user.split('.')[0] + '] ' + n.message); 
                         });
                     });
                 } else {
