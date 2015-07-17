@@ -137,12 +137,23 @@ var users = function(dbot) {
                 }
             }.bind(this));
         }.bind(this);
+        var checkUserTime = function(user, done) {
+          if(!_.has(user, 'lastUsed') || (_.has(user, 'lastUsed') && moment(user.lastUsed).diff(moment(user.lastUsed).add(1, day), 'days') > 0)) {
+            dbot.api.log.log('tripsit', 'tripbot', '[USERDEBUG] Updating last used date for ' + user.primaryNick);
+            user.lastUsed = moment().unix(); 
+            this.db.save('users', user.id, user, done);
+          } else {
+            done(null)
+          }
+        }.bind(this);
 
         dbot.instance.addPreEmitHook(function(event, callback) {
             if(event.user && _.include(['JOIN', 'PRIVMSG'], event.action)) {
                 checkUser(event, function(err, user) {
-                    event.rUser = user; 
-                    callback(null);
+                  checkUserTime(user, function() {
+                      event.rUser = user; 
+                      callback(null);
+                  });
                 });
             } else {
                 callback(null);
