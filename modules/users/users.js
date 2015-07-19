@@ -149,7 +149,7 @@ var users = function(dbot) {
         }.bind(this);
 
         dbot.instance.addPreEmitHook(function(event, callback) {
-            if(event.user && _.include(['JOIN', 'PRIVMSG'], event.action)) {
+            if(event.user && _.include(['JOIN', 'PRIVMSG', 'QUIT'], event.action)) {
                 checkUser(event, function(err, user) {
                   checkUserTime(user, function() {
                       event.rUser = user; 
