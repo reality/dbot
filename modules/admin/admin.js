@@ -53,7 +53,9 @@ var admin = function(dbot) {
     };
 
     this.onLoad = function() {
-      dbot.api.timers.addTimer(60000, dbot.save);
+      dbot.api.timers.addTimer(60000, function() {
+        dbot.save();
+      });
     };
 };
 
