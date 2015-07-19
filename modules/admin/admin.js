@@ -51,6 +51,10 @@ var admin = function(dbot) {
             fs.writeFileSync('config.json', JSON.stringify(config, null, '    '));
         }
     };
+
+    this.onLoad = function() {
+      dbot.api.timers.addTimer(60000, dbot.save);
+    };
 };
 
 exports.fetch = function(dbot) {
