@@ -6,7 +6,8 @@
 var _ = require('underscore')._,
     request = require('request'),
     async = require('async'),
-    crypto = require('crypto');
+    crypto = require('crypto'),
+    humanise = require('humanize');
 
 var imgur = function(dbot) {
     this.ApiRoot = 'https://api.imgur.com/3/';
@@ -42,6 +43,8 @@ var imgur = function(dbot) {
                 }
                 info += imgData.views + ' views (';
                 info += imgData.width + 'x' + imgData.height + ')';
+                
+                info += ' ('+humanise.filesize(imgData.size)+')';
             }
 
             return info;
