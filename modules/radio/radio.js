@@ -44,7 +44,7 @@ var radio = function(dbot) {
                             'song': this.title,
                             'url': this.data['icy-url']
                         }));
-                        recentUpdate = true;
+                        this.recentUpdate = true;
                       }
                     }, this);
                 }
