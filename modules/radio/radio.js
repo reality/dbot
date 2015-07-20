@@ -11,6 +11,7 @@ var radio = function(dbot) {
     this.data = false;
     this.title = false;
     this.stream = false;
+    this.recentUpdate = false;
     this.internalAPI = {
         'startRadio': function() {
             var stream = icecast.createReadStream(this.config.stream);
@@ -37,11 +38,14 @@ var radio = function(dbot) {
                 this.title = icecast.parseMetadata(metadata).StreamTitle;
                 if(!_.isUndefined(this.title) && this.data['icy-name']) { // sowwy jesus
                     _.each(this.config.announce, function(a) {
+                      if(!this.recentUpdate) {
                         dbot.say(a.server, a.name, dbot.t('now_playing', {
                             'name': this.data['icy-name'],
                             'song': this.title,
                             'url': this.data['icy-url']
                         }));
+                        recentUpdate = true;
+                      }
                     }, this);
                 }
             }.bind(this));
@@ -90,6 +94,10 @@ var radio = function(dbot) {
             if(this.listening === false) {
                 this.internalAPI.startRadio();
             }
+        }.bind(this));
+
+        dbot.api.timers.addTimer(120000, function() {
+            this.recentUpdate = false;
         }.bind(this));
     }.bind(this);
     this.onDestroy = function() {
