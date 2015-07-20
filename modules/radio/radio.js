@@ -38,7 +38,7 @@ var radio = function(dbot) {
                 this.title = icecast.parseMetadata(metadata).StreamTitle;
                 if(!_.isUndefined(this.title) && this.data['icy-name']) { // sowwy jesus
                     _.each(this.config.announce, function(a) {
-                      if(!this.recentUpdate) {
+                      if(this.recentUpdate == false) {
                         dbot.say(a.server, a.name, dbot.t('now_playing', {
                             'name': this.data['icy-name'],
                             'song': this.title,
