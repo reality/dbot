@@ -37,7 +37,7 @@ var wolframalpha = function(dbot) {
             });
         }
     };
-    this.commands['~wr'].regex = [/^wr ([\d\w\s-]*)/, 2];
+    this.commands['~wr'].regex = [/^wr (.*)/, 2];
 };
 
 exports.fetch = function(dbot) {
