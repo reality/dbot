@@ -97,7 +97,7 @@ var kick = function(dbot) {
                 delete this.tempBans[server][banee];
             }.bind(this));  
           }.bind(this));
-        }.bind(this);
+        }
     };
     
     this.listener = function(event) {
