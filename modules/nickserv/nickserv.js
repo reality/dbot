@@ -42,6 +42,8 @@ var nickserv = function(dbot) {
             }.bind(this), 4000);
         }
     };
+    this.api['auth'].external = true;
+    this.api['auth'].extMap = [ 'server', 'nick', 'callback' ];
 
     this.commands = {
         '~auth': function(event) {
