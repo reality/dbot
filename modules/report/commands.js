@@ -84,7 +84,7 @@ var commands = function(dbot) {
               } else {
                 event.reply('No idea who that is mate.');
               }
-            });
+            }.bind(this));
         },
 
         '~sustatus': function(event) {
