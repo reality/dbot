@@ -9,74 +9,81 @@ var commands = function(dbot) {
                 typeCounts = {},
                 total = 0,
                 offString = event.params[1] || null;
-                offset = moment().subtract(offString, 1).valueOf() || null;
+                offset = moment().subtract(offString, 1).valueOf() || null,
+                nick = event.params[2] || event.user;
 
             /*if(!offset || !offset.isValid()) {
                 event.reply('Invalid timescale. Try \'week\'');
                 return;
             }*/
 
-            this.db.scan('notifies', function(notify) {
-                if(notify.user == event.rUser.id) {
-                    if(!offString) {
-                        if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
-                        if(!_.has(typeCounts, notify.type)) typeCounts[notify.type] = 0;
-                        chanCounts[notify.channel]++;
-                        typeCounts[notify.type]++;
-                        total++;
-                    } else {
-                        if(notify.time > offset) {
+            dbot.api.users.resolveUser(event.server, nick, function(err, user) {
+              if(user) { 
+                this.db.scan('notifies', function(notify) {
+                    if(notify.user == user.id) {
+                        if(!offString) {
                             if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
                             if(!_.has(typeCounts, notify.type)) typeCounts[notify.type] = 0;
                             chanCounts[notify.channel]++;
                             typeCounts[notify.type]++;
                             total++;
+                        } else {
+                            if(notify.time > offset) {
+                                if(!_.has(chanCounts, notify.channel)) chanCounts[notify.channel] = 0;
+                                if(!_.has(typeCounts, notify.type)) typeCounts[notify.type] = 0;
+                                chanCounts[notify.channel]++;
+                                typeCounts[notify.type]++;
+                                total++;
+                            }
                         }
                     }
-                }
-            }, function() {
-                var cCounts = _.chain(chanCounts)
-                    .pairs()
-                    .sortBy(function(p) { return p[1]; })
-                    .reverse()
-                    .first(10)
-                    .value();
+                }, function() {
+                    var cCounts = _.chain(chanCounts)
+                        .pairs()
+                        .sortBy(function(p) { return p[1]; })
+                        .reverse()
+                        .first(10)
+                        .value();
 
-                var cString = '';
-                for(var i=0;i<cCounts.length;i++) {
-                    cString += cCounts[i][0] + " (" + cCounts[i][1] + "), ";
-                }
-                cString = cString.slice(0, -2);
+                    var cString = '';
+                    for(var i=0;i<cCounts.length;i++) {
+                        cString += cCounts[i][0] + " (" + cCounts[i][1] + "), ";
+                    }
+                    cString = cString.slice(0, -2);
 
-                var tCounts = _.chain(typeCounts)
-                    .pairs()
-                    .sortBy(function(p) { return p[1]; })
-                    .reverse()
-                    .first(10)
-                    .value();
+                    var tCounts = _.chain(typeCounts)
+                        .pairs()
+                        .sortBy(function(p) { return p[1]; })
+                        .reverse()
+                        .first(10)
+                        .value();
 
-                var tString = '';
-                for(var i=0;i<tCounts.length;i++) {
-                    tString += tCounts[i][0] + " (" + tCounts[i][1] + "), ";
-                }
-                tString = tString.slice(0, -2);
+                    var tString = '';
+                    for(var i=0;i<tCounts.length;i++) {
+                        tString += tCounts[i][0] + " (" + tCounts[i][1] + "), ";
+                    }
+                    tString = tString.slice(0, -2);
 
-                if(offString) {
-                    event.reply(dbot.t('timed_notifies', {
-                        'user': event.user,
-                        'count': total,
-                        'offString': offString,
-                        'cString': cString,
-                        'tString': tString
-                    }));
-                } else {
-                    event.reply(dbot.t('total_notifies', {
-                        'user': event.user,
-                        'count': total,
-                        'cString': cString,
-                        'tString': tString
-                    }));
-                }
+                    if(offString) {
+                        event.reply(dbot.t('timed_notifies', {
+                            'user': user.priamryNick,
+                            'count': total,
+                            'offString': offString,
+                            'cString': cString,
+                            'tString': tString
+                        }));
+                    } else {
+                        event.reply(dbot.t('total_notifies', {
+                            'user': user.primaryNick,
+                            'count': total,
+                            'cString': cString,
+                            'tString': tString
+                        }));
+                    }
+                });
+              } else {
+                event.reply('No idea who that is mate.');
+              }
             });
         },
 
@@ -363,7 +370,7 @@ var commands = function(dbot) {
     commands['~sustatus'].regex = [/^sustatus ([^ ]+)$/, 2];
     commands['~ustatus'].access = 'power_user';
     commands['~sustatus'].access = 'power_user';
-    commands['~sustatus'].access = 'concerning';
+    commands['~ncount'].access = 'power_user';
 
     return commands;
 };
