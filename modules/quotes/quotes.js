@@ -11,10 +11,9 @@ var quotes = function(dbot) {
     this.internalAPI = {
         // Parse quote interpolations
         'interpolatedQuote': function(server, channel, username, key, quote, callback) {
-            console.log(quote);
             var quoteRefs = quote.match(/~~([\d\w\s-]*)~~/g);
             if(quoteRefs) {
-                var ref = this.internalAPI.cleanRef(quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim());
+                var ref = quoteRefs[0].replace(/^~~/,'').replace(/~~$/,'').trim();
                 if(ref === '-nicks-') {
                     if(_.has(dbot.instance.connections[server].channels, channel)) {
                         var nicks =
@@ -30,26 +29,18 @@ var quotes = function(dbot) {
                         username, key, quote, callback);
                 } else {
                     this.api.getQuote(ref, function(interQuote) {
-                        if(!interQuote || ref == key) {
+                        if(!interQuote) {
                             interQuote = '';
                         }
                         quote = quote.replace('~~' + ref + '~~', interQuote);
                         this.internalAPI.interpolatedQuote(server, channel,
                             username, key, quote, callback);
-                    }.bind(this));
+                    }.bind(this), true);
                 }
             } else {
                 callback(quote);
             }
         }.bind(this),
-
-        'cleanRef': function(key) {
-            key = key.toLowerCase();
-            while(key.slice(-1) == '_') {
-                key = key.substring(0, key.length-1);
-            }
-            return key;
-        },
 
         'resetRemoveTimer': function(event, key, quote) {
             this.rmAllowed = false;
@@ -107,10 +98,17 @@ var quotes = function(dbot) {
 
         }, 
 
-        'getQuote': function(key, callback) {
+        'getQuote': function(key, callback, removeRefs) {
             this.api.getQuoteCategory(key, function(category) {
                 if(category) {
                     var quotes = category.quotes;
+
+                    if(removeRefs) {
+                      quotes = _.filter(quotes, function(q) {
+                        return !q.match('~~'+key+'~~');
+                      });
+                    }
+
                     var index = _.random(0, quotes.length - 1); 
                     callback(quotes[index]);
                 } else {
@@ -120,7 +118,6 @@ var quotes = function(dbot) {
         },
 
         'getInterpolatedQuote': function(server, channel, username, key, callback) {
-            console.log(key);
             key = key.trim().toLowerCase(),
 
             this.api.getQuote(key, function(quote) {
