@@ -66,7 +66,7 @@ var commands = function(dbot) {
 
                     if(offString) {
                         event.reply(dbot.t('timed_notifies', {
-                            'user': user.priamryNick,
+                            'user': user.primaryNick,
                             'count': total,
                             'offString': offString,
                             'cString': cString,
