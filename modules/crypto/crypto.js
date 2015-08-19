@@ -18,7 +18,7 @@ var crypto = function(dbot) {
                 event.reply(err);
             }
         },
-        '~random': function(event) {
+        '~randomdata': function(event) {
             try {
                 var count = parseInt(event.params[1]);
                 if(count > 222) {
