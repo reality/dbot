@@ -3,7 +3,9 @@
  * Description: Reminds you
  */
 
-var crypto = require('crypto');
+var crypto = require('crypto'),
+    moment = require('moment'),
+    _ = require('underscore')._;
 
 var remind = function(dbot) {
     var self = this;
@@ -94,6 +96,18 @@ var remind = function(dbot) {
                 return;
             }
             this.internalAPI.doReminder(event,event.user,event.params[1],event.params.splice(2, event.params.length-1).join(' ').trim());
+       },
+       '~myreminders': function(event) {
+         var reminders = _.filter(dbot.db.remindTimers, function(t){ return t.target == event.user; });
+         if(_.size(reminders) > 0) {
+           var output = '';
+           _.each(reminders, function(reminder, i) {
+             output += (i+1) + ': "' + reminder.message + '" in ' + moment(reminder.time).toNow(true) + '. '; 
+           });  
+           event.reply('You have ' + _.size(reminders) + ' active reminders. ' + output);
+         } else {
+           event.reply('You have no currently active timers.');
+         }
        }
     };
 
