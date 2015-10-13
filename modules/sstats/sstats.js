@@ -75,6 +75,7 @@ var sstats = function(dbot) {
     };
 
     this.listener = function(event) {
+        if(event.channel == event.user) return; // ignore PMs
         event.cStats.lines++;
         event.uStats.lines++;
 
