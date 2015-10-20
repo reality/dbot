@@ -56,7 +56,7 @@ var dns = function(dbot) {
     commands['~dnsbl'].regex = [/^dnsbl ([\d\w\s\.-]*)/, 2];
     this.commands = commands;
 
-    if(this.config.dnsblconn == true) {
+    if(dbot.config.modules.dns.dnsblconn == true) {
       this.listener = function(event) {
         if(event.message.match('CLICONN')) {
           var ip = event.message.match('CLICONN ([^ ]+).*?((?:[0-9]{1,3}\.){3}[0-9]{1,3}) users');
