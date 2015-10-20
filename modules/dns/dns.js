@@ -61,6 +61,7 @@ var dns = function(dbot) {
         if(event.message.match('CLICONN')) {
           var ip = event.message.match('CLICONN ([^ ]+).*?((?:[0-9]{1,3}\.){3}[0-9]{1,3}) users');
               revIp = ip[2].trim().split('.').reverse().join('.');
+          dbot.say(event.server, '#dnsbl', 'DEBUG: Looking up ' + ip[2] + ' for ' + ip[1] + ' @ ' + revIp);
           dnsm.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
             if(!err && res) {
               dbot.say(event.server, '#dnsbl', 'ALERT: ' + ip[1] + ' connecting from ' + ip[2] + ' may well be NAUGHTY.');
