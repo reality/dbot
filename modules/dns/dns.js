@@ -53,7 +53,7 @@ var dns = function(dbot) {
           });
         }
     };
-    commands['~dnsbl'].regex = [/^dnsbl ([\d\w\s-]*)/, 2];
+    commands['~dnsbl'].regex = [/^dnsbl ([\d\w\s\.-]*)/, 2];
     this.commands = commands;
 
     this.on = 'PRIVMSG';
