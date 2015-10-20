@@ -2,14 +2,14 @@
  * Module Name: DNS 
  * Description: Performs and reports on basic DNS functions.
  */
-var dnsmod = require('dns'),
+var dns = require('dns'),
     request = require('request');
 
 var dns = function(dbot) {
     var commands = {
         '~lookup': function(event) {
             domain = event.params[1];
-            dnsmod.lookup(domain, function (error, addr) {
+            dns.lookup(domain, function (error, addr) {
                 if (error) {
                     event.reply(dbot.t("lookup-error",{"domain": domain, "code": error.code}));
                 } else {
@@ -20,7 +20,7 @@ var dns = function(dbot) {
 
         '~rdns': function(event) {
             ip = event.params[1];
-            dnsmod.reverse(ip, function (error, domain) {
+            dns.reverse(ip, function (error, domain) {
                 if (error) {
                     event.reply(dbot.t("rdns-error",{"domain": domain, "ip": ip, "error": error.code}));
                 } else {
@@ -40,6 +40,17 @@ var dns = function(dbot) {
                     event.reply('No info about ' + ip);
                 }
             });
+        },
+
+        '~dnsbl': function(event) {
+          var revIp = event.message.split('').reverse().join('');
+          dns.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
+            if(!err && res) {
+              event.reply(event.message + ' is listed as an abusive IP.');
+            } else {
+              event.reply(event.message + ' does not seem to be a Naughty Nancy.');
+            }
+          });
         }
     };
     this.commands = commands;
