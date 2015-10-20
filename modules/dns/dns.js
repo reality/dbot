@@ -2,14 +2,14 @@
  * Module Name: DNS 
  * Description: Performs and reports on basic DNS functions.
  */
-var dns = require('dns'),
+var dnsm = require('dns'),
     request = require('request');
 
 var dns = function(dbot) {
     var commands = {
         '~lookup': function(event) {
             domain = event.params[1];
-            dns.lookup(domain, function (error, addr) {
+            dnsm.lookup(domain, function (error, addr) {
                 if (error) {
                     event.reply(dbot.t("lookup-error",{"domain": domain, "code": error.code}));
                 } else {
@@ -20,7 +20,7 @@ var dns = function(dbot) {
 
         '~rdns': function(event) {
             ip = event.params[1];
-            dns.reverse(ip, function (error, domain) {
+            dnsm.reverse(ip, function (error, domain) {
                 if (error) {
                     event.reply(dbot.t("rdns-error",{"domain": domain, "ip": ip, "error": error.code}));
                 } else {
@@ -44,7 +44,7 @@ var dns = function(dbot) {
 
         '~dnsbl': function(event) {
           var revIp = event.message.trim().split('.').reverse().join('.');
-          dns.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
+          dnsm.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
             if(!err && res) {
               event.reply(event.message + ' is listed as an abusive IP.');
             } else {
