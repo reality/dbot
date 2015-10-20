@@ -56,7 +56,20 @@ var dns = function(dbot) {
     commands['~dnsbl'].regex = [/^dnsbl ([\d\w\s\.-]*)/, 2];
     this.commands = commands;
 
-    this.on = 'PRIVMSG';
+    if(this.config.dnsblconn == true) {
+      this.listener = function(event) {
+        if(event.message.match('CLICONN')) {
+          var ip = event.message.match('CLICONN ([^ ]+).*?((?:[0-9]{1,3}\.){3}[0-9]{1,3}) users');
+              revIp = ip[2].trim().split('.').reverse().join('.');
+          dnsm.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
+            if(!err && res) {
+              dbot.say(event.server, '#dnsbl', 'ALERT: ' + ip[1] + ' connecting from ' + ip[2] + ' may well be NAUGHTY.');
+            }
+          });
+        }
+      }
+      this.on = 'NOTICE';
+    }
 };
 
 exports.fetch = function(dbot) {
