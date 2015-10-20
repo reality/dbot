@@ -43,7 +43,7 @@ var dns = function(dbot) {
         },
 
         '~dnsbl': function(event) {
-          var revIp = event.message.split('').reverse().join('');
+          var revIp = event.message.trim().split('.').reverse().join('.');
           dns.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
             if(!err && res) {
               event.reply(event.message + ' is listed as an abusive IP.');
