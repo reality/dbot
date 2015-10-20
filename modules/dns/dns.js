@@ -43,16 +43,17 @@ var dns = function(dbot) {
         },
 
         '~dnsbl': function(event) {
-          var revIp = event.message.trim().split('.').reverse().join('.');
+          var revIp = event.input[1].trim().split('.').reverse().join('.');
           dnsm.lookup(revIp + '.cbl.abuseat.org', function(err, res) {
             if(!err && res) {
-              event.reply(event.message + ' is listed as an abusive IP.');
+              event.reply(event.input[1] + ' is listed as an abusive IP.');
             } else {
-              event.reply(event.message + ' does not seem to be a Naughty Nancy.');
+              event.reply(event.input[1] + ' does not seem to be a Naughty Nancy.');
             }
           });
         }
     };
+    commands['~dnsbl'].regex = [/^dnsbl ([\d\w\s-]*)/, 2];
     this.commands = commands;
 
     this.on = 'PRIVMSG';
