@@ -139,20 +139,6 @@ var commands = function(dbot) {
                 network = this.config.network_name[event.server];
             }
 
-            // Ban the user from all channels
-            var i = 0;
-            var banChannel = function(channels) {
-                if(i >= channels.length) return;
-                var channel = channels[i];
-                this.api.ban(server, host, channel);
-                this.api.kick(server, banee, channel, reason + 
-                    ' (network-wide ban requested by ' + banner + ')');
-                setTimeout(function() {
-                    i++; banChannel(channels);
-                }, 1000);
-            }.bind(this);
-            banChannel(channels);
-
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
                 // Add host record entry
                 if(host) {
@@ -161,6 +147,21 @@ var commands = function(dbot) {
                     this.api.kick(server, banee, event.channel, reason + 
                         ' (network-wide ban requested by ' + banner + ')');
                     channels = _.without(channels, event.channel);
+
+                  // Ban the user from all channels
+                  var i = 0;
+                  var banChannel = function(channels) {
+                      if(i >= channels.length) return;
+                      var channel = channels[i];
+                      this.api.ban(server, host, channel);
+                      this.api.kick(server, banee, channel, reason + 
+                          ' (network-wide ban requested by ' + banner + ')');
+                      setTimeout(function() {
+                          i++; banChannel(channels);
+                      }, 1000);
+                  }.bind(this);
+                  banChannel(channels);
+
 
                     this.hosts[event.server][banee] = host;
 
