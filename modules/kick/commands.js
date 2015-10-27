@@ -139,15 +139,16 @@ var commands = function(dbot) {
                 network = this.config.network_name[event.server];
             }
 
-            // Ban from current channel first
-            this.api.ban(server, host, event.channel);
-            this.api.kick(server, banee, event.channel, reason + 
-                ' (network-wide ban requested by ' + banner + ')');
-            channels = _.without(channels, event.channel);
 
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
                 // Add host record entry
                 if(host) {
+                    // Ban from current channel first
+                    this.api.ban(server, host, event.channel);
+                    this.api.kick(server, banee, event.channel, reason + 
+                        ' (network-wide ban requested by ' + banner + ')');
+                    channels = _.without(channels, event.channel);
+
                     this.hosts[event.server][banee] = host;
 
                     // Create notify string
