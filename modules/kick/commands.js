@@ -216,6 +216,13 @@ var commands = function(dbot) {
                     dbot.say(event.server, 'NickServ', 'FREEZE ' + banee + ' ON ' + reason);
 
                     // Ban the user from all channels
+
+                    // Ban from current channel first
+                    this.api.ban(server, host, event.channel);
+                    this.api.kick(server, banee, event.channel, reason + 
+                        ' (network-wide ban requested by ' + banner + ')');
+                    channels = _.without(channels, event.channel);
+
                     var i = 0;
                     var banChannel = function(channels) {
                         if(i >= channels.length) return;
