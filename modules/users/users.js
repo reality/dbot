@@ -18,12 +18,8 @@ var users = function(dbot) {
                 'primaryNick': nick,
                 'currentNick': nick
             }, function(err, result) {
-                if(!err) {
-                    dbot.api.event.emit('new_user', [ result ]);
-                    callback(null, result);
-                } else {
-                    callback(true, null);
-                }
+                if(!err) dbot.api.event.emit('new_user', [ result ]);
+                callback(err, result);
             });
         }.bind(this),
 

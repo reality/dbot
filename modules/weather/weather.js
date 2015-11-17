@@ -15,7 +15,8 @@ var weather = function(dbot) {
                 'url': this.ApiRoot + 'weather',
                 'qs': {
                     'q': city,
-                    'units': 'metric'
+                    'units': 'metric',
+                    'APPID': this.config.api_key
                 },
                 'json': true
             }, function(err, response, body) {
