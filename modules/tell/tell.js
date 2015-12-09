@@ -30,7 +30,7 @@ var tell = function(dbot) {
           }
 
           tells[user.id].push({
-            'channel': event.channel,
+            'channel': event.channel.name,
             'message': event.message,
             'from': event.user
           }); // i feel like i'm data structure challenged today
@@ -47,7 +47,7 @@ var tell = function(dbot) {
     if(_.has(tells, event.rUser.id)) {
       var done = [];
       _.each(tells[event.rUser.id], function(tell, i) {
-        if(event.channel == tell.channel) {
+        if(event.channel.name == tell.channel) {
           event.reply('Dear ' + event.user + ', ' + tell.from + ' left you a message: ' + tell.message); 
           tells[event.rUser.id].splice(i, 1);
         }
