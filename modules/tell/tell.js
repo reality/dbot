@@ -47,8 +47,10 @@ var tell = function(dbot) {
     if(_.has(tells, event.rUser.id)) {
       var done = [];
       _.each(tells[event.rUser.id], function(tell, i) {
-        event.reply('Dear ' + event.user + ', ' + tell.from + ' left you a message: ' + tell.message); 
-        tells[event.rUser.id].splice(i, 1);
+        if(event.channel == tell.channel) {
+          event.reply('Dear ' + event.user + ', ' + tell.from + ' left you a message: ' + tell.message); 
+          tells[event.rUser.id].splice(i, 1);
+        }
       }); // i disgust me
       tells[event.rUser.id] = _.without(tells[event.rUser.id], done);
     }
