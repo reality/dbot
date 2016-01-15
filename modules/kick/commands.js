@@ -7,7 +7,7 @@ var commands = function(dbot) {
         '~quiet': function(event) {
             var server = event.server,
                 quieter = event.user,
-                minutes = event.input[1],
+                duration = event.input[1].trim(),
                 channel = (event.input[2] || event.channel.name).trim(),
                 quietee = event.input[3].trim(),
                 reason = event.input[4] || "N/A";
@@ -17,9 +17,16 @@ var commands = function(dbot) {
                 if(host) {
                     this.hosts[server][quietee] = host;
 
-                    if(!_.isUndefined(minutes)) {
-                        minutes = parseFloat(minutes.trim());
-                        var msTimeout = new Date(new Date().getTime() + (minutes * 60000));
+                    if(!_.isUndefined(duration)) {
+                        var msTimeout = new Date(new Date().getTime() + (parseFloat(duration) * 60000));
+                        if(_.has(dbot.modules, 'remind')) {
+                          msTimeout = dbot.api.remind.parseTime(duration); 
+                          event.reply(msTimeout);
+                          duration = duration.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds');
+                        } else {
+                          duration += ' minutes';
+                        }
+
                         var vStatus = dbot.instance.connections[server].channels[channel].nicks[quietee].voice;
                         dbot.api.timers.addTimeout(msTimeout, function() {
                             if(_.has(this.hosts[server], quietee)) {
@@ -41,11 +48,11 @@ var commands = function(dbot) {
                         }.bind(this));  
                         event.reply(dbot.t('tquieted', { 
                             'quietee': quietee,
-                            'minutes': minutes
+                            'minutes': duration
                         }));
                         dbot.api.report.notify('quiet', server, event.rUser, channel,
                             dbot.t('tquiet_notify', {
-                                'minutes': minutes,
+                                'minutes': duration,
                                 'quieter': event.rUser.primaryNick,
                                 'quietee': quietee,
                                 'reason': reason
@@ -160,14 +167,20 @@ var commands = function(dbot) {
                   }.bind(this);
                   banChannel(channels);
 
-
                     this.hosts[event.server][banee] = host;
 
                     // Create notify string
                     if(!_.isUndefined(timeout)) {
-                        timeout = parseFloat(timeout.trim());
-                        
-                        var msTimeout = new Date(new Date().getTime() + (timeout * 3600000));
+                        timeout = timeout.trim();
+
+                        var msTimeout = new Date(new Date().getTime() + (parseFloat(timeout) * 3600000));
+                        if(_.has(dbot.modules, 'remind')) {
+                          msTimeout = dbot.api.remind.parseTime(timeout); 
+                          timeout = timeout.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds');
+                        } else {
+                          timeout += ' hours';
+                        }
+
                         if(!_.has(this.tempBans, event.server)) this.tempBans[event.server] = {};
                         this.tempBans[event.server][banee] = msTimeout;
                         this.internalAPI.addTempBan(event.server, banee, msTimeout);
@@ -310,8 +323,8 @@ var commands = function(dbot) {
     commands['~unquiet'].access = 'voice';
 
     commands['~ckick'].regex = /^ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
-    commands['~nban'].regex = /^nban ([\d\.^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^quiet ([\d\.^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~nban'].regex = /^nban ([\d\.dhms^ ]+)?([^ ]+) (.+)$/;
+    commands['~quiet'].regex = /^quiet ([\d\.dhms^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;

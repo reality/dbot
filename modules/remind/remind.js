@@ -10,8 +10,26 @@ var crypto = require('crypto'),
 var remind = function(dbot) {
     var self = this;
 
+    this.api = {
+      'parseTime': function(time) {
+        var now = Date.now();
+        var datesplits = time.match(/[0-9]+[dhms]/g);
+        if(datesplits == null) {
+            event.reply("The time parameter was not a valid time mah boy, it was "+time);
+            return;
+        }
+        var timeinseconds = 0;
+        for(var i=0;i<datesplits.length;++i) {
+            var number = parseInt(datesplits[i].match(/[0-9]+/)[0]);
+            var interval = datesplits[i].match(/[^0-9]/)[0];
+            timeinseconds += this.internalAPI.getSeconds(number,interval);
+        }
+        return new Date(now + (timeinseconds*1000));
+      }
+    };
+
     this.internalAPI = {
-        'getSeconds': function(number,interval) {
+      'getSeconds': function(number,interval) {
             switch(interval) {
                 case "d":
                     return number*24*60*60;
@@ -24,19 +42,8 @@ var remind = function(dbot) {
             }
         }.bind(this),
         'doReminder': function(event,user,time,message) {
-            var now = Date.now();
-            var datesplits = time.match(/[0-9]+[dhms]/g);
-            if(datesplits == null) {
-                event.reply("The time parameter was not a valid time mah boy, it was "+time);
-                return;
-            }
-            var timeinseconds = 0;
-            for(var i=0;i<datesplits.length;++i) {
-                var number = parseInt(datesplits[i].match(/[0-9]+/)[0]);
-                var interval = datesplits[i].match(/[^0-9]/)[0];
-                timeinseconds += this.internalAPI.getSeconds(number,interval);
-            }
-            var then = new Date(now + (timeinseconds*1000));
+            var then = this.api.parseTime(time);
+
             if(dbot.config.debugMode)
                 event.reply("The timer will be at "+then);
             this.internalAPI.startTimer(event.server,event.channel,then,event.user,user,message);
