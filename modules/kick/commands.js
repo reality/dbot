@@ -21,7 +21,9 @@ var commands = function(dbot) {
                         var msTimeout = new Date(new Date().getTime() + (parseFloat(duration) * 60000));
                         if(_.has(dbot.modules, 'remind')) {
                           msTimeout = dbot.api.remind.parseTime(duration); 
-                          event.reply(msTimeout);
+                          if(!msTimeout) {
+                            return event.reply('Invalid time. Remember you must give e.g. 5m now.');
+                          }
                           duration = duration.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds');
                         } else {
                           duration += ' minutes';
@@ -176,6 +178,9 @@ var commands = function(dbot) {
                         var msTimeout = new Date(new Date().getTime() + (parseFloat(timeout) * 3600000));
                         if(_.has(dbot.modules, 'remind')) {
                           msTimeout = dbot.api.remind.parseTime(timeout); 
+                          if(!msTimeout) {
+                            return event.reply('Invalid time. Remember you must give e.g. 5m now.');
+                          }
                           timeout = timeout.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds');
                         } else {
                           timeout += ' hours';

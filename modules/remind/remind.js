@@ -15,7 +15,6 @@ var remind = function(dbot) {
         var now = Date.now();
         var datesplits = time.match(/[0-9]+[dhms]/g);
         if(datesplits == null) {
-            event.reply("The time parameter was not a valid time mah boy, it was "+time);
             return;
         }
         var timeinseconds = 0;
@@ -43,6 +42,9 @@ var remind = function(dbot) {
         }.bind(this),
         'doReminder': function(event,user,time,message) {
             var then = this.api.parseTime(time);
+            if(!then) {
+              return event.reply("The time parameter was not a valid time mah boy, it was "+time);
+            }
 
             if(dbot.config.debugMode)
                 event.reply("The timer will be at "+then);
