@@ -12,7 +12,7 @@
         "de": "{user} hat {num} Verwarnung. Mehr Informationen sind auf {url} erhältlich"
     },
     "warn_notify": {
-        "en": "{warner} has issued a warning to {warnee} for \"{reason}.\" More info can be found at {url}",
+        "en": "{warner} has issued a warning to {warnee} for \"{reason}.\"",
         "fr": "Attention : {warner} a donné un avertissement à {warnee} pour \"{reason}.\". Plus d'informations peuvent être trouvées ici : {url}",
         "it": "Attenzione : {warner} ha dato un' avvertenza a {warnee} per \"{reason}.\". Ulterior informazioni si trovano a {url}",
         "de": "{warner} hat {warnee} für \"{reason}.\" verwarnt. Mehr Informationen sind auf {url} erhältlich"
