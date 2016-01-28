@@ -26,5 +26,6 @@
     "host_lookup": [
         "#chan"
     ],
-    "noMissingChans": []
+    "noMissingChans": [],
+    "offlineReporting": false
 }

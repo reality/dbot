@@ -10,7 +10,6 @@ var report = function(dbot) {
     this.internalAPI = {
         'notify': function(server, users, message) {
             async.eachSeries(users, function(nick, next) {
-console.log('sending msg to ' + nick);
                 setTimeout(function() {
                     dbot.say(server, nick, message);
                     next();

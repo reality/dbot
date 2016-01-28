@@ -70,6 +70,7 @@ console.log('removing ' + uPart);
                             });
                         }, function() {
                             // Queue notifies for offline ops
+                          if(this.config.offlineReporting == true) {
                             if(!_.include(this.config.noMissingChans, cName)) {
                                 _.each(offlineOps, function(op) {
                                     if(!this.pending[op.id]) this.pending[op.id] = [];
@@ -82,6 +83,7 @@ console.log('removing ' + uPart);
                                     this.pNotify[op.id] = true;
                                 }, this);
                             }
+                          }
 
                             // Send notifies to online ops
                             ops = _.difference(ops, _.keys(offlineOps));
