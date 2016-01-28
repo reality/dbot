@@ -7,7 +7,7 @@ var commands = function(dbot) {
         '~quiet': function(event) {
             var server = event.server,
                 quieter = event.user,
-                duration = event.input[1].trim(),
+                duration = event.input[1],
                 channel = (event.input[2] || event.channel.name).trim(),
                 quietee = event.input[3].trim(),
                 reason = event.input[4] || "N/A";
@@ -17,14 +17,15 @@ var commands = function(dbot) {
                 if(host) {
                     this.hosts[server][quietee] = host;
 
-                    if(!_.isUndefined(duration)) {
+                    if(!_.isUndefined(duration) && !_.isNull(duration)) {
+                        duration = duration.trim();
                         var msTimeout = new Date(new Date().getTime() + (parseFloat(duration) * 60000));
                         if(_.has(dbot.modules, 'remind')) {
                           msTimeout = dbot.api.remind.parseTime(duration); 
                           if(!msTimeout) {
                             return event.reply('Invalid time. Remember you must give e.g. 5m now.');
                           }
-                          duration = duration.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds');
+                          duration = duration.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds').trim();
                         } else {
                           duration += ' minutes';
                         }
@@ -33,8 +34,8 @@ var commands = function(dbot) {
                         dbot.api.timers.addTimeout(msTimeout, function() {
                             if(_.has(this.hosts[server], quietee)) {
                                 if(_.include(this.config.quietBans, channel)) {
-                                    this.api.unban(server, this.hosts[server][quietee], channel);
-                                this.api.voice(server, quietee, channel);
+                                  this.api.unban(server, this.hosts[server][quietee], channel);
+                                  this.api.voice(server, quietee, channel);
                                 } else {
                                     this.api.unquiet(server, this.hosts[server][quietee], channel);
                                 }
@@ -44,7 +45,7 @@ var commands = function(dbot) {
                                     dbot.t('unquiet_notify', {
                                         'unquieter': dbot.config.name,
                                         'quietee': quietee
-                                    }));
+                                    }), false, quietee);
                                 });
                             }
                         }.bind(this));  
@@ -58,7 +59,7 @@ var commands = function(dbot) {
                                 'quieter': event.rUser.primaryNick,
                                 'quietee': quietee,
                                 'reason': reason
-                            })
+                            }), false, quietee
                         );
                     } else {
                         event.reply(dbot.t('quieted', { 'quietee': quietee }));
@@ -67,7 +68,7 @@ var commands = function(dbot) {
                             'quieter': quieter,
                             'quietee': quietee,
                             'reason': reason
-                        }));            
+                        }), false, quietee);            
                     }
 
                     this.api.devoice(server, quietee, channel);
@@ -106,7 +107,7 @@ var commands = function(dbot) {
                 dbot.t('unquiet_notify', {
                     'unquieter': quieter,
                     'quietee': quietee
-                }));
+                }), false, quietee);
             }
         },
 
@@ -128,7 +129,7 @@ var commands = function(dbot) {
                 'kicker': kicker,
                 'kickee': kickee,
                 'reason': reason
-            }));
+            }), false, kickee);
         },
 
         // Kick and ban from all channels on the network.
@@ -151,11 +152,24 @@ var commands = function(dbot) {
             dbot.api.nickserv.getUserHost(event.server, banee, function(host) {
                 // Add host record entry
                 if(host) {
+                  if((reason.match('#line') || reason.match('#specialk') || reason.match('#kline')) && _.include(dbot.access.moderator(), event.rUser.primaryNick)) {
+                    var t = ' !P ';
+                    if(timeout) {
+                      t = ' !T ' + (timeout * 60);  
+                    }
+                    dbot.say(event.server, 'operserv', 'akill add '+banee + t + banee + ' banned by ' + banner + ': ' + reason);
+                  }
+
                     // Ban from current channel first
                     this.api.ban(server, host, event.channel);
                     this.api.kick(server, banee, event.channel, reason + 
-                        ' (network-wide ban requested by ' + banner + ')');
+                        ' (network-wide ban)');
                     channels = _.without(channels, event.channel);
+                    if(!_.isUndefined(adminChannel)) {
+                        channels = _.without(channels, adminChannel);
+                    } else {
+                        adminChannel = event.channel.name;
+                    }
 
                   // Ban the user from all channels
                   var i = 0;
@@ -164,7 +178,7 @@ var commands = function(dbot) {
                       var channel = channels[i];
                       this.api.ban(server, host, channel);
                       this.api.kick(server, banee, channel, reason + 
-                          ' (network-wide ban requested by ' + banner + ')');
+                          ' (network-wide ban)');
                       i++; banChannel(channels);
                   }.bind(this);
                   banChannel(channels);
@@ -181,7 +195,7 @@ var commands = function(dbot) {
                           if(!msTimeout) {
                             return event.reply('Invalid time. Remember you must give e.g. 5m now.');
                           }
-                          timeout = timeout.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds');
+                          timeout = timeout.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds').trim();
                         } else {
                           timeout += ' hours';
                         }
@@ -228,7 +242,7 @@ var commands = function(dbot) {
                         adminChannel = event.channel.name;
                     }
 
-                    dbot.api.report.notify('ban', server, event.rUser, adminChannel, notifyString);
+                    dbot.api.report.notify('ban', server, event.rUser, adminChannel, notifyString, false, banee);
                     dbot.say(event.server, adminChannel, notifyString);
 
                     if(!_.isUndefined(timeout)) {
@@ -326,10 +340,12 @@ var commands = function(dbot) {
     commands['~kickstats'].access = 'regular';
     commands['~quiet'].access = 'voice';
     commands['~unquiet'].access = 'voice';
+    commands['~nban'].access = 'power_user';
+    commands['~nunban'].access = 'power_user';
 
     commands['~ckick'].regex = /^ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
-    commands['~nban'].regex = /^nban ([\d\.dhms^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^quiet ([\d\.dhms^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~nban'].regex = /^nban (\d[\d\.dhms^ ]+)?([^ ]+) (.+)$/;
+    commands['~quiet'].regex = /^quiet (\d[\d\.hms^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;

@@ -50,7 +50,7 @@ var kick = function(dbot) {
                     'unbanee': unbanee,
                     'unbanner': unbanner.currentNick
                 });
-                dbot.api.report.notify('unban', server, unbanner, adminChannel, notifyString);
+                dbot.api.report.notify('unban', server, unbanner, adminChannel, notifyString, false, unbanee);
                 dbot.say(server, adminChannel, notifyString);
 
                 // Notify Unbanee
@@ -90,14 +90,14 @@ var kick = function(dbot) {
     };
 
     this.internalAPI = {
-        'addTempBan': function(server, banee, timeout) {
-          dbot.api.users.resolveUser(server, dbot.config.name, function(err, bot) {
-            dbot.api.timers.addTimeout(timeout, function() {
-              this.api.networkUnban(server, banee, bot, function(err) {});
-              delete this.tempBans[server][banee];
-            }.bind(this));
+      'addTempBan': function(server, banee, timeout) {
+        dbot.api.users.resolveUser(server, dbot.config.name, function(err, bot) {
+          dbot.api.timers.addTimeout(timeout, function() {
+            this.api.networkUnban(server, banee, bot, function(err) {});
+            delete this.tempBans[server][banee];
           }.bind(this));
-        }.bind(this)
+        }.bind(this));
+      }.bind(this)
     };
     
     this.listener = function(event) {

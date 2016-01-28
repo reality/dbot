@@ -89,6 +89,9 @@ var commands = function(dbot) {
 
         '~sustatus': function(event) {
             var user = event.input[1];
+            if(event.channel == '#tripsit.me') {
+              return event.reply('~_~ do that in #moderators ~_~');
+            }
 
             dbot.api.users.resolveUser(event.server, user, function(err, user) {
                 if(user) {
@@ -106,11 +109,32 @@ var commands = function(dbot) {
                         dbot.modules.report.db.search('notifies', {
                             'server': event.server
                         }, function(notify) {
-                            _.each(aliases, function(alias) {
+                          if(_.include(aliases, notify.target)) {
+                            if(notify.type == 'ban') { 
+                              ban++;
+                                        if(notify.time > latest_ban.time) {
+                                            latest_ban = notify;
+                                        }
+                                    } else if(notify.type == 'unban') {
+                                        unban++;
+                                        if(notify.time > latest_unban.time) {
+                                            latest_unban = notify;
+                                        }
+                                    } else if(notify.type == 'quiet') {
+                                        quiet++;
+                                    } else if(notify.type == 'warn') {
+                                        warn++;
+                                    } else if(notify.type == 'report') {
+                                        report++;
+                                    }
+                                    items[notify.time] = notify.message;
+
+                          }
+                            /*_.each(aliases, function(alias) {
                                 if(notify.message.indexOf('banned ' + alias + ' ') != -1 || 
                                    notify.message.indexOf(' ' + alias + ' has been unbanned') != -1 || 
-                                   notify.message.indexOf('issued a warning to ' + alias + ' ') != -1 || 
-                                   notify.message.indexOf('has quieted ' + alias + ' ') != -1 ||
+                                   notify.message.indexOf('issued a warning to ' + alias) != -1 || 
+                                   notify.message.indexOf('has quieted ' + alias) != -1 ||
                                    notify.message.indexOf('has reported ' + alias + ' ') != -1) {
                                     if(notify.type == 'ban') {
                                         ban++;
@@ -132,6 +156,7 @@ var commands = function(dbot) {
                                     items[notify.time] = notify.message;
                                 }
                             });
+                            */
                         }, function() {
                             if(quiet != 0 || warn != 0 || report != 0) {
                                 event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
@@ -140,7 +165,7 @@ var commands = function(dbot) {
                                     return parseInt(a) - parseInt(b);
                                 });
                                 
-                                if(sTimes.length < 50) { 
+                                if(sTimes.length < 70) { 
                                     _.each(sTimes, function(time) {
                                         event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                                     });
@@ -198,9 +223,10 @@ var commands = function(dbot) {
                     }, function() {
                         if(ban) {
                             event.reply(user.primaryNick + ' was banned on ' + new Date(ban).toUTCString());
-                        } else if(quiet != 0 || warn != 0) {
+                        } 
+                        if(quiet != 0 || warn != 0) {
                             event.reply(user.primaryNick + ' has been warned ' + warn + ' times, and quieted ' + quiet + ' times.');
-                        } else {
+                        } else if(!ban) {
                             event.reply(user.primaryNick + ' has no record.');
                         }
                     });
@@ -240,7 +266,7 @@ var commands = function(dbot) {
                             'reporter': event.rUser.primaryNick,
                             'reportee': nick,
                             'reason': reason
-                        }));
+                        }), false, nick);
                         event.reply(dbot.t('reported', { 'reported': nick }));
                     } else {
                         event.reply(dbot.t('user_not_found', { 
@@ -333,33 +359,6 @@ var commands = function(dbot) {
             } else {
                 event.reply('Channel not known.');
             }
-        },
-
-        '~concerning': function(event) {
-            var nick = event.params[1].trim();
-            dbot.api.nickserv.getUserHost(event.server, nick, function(host) {
-                if(host) {
-                    var results = [];
-                    this.db.scan('notifies', function(notify) {
-                        if(notify && _.has(notify, 'host') && (notify.host == host || notify.message.split(' ')[0] == nick)) {
-                            results.push(notify);
-                        }
-                    }, function() {
-                        event.reply(nick + ' has sought help ' + results.length + ' times under the host ' + host + ' or nick ' + nick); 
-                        _.each(results, function(n) {
-                            event.reply('[' + moment(parseInt(n.time)).format('DD/MM/YYYY HH:mm:ss') + '][' + n.user.split('.')[0] + '] ' + n.message); 
-                        });
-                    });
-                } else {
-                    dbot.api.quotes.getQuote('deal with it', function(quote) {
-                        var out = 'Couldn\'t find user\'s host, but that doesn\'t necessarily mean they don\'t exist. This is the lazy way of doing it for now... ';
-                        if(quote) {
-                            out += quote;
-                        }
-                        event.reply(out);
-                    });
-                }
-            }.bind(this));
         }
     };
     commands['~report'].regex = /^report (#[^ ]+ )?([^ ]+) (.*)$/;

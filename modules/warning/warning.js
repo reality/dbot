@@ -25,7 +25,7 @@ var warning = function(dbot) {
                                 + warnee.primaryNick)
                         });
 
-                        dbot.api.report.notify('warn', server, warner, adminChannel, notifyString);
+                        dbot.api.report.notify('warn', server, warner, adminChannel, notifyString, false, warnee.primaryNick);
                         dbot.say(server, adminChannel, notifyString);
 
                         var uString = dbot.t('warn_user', {
@@ -37,6 +37,8 @@ var warning = function(dbot) {
                         if(reason.indexOf('#quiet') === -1 && reason.indexOf('#note') === -1) {
                             dbot.say(server, warnee.currentNick, uString);
 			}
+
+			dbot.api.event.emit('new_warning', [ warner, warnee, reason ]);
 
                         callback(null);
                     });
