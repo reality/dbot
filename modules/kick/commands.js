@@ -344,8 +344,8 @@ var commands = function(dbot) {
     commands['~nunban'].access = 'power_user';
 
     commands['~ckick'].regex = /^ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
-    commands['~nban'].regex = /^nban (\d[\d\.dhms^ ]+)?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^quiet (\d[\d\.hms^ ]+)?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~nban'].regex = /^nban (\d[\d\.dhms]+)? ?([^ ]+) (.+)$/;
+    commands['~quiet'].regex = /^quiet (\d[\d\.hms]+)? ?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^unquiet (#[^ ]+ )?([^ ]+) ?$/;
 
     return commands;
