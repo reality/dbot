@@ -141,6 +141,7 @@ var commands = function(dbot) {
                                 event.reply('[reports]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'report') {
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[quiets]');
