@@ -134,7 +134,7 @@ var commands = function(dbot) {
                               event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
                               var sTimes = _.keys(items).sort(function(a, b) {
-                                  return parseInt(a.time) - parseInt(b.time);
+                                  return parseInt(a) - parseInt(b);
                               });
                               
                               if(sTimes.length < 70) { 
