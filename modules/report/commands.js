@@ -138,25 +138,25 @@ var commands = function(dbot) {
                               });
                               
                               if(sTimes.length < 70) { 
-                                event.reply('[reports]');
+                                event.reply('[\u00034reports\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'report') {
                                     event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
-                                event.reply('[quiets]');
+                                event.reply('[\u00037quiets\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'quiet') {
                                     event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
-                                event.reply('[warns]');
+                                event.reply('[\u00035warns\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'warn') {
                                     event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
-                                event.reply('[bans]');
+                                event.reply('[\u00034bans\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'ban' || items[time].type == 'unban') {
                                     event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
