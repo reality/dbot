@@ -43,11 +43,12 @@ var commands = function(dbot){
         },
 
         '~time': function(event) {
-            dbot.api.profile.getProfile(event.server, event.params[1], function(err, user, profile) {
+            var target = event.params[1] || event.user;
+            dbot.api.profile.getProfile(event.server, target, function(err, user, profile) {
                 if(!err) {
                     var tz = profile.profile.timezone;
                     if(tz) {
-                        event.reply('The time for ' + event.params[1] + ' in ' + tz + ' is ' + moment().tz(tz).format('HH:mm:ss on DD/MM/YYYY'));
+                        event.reply('The time for ' + target + ' in ' + tz + ' is ' + moment().tz(tz).format('HH:mm:ss on DD/MM/YYYY'));
                     } else {
                         event.reply(user.currentNick + ' needs to set a timezone with "~set timezone x"');
                     }
