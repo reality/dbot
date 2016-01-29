@@ -112,83 +112,76 @@ var commands = function(dbot) {
                           if(_.include(aliases, notify.target)) {
                             if(notify.type == 'ban') { 
                               ban++;
-                                        if(notify.time > latest_ban.time) {
-                                            latest_ban = notify;
-                                        }
-                                    } else if(notify.type == 'unban') {
-                                        unban++;
-                                        if(notify.time > latest_unban.time) {
-                                            latest_unban = notify;
-                                        }
-                                    } else if(notify.type == 'quiet') {
-                                        quiet++;
-                                    } else if(notify.type == 'warn') {
-                                        warn++;
-                                    } else if(notify.type == 'report') {
-                                        report++;
-                                    }
-                                    items[notify.time] = notify.message;
-
-                          }
-                            /*_.each(aliases, function(alias) {
-                                if(notify.message.indexOf('banned ' + alias + ' ') != -1 || 
-                                   notify.message.indexOf(' ' + alias + ' has been unbanned') != -1 || 
-                                   notify.message.indexOf('issued a warning to ' + alias) != -1 || 
-                                   notify.message.indexOf('has quieted ' + alias) != -1 ||
-                                   notify.message.indexOf('has reported ' + alias + ' ') != -1) {
-                                    if(notify.type == 'ban') {
-                                        ban++;
-                                        if(notify.time > latest_ban.time) {
-                                            latest_ban = notify;
-                                        }
-                                    } else if(notify.type == 'unban') {
-                                        unban++;
-                                        if(notify.time > latest_unban.time) {
-                                            latest_unban = notify;
-                                        }
-                                    } else if(notify.type == 'quiet') {
-                                        quiet++;
-                                    } else if(notify.type == 'warn') {
-                                        warn++;
-                                    } else if(notify.type == 'report') {
-                                        report++;
-                                    }
-                                    items[notify.time] = notify.message;
+                              if(notify.time > latest_ban.time) {
+                                  latest_ban = notify;
+                              }
+                            } else if(notify.type == 'unban') {
+                                unban++;
+                                if(notify.time > latest_unban.time) {
+                                    latest_unban = notify;
                                 }
-                            });
-                            */
+                            } else if(notify.type == 'quiet') {
+                                quiet++;
+                            } else if(notify.type == 'warn') {
+                                warn++;
+                            } else if(notify.type == 'report') {
+                                report++;
+                            }
+                            items[notify.time] = notify;
+                          }
                         }, function() {
                             if(quiet != 0 || warn != 0 || report != 0) {
-                                event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
+                              event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
 
-                                var sTimes = _.keys(items).sort(function(a, b) {
-                                    return parseInt(a) - parseInt(b);
+                              var sTimes = _.keys(items).sort(function(a, b) {
+                                  return parseInt(a.time) - parseInt(b.time);
+                              });
+                              
+                              if(sTimes.length < 70) { 
+                                event.reply('[reports]');
+                                _.each(sTimes, function(time) {
+                                  if(items[time].type == 'report') {
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                  }
                                 });
-                                
-                                if(sTimes.length < 70) { 
-                                    _.each(sTimes, function(time) {
-                                        event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
-                                    });
-                                } else {
-                                    event.reply('There are too many to show without killing everyone :S');
-                                }
+                                event.reply('[quiets]');
+                                _.each(sTimes, function(time) {
+                                  if(items[time].type == 'quiet') {
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                  }
+                                });
+                                event.reply('[warns]');
+                                _.each(sTimes, function(time) {
+                                  if(items[time].type == 'warn') {
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                  }
+                                });
+                                event.reply('[bans]');
+                                _.each(sTimes, function(time) {
+                                  if(items[time].type == 'ban' || items[time].type == 'unban') {
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                  }
+                                });
+                              } else {
+                                event.reply('There are too many to show without killing everyone :S');
+                              }
 
-                                if(latest_ban.time != 0) {
-                                    if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
-                                        event.reply('Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
-                                        event.reply('Reason: ' + latest_ban.message);
-                                    } else {
-                                        var a = moment(latest_ban.time);
-                                        var b = moment(latest_unban.time);
-                                        event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + b.diff(a, 'days') + ' days');
-                                        event.reply('Most recent ban reason: ' + latest_ban.message);
-                                    }
-                                } else {
-                                    event.reply('Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f');
-                                }
-                            } else {
-                                event.reply(user.primaryNick + ' has no record.');
-                            }
+                              if(latest_ban.time != 0) {
+                                  if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
+                                      event.reply('Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
+                                      event.reply('Reason: ' + latest_ban.message);
+                                  } else {
+                                      var a = moment(latest_ban.time);
+                                      var b = moment(latest_unban.time);
+                                      event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + b.diff(a, 'days') + ' days');
+                                      event.reply('Most recent ban reason: ' + latest_ban.message);
+                                  }
+                              } else {
+                                  event.reply('Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f');
+                              }
+                          } else {
+                              event.reply(user.primaryNick + ' has no record.');
+                          }
                         });
                     }.bind(this));
                 } else {
