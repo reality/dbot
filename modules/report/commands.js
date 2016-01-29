@@ -141,25 +141,24 @@ var commands = function(dbot) {
                                 event.reply('[reports]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'report') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
                                   }
                                 });
                                 event.reply('[quiets]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'quiet') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[warns]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'warn') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[bans]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'ban' || items[time].type == 'unban') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time]); 
+                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                               } else {
