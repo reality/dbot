@@ -138,7 +138,7 @@ var commands = function(dbot) {
                               });
                               
                               if(sTimes.length < 70) { 
-                                event.reply('[\u00034reports\u000f]');
+                                event.reply('[\u00036reports\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'report') {
                                     event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
