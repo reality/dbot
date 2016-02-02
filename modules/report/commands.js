@@ -103,6 +103,8 @@ var commands = function(dbot) {
                   }
                   next();
                 });
+              } else {
+                next();
               }
             });
           }, function() {
