@@ -87,6 +87,45 @@ var commands = function(dbot) {
             }.bind(this));
         },
 
+        '~batchstatus': function(event) {
+          var nicks = event.params,
+              aliases = [],
+              reportsFound = [];
+          nicks.splice(0, 1);
+
+          async.eachSeries(nicks, function(nick, next) {
+            dbot.api.users.resolveUser(event.server, nick, function(err, user) {
+              if(!err && user && !_.include(aliases, user.primaryNick)) {
+                aliases.push(user.primaryNick);
+                dbot.api.users.getUserAliases(user.id, function(err, theseAliases) {
+                  if(!err && theseAliases) {
+                    aliases = _.union(aliases, theseAliases);
+                  }
+                  next();
+                });
+              }
+            });
+          }, function() {
+            dbot.modules.report.db.search('notifies', {
+                'server': event.server
+            }, function(notify) {
+              if(_.include(aliases, notify.target)) {
+                if(notify.type == 'ban' || notify.type == 'quiet' || notify.type == 'warn' || notify.type == 'report') { 
+                  if(!_.include(reportsFound, notify.target)) {
+                    reportsFound.push(notify.target);
+                  }
+                }
+              }
+            }, function() {
+              if(reportsFound.length != 0) {
+                event.reply('Record found for: ' + reportsFound.join(', '));
+              } else {
+                event.reply('None of these users seem to have sustatuses');
+              }
+            });
+          });
+        },
+
         '~sustatus': function(event) {
             var user = event.input[1];
             if(event.channel == '#tripsit.me') {
