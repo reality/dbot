@@ -92,6 +92,9 @@ var commands = function(dbot) {
               aliases = [],
               reportsFound = [];
           nicks.splice(0, 1);
+          _.each(nicks, function(nick, i) {
+            nicks[i] = nick.replace(/,/g,'');
+          });
 
           async.eachSeries(nicks, function(nick, next) {
             dbot.api.users.resolveUser(event.server, nick, function(err, user) {
