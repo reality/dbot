@@ -32,6 +32,85 @@ var kick = function(dbot) {
             dbot.instance.connections[server].send('MODE ' + channel + ' -b *!*@' + host);
         },
 
+        'quietUser': function(server, quieter, duration, channel, quietee, reason, callback) {
+            dbot.api.nickserv.getUserHost(server, quietee, function(host) {
+                // Add host record entry
+                if(host) {
+                    this.hosts[server][quietee] = host;
+
+                    if(!_.isUndefined(duration) && !_.isNull(duration)) {
+                        duration = duration.trim();
+                        var msTimeout = new Date(new Date().getTime() + (parseFloat(duration) * 60000));
+                        if(_.has(dbot.modules, 'remind')) {
+                          msTimeout = dbot.api.remind.parseTime(duration); 
+                          if(!msTimeout) {
+                            return callback('Invalid time. Remember you must give e.g. 5m now.');
+                          }
+                          duration = duration.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds').trim();
+                        } else {
+                          duration += ' minutes';
+                        }
+
+                        var vStatus = dbot.instance.connections[server].channels[channel].nicks[quietee].voice;
+                        dbot.api.timers.addTimeout(msTimeout, function() {
+                            if(_.has(this.hosts[server], quietee)) {
+                                if(_.include(this.config.quietBans, channel)) {
+                                  this.api.unban(server, this.hosts[server][quietee], channel);
+                                  this.api.voice(server, quietee, channel);
+                                } else {
+                                    this.api.unquiet(server, this.hosts[server][quietee], channel);
+                                }
+
+                                dbot.api.users.resolveUser(server, dbot.config.name, function(err, user) {
+                                    dbot.api.report.notify('unquiet', server, user, channel,
+                                    dbot.t('unquiet_notify', {
+                                        'unquieter': dbot.config.name,
+                                        'quietee': quietee
+                                    }), false, quietee);
+                                });
+                            }
+                        }.bind(this));  
+                        callback(dbot.t('tquieted', { 
+                            'quietee': quietee,
+                            'minutes': duration
+                        }));
+                        dbot.api.report.notify('quiet', server, quieter, channel,
+                            dbot.t('tquiet_notify', {
+                                'minutes': duration,
+                                'quieter': quieter.primaryNick,
+                                'quietee': quietee,
+                                'reason': reason
+                            }), false, quietee
+                        );
+                    } else {
+                        callback(dbot.t('quieted', { 'quietee': quietee }));
+                        dbot.api.report.notify('quiet', server, quieter, channel,
+                        dbot.t('quiet_notify', {
+                            'quieter': quieter,
+                            'quietee': quietee,
+                            'reason': reason
+                        }), false, quietee);            
+                    }
+
+                    this.api.devoice(server, quietee, channel);
+
+                    if(_.include(this.config.quietBans, channel)) {
+                        this.api.ban(server, this.hosts[server][quietee], channel);
+                    } else {
+                        this.api.quiet(server, host, channel);
+                    }
+
+                    if(reason.indexOf('#warn') !== -1) {
+                        dbot.api.warning.warn(server, quieter, quietee, 
+                            'Quieted in ' + channel + ' for ' + reason, channel,
+                            function() {});
+                    }
+                } else {
+                    event.reply(dbot.t('no_user', { 'user': quietee }));
+                }
+            }.bind(this));
+        },
+
         'networkUnban': function(server, unbanee, unbanner, callback) {
             var channels = dbot.config.servers[server].channels,
                 network = this.config.network_name[server] || server,
@@ -139,6 +218,7 @@ var kick = function(dbot) {
         if(!_.has(dbot.db, 'tempBans')) dbot.db.tempBans = {};
         this.hosts = dbot.db.hosts;
         this.tempBans = dbot.db.tempBans;
+        this.voteQuiets = {};
         
         _.each(this.tempBans, function(bans, server) {
             _.each(bans, function(timeout, nick) {
