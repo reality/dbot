@@ -270,7 +270,7 @@ var commands = function(dbot) {
                 }
                 
                 if(!_.has(this.voteQuiets, user.id)) {
-                  this.voteQuiets[user.id] = { 'user': user.id, 'yes': [event.rUser.primaryNick], 'no': [] };
+                  this.voteQuiets[user.id] = { 'user': user.id, 'channel': event.channel, 'yes': [event.rUser.primaryNick], 'no': [] };
                   event.reply(event.user + ' has started a vote to quiet ' + target + ' for "' + reason + '." Type either "~voteyes ' + target + '" or "~voteno ' + target + '" in the next 40 seconds.');
 
                   setTimeout(function() {
