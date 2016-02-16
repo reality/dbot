@@ -324,6 +324,9 @@ var commands = function(dbot) {
               }
               if(_.has(this.voteQuiets, user.id) && !this.voteQuiets[user.id].spent) {
                 var vq = this.voteQuiets[user.id];
+                if(event.channel != vq.channel) {
+                  return event.reply('Vote must be in ' + vq.channel);
+                }
                 if(!_.include(vq.yes, event.rUser.primaryNick) && !_.include(vq.no, event.rUser.primaryNick)) {
                   vq.yes.push(event.rUser.primaryNick);
                   event.reply('Voted yes on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
@@ -349,6 +352,9 @@ var commands = function(dbot) {
               }
               if(_.has(this.voteQuiets, user.id) && !this.voteQuiets[user.id].spent) {
                 var vq = this.voteQuiets[user.id];
+                if(event.channel != vq.channel) {
+                  return event.reply('Vote must be in ' + vq.channel);
+                }
                 if(!_.include(vq.yes, event.rUser.primaryNick) && !_.include(vq.no, event.rUser.primaryNick)) {
                   vq.no.push(event.rUser.primaryNick);
                   event.reply('Voted no on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
