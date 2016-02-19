@@ -71,19 +71,19 @@ var warning = function(dbot) {
                 var warns = {};
 
                 dbot.api.users.getUserAliases(warnee.id, function(err, aliases) {
-                  var alia = aliases.push(warnee.primaryNick);
-                  this.db.search('notifies', { 
+                  aliases.push(warnee.primaryNick);
+
+                  dbot.modules.report.db.search('notifies', { 
                     'server': event.server, 
                     'type': 'warn'
                   }, function(result) {
-                    if(_.include(alia, result.target)) {
+                    if(_.include(aliases, result.target)) {
                       warns[result.time] = result;
                     }
                   }, function(err) {
                     var sTimes = _.keys(warns).sort(function(a, b) {
                       return parseInt(a) - parseInt(b);
                     });
-                    event.reply(_.keys(sTimes));
 
                     if(index <= sTimes.length && index >= 0) {
                       this.db.del('notifies', warns[sTimes[index]], function(err) {
