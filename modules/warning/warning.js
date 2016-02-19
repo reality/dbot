@@ -83,8 +83,9 @@ var warning = function(dbot) {
                     var sTimes = _.keys(warns).sort(function(a, b) {
                       return parseInt(a) - parseInt(b);
                     });
+                    event.reply(_.keys(sTimes));
 
-                    if(index < sTimes.length && index > 0) {
+                    if(index <= sTimes.length && index >= 0) {
                       this.db.del('notifies', warns[sTimes[index]], function(err) {
                         event.reply(dbot.t('warning_removed'));
                       });
