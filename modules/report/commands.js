@@ -183,19 +183,19 @@ var commands = function(dbot) {
                               
                               if(sTimes.length < 70) { 
                                 event.reply('[\u00036reports\u000f]');
-                                _.each(sTimes, function(time) {
+                                _.each(sTimes, function(time, n) {
                                   if(items[time].type == 'report') {
                                     event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[\u00037quiets\u000f]');
-                                _.each(sTimes, function(time) {
+                                _.each(sTimes, function(time, n) {
                                   if(items[time].type == 'quiet') {
                                     event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[\u00035warns\u000f]');
-                                _.each(sTimes, function(time) {
+                                _.each(sTimes, function(time, n) {
                                   if(items[time].type == 'warn') {
                                     event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
