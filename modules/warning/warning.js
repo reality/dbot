@@ -63,24 +63,38 @@ var warning = function(dbot) {
         },
 
         '~rmwarning': function(event) {
-            var warning = null;
-            dbot.api.users.resolveUser(event.server, event.input[1], function(err, warnee) {
-                if(warnee) {
-                    this.db.search('warnings', { 'warnee': warnee.id, 'reason': event.input[2] }, function(result) {
-                        warning = result;
-                    }, function(err) {
-                        if(!err && warning) {
-                            this.db.del('warnings', warning.id, function(err) {
-                                event.reply(dbot.t('warning_removed'));
-                            });
-                        } else {
-                            event.reply(dbot.t('warning_not_found'));
-                        }
-                    }.bind(this));
-                } else {
-                    event.reply(dbot.t('warning_not_found'));
-                }
-            }.bind(this));
+          var user = event.params[1],
+              index = parseInt(event.params[2]);
+
+            dbot.api.users.resolveUser(event.server, user, function(err, warnee) {
+              if(warnee) {
+                var warns = {};
+
+                dbot.api.getUserAlises(warnee.id, function(err, aliases) {
+                  var alia = aliases.push(warnee.primaryNick);
+                  this.db.search('notifies', { 
+                    'server': warnee.id, 
+                    'type': 'warn'
+                  }, function(result) {
+                    if(_.include(alia, result.target)) {
+                      warns[result.time] = result;
+                    }
+                  }, function(err) {
+                    var sTimes = _.keys(warns).sort(function(a, b) {
+                      return parseInt(a) - parseInt(b);
+                    });
+
+                    if(index < sTimes.length && index > 0) {
+                      this.db.del('notifies', warns[sTimes[index]], function(err) {
+                        event.reply(dbot.t('warning_removed'));
+                      });
+                    } else {
+                      event.reply(dbot.t('warning_not_found'));
+                    }
+                  }.bind(this));
+                }); 
+              }
+            });
         },
 
         '~rmlastwarning': function(event) {
@@ -135,7 +149,6 @@ var warning = function(dbot) {
 
     this.commands['~warn'].regex = [/warn ([^ ]+) (.+)/, 3];
     this.commands['~warn'].access = 'power_user';
-    this.commands['~rmwarning'].regex = [/^rmwarning ([\d\w\s\-]+?)[ ]?=[ ]?(.+)$/, 3];
     this.commands['~rmwarning'].access = 'power_user';
     this.commands['~rmlastwarning'].access = 'power_user';
 };
