@@ -86,7 +86,7 @@ var warning = function(dbot) {
                     });
 
                     if(index <= sTimes.length && index >= 0) {
-                      this.db.del('notifies', warns[sTimes[index]], function(err) {
+                      this.db.del('notifies', warns[sTimes[index]].id, function(err) {
                         event.reply(dbot.t('warning_removed'));
                       });
                     } else {
