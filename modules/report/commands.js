@@ -185,25 +185,25 @@ var commands = function(dbot) {
                                 event.reply('[\u00036reports\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'report') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
+                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[\u00037quiets\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'quiet') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
+                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[\u00035warns\u000f]');
                                 _.each(sTimes, function(time) {
                                   if(items[time].type == 'warn') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
+                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                                 event.reply('[\u00034bans\u000f]');
-                                _.each(sTimes, function(time) {
+                                _.each(sTimes, function(time, n) {
                                   if(items[time].type == 'ban' || items[time].type == 'unban') {
-                                    event.reply('[' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
+                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
                                   }
                                 });
                               } else {
