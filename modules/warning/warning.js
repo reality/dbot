@@ -70,7 +70,7 @@ var warning = function(dbot) {
               if(warnee) {
                 var warns = {};
 
-                dbot.api.users.getUserAlises(warnee.id, function(err, aliases) {
+                dbot.api.users.getUserAliases(warnee.id, function(err, aliases) {
                   var alia = aliases.push(warnee.primaryNick);
                   this.db.search('notifies', { 
                     'server': warnee.id, 
