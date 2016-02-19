@@ -92,9 +92,9 @@ var warning = function(dbot) {
                       event.reply(dbot.t('warning_not_found'));
                     }
                   }.bind(this));
-                }); 
+                }.bind(this)); 
               }
-            });
+            }.bind(this));
         },
 
         '~rmlastwarning': function(event) {
