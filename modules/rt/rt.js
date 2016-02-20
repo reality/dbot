@@ -29,7 +29,7 @@ var rt = function(dbot) {
             } else if(_.has(m, 'critics_consensus')) {
                 mString += ' [Review: ' + m.critics_consensus + ']';
             }
-            mString += ' - ' + m.links.alternate;
+            mString += ' - http:' + m.links.alternate;
 
             return mString;
         }
