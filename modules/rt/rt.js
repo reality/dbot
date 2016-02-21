@@ -11,14 +11,20 @@ var rt = function(dbot) {
 
     this.internalAPI = {
         'formatLink': function(m) {
-            var rating = m.ratings.audience_score;
-            var rColour = (rating <= 5) ? '\u00033 ' : '\u00034 ';
-            rating = rColour + String(rating) + '%\u000f';
+            var aRating = m.ratings.audience_score;
+            var cRating = m.ratings.critics_score;
+
+            var aColour = (aRating <= 5) ? '\u00033 ' : '\u00034 ';
+            aRating = aColour + String(aRating) + '%\u000f';
+
+            var cColour = (cRating <= 5) ? '\u00033 ' : '\u00034 ';
+            cRating = cColour + String(cRating) + '%\u000f';
 
             var mString = dbot.t('rt_film', {
                 'title': m.title,
                 'year': m.year,
-                'rating': rating
+                'audience_rating': aRating,
+                'critic_rating': cRating
             });
 
             if(_.has(m, 'directors')) mString += ' [Director: ' + m.directors[0] + ']';

@@ -1,6 +1,6 @@
 {
     "rt_film": {
-        "en": "[{title} -{rating} - {year}]",
+        "en": "[{title} - Audience:{audience_rating} - Critic:{critic_rating} - {year}]",
         "de": "[{title} -{rating} - {year}]"
     },
     "rt_noresults": {
