@@ -44,6 +44,9 @@ var translate = function(dbot) {
             
             for(var i=0;i<results.length && i < 3;i++) {
               translation = results[i];
+              if(!_.has(translation.phrase, 'text')) {
+                continue;
+              }
               aString = (i+1) + '. ' + translation.phrase.text;
               if(_.has(translation, 'meanings') && translation.meanings.length > 0) {
                 aString += ' (' + _.unique(_.pluck(translation.meanings, 'text')).join(', ') + ')';
