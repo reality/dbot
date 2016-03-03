@@ -50,7 +50,7 @@ var wikipedia = function(dbot) {
       });
     },
 
-    '~wikipedia': function(event) {
+    '~w': function(event) {
 	  request.get('http://wikipedia.org/w/api.php', {
 		'qs': {
 		  'action': 'opensearch',
