@@ -70,7 +70,7 @@ var wikipedia = function(dbot) {
     }
   };
   this.commands['~lol'].regex = [/^lol ([\d\w\s-]*)/, 2];
-  this.commands['~wikipedia'].regex = [/^wikipedia (.+)/, 2];
+  this.commands['~w'].regex = [/^w (.+)/, 2];
 
 };
 
