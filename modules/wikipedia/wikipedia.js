@@ -54,7 +54,7 @@ var wikipedia = function(dbot) {
 	  request.get('http://wikipedia.org/w/api.php', {
 		'qs': {
 		  'action': 'opensearch',
-		  'search': event.input[1],
+		  'search': event.input[1].replace(/\s/,'_'),
 		  'limit': 1,
 		  'namespace': 0,
 		  'format': 'json'
