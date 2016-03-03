@@ -20,8 +20,6 @@ var translate = function(dbot) {
         },
         'json': true
       }, function(err, res, body) {
-      console.log(err);
-      console.log(body);
         if(!err && _.has(body, 'tuc')) {
           callback(false, body.tuc);
         } else {
