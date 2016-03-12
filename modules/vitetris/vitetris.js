@@ -19,7 +19,7 @@ var vitetris = function(dbot) {
           var match = msg.match(/([^ ]+) vs\. ([^ ]+) (\d)-(\d)/);
           if(match) {
             if(match[3] > match[4]) {
-              dbot.say(this.config.streamServer, this.config.streamChannel, match[1] + ' beat ' + match[2] + ' at tetris ('+match[3] + '-'+match[4]+')');
+              dbot.say(this.config.streamServer, this.config.streamChannel, match[1] + ' beat ' + match[2] + ' at tetris ('+match[4] + '-'+match[3]+')');
             } else {
               dbot.say(this.config.streamServer, this.config.streamChannel, match[2] + ' beat ' + match[1] + ' at tetris ('+match[3] + '-'+match[4]+')');
             }
