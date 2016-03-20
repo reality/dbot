@@ -39,12 +39,12 @@ var commands = function(dbot) {
                 if(this.recentTimeouts[user.id] == 0) {
                   delete this.recentTimeouts[user.id];
                 }
-              }.bind(this), 300000);
+              }.bind(this), 3600000);
 
               if(this.recentTimeouts[user.id] == 3) {
                 duration = null;
                 reason += ' #permatimeout';
-                dbot.say(event.server, dbot.config.servers[event.server].admin_channel, quietee + ' has been given three timeouts in the last hour, and so has been quieted indefinitely. Please review.');
+                dbot.say(event.server, dbot.config.servers[event.server].admin_channel, quietee + ' has been given three timeouts in the last hour, and so has been quieted indefinitely in '+channel+'. Please review.');
               }
 
               this.api.quietUser(server, quieter, duration, channel, quietee, reason, function(response) {
