@@ -1,6 +1,11 @@
 var _ = require('underscore')._;
 
 var kick = function(dbot) {   
+    if(!_.has(dbot.db, 'recentTimeouts')) {
+      dbot.db.recentTimeouts = {};
+    }
+    this.recentTimeouts = dbot.db.recentTimeouts;
+
     this.api = {
         'ban': function(server, host, channel) {
             dbot.instance.connections[server].send('MODE ' + channel + ' +b *!*@' + host);

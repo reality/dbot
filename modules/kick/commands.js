@@ -5,16 +5,53 @@ var commands = function(dbot) {
     var commands = {
         /*** Kick Management ***/
         '~quiet': function(event) {
-            var server = event.server,
-                quieter = event.rUser,
-                duration = event.input[1],
-                channel = (event.input[2] || event.channel.name).trim(),
-                quietee = event.input[3].trim(),
-                reason = event.input[4] || "N/A";
+          var server = event.server,
+              quieter = event.rUser,
+              duration = event.input[1],
+              channel = (event.input[2] || event.channel.name).trim(),
+              quietee = event.input[3].trim(),
+              reason = event.input[4] || "N/A";
 
-            this.api.quietUser(server, quieter, duration, channel, quietee, reason, function(response) {
-              event.reply(response); 
-            });
+          this.api.quietUser(server, quieter, duration, channel, quietee, reason, function(response) {
+            event.reply(response); 
+          });
+        },
+
+        '~timeout': function(event) {
+          var server = event.server,
+              quieter = event.rUser,
+              duration = this.config.timeoutTime,
+              channel = event.channel.name,
+              quietee = event.input[1],
+              reason = event.input[2] || "N/A";
+
+          reason += ' #timeout';
+
+          dbot.api.users.resolveUser(server, quietee, function(err, user) {
+            if(!err && user) {
+              if(!_.has(this.recentTimeouts, user.id)) {
+                this.recentTimeouts[user.id] = 0;
+              }
+
+              this.recentTimeouts[user.id] += 1;
+              setTimeout(function() {
+                this.recentTimeouts[user.id] -= 1;
+                if(this.recentTimeouts[user.id] == 0) {
+                  delete this.recentTimeouts[user.id];
+                }
+              }.bind(this), 300000);
+
+              if(this.recentTimeouts[user.id] == 3) {
+                duration = null;
+                reason += ' #permatimeout';
+                dbot.say(event.server, dbot.config.servers[event.server].admin_channel, quietee + ' has been given three timeouts in the last hour, and so has been quieted indefinitely. Please review.');
+              }
+
+              this.api.quietUser(server, quieter, duration, channel, quietee, reason, function(response) {
+                event.reply(response);
+              });
+            }
+          }.bind(this));
         },
 
         '~unquiet': function(event) {
@@ -381,6 +418,7 @@ var commands = function(dbot) {
     commands['~voteyes'].access = 'regular';
     commands['~voteno'].access = 'regular';
     commands['~quiet'].access = 'voice';
+    commands['~timeout'].access = 'voice';
     commands['~unquiet'].access = 'voice';
     commands['~nban'].access = 'power_user';
     commands['~nunban'].access = 'power_user';
@@ -388,6 +426,7 @@ var commands = function(dbot) {
     commands['~ckick'].regex = /^ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~nban'].regex = /^nban (\d[\d\.dhms]+)? ?([^ ]+) (.+)$/;
     commands['~quiet'].regex = /^quiet (\d[\d\.hms]+)? ?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~timeout'].regex = /^timeout ([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^unquiet (#[^ ]+ )?([^ ]+) ?$/;
     commands['~votequiet'].regex = [/^votequiet ([^ ]+) (.+)$/, 3];
 
