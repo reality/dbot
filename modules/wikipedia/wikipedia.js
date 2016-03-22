@@ -22,7 +22,13 @@ var wikipedia = function(dbot) {
             for(var prop in body) {
               break;
             }
+
             body = body[prop].revisions[0]['*'];
+
+            var redirect = body.match(/#redirect \[\[(.+)\]\]/i);
+            if(redirect) {
+              return this.api.randomSentence(redirect[1], cb);
+            }
 
             body = body.replace(/=(.+)=/g,'');
             body = body.replace(/\t/g,'');
@@ -39,14 +45,12 @@ var wikipedia = function(dbot) {
               return line != '' && !line.match(/^\s+$/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/\|/) && !line.match(/:$/) && spaces && spaces.length > 10 && spaces.length < 60;
             });
 
-            console.log(body);
-
             var sentence = body[_.random(0, body.length -1)];
 
             cb(sentence);
-          });
+          }.bind(this));
         }
-      });
+      }.bind(this));
     }
   };
 
