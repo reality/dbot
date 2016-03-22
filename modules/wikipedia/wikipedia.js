@@ -18,21 +18,28 @@ var wikipedia = function(dbot) {
       }, function(error, response, body) {
         if(body && body[1].length != 0) {
           request.get('https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&&titles='+body[1][0], {'json': true}, function(error, response, body) {
-
-          body = body.query.pages
-          for(var prop in body) {
-            break;
-          }
-          body = body[prop].revisions[0]['*'];
+            body = body.query.pages
+            for(var prop in body) {
+              break;
+            }
+            body = body[prop].revisions[0]['*'];
 
             body = body.replace(/=(.+)=/g,'');
             body = body.replace(/\t/g,'');
             body = body.replace(/\{(.+)\}/g,'');
             body = body.replace(/(\[|\])/g,'');
             body = body.replace(/(\(|\))/g,'');
+            body = body.replace(/\*\s?/g,'');
+            body = body.replace(/<.+?>/g,'');
+
+            body = body.split('\n');
+
+            body = _.filter(body, function(line) {
+              var spaces = line.match(/\s/g);
+              return line != '' && !line.match(/^\s+$/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/\|/) && spaces && spaces.length > 10 && spaces.length < 60;
+            });
 
             console.log(body);
-            body = body.split('\n');
 
             var sentence = body[_.random(0, body.length -1)];
 
