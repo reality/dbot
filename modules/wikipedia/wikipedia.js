@@ -30,6 +30,12 @@ var wikipedia = function(dbot) {
               return this.api.randomSentence(redirect[1], cb);
             }
 
+            var refer = body.match(/may refer to:/i);
+            if(refer) {
+              var links = body.match(/\[\[(.+)\]\]/g);
+              return this.api.randomSentence(links[_.random(0,links.length-1)], cb);
+            }
+
             body = body.replace(/=(.+)=/g,'');
             body = body.replace(/\t/g,'');
             body = body.replace(/\{(.+)\}/g,'');
