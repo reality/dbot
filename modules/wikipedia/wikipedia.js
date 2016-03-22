@@ -49,7 +49,7 @@ var wikipedia = function(dbot) {
 
             body = _.filter(body, function(line) {
               var spaces = line.match(/\s/g);
-              return line != '' && !line.match(/^\s+$/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/\|/) && !line.match(/:$/) && spaces && spaces.length > 10 && spaces.length < 60;
+              return line != '' && !line.match(/^\s+$/) && !line.match(/^!/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/\|/) && !line.match(/:$/) && spaces && spaces.length > 10 && spaces.length < 60;
             });
 
             var sentence = body[_.random(0, body.length -1)];
