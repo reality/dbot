@@ -24,6 +24,7 @@ var wikipedia = function(dbot) {
             }
 
             body = body[prop].revisions[0]['*'];
+            var oBody = body;
 
             var redirect = body.match(/#redirect \[\[(.+)\]\]/i);
             if(redirect) {
@@ -52,6 +53,11 @@ var wikipedia = function(dbot) {
             });
 
             var sentence = body[_.random(0, body.length -1)];
+
+            if(_.isUndefined(sentence)) {
+              var links = oBody.match(/\[\[(.+)\]\]/g);
+              return this.api.randomSentence(links[_.random(0,links.length-1)], cb);
+            }
 
             cb(sentence);
           }.bind(this));
