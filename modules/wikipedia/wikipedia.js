@@ -8,7 +8,7 @@ var _ = require('underscore')._,
 var wikipedia = function(dbot) {
 
   this.api = {
-    'randomSentence': function(term, cb) {
+    'getSentence': function(term, random, cb) {
       request.get('https://en.wikipedia.org/w/api.php', {
         'qs': {
           'action': 'opensearch',
@@ -25,17 +25,16 @@ var wikipedia = function(dbot) {
 
             body = body[prop].revisions[0]['*'];
             var oBody = body;
-            console.log(body);
 
             var redirect = body.match(/#redirect \[\[(.+)\]\]/i);
             if(redirect) {
-              return this.api.randomSentence(redirect[1], cb);
+              return this.api.getSentence(redirect[1], random, cb);
             }
 
             var refer = body.match(/may refer to:/i);
             if(refer) {
               var links = body.match(/\[\[(.+)\]\]/g);
-              return this.api.randomSentence(links[_.random(0,links.length-1)], cb);
+              return this.api.getSentence(links[_.random(0,links.length-1)], random, cb);
             }
 
             body = body.replace(/=(.+)=/g,'');
@@ -44,20 +43,42 @@ var wikipedia = function(dbot) {
             body = body.replace(/(\[|\])/g,'');
             body = body.replace(/(\(|\))/g,'');
             body = body.replace(/\*\s?/g,'');
+            body = body.replace(/<.+?>.+<.+?>/g,'');
             body = body.replace(/<.+?>/g,'');
+            body = body.replace(/(\w+)\|([^ ^, ^\.]+)/g,'$2');
+            body = body.replace(/'+/g, '\'');
 
             body = body.split('\n');
 
+            if(random == false) {
+              var newBody = [];
+              _.each(body, function(line) {
+              console.log(line.split('. '));
+                newBody = _.union(newBody, line.split('. '));
+              });
+
+              body = newBody;
+            }
+
+
             body = _.filter(body, function(line) {
               var spaces = line.match(/\s/g);
-              return line != '' && !line.match(/{|}/) && !line.match(/'''/) && !line.match(/^\s+$/) && !line.match(/^!/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/\|/) && !line.match(/:$/) && spaces && spaces.length > 10 && spaces.length < 60;
+              return line != '' && !line.match(/{|}/) && !line.match(/^\s+$/) && !line.match(/^!/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/^\s?\|/) && !line.match(/:$/) && spaces && spaces.length > 5 && spaces.length < 100;
             });
-
-            var sentence = body[_.random(0, body.length -1)];
+            if(random == true) {
+              var sentence = body[_.random(0, body.length -1)];
+            } else {
+              var sentence = body[0];
+            }
 
             if(_.isUndefined(sentence)) {
               var links = oBody.match(/\[\[(.+)\]\]/g);
-              return this.api.randomSentence(links[_.random(0,links.length-1)], cb);
+              return this.api.getSentence(links[_.random(0,links.length-1)], random, cb);
+            }
+
+            var w = sentence.split(' ');
+            if(w.length > 50) {
+              sentence = w.slice(0, 60).join(' ') + '...';
             }
 
             cb(sentence);
@@ -69,7 +90,13 @@ var wikipedia = function(dbot) {
 
   this.commands = {
     '~lol': function(event) {
-      this.api.randomSentence(event.input[1], function(sentence) {
+      this.api.getSentence(event.input[1], true, function(sentence) {
+        event.reply(sentence);
+      });
+    },
+
+    '~summary': function(event) {
+      this.api.getSentence(event.input[1], false, function(sentence) {
         event.reply(sentence);
       });
     },
@@ -94,6 +121,7 @@ var wikipedia = function(dbot) {
     }
   };
   this.commands['~lol'].regex = [/^lol ([\d\w\s-]*)/, 2];
+  this.commands['~summary'].regex = [/^summary ([\d\w\s-]*)/, 2];
   this.commands['~w'].regex = [/^w (.+)/, 2];
 
 };
