@@ -63,7 +63,7 @@ var wikipedia = function(dbot) {
 
             body = _.filter(body, function(line) {
               var spaces = line.match(/\s/g);
-              return line != '' && !line.match(/{|}/) && !line.match(/^\s+$/) && !line.match(/^!/) && !line.match(/^#/) && !line.match(/^File:/) && !line.match(/^Image:/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/^\s+?\|/) && !line.match(/:$/) && spaces && spaces.length > 5 && spaces.length < 100;
+              return line != '' && !line.match(/{|}/) && !line.match(/^\s+$/) && !line.match(/^!/) && !line.match(/^#/) && !line.match(/^File:/) && !line.match(/^Image:/) && !line.match(/^Category:/) && !line.match(/http:\/\//) && !line.match(/^\s*\|/) && !line.match(/:$/) && spaces && spaces.length > 5 && spaces.length < 100;
             });
             if(random == true) {
               var sentence = body[_.random(0, body.length -1)];
