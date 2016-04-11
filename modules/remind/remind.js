@@ -30,6 +30,8 @@ var remind = function(dbot) {
     this.internalAPI = {
       'getSeconds': function(number,interval) {
             switch(interval) {
+                case "y":
+                    return number * 365 * 60 * 60;
                 case "d":
                     return number*24*60*60;
                 case "h":
