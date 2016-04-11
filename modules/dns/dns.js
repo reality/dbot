@@ -7,6 +7,10 @@ var dnsm = require('dns'),
     http = require('http');
 
 var dns = function(dbot) {
+    if(!_.has(dbot.db, 'ip')) {
+      dbot.db.ip = {};
+    }
+    var ips = dbot.db.ip;
     var commands = {
         '~lookup': function(event) {
             domain = event.params[1];
@@ -32,15 +36,21 @@ var dns = function(dbot) {
 
         '~geoip': function(event) {
           var ip = event.params[1];
-          request.get('http://ipinfo.io/'+ip, {
-            'json': true 
-          }, function(err, res, body) {
-            if(!err && body) {
-                event.reply(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
-              } else {
-                event.reply('No info about ' + ip);
-              }
-          });
+          if(_.has(ips, ip)) {
+            body = ips[ip];
+            event.reply(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
+          } else {
+            request.get('http://ipinfo.io/'+ip, {
+              'json': true 
+            }, function(err, res, body) {
+              if(!err && body) {
+                  event.reply(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
+                } else {
+                  event.reply('No info about ' + ip);
+                }
+                ips[ip] = body;
+            });
+          }
         },
 
         '~dnsbl': function(event) {
