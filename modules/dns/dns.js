@@ -11,6 +11,27 @@ var dns = function(dbot) {
       dbot.db.ip = {};
     }
     var ips = dbot.db.ip;
+
+    this.api = {
+      'getGeoIp': function(ip, callback) {
+        if(_.has(ips, ip)) {
+            body = ips[ip];
+            callback(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
+          } else {
+            request.get('http://ipinfo.io/'+ip, {
+              'json': true 
+            }, function(err, res, body) {
+              if(!err && body) {
+                  callback(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
+                } else {
+                  callback('No info about ' + ip);
+                }
+                ips[ip] = body;
+            });
+          }
+      }.bind(this)
+    };
+
     var commands = {
         '~lookup': function(event) {
             domain = event.params[1];
@@ -36,21 +57,7 @@ var dns = function(dbot) {
 
         '~geoip': function(event) {
           var ip = event.params[1];
-          if(_.has(ips, ip)) {
-            body = ips[ip];
-            event.reply(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
-          } else {
-            request.get('http://ipinfo.io/'+ip, {
-              'json': true 
-            }, function(err, res, body) {
-              if(!err && body) {
-                  event.reply(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
-                } else {
-                  event.reply('No info about ' + ip);
-                }
-                ips[ip] = body;
-            });
-          }
+          this.api.getGeoIp(ip, function(result) { event.reply(result); });    
         },
 
         '~dnsbl': function(event) {
