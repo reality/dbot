@@ -13,7 +13,7 @@ var remind = function(dbot) {
     this.api = {
       'parseTime': function(time) {
         var now = Date.now();
-        var datesplits = time.match(/[0-9]+[dhms]/g);
+        var datesplits = time.match(/[0-9]+[dhmsy]/g);
         if(datesplits == null) {
             return;
         }

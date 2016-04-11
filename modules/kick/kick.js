@@ -51,7 +51,7 @@ var kick = function(dbot) {
                           if(!msTimeout) {
                             return callback('Invalid time. Remember you must give e.g. 5m now.');
                           }
-                          duration = duration.replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds').trim();
+                          duration = duration.replace(/([\d]+)d/, '$1 years').replace(/([\d]+)d/, '$1 days').replace(/([\d]+)h/, '$1 hours ').replace(/([\d]+)m/, '$1 minutes ').replace(/([\d]+)s/, '$1 seconds').trim();
                         } else {
                           duration += ' minutes';
                         }
