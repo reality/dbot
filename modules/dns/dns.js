@@ -3,7 +3,8 @@
  * Description: Performs and reports on basic DNS functions.
  */
 var dnsm = require('dns'),
-    request = require('request');
+    request = require('request'),
+    http = require('http');
 
 var dns = function(dbot) {
     var commands = {
@@ -30,16 +31,16 @@ var dns = function(dbot) {
         },
 
         '~geoip': function(event) {
-            var ip = event.params[1];
-            request.get('http://www.telize.com/geoip/'+ip, {
-                'json': true
-            }, function(err, response, body) {
-                if(!err && body && !_.has(body, 'code')) {
-                    event.reply(ip + ' is located in '+ body.postal_code + ', ' + body.city + ', ' + body.country + ' and is hosted by ' + body.isp);
-                } else {
-                    event.reply('No info about ' + ip);
-                }
-            });
+          var ip = event.params[1];
+          request.get('http://ipinfo.io/'+ip, {
+            'json': true 
+          }, function(err, res, body) {
+            if(!err && body) {
+                event.reply(ip + ' is located in '+ body.city + ', ' + body.country + '. Hostname: ' + body.hostname + '. ISP: ' + body.org);
+              } else {
+                event.reply('No info about ' + ip);
+              }
+          });
         },
 
         '~dnsbl': function(event) {
