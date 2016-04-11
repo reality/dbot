@@ -8,6 +8,19 @@ var pages = function(dbot) {
             });
         },
 
+        '/underbans': function(req, res) {
+          this.db.search('nbans', { 'server': server }, function(ban) {
+            if(ban.reason.match('#underban')) {
+              bans.push(ban);
+            }
+              }, function() {
+                  res.render('bans', {
+                      'server': server,
+                      'bans': bans
+                  });
+              });
+          },
+
         '/bans/:server': function(req, res) {
             var server = req.params.server,
                 bans = [];
