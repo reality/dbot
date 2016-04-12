@@ -79,7 +79,7 @@ var kick = function(dbot) {
                             'quietee': quietee,
                             'minutes': duration
                         }));
-                        dbot.api.report.notify('quiet', server, quieter, channel,
+                        dbot.api.report.notify('quiet', server, quieter.primaryNick, channel,
                             dbot.t('tquiet_notify', {
                                 'minutes': duration,
                                 'quieter': quieter.primaryNick,
@@ -89,9 +89,9 @@ var kick = function(dbot) {
                         );
                     } else {
                         callback(dbot.t('quieted', { 'quietee': quietee }));
-                        dbot.api.report.notify('quiet', server, quieter, channel,
+                        dbot.api.report.notify('quiet', server, quieter.primaryNick, channel,
                         dbot.t('quiet_notify', {
-                            'quieter': quieter,
+                            'quieter': quieter.primaryNick,
                             'quietee': quietee,
                             'reason': reason
                         }), false, quietee);            
