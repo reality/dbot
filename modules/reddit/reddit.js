@@ -33,6 +33,7 @@ var reddit = function(dbot) {
         'reloadChannelFeeds': function() {
             var channels = [],
                 checkTimes = [];
+                console.log('getting feeds');
 
             for(i=0;i<this.ints.length;i++) {
                 clearInterval(this.ints[i]); 
