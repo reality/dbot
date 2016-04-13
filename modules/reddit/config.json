@@ -1,5 +1,8 @@
 {
     "outputPrefix": "\u000312reddit\u000f",
     "dependencies": [ "link" ],
-    "dbType": "redis"
+    "dbType": "redis",
+    "colours": {
+      "Drugs": "\u00033"
+    }
 }

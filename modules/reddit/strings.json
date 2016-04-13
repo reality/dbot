@@ -7,7 +7,7 @@
         "it": "[{display_name} ha {subscribers} abonnati ({active} activo/i)]"
     },
     "about_post": {
-        "en": "[{title}] [Post by {poster} in {subreddit} — Comments: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
+        "en": "[{subreddit}][{title}] [Post by {poster} — Comments: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
         "cy": "[Postio gan {poster} yn {subreddit} - Sylwadau: {comments}, Sgôr: {score} (\u00039]▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
         "de": "[Beitrag von {poster} in {subreddit} — Kommentare: {comments}, Bewertung: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",
         "fr": "[Message de {poster} dans {subreddit} — Commentaires: {comments}, Score: {score} (\u00039▲{up}\u000f|\u000312{down}▼\u000f)] — {url}",

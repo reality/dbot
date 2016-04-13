@@ -52,6 +52,9 @@ var reddit = function(dbot) {
                             this.api.getNewPosts(feed.subreddit, checkTimes[channel.id][feed.subreddit], function(err, posts) {
                                 if(!err && posts.length > 0) {
                                     _.each(posts, function(post) {
+                                        if(_.has(this.colours, post.subreddit)) {
+                                          post.subreddit = this.colours[post.subreddit] + post.subreddit + "\u0003";
+                                        }
                                          dbot.say(channel.server, channel.channel, dbot.t('about_new_post', {
                                             'title': _.unescape(post.title.trim()),
                                             'poster': post.author,
