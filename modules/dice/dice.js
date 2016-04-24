@@ -74,7 +74,6 @@ var dice = function(dbot) {
                     event.reply(rolls[i][0] + ": invalid dice spec");
                 } else {
                     if (rolls[i][1].length > 1) {
-                    console.log(rolls);
                         var total = " (total " + _.reduce(rolls[i][1], function(memo, num){ return memo + num; }, 0);
                         if (rolls[i][2] != 0) {
                             if (rolls[i][2] > 0) {
