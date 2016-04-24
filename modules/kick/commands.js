@@ -425,7 +425,7 @@ var commands = function(dbot) {
 
     commands['~ckick'].regex = /^ckick (#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~nban'].regex = /^nban (\d[\d\.dhmsy]+)? ?([^ ]+) (.+)$/;
-    commands['~quiet'].regex = /^quiet (\d[\d\.hms]+)? ?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
+    commands['~quiet'].regex = /^quiet (\d[\d\.hmsy]+)? ?(#[^ ]+ )?([^ ]+) ?(.*)?$/;
     commands['~timeout'].regex = /^timeout ([^ ]+) ?(.*)?$/;
     commands['~unquiet'].regex = /^unquiet (#[^ ]+ )?([^ ]+) ?$/;
     commands['~votequiet'].regex = [/^votequiet ([^ ]+) (.+)$/, 3];
