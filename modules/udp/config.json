@@ -1,6 +1,8 @@
 {
+  "services": [{
     "port":14628,
     "address": "127.0.0.1",
     "server": "freenode",
     "channel": "#oaosidl"
+  }]
 }

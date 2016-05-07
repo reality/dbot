@@ -6,17 +6,20 @@
 var dgram = require('dgram');
 
 var udp = function(dbot) {
+  _.each(dbot.config.modules.udp.servers, function(data) {
     var server = dgram.createSocket("udp4");
     server.on("message", function(msg, msginfo) {
         var message = msg.toString();
-        console.log(message);
-        if (msginfo.address == this.config.address) {
-            dbot.say(this.config.server, this.config.channel, message);
+        if (msginfo.address == data.address) {
+            dbot.say(data.server, data.channel, message);
         }
     }.bind(this));
     this.onLoad = function() {
-        server.bind(this.config.port);
+      _.each(dbot.config.modules.udp.servers, function(data) {
+        server.bind(data.port);
+      });
     }.bind(this);
+  }.bind(this));
 };
 
 exports.fetch = function(dbot) {
