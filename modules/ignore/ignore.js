@@ -154,7 +154,7 @@ var ignore = function(dbot) {
             var nick = event.input[1],
                 item = event.input[2];
 
-            dbot.api.users.resolveUser(event.server, nick, function(user) {
+            dbot.api.users.resolveUser(event.server, nick, function(err, user) {
                 this.api.getUserIgnores(user, function(err, ignores) {
                     if(err || !ignores) {
                         event.reply(dbot.t('invalid_unban', {
