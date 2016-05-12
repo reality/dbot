@@ -114,7 +114,7 @@ var ignore = function(dbot) {
                 item = event.input[2];
 
             if(module == '*' || _.include(dbot.config.moduleNames, item) || _.include(dbot.commands, item)) {
-                dbot.api.users.resolveUser(event.server, nick, function(user) {
+                dbot.api.users.resolveUser(event.server, nick, function(err, user) {
                     this.api.getUserIgnores(user, function(err, ignores) {
                         if(!err) {
                             if(!ignores) {
@@ -144,7 +144,7 @@ var ignore = function(dbot) {
                             }
                         }
                     }.bind(this));
-                });
+                }.bind(this));
             } else {
                 event.reply(dbot.t('invalid_ban', { 'user': event.user }));
             }
