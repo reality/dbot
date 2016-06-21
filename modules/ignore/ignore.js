@@ -142,6 +142,8 @@ var ignore = function(dbot) {
                                     'banned': nick
                                 }));
                             }
+                        } else {
+                          event.reply(err);
                         }
                     }.bind(this));
                 }.bind(this));
