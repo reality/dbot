@@ -11,52 +11,77 @@ var remind = function(dbot) {
     var self = this;
 
     this.api = {
-      'parseTime': function(time) {
-        var now = Date.now();
-        var datesplits = time.match(/[0-9]+[dhmsy]/g);
-        if(datesplits == null) {
-            return;
+        'parseTime': function(time) {
+            var components = time.match(/[0-9]+[ydhms]/g);
+            if (!components)
+                return;
+
+            var seconds = 0;
+            for (var i=0; i < components.length; ++i) {
+                var value = parseInt(components[i].match(/[0-9]+/)[0]),
+                    component = components[i].match(/[ydhms]/)[0];
+
+                if (!component)
+                    return;
+
+                seconds += this.internalAPI.getSeconds(value,component);
+            }
+
+            return new Date(Date.now() + (seconds * 1000));
         }
-        var timeinseconds = 0;
-        for(var i=0;i<datesplits.length;++i) {
-            var number = parseInt(datesplits[i].match(/[0-9]+/)[0]);
-            var interval = datesplits[i].match(/[^0-9]/)[0];
-            timeinseconds += this.internalAPI.getSeconds(number,interval);
-        }
-        return new Date(now + (timeinseconds*1000));
-      }
     };
 
     this.internalAPI = {
-      'getSeconds': function(number,interval) {
-            switch(interval) {
+        'parseParams': function(params) {
+            var i;
+            for(i=0; i < params.length; ++i) {
+                if(!params[i].match(/^[0-9]+?[ydhms]$/))
+                    break;
+            }
+
+            var time = params.slice(0,i).join(''),
+                message = params.slice(i, params.length).join(' ');
+
+            if (dbot.config.debugMode) {
+                console.log("time: " + time + " [0:" + i.toString() + "]");
+                console.log("message: " + message + " [" + i.toString() + ":" + params.length.toString() + "]");
+            }
+
+            return [time,message];
+        }.bind(this),
+
+        'getSeconds': function(value,component) {
+            switch(component) {
                 case "y":
-                    return number * 365 * 60 * 60;
+                    return value * 365 * 60 * 60;
                 case "d":
-                    return number*24*60*60;
+                    return value *  24 * 60 * 60;
                 case "h":
-                    return number*60*60;
+                    return value *       60 * 60;
                 case "m":
-                    return number*60;
+                    return value *            60;
                 case "s":
-                    return number;
+                    return value;
             }
         }.bind(this),
-        'doReminder': function(event,user,time,message) {
+
+        'doReminder': function(event, user, time, message) {
             var then = this.api.parseTime(time);
-            if(!then) {
-              return event.reply("The time parameter was not a valid time mah boy, it was "+time);
-            }
+            if(!then)
+                return event.reply("The time parameter was not a valid time mah boy, it was "+time);
 
             if(dbot.config.debugMode)
                 event.reply("The timer will be at "+then);
+
             this.internalAPI.startTimer(event.server,event.channel,then,event.user,user,message);
             this.internalAPI.saveTimer(event.server,event.channel,then,event.user,user,message);
+
             if(message)
                 event.reply("I have set the timer with your message \""+message+"\"");
             else
                 event.reply("I have set the timer.");
         }.bind(this),
+
         'startTimer': function(server, channel, time, starter, target, message) {
             var cb = function() {
                 if(message) {
@@ -81,10 +106,12 @@ var remind = function(dbot) {
             if(dbot.config.debugMode)
                 dbot.say(server,channel,"Timer queued for "+time);
         }.bind(this),
+
         'saveTimer': function(server,channel,time,starter,target,message) {
             var hash = this.internalAPI.getHashForTime(time);
             dbot.db.remindTimers[hash] = {server:server, channel:channel.name, time:time.valueOf(), starter:starter, target:target, message:message};
         }.bind(this),
+
         'getHashForTime': function(time) {
             var md5 = crypto.createHash('md5');
             console.log(time.valueOf().toString());
@@ -99,27 +126,34 @@ var remind = function(dbot) {
                 event.reply("You need to give me a user and time dude.");
                 return;
             }
-            this.internalAPI.doReminder(event,event.params[1],event.params[2],event.params.splice(3, event.params.length-1).join(' ').trim());
+
+            var r = this.internalAPI.parseParams(event.params.slice(2, event.params.length));
+            this.internalAPI.doReminder(event, event.params[1], r[0], r[1]);
         },
+
         '~remindme': function(event) {
             if(event.params.length < 2) {
                 event.reply("You need to give me a time dude.");
                 return;
             }
-            this.internalAPI.doReminder(event,event.user,event.params[1],event.params.splice(2, event.params.length-1).join(' ').trim());
-       },
-       '~myreminders': function(event) {
-         var reminders = _.filter(dbot.db.remindTimers, function(t){ return t.target == event.user; });
-         if(_.size(reminders) > 0) {
-           var output = '';
-           _.each(reminders, function(reminder, i) {
-             output += (i+1) + ': "' + reminder.message + '" in ' + moment(reminder.time).toNow(true) + '. '; 
-           });  
-           event.reply('You have ' + _.size(reminders) + ' active reminders. ' + output);
-         } else {
-           event.reply('You have no currently active timers.');
-         }
-       }
+
+            var r = this.internalAPI.parseParams(event.params.slice(1, event.params.length));
+            this.internalAPI.doReminder(event, event.user, r[0], r[1]);
+        },
+
+        '~myreminders': function(event) {
+            var reminders = _.filter(dbot.db.remindTimers, function(t){ return t.target == event.user; });
+            if(_.size(reminders) > 0) {
+                var output = '';
+                _.each(reminders, function(reminder, i) {
+                    output += (i+1) + ': "' + reminder.message + '" in ' + moment(reminder.time).toNow(true) + '. '; 
+                });  
+                event.reply('You have ' + _.size(reminders) + ' active reminders. ' + output);
+            }
+            else {
+                event.reply('You have no currently active timers.');
+            }
+        }
     };
 
     this.onLoad = function() {
@@ -133,7 +167,7 @@ var remind = function(dbot) {
             var prop = dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
             if(parseInt(prop.time) < Date.now().valueOf()) {
                 if(dbot.config.debugMode)
-                    console.log("This timer is old I shall delete it.");
+                    console.log("This timer is old. I shall delete it.");
                 delete dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
                 continue;
             }
