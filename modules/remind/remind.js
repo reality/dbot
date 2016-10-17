@@ -13,16 +13,14 @@ var remind = function(dbot) {
     this.api = {
         'parseTime': function(time) {
             var components = time.match(/[0-9]+[ydhms]/g);
-            if (!components)
+            if(!components) {
                 return;
+            }
 
             var seconds = 0;
-            for (var i=0; i < components.length; ++i) {
+            for(var i=0; i < components.length; ++i) {
                 var value = parseInt(components[i].match(/[0-9]+/)[0]),
                     component = components[i].match(/[ydhms]/)[0];
-
-                if (!component)
-                    return;
 
                 seconds += this.internalAPI.getSeconds(value,component);
             }
@@ -35,14 +33,15 @@ var remind = function(dbot) {
         'parseParams': function(params) {
             var i;
             for(i=0; i < params.length; ++i) {
-                if(!params[i].match(/^[0-9]+?[ydhms]$/))
+                if(!params[i].match(/[0-9]+[ydhms]/)) {
                     break;
+                }
             }
 
             var time = params.slice(0,i).join(''),
                 message = params.slice(i, params.length).join(' ');
 
-            if (dbot.config.debugMode) {
+            if(dbot.config.debugMode) {
                 console.log("time: " + time + " [0:" + i.toString() + "]");
                 console.log("message: " + message + " [" + i.toString() + ":" + params.length.toString() + "]");
             }
@@ -67,19 +66,23 @@ var remind = function(dbot) {
 
         'doReminder': function(event, user, time, message) {
             var then = this.api.parseTime(time);
-            if(!then)
+            if(!then) {
                 return event.reply("The time parameter was not a valid time mah boy, it was "+time);
+            }
 
-            if(dbot.config.debugMode)
+            if(dbot.config.debugMode) {
                 event.reply("The timer will be at "+then);
+            }
 
             this.internalAPI.startTimer(event.server,event.channel,then,event.user,user,message);
             this.internalAPI.saveTimer(event.server,event.channel,then,event.user,user,message);
 
-            if(message)
+            if(message) {
                 event.reply("I have set the timer with your message \""+message+"\"");
-            else
+            }
+            else {
                 event.reply("I have set the timer.");
+            }
         }.bind(this),
 
         'startTimer': function(server, channel, time, starter, target, message) {
@@ -97,14 +100,20 @@ var remind = function(dbot) {
                         dbot.say(server,channel,target+": This is your reminder. "+starter+" did not leave a message.");
                     }
                 }
+
                 var hash = self.internalAPI.getHashForTime(time);
-                if(dbot.config.debugMode)
+                if(dbot.config.debugMode) {
                     dbot.say(server,channel,"Removing timer with hash "+hash);
+                }
+
                 delete dbot.db.remindTimers[hash];
             };
+
             dbot.api.timers.addTimeout(time,cb,null);
-            if(dbot.config.debugMode)
+
+            if(dbot.config.debugMode) {
                 dbot.say(server,channel,"Timer queued for "+time);
+            }
         }.bind(this),
 
         'saveTimer': function(server,channel,time,starter,target,message) {
@@ -161,16 +170,22 @@ var remind = function(dbot) {
             dbot.db.remindTimers = {};
             return;
         }
+
         for(var i=0;i<Object.keys(dbot.db.remindTimers).length;++i) {
-            if(dbot.config.debugMode)
+            if(dbot.config.debugMode) {
                 console.log("Found saved timer "+Object.keys(dbot.db.remindTimers)[i]);
+            }
+
             var prop = dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
             if(parseInt(prop.time) < Date.now().valueOf()) {
-                if(dbot.config.debugMode)
+                if(dbot.config.debugMode) {
                     console.log("This timer is old. I shall delete it.");
+                }
+
                 delete dbot.db.remindTimers[Object.keys(dbot.db.remindTimers)[i]];
                 continue;
             }
+
             this.internalAPI.startTimer(prop.server,prop.channel,new Date(prop.time),prop.starter,prop.target,prop.message);
         }
     };
