@@ -1,5 +1,5 @@
 {
-    "dependencies": [ "profile" ],
+    "dependencies": [ "profile", "youtube", "spotify" ],
     "api_key": "blah",
     "outputPrefix": "\u000315,5last.fm\u000f"
 }

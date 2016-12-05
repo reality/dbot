@@ -220,6 +220,7 @@ var lastfm = function(dbot) {
                                         'artist': track.artist.name
                                     });
                                     var term = track.name + ' ' + track.artist.name;
+
                                     dbot.api.youtube.search(term, function(body) {
                                        if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
                                             var link = body.items[0].id.videoId
@@ -227,7 +228,14 @@ var lastfm = function(dbot) {
                                                 output += ' - http://youtu.be/' + link;
                                             }
                                         }
-                                        event.reply(output);
+
+                                        dbot.api.spotify.spotifySearch(term, function(body, t) {
+                                          if(body) {
+                                            output += ' - ' + t;
+                                          }
+
+                                          event.reply(output);
+                                        });
                                     });
                                 } else {
                                     event.reply('something broke');
