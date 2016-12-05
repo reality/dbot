@@ -16,7 +16,7 @@ var spotify = function(dbot) {
      */
     this.spotifyRegex = /(\b(https?:\/\/open.spotify.com\/(artist|track|album)\/\w*|spotify:(artist|track|album):\w*)\b)/ig;
     this.spotifyLookup = 'http://ws.spotify.com/lookup/1/.json';
-    this.spotifySearch = 'http://ws.spotify.com/search/1/track.json';
+    this.spotifySearch = 'https://api.spotify.com/v1/search';
     this.youtubeRegex = /^http:\/\/(?:www\.)?youtube.com\/watch\?v=\w+(&\S*)?$/
     this.spotifyText = '\u00039spotify\u000f';
 
@@ -52,14 +52,15 @@ var spotify = function(dbot) {
         'spotifySearch': function(query, callback) {
             request({
                 'url': this.spotifySearch,
-                'qs': { 'q': query },
+                'qs': { 'q': query, 'type': 'track' },
                 'json': true
             }, function(error, response, body) {
                 if(!error && response.statusCode == 200) {
-                    if(_.has(body, 'tracks') && body.tracks[0] && _.has(body.tracks[0], 'href')) {
-                        var t = body.tracks[0].href;
-                        t = t.replace(/:/g, '/');
-                        t = t.replace(/spotify/, 'http://open.spotify.com');
+                    if(_.has(body, 'tracks') && body.tracks.items[0] && _.has(body.tracks.items[0], 'href')) {
+                        var t = body.tracks.items[0].href;
+                        ///*t = t.replace(/:/g, '/');
+                        t = t.replace(/api.spotify.com\/v1\/tracks/,
+                        'open.spotify.com/track');
                         callback(body, t);
                     } else {
                         callback(false);
@@ -75,10 +76,10 @@ var spotify = function(dbot) {
             this.api.spotifySearch(query, function(body, t) {
                 if(body) {
                     event.reply(dbot.t('found', {
-                        'artist': _.map(body.tracks[0].artists, function(a) { 
+                        'artist': _.map(body.tracks.items[0].artists, function(a) { 
                                 return a.name }).join(', '), 
-                        'album': body.tracks[0].album.name, 
-                        'track': body.tracks[0].name, 
+                        'album': body.tracks.items[0].album.name, 
+                        'track': body.tracks.items[0].name, 
                         'url': t
                     }));
                 } else {
