@@ -140,7 +140,7 @@ var karma = function(dbot) {
             'value': karma.karma 
           }));
           if(_.has(dbot.modules, 'log')) {
-            dbot.api.log.log(event.server, event.rUser.primaryNick, event.message);
+            dbot.api.log.logWithChannel(event.server, event.channel, event.rUser.primaryNick, event.message);
           }
         }.bind(this));
       }.bind(this));

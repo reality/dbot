@@ -10,11 +10,15 @@ var log = function(dbot) {
 
   this.api = {
     'log': function(server, user, message) {
+      this.api.logWithChannel(server, user, 'nochan', message);
+    },
+
+    'logWithChannel': function(server, user, channel, message) { // muh legacy
       var logChannel = this.config.logChannel[server];
       dbot.say(server, logChannel, dbot.t('log_message', {
         'time': new Date().toUTCString(),
         'command': message,
-        "channel": 'nochan',
+        'channel': channel,
         'user': user
       }));
     },
