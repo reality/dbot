@@ -15,7 +15,7 @@ var commands = function(dbot){
             }
         },
 
-        '~set': function(event){
+        '~timezone': function(event){
             if(event.input[1] && event.input[2]){
                 if(_.has(this.config.schema.profile, event.input[1])){
                     if(event.input[1] === 'timezone') { // eugh
@@ -50,13 +50,13 @@ var commands = function(dbot){
                     if(tz) {
                         event.reply('The time for ' + target + ' in ' + tz + ' is ' + moment().tz(tz).format('HH:mm:ss on DD/MM/YYYY'));
                     } else {
-                        event.reply(user.currentNick + ' needs to set a timezone with "~set timezone x"');
+                        event.reply(user.currentNick + ' needs to set a timezone with "~timezone x"');
                     }
                 } else {
                     if(!user) {
                         event.reply('No idea who that is mate');
                     } else {
-                        event.reply(user.currentNick + ' needs to set a timezone with "~set timezone x"');
+                        event.reply(user.currentNick + ' needs to set a timezone with "~timezone x"');
                     }
                 }
             });
