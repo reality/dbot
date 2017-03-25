@@ -241,7 +241,7 @@ var commands = function(dbot) {
                         event.reply(dbot.t('search_results', {
                             'category': matches[0].category, 
                             'needle': needle,
-                            'quote': matches[0].quote,
+                            'quote': matches[_.random(0, _.size(matches) -1)].quote,
                             'matches': matches.length
                         }));
                     } else {
@@ -263,7 +263,7 @@ var commands = function(dbot) {
                             event.reply(dbot.t('search_results', {
                                 'category': haystack, 
                                 'needle': needle,
-                                'quote': matches[0],
+                                'quote': matches[_.random(0, _.size(matches) -1)].quote,
                                 'matches': matches.length
                             }));
                         }
