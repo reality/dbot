@@ -263,7 +263,7 @@ var commands = function(dbot) {
                             event.reply(dbot.t('search_results', {
                                 'category': haystack, 
                                 'needle': needle,
-                                'quote': matches[_.random(0, _.size(matches) -1)].quote,
+                                'quote': matches[_.random(0, _.size(matches) -1)],
                                 'matches': matches.length
                             }));
                         }
