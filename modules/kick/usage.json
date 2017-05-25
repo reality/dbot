@@ -1,9 +1,9 @@
 {
-    "~ckick": "~ckick [#channel] [username] [reason]",
-    "~cban": "~cban [#channel] [username] [reason]",
-    "~nban": "~nban ([time in hours]) [username] [reason]",
+    "~ckick": "~ckick #CHANNEL USERNAME [reason]",
+    "~cban": "~cban #CHANNEL USERNAME [reason]",
+    "~nban": "~nban [time] USERNAME [reason]",
     "~kickstats": "~kickstats",
-    "~kickcount": "~kickcount [user]",
-    "~quiet": "~quiet (time) (#channel) username (reason)",
-    "~unquiet": "~unquiet (#channel) username"
+    "~kickcount": "~kickcount USERNAME",
+    "~quiet": "~quiet [time] #CHANNEL USERNAME [reason]",
+    "~unquiet": "~unquiet #CHANNEL USERNAME"
 }
