@@ -288,13 +288,13 @@ var lastfm = function(dbot) {
                             }
                         }
 
-                        dbot.api.spotify.spotifySearch(term, function(body, t) {
+                /*        dbot.api.spotify.spotifySearch(term, function(body, t) {
                           if(body) {
                             output += ' - ' + t;
                           }
 
-                          event.reply(output);
-                        });
+                        });*/
+                        event.reply(output);
                     });
                 } else {
                     if(err == 'no_user') {
