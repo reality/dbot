@@ -97,7 +97,7 @@ var nickserv = function(dbot) {
                 acceptableState = this.config.servers[event.server].acceptableState;
 
             if(event.user == nickserv) {
-                var info = event.params.match(statusRegex);
+                var info = event.message.match(statusRegex);
                 if(info && _.has(this.authStack, event.server)) {
                     if(info[3] == acceptableState) {
                         this.authStack[event.server][info[1]](true, info[2]);
@@ -107,7 +107,7 @@ var nickserv = function(dbot) {
                 }
             }
         } else if(event.action == '302') {
-            var match = event.params.match(/:(.+)=([^@]+)@(.+)$/);
+            var match = event.message.match(/(.+)=([^@]+)@(.+)$/);
 
             if(match && match[1]) match[1] = match[1].replace('\*', '');
             if(match && _.has(this.userStack, event.server) && _.has(this.userStack[event.server], match[1])) {
@@ -116,7 +116,7 @@ var nickserv = function(dbot) {
                 callback(match[3].trim());
             }
         } else if(event.action == '314') {
-            var params = event.params.split(' '),
+            var params = event.message.split(' '),
                 nick = params[1],
                 host = params[3];
 
@@ -126,7 +126,7 @@ var nickserv = function(dbot) {
                 callback(host);
             }
         } else if(event.action == '312') {
-            var params = event.params.split(' '),
+            var params = event.message.split(' '),
                 user = params[1],
                 server = params[2];
 
