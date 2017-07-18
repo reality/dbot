@@ -116,35 +116,31 @@ var ignore = function(dbot) {
             if(module == '*' || _.include(dbot.config.moduleNames, item) || _.include(dbot.commands, item)) {
                 dbot.api.users.resolveUser(event.server, nick, function(err, user) {
                     this.api.getUserIgnores(user, function(err, ignores) {
-                        if(!err) {
-                            if(!ignores) {
-                                ignores = {
-                                    'id': user.id,
-                                    'ignores': [],
-                                    'bans': [] 
-                                };
-                            }
+                          if(!ignores) {
+                              ignores = {
+                                  'id': user.id,
+                                  'ignores': [],
+                                  'bans': [] 
+                              };
+                          }
 
-                            if(!_.include(ignores.bans, item)) {
-                                ignores.bans.push(item);
-                                this.db.save('ignores', user.id, ignores, function(err) {
-                                    if(!err) {
-                                        event.reply(dbot.t('banned_success', {
-                                            'user': event.user, 
-                                            'banned': nick,
-                                            'module': item 
-                                        }));
-                                    }
-                                });
-                            } else {
-                                event.reply(dbot.t('already_banned', {
-                                    'user': event.user,
-                                    'banned': nick
-                                }));
-                            }
-                        } else {
-                          event.reply(err);
-                        }
+                          if(!_.include(ignores.bans, item)) {
+                              ignores.bans.push(item);
+                              this.db.save('ignores', user.id, ignores, function(err) {
+                                  if(!err) {
+                                      event.reply(dbot.t('banned_success', {
+                                          'user': event.user, 
+                                          'banned': nick,
+                                          'module': item 
+                                      }));
+                                  }
+                              });
+                          } else {
+                              event.reply(dbot.t('already_banned', {
+                                  'user': event.user,
+                                  'banned': nick
+                              }));
+                          }
                     }.bind(this));
                 }.bind(this));
             } else {
@@ -264,8 +260,8 @@ var ignore = function(dbot) {
     commands['~ignorechannel'].regex = [/^ignorechannel ([^ ]+) ([^ ]+)$/, 3];
     commands['~unignorechannel'].regex = [/^unignorechannel ([^ ]+) ([^ ]+)$/, 3];
 
-    commands['~ban'].access = 'moderator';
-    commands['~unban'].access = 'moderator';
+    commands['~ban'].access = 'power_user';
+    commands['~unban'].access = 'power_user';
     commands['~ignorechannel'].access = 'moderator';
     commands['~unignorechannel'].access = 'moderator';
 
