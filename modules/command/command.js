@@ -17,51 +17,12 @@ var command = function(dbot) {
             return;
         }
         commandName = commandName.substring(1);
-        if(!_.has(dbot.commands, commandName)) {
-            if(_.has(dbot.modules, 'quotes')) {
-                var key = event.message.substring(1);
-                dbot.api.quotes.getInterpolatedQuote(event.server,
-                        event.channel.name, event.user, key, function(quote) {
-                    if(quote) {
-                        event.reply(key + ': ' + quote);
-                    } else if(_.has(dbot.modules, 'spelling')) {
-                        var commands = _.keys(dbot.commands),
-                            winner = false,
-                            closestMatch = Infinity;
-
-                        _.each(commands, function(command) {
-                            var distance = dbot.api.spelling.distance(commandName, command);
-                            if(distance < closestMatch) {
-                                closestMatch = distance;
-                                winner = command;
-                            }
-                        }); 
-
-                        if(closestMatch < 1) {
-                            event.reply(commandName + ' not found. Did you mean ' + winner + '?');
-                            return;
-                        } else if(_.has(dbot.modules, 'quotes')) {
-                            dbot.api.link.udLookup(key, function(word, definition) {
-                                if(word) {
-                                    event.reply(key + '[UD]: ' + definition);
-                                } else {
-                                    event.reply(dbot.t('category_not_found', { 'category': key }));
-                                }
-                            });
-                        } else {
-                            return;
-                        }
-                    }
-                });
-                return;
-            } else {
-                return;
-            }
-        } 
+        
        
         this.api.hasAccess(event, commandName, function(hasAccess) {
             dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
                 dbot.api.ignore.isUserBanned(event.rUser, commandName, function(isBanned) {
+
                     if(isBanned) {
                         if(this.config.banOutput && commandName != this.config.commandPrefix) {
                             event.reply(dbot.t('command_ban', {'user': event.user})); 
@@ -71,6 +32,47 @@ var command = function(dbot) {
                             event.reply(dbot.t('access_denied', { 'user': event.user }));
                         }
                     } else if(!isIgnoring && _.has(dbot.commands, commandName) && !dbot.commands[commandName].disabled) {
+                      if(!_.has(dbot.commands, commandName)) {
+                        if(_.has(dbot.modules, 'quotes')) {
+                            var key = event.message.substring(1);
+                            dbot.api.quotes.getInterpolatedQuote(event.server,
+                                    event.channel.name, event.user, key, function(quote) {
+                                if(quote) {
+                                    event.reply(key + ': ' + quote);
+                                } else if(_.has(dbot.modules, 'spelling')) {
+                                    var commands = _.keys(dbot.commands),
+                                        winner = false,
+                                        closestMatch = Infinity;
+
+                                    _.each(commands, function(command) {
+                                        var distance = dbot.api.spelling.distance(commandName, command);
+                                        if(distance < closestMatch) {
+                                            closestMatch = distance;
+                                            winner = command;
+                                        }
+                                    }); 
+
+                                    if(closestMatch < 1) {
+                                        event.reply(commandName + ' not found. Did you mean ' + winner + '?');
+                                        return;
+                                    } else if(_.has(dbot.modules, 'quotes')) {
+                                        dbot.api.link.udLookup(key, function(word, definition) {
+                                            if(word) {
+                                                event.reply(key + '[UD]: ' + definition);
+                                            } else {
+                                                event.reply(dbot.t('category_not_found', { 'category': key }));
+                                            }
+                                        });
+                                    } else {
+                                        return;
+                                    }
+                                }
+                            });
+                            return;
+                        } else {
+                            return;
+                        }
+                    } 
                         if(this.api.applyRegex(commandName, event)) {
                             try {
                                 cDomain.run(function() {
