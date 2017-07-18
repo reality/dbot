@@ -33,10 +33,12 @@ var users = function(dbot) {
                 'user': user.id
             }, function(err, result) {
                 if(!err) {
-                    dbot.api.event.emit('new_user_alias', [ result, alias ]);
                     user.aliases.push(alias);
+                    console.log(user);
                     this.db.save('users', user.id, user, function() {
                       callback(null, result);
+                      console.log('created alias');
+                      dbot.api.event.emit('new_user_alias', [ result, alias ]);
                     });
                 } else {
                     callback(true, null);
@@ -106,14 +108,15 @@ var users = function(dbot) {
     // Track nick changes
     this.listener = function(event) {
         // Update current nick
+        console.log(event);
         this.api.resolveUser(event.server, event.user, function(err, user) {
             if(user) {
-                this.api.resolveUser(event.server, event.newNick, function(err, eUser) {
+                this.api.resolveUser(event.server, event.message, function(err, eUser) {
                     if(!eUser) {
-                        this.internalAPI.createAlias(event.newNick, user, function(){});
-                        this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+                        this.internalAPI.createAlias(event.message, user, function(){});
+                        this.internalAPI.updateCurrentNick(user, event.message, function(){});
                     } else if(user.id === eUser.id) {
-                        this.internalAPI.updateCurrentNick(user, event.newNick, function(){});
+                        this.internalAPI.updateCurrentNick(user, event.message, function(){});
                     }
                 }.bind(this));
             }
@@ -140,13 +143,23 @@ var users = function(dbot) {
         }.bind(this);
 
         var checkUserTime = function(user, done) {
-          if(!_.has(user, 'lastUsed') || (_.has(user, 'lastUsed') && moment(user.lastUsed).diff(moment(user.lastUsed).add(1, 'day'), 'days') > 0)) {
+          if(user && !_.has(user, 'lastUsed') || (_.has(user, 'lastUsed') && moment(user.lastUsed).diff(moment(user.lastUsed).add(1, 'day'), 'days') > 0)) {
             user.lastUsed = moment().unix(); 
             this.db.save('users', user.id, user, done);
           } else {
             done(null)
           }
         }.bind(this);
+
+        dbot.instance.addPreEmitHook(function(event, callback) {
+          if((event.user == 'telegram' || event.user == 'discord') && event.message) {
+            var bit = event.message.split('> ')
+            event.user = bit.shift().replace('<','').replace(/\x03\d{0,2}(,\d{0,2}|\x02\x02)?/g, '');
+            event.message = bit.join('> ');
+            event.params = event.message.split(' ');
+          }
+          callback(null);
+        });
 
         dbot.instance.addPreEmitHook(function(event, callback) {
             if(event.user && _.include(['JOIN', 'PRIVMSG', 'QUIT'], event.action)) {
