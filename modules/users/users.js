@@ -16,7 +16,8 @@ var users = function(dbot) {
                 'id': id,
                 'server': server,
                 'primaryNick': nick,
-                'currentNick': nick
+                'currentNick': nick,
+                'aliases': []
             }, function(err, result) {
                 if(!err) dbot.api.event.emit('new_user', [ result ]);
                 callback(err, result);
@@ -33,11 +34,14 @@ var users = function(dbot) {
             }, function(err, result) {
                 if(!err) {
                     dbot.api.event.emit('new_user_alias', [ result, alias ]);
-                    callback(null, result);
+                    user.aliases.push(alias);
+                    this.db.save('users', user.id, user, function() {
+                      callback(null, result);
+                    });
                 } else {
                     callback(true, null);
                 }
-            });
+            }.bind(this));
         }.bind(this),
 
         // Remove an alias record
@@ -134,6 +138,7 @@ var users = function(dbot) {
                 }
             }.bind(this));
         }.bind(this);
+
         var checkUserTime = function(user, done) {
           if(!_.has(user, 'lastUsed') || (_.has(user, 'lastUsed') && moment(user.lastUsed).diff(moment(user.lastUsed).add(1, 'day'), 'days') > 0)) {
             user.lastUsed = moment().unix(); 

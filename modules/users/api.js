@@ -33,15 +33,12 @@ var api = function(dbot) {
 
         // Retrieve user aliases given a user ID
         'getUserAliases': function(id, callback) {
-            var aliases = [];
-            this.db.search('user_aliases', { 'user': id }, function(result) {
-                aliases.push(result.alias);
-            }, function(err) {
-                if(!err) {
-                    callback(null, aliases);
-                } else {
-                    callback(true, null);
-                }
+            this.api.getUser(id, function(err, user) {
+              if(!err) {
+                  callback(null, user.aliases);
+              } else {
+                  callback(true, null);
+              }
             });
         },
         
