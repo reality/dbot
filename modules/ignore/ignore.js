@@ -19,7 +19,7 @@ var ignore = function(dbot) {
                     if(_.has(dbot.commands, item) && !_.include(ignores[by], item)) {
                         item = dbot.commands[item].module;
                     }
-                    if(_.include(ignores[by], item)) {
+                    if(_.include(ignores[by], item) || _.include(ignores[by], '*')) {
                         isImpeded = true;
                     }
                 }
@@ -113,7 +113,7 @@ var ignore = function(dbot) {
             var nick = event.input[1],
                 item = event.input[2];
 
-            if(module == '*' || _.include(dbot.config.moduleNames, item) || _.include(dbot.commands, item)) {
+            if(item == '*' || _.include(dbot.config.moduleNames, item) || _.include(dbot.commands, item)) {
                 dbot.api.users.resolveUser(event.server, nick, function(err, user) {
                     this.api.getUserIgnores(user, function(err, ignores) {
                           if(!ignores) {
