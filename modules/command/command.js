@@ -17,7 +17,6 @@ var command = function(dbot) {
             return;
         }
         commandName = commandName.substring(1);
-        
        
         this.api.hasAccess(event, commandName, function(hasAccess) {
             dbot.api.ignore.isUserIgnoring(event.rUser, commandName, function(isIgnoring) {
@@ -73,47 +72,48 @@ var command = function(dbot) {
                             return;
                         }
                     } 
-                        if(this.api.applyRegex(commandName, event)) {
-                            try {
-                                cDomain.run(function() {
-                                    var command = dbot.commands[commandName],
-                                        results;
-                                    if(_.has(command, 'resolver')) {
-                                        event.res = [];
-                                        command.resolver(event, function(err) {
-                                            if(!err) {
-                                                results = command.apply(dbot.modules[command.module], [event]);
-                                            }
-                                        });
-                                    } else {
-                                        results = command.apply(dbot.modules[command.module], [event]);
-                                    }
-                                });
-                            } catch(err) {
-                                if(dbot.config.debugMode == true) {
-                                    var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
 
-                                    event.reply('- Error in ' + commandName + ':');
-                                    event.reply('- Message: ' + err);
-
-                                    _.each(stack, function(stackLine, index) {
-                                        event.reply('- Stack[' + index + ']: ' +
-                                            stackLine.trim());
+                    if(this.api.applyRegex(commandName, event)) {
+                        try {
+                            cDomain.run(function() {
+                                var command = dbot.commands[commandName],
+                                    results;
+                                if(_.has(command, 'resolver')) {
+                                    event.res = [];
+                                    command.resolver(event, function(err) {
+                                        if(!err) {
+                                            results = command.apply(dbot.modules[command.module], [event]);
+                                        }
                                     });
-                                }
-                            }
-                            if(!_.include(['reload', 'load', 'unload', 'setconfig'], commandName)) dbot.api.event.emit('command', [ event ]);
-                        } else {
-                            if(commandName !== this.config.commandPrefix) {
-                                if(_.has(dbot.usage, commandName)) {
-                                    event.reply('Usage: ' + dbot.usage[commandName]);
                                 } else {
-                                    event.reply(dbot.t('syntax_error'));
+                                    results = command.apply(dbot.modules[command.module], [event]);
                                 }
+                            });
+                        } catch(err) {
+                            if(dbot.config.debugMode == true) {
+                                var stack = err.stack.split('\n').slice(1, dbot.config.debugLevel + 1);
+
+                                event.reply('- Error in ' + commandName + ':');
+                                event.reply('- Message: ' + err);
+
+                                _.each(stack, function(stackLine, index) {
+                                    event.reply('- Stack[' + index + ']: ' +
+                                        stackLine.trim());
+                                });
+                            }
+                        }
+                        if(!_.include(['reload', 'load', 'unload', 'setconfig'], commandName)) dbot.api.event.emit('command', [ event ]);
+                    } else {
+                        if(commandName !== this.config.commandPrefix) {
+                            if(_.has(dbot.usage, commandName)) {
+                                event.reply('Usage: ' + dbot.usage[commandName]);
+                            } else {
+                                event.reply(dbot.t('syntax_error'));
                             }
                         }
                     }
-                }.bind(this));
+                }
+              }.bind(this));
             }.bind(this));
         }.bind(this));
     }.bind(this);
