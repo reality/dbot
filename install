@@ -3,13 +3,13 @@ cat LICENCE
 git submodule init
 git submodule update
 
-if [ ! -e /usr/bin/node ]  && [ ! -e /usr/local/bin/node ] && [ ! -e /usr/local/bin/node ] && [ ! -e /usr/sbin/node ];
-then
+command -v node > /dev/null
+if [[ $? -gt 0 ]]; then
     echo 'node.js is not installed. Please install it before running install.sh.'
     exit 1
 fi
-if [ ! -e /usr/bin/npm ] && [ ! -e /usr/local/bin/npm ] && [ ! -e /usr/sbin/npm ];
-then
+command -v npm > /dev/null
+if [[ $? -gt 0 ]]; then
     echo 'npm is not installed. Please install it before running install.sh'
     exit 1
 fi
