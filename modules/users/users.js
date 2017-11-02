@@ -108,7 +108,9 @@ var users = function(dbot) {
     // Track nick changes
     this.listener = function(event) {
         // Update current nick
-        console.log(event);
+      async.waterfall([
+
+      ]);
         this.api.resolveUser(event.server, event.user, function(err, user) {
             if(user) {
                 this.api.resolveUser(event.server, event.message, function(err, eUser) {

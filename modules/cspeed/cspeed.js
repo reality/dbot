@@ -1,12 +1,17 @@
 var _ = require('underscore')._;
 
 var cspeed = function(dbot) {
-    if(!_.has(dbot.db.cspeed)) {
-      dbot.db.cspeed = {};
-    }
     this.watches = dbot.db.cspeed;
     this.outputChannel = dbot.config.modules.cspeed.outputChannel;
     this.counts = {};
+
+    this.api = {
+      'getCounts': function(callback) {
+        callback(this.counts);
+      }
+    };
+    this.api['getCounts'].external = true;
+    this.api['getCounts'].extMap = [ 'callback' ];
 
     this.commands = {
       'addlpmwatch': function(event) {
