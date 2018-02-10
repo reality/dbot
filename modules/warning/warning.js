@@ -17,7 +17,11 @@ var warning = function(dbot) {
                         'reason': reason,
                         'time': new Date().getTime()
                     }, function(err) {
-                        var notifyString = dbot.t('warn_notify', {
+                        var sType = 'warn_notify';
+                        if(reason.match('#note')) {
+                          sType = 'note_notify';
+                        }
+                        var notifyString = dbot.t(sType, {
                             'warner': warner.primaryNick,
                             'warnee': warnee.primaryNick,
                             'reason': reason,

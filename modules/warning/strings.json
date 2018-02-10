@@ -11,6 +11,9 @@
         "it": "{user} a {num} avvertenze. Ulteriori informazioni si trovano a {url}",
         "de": "{user} hat {num} Verwarnung. Mehr Informationen sind auf {url} erhältlich"
     },
+    "note_notify": {
+      "en": "{warner} has added a note regarding {warnee}: {reason}"
+    },
     "warn_notify": {
         "en": "{warner} has issued a warning to {warnee} for \"{reason}.\"",
         "fr": "Attention : {warner} a donné un avertissement à {warnee} pour \"{reason}.\". Plus d'informations peuvent être trouvées ici : {url}",
