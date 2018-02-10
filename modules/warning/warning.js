@@ -62,6 +62,24 @@ var warning = function(dbot) {
             });
         },
 
+        '~addnote': function(event) {
+            var warner = event.rUser,
+                server = event.server,
+                reason = event.input[2];
+
+            if(!reason.match('#note')) {
+              reason += ' #note';
+            }
+
+            this.api.warn(server, warner, event.input[1], reason, event.channel, function(err) {
+                if(err) {
+                  event.reply(dbot.t('warnee_not_found', { 'user': event.input[1] }));
+                } else {
+                  event.reply('Note added!');
+                }
+            });
+        },
+
         '~rmwarning': function(event) {
           var user = event.params[1],
               index = parseInt(event.params[2]);
@@ -116,6 +134,7 @@ var warning = function(dbot) {
               }.bind(this));
             }.bind(this));
         },
+
         '~warnings': function(event) {
             var warnee = event.params[1],
                 server = event.server;
@@ -152,6 +171,7 @@ var warning = function(dbot) {
     this.commands['~warn'].access = 'power_user';
     this.commands['~rmwarning'].access = 'power_user';
     this.commands['~rmlastwarning'].access = 'power_user';
+    this.commands['~addnote'].access = 'power_user';
 };
 
 exports.fetch = function(dbot) {

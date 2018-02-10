@@ -131,6 +131,41 @@ var commands = function(dbot) {
           });
         },
 
+        '~notes': function(event) {
+          var tName = event.params[1],
+              server = event.server;
+
+          dbot.api.users.resolveUser(server, tName, function(err, target) {
+            if(target) {
+              var notes = {};
+              this.db.search('warnings', { 
+                'server': server,
+                'warnee': warnee.id
+              }, function(warning) {
+                if(warning.reason.match('#note')) {
+                  notes[warning.time] = warning;
+                }
+              }, function(err) {
+                if(_.size(notes) > 0) {
+                  var nTimes = _.keys(notes).sort(function(a, b) {
+                      return parseInt(a) - parseInt(b);
+                  });
+
+                  var n = 0;
+                  _.each(nTimes, function(key) {
+                    event.reply('['+n+'][\u00036note\u000f][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + notes[key].reason); 
+                    n++;
+                  });
+                } else {
+                  event.reply('No notes found for ' + tName);
+                }
+              });
+            } else {
+              event.reply(event.params[1] + ' not found.');
+            }
+          }.bind(this));
+        },
+        
         '~sustatus': function(event) {
             var user = event.input[1];
             if(event.channel == '#tripsit.me') {
@@ -415,6 +450,7 @@ var commands = function(dbot) {
     commands['~ustatus'].access = 'power_user';
     commands['~sustatus'].access = 'power_user';
     commands['~ncount'].access = 'power_user';
+    commands['~notes'].access = 'power_user';
 
     return commands;
 };
