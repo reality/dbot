@@ -128,10 +128,6 @@ DBot.prototype.save = function(cb) {
 
 // Hot-reload module files.
 DBot.prototype.reloadModules = function() {
-    this.save().then(function() {
-      console.log('test'); 
-    });
-
     if(this.modules) { // Run 'onDestroy' code for each module if it exists.
         _.each(this.modules, function(module) {
             if(module.onDestroy) {
