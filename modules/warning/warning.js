@@ -171,6 +171,7 @@ var warning = function(dbot) {
     this.commands['~warn'].access = 'power_user';
     this.commands['~rmwarning'].access = 'power_user';
     this.commands['~rmlastwarning'].access = 'power_user';
+    this.commands['~addnote'].regex = [/addnote ([^ ]+) (.+)/, 3];
     this.commands['~addnote'].access = 'power_user';
 };
 

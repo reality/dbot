@@ -140,7 +140,7 @@ var commands = function(dbot) {
               var notes = {};
               this.db.search('warnings', { 
                 'server': server,
-                'warnee': warnee.id
+                'warnee': target.id
               }, function(warning) {
                 if(warning.reason.match('#note')) {
                   notes[warning.time] = warning;
@@ -153,7 +153,8 @@ var commands = function(dbot) {
 
                   var n = 0;
                   _.each(nTimes, function(key) {
-                    event.reply('['+n+'][\u00036note\u000f][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + notes[key].reason); 
+                    // just couldn't be bothered doing the warner lookup, waste of time
+                    event.reply('[\u00036note ' + n + '\u000f][' + moment(parseInt(key)).format('DD/MM/YYYY') + ']['+notes[key].warner.split('.')[0]+'] ' + notes[key].reason); 
                     n++;
                   });
                 } else {
