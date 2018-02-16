@@ -9,7 +9,7 @@ var _ = require('underscore')._;
 var kill_namespam = function(dbot) {
     this.listener = function(event) {
         if(event.channel == event.user) return; // return if pm
-        if(_.filter(event.message.split(' '), function(word) { return _.has(event.channel.nicks, word); }.length > this.config.sensitivity)) {
+        if(_.filter(event.message.split(' '), function(word) { return _.has(event.channel.nicks, word); }).length > this.config.sensitivity) {
           var message = dbot.t('namespam_act', {
             'user': event.user,
             'channel': event.channel,
