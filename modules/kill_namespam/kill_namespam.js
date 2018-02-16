@@ -18,11 +18,11 @@ var kill_namespam = function(dbot) {
           });
 
           switch(this.config.action) {
-            case kickban: 
+            case 'kickban': 
               dbot.api.kick.ban(event.server, event.host, event.channel);
               dbot.api.kick.kick(event.server, event.user, message);
               break;
-            case kill:
+            case 'kill':
               dbot.api.kick.kill(event.server, event.user, message);
             default: break;
           }
