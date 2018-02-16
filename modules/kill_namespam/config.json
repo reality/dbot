@@ -1,4 +1,5 @@
 {
   "action": "kill",
-  "sensitivity": 10
+  "sensitivity": 10,
+  "exempt": []
 }

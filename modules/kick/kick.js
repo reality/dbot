@@ -32,7 +32,7 @@ var kick = function(dbot) {
         },
 
         'kill': function(server, user, reason) {
-          dbot.instance.connections[server].send('kill ' + user + ' :' + reason);
+          dbot.instance.connections[server].send('kill ' + user + ' ' + reason);
         },
 
         'unban': function(server, host, channel) {
