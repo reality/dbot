@@ -10,14 +10,29 @@ var kill_namespam = function(dbot) {
     this.listener = function(event) {
         if(event.channel == event.user) return; // return if pm
         if(_.includes(this.config.exempt, event.user)) return;
+
+        var message;
+
+        // Check distinctive spam content match
+        if(_.any(this.config.advert_content, function(spam) { return event.message.match(spam); })) {
+          message = dbot.t('spamcont_act', {
+            'user': event.user,
+            'channel': event.channel,
+            'action': this.config.action
+          });
+        }
+
+        // Name highlight spam
         if(_.filter(event.message.split(' '), function(word) { return _.has(event.channel.nicks, word); }).length > this.config.sensitivity) {
-          var message = dbot.t('namespam_act', {
+          message = dbot.t('namespam_act', {
             'user': event.user,
             'channel': event.channel,
             'action': this.config.action,
             'sensitivity': this.config.sensitivity
           });
+        }
 
+        if(naughty) {
           switch(this.config.action) {
             case 'kickban': 
               dbot.api.kick.ban(event.server, event.host, event.channel);

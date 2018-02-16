@@ -1,5 +1,8 @@
 {
   "action": "kill",
   "sensitivity": 10,
-  "exempt": []
+  "exempt": [],
+  "advert_content": [
+    "________  ______"
+  ]
 }
