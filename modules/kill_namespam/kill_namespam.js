@@ -12,6 +12,7 @@ var kill_namespam = function(dbot) {
         if(_.includes(this.config.exempt, event.user)) return;
 
         var message;
+        var naughty = false;
 
         // Check distinctive spam content match
         if(_.any(this.config.advert_content, function(spam) { return event.message.indexOf(spam) != -1; })) {
@@ -49,6 +50,22 @@ var kill_namespam = function(dbot) {
         }
     }.bind(this);
     this.on = 'PRIVMSG';
+
+    this.commands = {
+      '~add_spamkill': function(event) {
+        this.config.advert_content.push(event.params.slice(1).join(' '))
+        event.reply('Users daring to utter the above to be classified as spam.');
+      },
+
+      '~del_spamkill': function(event) {
+        this.config.advert_content = _.without(this.config.advert_content, event.params.slice(1).join(' '));
+        event.reply('Users will no longer be killed for this utterance.');
+      }
+    };
+
+    _.each(this.commands, function(c) {
+      c.access = 'moderator';
+    });
 };
 
 exports.fetch = function(dbot) {
