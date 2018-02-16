@@ -31,6 +31,10 @@ var kick = function(dbot) {
             dbot.instance.connections[server].send('KICK ' + channel + ' ' + user + ' :' + msg);
         },
 
+        'kill': function(server, user, reason) {
+          dbot.instance.connections[server].send('kill ' + user + ' :' + reason);
+        },
+
         'unban': function(server, host, channel) {
             // TODO: Wrest control from chanserv
             //dbot.say(server, this.config.chanserv, 'unban ' + channel + ' *!*@' + host);
