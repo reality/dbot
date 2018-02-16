@@ -14,12 +14,13 @@ var kill_namespam = function(dbot) {
         var message;
 
         // Check distinctive spam content match
-        if(_.any(this.config.advert_content, function(spam) { return event.message.match(spam); })) {
+        if(_.any(this.config.advert_content, function(spam) { return event.message.indexOf(spam) != -1; })) {
           message = dbot.t('spamcont_act', {
             'user': event.user,
             'channel': event.channel,
             'action': this.config.action
           });
+          naughty = true;
         }
 
         // Name highlight spam
@@ -30,6 +31,7 @@ var kill_namespam = function(dbot) {
             'action': this.config.action,
             'sensitivity': this.config.sensitivity
           });
+          naughty = true;
         }
 
         if(naughty) {
