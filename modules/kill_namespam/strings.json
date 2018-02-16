@@ -1,0 +1,5 @@
+{
+  "namespam_act": {
+    "en": "{user} triggered nickname hilight anti-spam (greater than {sensitivity}). Action: {action}."
+  }
+}
