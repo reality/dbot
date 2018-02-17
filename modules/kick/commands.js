@@ -307,16 +307,17 @@ var commands = function(dbot) {
                 }
                 
                 if(!_.has(this.voteQuiets, user.id)) {
-                  this.voteQuiets[user.id] = { 'user': user.id, 'channel': event.channel, 'yes': [event.rUser.primaryNick], 'no': [] };
-                  event.reply(event.user + ' has started a vote to quiet ' + target + ' for "' + reason + '." Type either "~voteyes ' + target + '" or "~voteno ' + target + '" in the next 40 seconds.');
+                  this.voteQuiets[user.id] = { 'user': user.id, 'reason': reason, 'channel': event.channel, 'yes': [event.rUser.primaryNick], 'no': [] };
+                  event.reply(event.user + ' has started a vote to quiet ' + target + ' for "' + reason + '." Type either "~voteyes ' + target + '" or "~voteno ' + target + '" in the next 90 seconds.');
 
-                  setTimeout(function() {
+                  this.voteQuiets[user.id].timer = setTimeout(function() {
                     var vq = this.voteQuiets[user.id];
                     vq.spent = true;
                     if(vq.yes.length >= 3 && vq.no.length < 2) {
                       event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
 
                       this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, reason + '[votequiet]', function(response) {
+                        clearTimeout(vq.timer);
                         event.reply(response); 
                       });
                     } else {
@@ -334,7 +335,7 @@ var commands = function(dbot) {
                     setTimeout(function() {
                       delete this.voteQuiets[user.id];
                     }.bind(this), 600000);
-                  }.bind(this), 40000);
+                  }.bind(this), 90000);
                 } else {
                   if(this.voteQuiets[user.id].spent) {
                     event.reply('A votequiet attempt has already been made on this user in the last 10 minutes.');
@@ -344,6 +345,13 @@ var commands = function(dbot) {
 
                     event.reply('There is already a votequiet attempt active for this user, adding yes vote to existing poll.');
                     event.reply('Voted yes on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
+
+                    if(vq.yes.length == 4) {
+                      event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
+                      this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, reason + '[votequiet]', function(response) {
+                        event.reply(response); 
+                      });
+                    }
                   }
                 }
               } else {
@@ -371,6 +379,14 @@ var commands = function(dbot) {
                 if(!_.include(vq.yes, event.rUser.primaryNick) && !_.include(vq.no, event.rUser.primaryNick)) {
                   vq.yes.push(event.rUser.primaryNick);
                   event.reply('Voted yes on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
+
+                  if(vq.yes.length == 4) {
+                    event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
+                    this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, vq.reason + '[votequiet]', function(response) {
+                      clearTimeout(vq.timer);
+                      event.reply(response); 
+                    });
+                  }
                 } else {
                   event.reply('You have already voted.');
                 }
