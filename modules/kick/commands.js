@@ -339,7 +339,11 @@ var commands = function(dbot) {
                   if(this.voteQuiets[user.id].spent) {
                     event.reply('A votequiet attempt has already been made on this user in the last 10 minutes.');
                   } else {
-                    event.reply('There is already a votequiet attempt active for this user.');
+                    var vq = this.voteQuiets[user.id]
+                    vq.yes.push(event.rUser.primaryNick);
+
+                    event.reply('There is already a votequiet attempt active for this user, adding yes vote to existing poll.');
+                    event.reply('Voted yes on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
                   }
                 }
               } else {
