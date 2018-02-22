@@ -30,8 +30,10 @@ var nickserv = function(dbot) {
             if(!_.has(this.userStack, server)) this.userStack[server] = {};
             this.userStack[server][nick] = callback;
             dbot.instance.connections[server].send('USERHOST ' + nick);
+            console.log('sent userhost');
             setTimeout(function() {
                 if(_.has(this.userStack[server], nick)) {
+                    console.log('sent whowas');
                     dbot.instance.connections[server].send('WHOWAS ' + nick);
                     setTimeout(function() {
                         if(_.has(this.userStack[server], nick)) {
@@ -91,6 +93,8 @@ var nickserv = function(dbot) {
     };
 
     this.listener = function(event) {
+    console.log(event.action);
+    console.log(event.message);
         if(event.action == 'NOTICE') {
             var nickserv = dbot.config.servers[event.server].nickserv,
                 statusRegex = this.config.servers[event.server].matcher,
@@ -125,7 +129,7 @@ var nickserv = function(dbot) {
                 delete this.userStack[event.server][nick];
                 callback(host);
             }
-        } else if(event.action == '312') {
+        } else if(event.action == '338') {
             var params = event.message.split(' '),
                 user = params[1],
                 server = params[2];
@@ -141,7 +145,7 @@ var nickserv = function(dbot) {
             }
         }
     }.bind(this);
-    this.on = ['NOTICE', '302', '314', '312'];
+    this.on = ['NOTICE', '302', '314', '338'];
 };
 
 exports.fetch = function(dbot) {
