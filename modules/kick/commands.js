@@ -344,16 +344,20 @@ var commands = function(dbot) {
                     event.reply('A votequiet attempt has already been made on this user in the last 10 minutes.');
                   } else {
                     var vq = this.voteQuiets[user.id]
-                    vq.yes.push(event.rUser.primaryNick);
+                    if(!_.include(vq.yes, event.rUser.primaryNick)) {
+                      vq.yes.push(event.rUser.primaryNick);
 
-                    event.reply('There is already a votequiet attempt active for this user, adding yes vote to existing poll.');
-                    event.reply('Voted yes on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
+                      event.reply('There is already a votequiet attempt active for this user, adding yes vote to existing poll.');
+                      event.reply('Voted yes on votequiet for ' + target + '. New count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
 
-                    if(vq.yes.length == 4) {
-                      event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
-                      this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, reason + '[votequiet]', function(response) {
-                        event.reply(response); 
-                      });
+                      if(vq.yes.length == 4) {
+                        event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
+                        this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, reason + '[votequiet]', function(response) {
+                          event.reply(response); 
+                        });
+                      }
+                    } else {
+                      event.reply('There is already a votequiet attempt active for this user, and you already voted yes!');
                     }
                   }
                 }
