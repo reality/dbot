@@ -64,7 +64,7 @@
         "it": "Attenzione : {banner} ha bandito {banee} da {channel}. Motivo  : \"{reason}\"."
     },
     "tbanned": {
-        "en": "Attention: {banner} has banned {banee} from the {network} network for {hours}. The reason given was \"{reason}\".",
+        "en": "Attention: {banner} has banned {banee} (host: {host}) from the {network} network for {hours}. The reason given was \"{reason}\".",
         "de": "Achtung: {banner} hat {banee} vom {network} Netzwerk für {hours} Stunden verbannt. Der Grund war \"{reason}\".",
         "fr": "Attention : {banner} a banni {banee} du réseau {network} pour {hours} heures. Raison donnée : \"{reason}\".",
         "it": "Attenzione : {banner} ha bandito {banee} dalla rete {network} per {hours} ora/e. Motivo : \"{reason}\"."
@@ -76,7 +76,7 @@
         "it": "Sei stato bandito dalla rete {network} per {hours} ora/e da {banner}. Motivo: \"{reason}\". Puoi ricongiungere {admin_channel} per ulteriori informazioni o discutere sulla messa al bando."
     },
     "nbanned": {
-        "en": "Attention: {banner} has banned {banee} from the {network} network. The reason given was \"{reason}\".",
+        "en": "Attention: {banner} has banned {banee} (host: {host}) from the {network} network. The reason given was \"{reason}\".",
         "cy": "Sylw: {banner} wedi gwahardd {banee} ledled y rhwydwaith. Y rheswm a roddwyd oedd: \"{reason}\".",
         "de": "Achtung: {banner} hat {banee} auf dem gesamten Netzwerk gebannt. Grund: \"{reason}\".",
         "fr": "Attention : {banner} a banni {banee} du réseau {network}. Raison donnée : \"{reason}\".",
@@ -95,7 +95,7 @@
         "it": "{user} sembra non essere connesso a questo server"
     },
     "nunbanned": {
-        "en": "Attention: {unbanee} has been unbanned from the {network} network by {unbanner}.",
+        "en": "Attention: {unbanee} (host: {host}) has been unbanned from the {network} network by {unbanner}.",
         "de": "Achtung: {unbanee} wurde im {network} Netzwerk durch {unbanner} entsperrt.",
         "fr": "Attention : {unbanee} a été débanni du réseau {network} par {unbanner}.",
         "it": "Attenzione : {unbanee} è stato riammesso alla rete {network} da {unbanner}."

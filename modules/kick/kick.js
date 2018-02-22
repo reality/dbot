@@ -120,10 +120,14 @@ var kick = function(dbot) {
             }.bind(this));
         },
 
-        'networkUnban': function(server, unbanee, unbanner, callback) {
+        'networkUnban': function(server, unbanee, unbanner, manualHost, callback) {
             var channels = dbot.config.servers[server].channels,
                 network = this.config.network_name[server] || server,
                 adminChannel = dbot.config.servers[server].admin_channel;
+
+            if(!_.isUndefined(manualHost)) {
+              this.hosts[server][unbanee] = manualHost;
+            }
 
             if(_.has(this.hosts, server) && _.has(this.hosts[server], unbanee)) {
                 var host = this.hosts[server][unbanee];
@@ -136,6 +140,7 @@ var kick = function(dbot) {
                 var notifyString = dbot.t('nunbanned', {
                     'network': network,
                     'unbanee': unbanee,
+                    'host': host,
                     'unbanner': unbanner.currentNick
                 });
                 dbot.api.report.notify('unban', server, unbanner, adminChannel, notifyString, false, unbanee);

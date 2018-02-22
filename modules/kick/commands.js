@@ -173,6 +173,7 @@ var commands = function(dbot) {
                             'banner': banner,
                             'banee': banee,
                             'hours': timeout,
+                            'host': host,
                             'reason': reason
                         });
                     } else {
@@ -180,11 +181,12 @@ var commands = function(dbot) {
                             'network': network,
                             'banner': banner,
                             'banee': banee,
+                            'host': host,
                             'reason': reason
                         });
                     }
 
-                    // Add qutoe category documenting ban
+                    // Add db entry documenting ban
                     if(this.config.document_bans) {
                         var id = uuid.v4();
                         var banRecord = {
@@ -237,12 +239,13 @@ var commands = function(dbot) {
 
         '~nunban': function(event) {
             var unbanee = event.params[1],
+                host = event.params[2],
                 unbanner = event.rUser;
 
-            this.api.networkUnban(event.server, unbanee, unbanner, function(err) {
-                if(err) {
-                    event.reply(dbot.t('nunban_error', { 'unbanee': unbanee })); 
-                }
+            this.api.networkUnban(event.server, unbanee, unbanner, host, function(err) {
+              if(err) {
+                event.reply(dbot.t('nunban_error', { 'unbanee': unbanee })); 
+              }
             });
         },
 
