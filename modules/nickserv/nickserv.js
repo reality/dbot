@@ -30,16 +30,14 @@ var nickserv = function(dbot) {
             if(!_.has(this.userStack, server)) this.userStack[server] = {};
             this.userStack[server][nick] = callback;
             dbot.instance.connections[server].send('USERHOST ' + nick);
-            console.log('sent userhost');
             setTimeout(function() {
                 if(_.has(this.userStack[server], nick)) {
-                    console.log('sent whowas');
-                    dbot.instance.connections[server].send('WHOWAS ' + nick);
+                    dbot.instance.connections[server].send('WHOWAS ' + nick + ' 1');
                     setTimeout(function() {
                         if(_.has(this.userStack[server], nick)) {
                             callback(false); 
                         }
-                    }.bind(this), 4000);
+                    }.bind(this), 2000);
                 }
             }.bind(this), 4000);
         }
@@ -93,8 +91,6 @@ var nickserv = function(dbot) {
     };
 
     this.listener = function(event) {
-    console.log(event.action);
-    console.log(event.message);
         if(event.action == 'NOTICE') {
             var nickserv = dbot.config.servers[event.server].nickserv,
                 statusRegex = this.config.servers[event.server].matcher,
@@ -131,17 +127,13 @@ var nickserv = function(dbot) {
             }
         } else if(event.action == '338') {
             var params = event.message.split(' '),
-                user = params[1],
-                server = params[2];
+                user = event.args[1],
+                host = event.args[2];
 
-                console.log(user);
-                console.log(server);
-                console.log(this.servStack);
-
-            if(_.has(this.servStack, event.server) && _.has(this.servStack[event.server], user)) {
-                var callback = this.servStack[event.server][user];
-                delete this.servStack[event.server][user];
-                callback(server);
+            if(_.has(this.userStack, event.server) && _.has(this.userStack[event.server], user)) {
+                var callback = this.userStack[event.server][user];
+                delete this.userStack[event.server][user];
+                callback(host);
             }
         }
     }.bind(this);
