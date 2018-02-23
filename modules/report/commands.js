@@ -1,6 +1,7 @@
 var _ = require('underscore')._,
     moment = require('moment'),
-    async = require('async');
+    async = require('async'),
+    exec = require('child_process').exec;
 
 var commands = function(dbot) {
     var commands = {
@@ -173,6 +174,11 @@ var commands = function(dbot) {
               return event.reply('~_~ do that in #moderators ~_~');
             }
 
+            function puts(error, stdout, stderr) { 
+              var res = stdout.split('\n');        
+              event.reply('Link: ' + res[res.length-3]); 
+            }
+
             dbot.api.users.resolveUser(event.server, user, function(err, user) {
                 if(user) {
                     dbot.api.users.getUserAliases(user.id, function(err, aliases) {
@@ -250,7 +256,9 @@ var commands = function(dbot) {
                                     n++;
                                   }
                                 });
+                                exec("/home/node/alsuti/bin/alsuti -p "+randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')+" /tmp/"+user.id+'dd.txt', puts);
                               } else {
+                                exec("/home/node/alsuti/bin/alsuti -p "+randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')+" /tmp/"+user.id+'dd.txt', puts);
                                 event.reply('There are too many to show without killing everyone :S');
                               }
 
