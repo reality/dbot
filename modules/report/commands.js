@@ -1,6 +1,7 @@
 var _ = require('underscore')._,
     moment = require('moment'),
     async = require('async'),
+    fs = require('fs'),
     exec = require('child_process').exec;
 
 var commands = function(dbot) {
@@ -136,6 +137,10 @@ var commands = function(dbot) {
           var tName = event.params[1],
               server = event.server;
 
+          if(event.channel != '#moderators' && event.channel != '#teamtripsit' && event.channel != event.user) {
+            return;
+          }
+
           dbot.api.users.resolveUser(server, tName, function(err, target) {
             if(target) {
               var notes = {};
@@ -176,7 +181,6 @@ var commands = function(dbot) {
 
             function puts(error, stdout, stderr) { 
             console.log(stdout);
-            console.log(stderr);
               var res = stdout.split('\n');        
               event.reply('Link: ' + res[res.length-3]); 
             }
@@ -192,6 +196,9 @@ var commands = function(dbot) {
                             warn = 0,
                             report = 0,
                             items = {};
+                        if(!aliases) {
+                          aliases = [];
+                        }
                         aliases.push(user.primaryNick);
 
                         dbot.modules.report.db.search('notifies', {
@@ -266,7 +273,7 @@ var commands = function(dbot) {
                               });
 
                               if(sTimes.length < 70) event.reply('[\u00034bans\u000f]');
-                              out += '[bans]'
+                              out += '\n\n[bans]\n'
                               var n = 0;
                               _.each(sTimes, function(time) {
                                 if(items[time].type == 'ban' || items[time].type == 'unban') {
@@ -281,6 +288,7 @@ var commands = function(dbot) {
                                 event.reply('There are too many to show without killing everyone :S (wait for the link xx)');
                               }
 
+                              out += '\n\n'
                               if(latest_ban.time != 0) {
                                   if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
                                       var bStatus = 'Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')';
@@ -300,6 +308,7 @@ var commands = function(dbot) {
                                   event.reply(nevBan);
                                   out += nevBan
                               }
+                              fs.writeFileSync('/tmp/'+sTimes.length+'.txt', out);
                               exec("/home/node/alsuti/bin/alsuti -p "+randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')+" /tmp/"+sTimes.length+".txt", puts);
                           } else {
                               event.reply(user.primaryNick + ' has no record.');
@@ -438,7 +447,7 @@ var commands = function(dbot) {
                         }
                     } 
 
-                    if(!_.include(nunsubs, event.rUser.id)) {
+                    if(!_.include(nunsubs.users, event.rUser.id)) {
                         nunsubs.users.push(event.rUser.id); 
                         this.db.save('nunsubs', cId, nunsubs, function() {
                             var reply = dbot.t('nunsubbed', { 'cName': cName })
@@ -474,6 +483,29 @@ var commands = function(dbot) {
             } else {
                 event.reply('Channel not known.');
             }
+        },
+
+        '~concerning': function(event) {
+          if(event.channel != '#tripsitters' && event.channel != '#moderators' && event.channel != '#teamtripsit') {
+            return event.reply('Probably a bad idea to run this in a public channel old son (run in #tripsitters, #moderators or #teamtripsit).');
+          }
+          var nick = event.params[1].trim();
+          this.api.concerning(event.server, nick, function(err, results) {
+            if(err) {
+              dbot.api.quotes.getQuote('deal with it', function(quote) {
+                  var out = 'Couldn\'t find user\'s host, but that doesn\'t necessarily mean they don\'t exist. This is the lazy way of doing it for now... ';
+                  if(quote) {
+                      out += quote;
+                  }
+                  event.reply(out);
+              });
+            } else {
+              event.reply(nick + ' has sought help ' + results.length + ' times (under their nick and associated host):'); 
+              _.each(results, function(n) {
+                  event.reply('[' + moment(parseInt(n.time)).format('DD/MM/YYYY HH:mm:ss') + '][' + n.user.split('.')[0] + '] ' + n.message); 
+              });
+            }
+          });
         }
     };
     commands['~report'].regex = /^report (#[^ ]+ )?([^ ]+) (.*)$/;
@@ -485,7 +517,7 @@ var commands = function(dbot) {
     commands['~ustatus'].access = 'power_user';
     commands['~sustatus'].access = 'power_user';
     commands['~ncount'].access = 'power_user';
-    commands['~notes'].access = 'power_user';
+    commands['~notes'].access = 'tripsitter';
 
     return commands;
 };
