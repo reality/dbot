@@ -175,6 +175,8 @@ var commands = function(dbot) {
             }
 
             function puts(error, stdout, stderr) { 
+            console.log(stdout);
+            console.log(stderr);
               var res = stdout.split('\n');        
               event.reply('Link: ' + res[res.length-3]); 
             }
@@ -216,65 +218,89 @@ var commands = function(dbot) {
                             items[notify.time] = notify;
                           }
                         }, function() {
-                            if(quiet != 0 || warn != 0 || report != 0 || ban != 0) {
-                              event.reply(user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.');
+                          if(quiet != 0 || warn != 0 || report != 0 || ban != 0) {
+                            var out = ''; // his is really stupid but i'm feeling lazy
 
-                              var sTimes = _.keys(items).sort(function(a, b) {
-                                  return parseInt(a) - parseInt(b);
+                            var sumLine = user.primaryNick + ' has been warned ' + warn + ' times, quieted ' + quiet + ' times, and reported ' + report + ' times.';
+                            event.reply(sumLine);
+                            out += sumLine + '\n\n';
+
+                            var sTimes = _.keys(items).sort(function(a, b) {
+                                return parseInt(a) - parseInt(b);
+                            });
+                            
+                              if(sTimes.length < 70) event.reply('[\u00036reports\u000f]');
+                              out += '\n\n[reports]\n';
+                              var n = 0;
+                              _.each(sTimes, function(time) {
+                                if(items[time].type == 'report') {
+                                  var rEntry = '[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message; 
+                                  if(sTimes.length < 70) event.reply(rEntry);
+                                  out += rEntry + '\n'
+                                  n++;
+                                }
                               });
-                              
-                              if(sTimes.length < 70) { 
-                                event.reply('[\u00036reports\u000f]');
-                                var n = 0;
-                                _.each(sTimes, function(time) {
-                                  if(items[time].type == 'report') {
-                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
-                                    n++;
-                                  }
-                                });
-                                event.reply('[\u00037quiets\u000f]');
-                                var n = 0;
-                                _.each(sTimes, function(time) {
-                                  if(items[time].type == 'quiet') {
-                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
-                                    n++;
-                                  }
-                                });
-                                event.reply('[\u00035warns\u000f]');
-                                var n = 0;
-                                _.each(sTimes, function(time) {
-                                  if(items[time].type == 'warn') {
-                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
-                                    n++;
-                                  }
-                                });
-                                event.reply('[\u00034bans\u000f]');
-                                var n = 0;
-                                _.each(sTimes, function(time) {
-                                  if(items[time].type == 'ban' || items[time].type == 'unban') {
-                                    event.reply('[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message); 
-                                    n++;
-                                  }
-                                });
-                                exec("/home/node/alsuti/bin/alsuti -p "+randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')+" /tmp/"+user.id+'dd.txt', puts);
-                              } else {
-                                exec("/home/node/alsuti/bin/alsuti -p "+randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')+" /tmp/"+user.id+'dd.txt', puts);
-                                event.reply('There are too many to show without killing everyone :S');
+
+                              if(sTimes.length < 70) event.reply('[\u00037quiets\u000f]');
+                              out += '\n\n[quiets]\n';
+                              var n = 0;
+                              _.each(sTimes, function(time) {
+                                if(items[time].type == 'quiet') {
+                                  var qEntry = '[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message; 
+                                  if(sTimes.length < 70) event.reply(qEntry);
+                                  out += qEntry + '\n'
+                                  n++;
+                                }
+                              });
+
+                              if(sTimes.length < 70) event.reply('[\u00035warns\u000f]');
+                              out += '\n\n[warns]\n'
+                              var n = 0;
+                              _.each(sTimes, function(time) {
+                                if(items[time].type == 'warn') {
+                                  var wEntry = '[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message; 
+                                  if(sTimes.length < 70) event.reply(wEntry);
+                                  out += wEntry + '\n'
+                                  n++;
+                                }
+                              });
+
+                              if(sTimes.length < 70) event.reply('[\u00034bans\u000f]');
+                              out += '[bans]'
+                              var n = 0;
+                              _.each(sTimes, function(time) {
+                                if(items[time].type == 'ban' || items[time].type == 'unban') {
+                                  var bEntry = '[' + n + '][' + moment(parseInt(time)).format('DD/MM/YYYY') + '] ' + items[time].message; 
+                                  if(sTimes.length < 70) event.reply(bEntry);
+                                  out += bEntry + '\n'
+                                  n++;
+                                }
+                              });
+
+                              if(sTimes.length > 70) { 
+                                event.reply('There are too many to show without killing everyone :S (wait for the link xx)');
                               }
 
                               if(latest_ban.time != 0) {
                                   if(latest_unban.time == 0 || (latest_unban.time < latest_ban.time)) {
-                                      event.reply('Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')');
-                                      event.reply('Reason: ' + latest_ban.message);
+                                      var bStatus = 'Current Ban Status: \u00034Banned\u000f since ' + moment(latest_ban.time).fromNow() + ' (' + moment(parseInt(latest_ban.time)).format('DD/MM/YYYY') + ')';
+                                      var bReason = 'Current Ban Reason: ' + latest_ban.message;
                                   } else {
                                       var a = moment(latest_ban.time);
                                       var b = moment(latest_unban.time);
-                                      event.reply('Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + b.diff(a, 'days') + ' days');
-                                      event.reply('Most recent ban reason: ' + latest_ban.message);
+                                      var bStatus = 'Current Ban Status: \u00037Unbanned\u000f since ' + moment(parseInt(latest_unban.time)).format('DD/MM/YYYY') + ' after being banned for ' + b.diff(a, 'days') + ' days';
+                                      var bReason = 'Most recent ban reason: ' + latest_ban.message;
                                   }
+
+                                  event.reply(bStatus)
+                                  event.reply(bReason)
+                                  out += bStatus + '\n' + bReason
                               } else {
-                                  event.reply('Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f');
+                                  var nevBan = 'Current Ban Status: \u00033Never banned (\u00037probably\u00033)\u000f'
+                                  event.reply(nevBan);
+                                  out += nevBan
                               }
+                              exec("/home/node/alsuti/bin/alsuti -p "+randomString(12, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')+" /tmp/"+sTimes.length+".txt", puts);
                           } else {
                               event.reply(user.primaryNick + ' has no record.');
                           }
@@ -463,6 +489,12 @@ var commands = function(dbot) {
 
     return commands;
 };
+
+function randomString(length, chars) {
+  var result = '';
+  for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+  return result;
+}
 
 exports.fetch = function(dbot) {
     return commands(dbot);
