@@ -129,7 +129,7 @@ var kick = function(dbot) {
               this.hosts[server][unbanee] = manualHost;
             }
 
-            if(_.has(this.hosts, server) && _.has(this.hosts[server], unbanee)) {
+            if(_.has(this.hosts, server) && _.has(this.hosts[server], unbanee) && _.isString(this.hosts[server][unbanee])) {
                 var host = this.hosts[server][unbanee];
 
                 // Notify Staff
