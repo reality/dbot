@@ -239,7 +239,7 @@ var commands = function(dbot) {
 
         '~nunban': function(event) {
             var unbanee = event.params[1],
-                host = event.params[2],
+                host = event.params[2] || undefined,
                 unbanner = event.rUser;
 
             this.api.networkUnban(event.server, unbanee, unbanner, host, function(err) {
