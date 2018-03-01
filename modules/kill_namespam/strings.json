@@ -4,5 +4,8 @@
   },
   "spamcont_act": {
     "en": "{user} triggered advertising anti-spam (content). Action: {action}"
+  },
+  "clikill_act": {
+    "en": "Added K-Line for {ip}, due to matching pattern: /{pattern}/"
   }
 }

@@ -8,6 +8,28 @@ var _ = require('underscore')._;
 
 var kill_namespam = function(dbot) {
     this.listener = function(event) {
+        // Here we listen for atropos
+        if(event.channel == this.config.cliconn_channel) {
+          if(event.message.match('▶')) {
+            var matchedPattern = _.find(this.config.cliconn_patterns, function(p) { return event.message.match(p); }) 
+            if(matchedPattern) {
+              var ip = event.message.split(' ')
+
+              // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
+              dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2');
+
+              var msg = dbot.t('clikill_act', {
+                'ip': ip,
+                'pattern': matchedPattern
+              });
+              event.reply(msg);
+              dbot.api.report.notify('autokill', event.server, event.user,
+                dbot.config.servers[event.server].admin_channel, msg, ip, ip);
+            }
+          }
+        }
+
+        // This is the namespam
         if(event.channel == event.user) return; // return if pm
         if(_.includes(this.config.exempt, event.user)) return;
 
@@ -60,6 +82,25 @@ var kill_namespam = function(dbot) {
       '~del_spamkill': function(event) {
         this.config.advert_content = _.without(this.config.advert_content, event.params.slice(1).join(' '));
         event.reply('Users will no longer be killed for this utterance.');
+      },
+
+      '~add_clikill': function(event) {
+        var pattern = event.params.slice(1).join(' ');
+        this.config.cliconn_patterns.push(pattern);
+        event.reply('Client connection notices matching pattern /'+ pattern +'/ shall henceforth get rekt.');
+      },
+
+      '~del_clikill': function(event) {
+        var pattern = event.params.slice(1).join(' ');
+        this.config.cliconn_patterns = _.without(this.config.cliconn_patterns, pattern);
+        event.reply('Client connection notices matching pattern /'+ pattern +'/ will no longer get rekt.');
+      },
+
+      '~list_clikill': function(event) {
+        event.reply('Currently active "cliconn" kills (tip: when using this, don\'t include your own slashes aroudn the patterns!): ');
+        _.each(this.config.cliconn_patterns, function(pattern, i) {
+          event.reply('['+i+'] /' + pattern + '/');
+        });
       }
     };
 

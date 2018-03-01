@@ -4,5 +4,7 @@
   "exempt": [],
   "advert_content": [
     "________  ______"
-  ]
+  ],
+  "cliconn_channel": "#dnsbl",
+  "cliconn_patterns": []
 }
