@@ -7,6 +7,11 @@
 var _ = require('underscore')._;
 
 var kill_namespam = function(dbot) {
+    this.saveConfig = function() { // eugh
+      dbot.config.modules.kill_namespam = this.config;
+      dbot.modules.admin.internalAPI.saveConfig();
+    }.bind(this);
+
     this.listener = function(event) {
         // Here we listen for atropos
         if(event.channel == this.config.cliconn_channel) {
@@ -76,27 +81,27 @@ var kill_namespam = function(dbot) {
     this.commands = {
       '~add_spamkill': function(event) {
         this.config.advert_content.push(event.params.slice(1).join(' '))
-        dbot.modules.admin.internalAPI.saveConfig();
+        this.saveConfig();
         event.reply('Users daring to utter the above to be classified as spam.');
       },
 
       '~del_spamkill': function(event) {
         this.config.advert_content = _.without(this.config.advert_content, event.params.slice(1).join(' '));
-        dbot.modules.admin.internalAPI.saveConfig();
+        this.saveConfig();
         event.reply('Users will no longer be killed for this utterance.');
       },
 
       '~add_clikill': function(event) {
         var pattern = event.params.slice(1).join(' ');
         this.config.cliconn_patterns.push(pattern);
-        dbot.modules.admin.internalAPI.saveConfig();
+        this.saveConfig();
         event.reply('Client connection notices matching pattern /'+ pattern +'/ shall henceforth get rekt.');
       },
 
       '~del_clikill': function(event) {
         var pattern = event.params.slice(1).join(' ');
         this.config.cliconn_patterns = _.without(this.config.cliconn_patterns, pattern);
-        dbot.modules.admin.internalAPI.saveConfig();
+        this.saveConfig();
         event.reply('Client connection notices matching pattern /'+ pattern +'/ will no longer get rekt.');
       },
 
