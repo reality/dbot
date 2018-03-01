@@ -76,28 +76,32 @@ var kill_namespam = function(dbot) {
     this.commands = {
       '~add_spamkill': function(event) {
         this.config.advert_content.push(event.params.slice(1).join(' '))
+        dbot.modules.admin.internalAPI.saveConfig();
         event.reply('Users daring to utter the above to be classified as spam.');
       },
 
       '~del_spamkill': function(event) {
         this.config.advert_content = _.without(this.config.advert_content, event.params.slice(1).join(' '));
+        dbot.modules.admin.internalAPI.saveConfig();
         event.reply('Users will no longer be killed for this utterance.');
       },
 
       '~add_clikill': function(event) {
         var pattern = event.params.slice(1).join(' ');
         this.config.cliconn_patterns.push(pattern);
+        dbot.modules.admin.internalAPI.saveConfig();
         event.reply('Client connection notices matching pattern /'+ pattern +'/ shall henceforth get rekt.');
       },
 
       '~del_clikill': function(event) {
         var pattern = event.params.slice(1).join(' ');
         this.config.cliconn_patterns = _.without(this.config.cliconn_patterns, pattern);
+        dbot.modules.admin.internalAPI.saveConfig();
         event.reply('Client connection notices matching pattern /'+ pattern +'/ will no longer get rekt.');
       },
 
       '~list_clikill': function(event) {
-        event.reply('Currently active "cliconn" kills (tip: when using this, don\'t include your own slashes aroudn the patterns!): ');
+        event.reply('Currently active "cliconn" kills (to use add/del, provide the pattern, not the index, and do not include the surrounding //');
         _.each(this.config.cliconn_patterns, function(pattern, i) {
           event.reply('['+i+'] /' + pattern + '/');
         });
