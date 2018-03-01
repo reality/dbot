@@ -8,7 +8,7 @@ var _ = require('underscore')._;
 
 var kill_namespam = function(dbot) {
     this.saveConfig = function() { // eugh
-      dbot.config.modules.kill_namespam = this.config;
+      dbot.customConfig.modules.kill_namespam = this.config;
       dbot.modules.admin.internalAPI.saveConfig();
     }.bind(this);
 
