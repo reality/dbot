@@ -16,14 +16,14 @@ var kill_namespam = function(dbot) {
               var ip = event.message.split(' ')[1]
 
               // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
-              dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2');
+              dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2. Matched pattern: /'+ matchedPattern +'/');
 
               var msg = dbot.t('clikill_act', {
                 'ip': ip,
                 'pattern': matchedPattern
               });
               event.reply(msg);
-              dbot.api.report.notify('autokill', event.server, event.user,
+              dbot.api.report.notify('autokill', event.server, event.rUser,
                 dbot.config.servers[event.server].admin_channel, msg, ip, ip);
             }
           }
