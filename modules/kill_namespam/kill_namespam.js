@@ -13,7 +13,7 @@ var kill_namespam = function(dbot) {
           if(event.message.match('▶')) {
             var matchedPattern = _.find(this.config.cliconn_patterns, function(p) { return event.message.match(p); }) 
             if(matchedPattern) {
-              var ip = event.message.split(' ')
+              var ip = event.message.split(' ')[1]
 
               // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
               dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2');
