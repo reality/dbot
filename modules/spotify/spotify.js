@@ -17,7 +17,8 @@ var spotify = function(dbot) {
     this.spotifyRegex = /(\b(https?:\/\/open.spotify.com\/(artist|track|album)\/\w*|spotify:(artist|track|album):\w*)\b)/ig;
     this.spotifyLookup = 'http://ws.spotify.com/lookup/1/.json';
     this.spotifySearch = 'https://api.spotify.com/v1/search';
-    this.youtubeRegex = /^http:\/\/(?:www\.)?youtube.com\/watch\?v=\w+(&\S*)?$/
+    this.youtubeRegex = /^http:\/\/(?:www\.)?youtube.com\/watch\?v=\w+(&\S*)?$/;
+	this.youtubeMiniRegex = /^https?:\/\/youtu\.be\/\w+$/;
     this.spotifyText = '\u00039spotify\u000f';
 
     this.lookup = function(link, callback) {
@@ -94,7 +95,7 @@ var spotify = function(dbot) {
                 lastLink = event.params[1];
             }
             
-            if(lastLink.match(this.youtubeRegex)) {
+            if(lastLink.match(this.youtubeRegex) | lastLink.match(this.youtubeMiniRegex)) {
                 dbot.api.link.getTitle(lastLink, function(title) {
                     name = title.replace(' - YouTube', '');        
                     this.api.spotifySearch(name, function(body, t) {
