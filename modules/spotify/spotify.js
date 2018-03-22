@@ -13,6 +13,11 @@ var spotify = function(dbot) {
      * spotify:artist:3yY2gUcIsjMr8hjo51PoJ8
      * http://open.spotify.com/album/30g571JKoxs8AnsgAViV2J
      * spotify:album:30g571JKoxs8AnsgAViV2J
+     *
+     * To get your spotifyAuth thingy, go to https://www.base64encode.org/
+     * and then put your client id in there, and then your client secret in there
+     * like this: 66666666666666666666666666666666:6666666666666666666666666666666
+     * To get this: NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY6NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2Ng==
      */
     this.spotifyRegex = /(\b(https?:\/\/open.spotify.com\/(artist|track|album)\/\w*|spotify:(artist|track|album):\w*)\b)/ig;
     this.spotifyLookup = 'http://ws.spotify.com/lookup/1/.json';
@@ -22,9 +27,12 @@ var spotify = function(dbot) {
     this.spotifyAuthUrl = 'https://accounts.spotify.com/api/token';
     
     // ClientID and ClientSecret come from the spotify developer center; you will need to supply your own.
-    this.spotifyClientID = 'e2491c50879a4d7f900dcefcc74b7c90';
-    this.spotifyClientSecret = 'b29da299612e4e659099ab3367ffa3f4';
-    this.spotifyAuth = new Buffer(this.spotifyClientID + ":" + this.spotifyClientSecret).toString("base64");
+    // this.spotifyClientID = 'e2491c50879a4d7f900dcefcc74b7c90';
+    // this.spotifyClientSecret = 'b29da299612e4e659099ab3367ffa3f4';
+    // this.spotifyAuth = new Buffer(this.spotifyClientID + ":" + this.spotifyClientSecret).toString("base64");
+    // So like, if this doesn't work.. just undo it and don't blame shock!
+    // me wuvs reality
+    this.spotifyAuth = 'ZTI0OTFjNTA4NzlhNGQ3ZjkwMGRjZWZjYzc0YjdjOTA6YjI5ZGEyOTk2MTJlNGU2NTkwOTlhYjMzNjdmZmEzZjQ=';
 
     this.authenticate = function(callback) {
         request({
