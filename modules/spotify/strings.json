@@ -21,11 +21,11 @@
     "it": "[Track] {artist} – {track} (dall' album {album})"
   },
   "found": {
-    "en": "[{url}] {artist} – {track} (from {album})",
-    "cy": "[{url}] {artist} – {track} (o'r albwm: {album})",
-    "de": "[{url}] {artist} – {track} (aus dem Album {album})",
-    "fr": "[{url}] {artist} – {track} (tiré de {album})",
-    "it": "[{url}] {artist} – {track} (dall' album {album})"
+    "en": "[{url} - {uri}] {artist} – {track} (from {album})",
+    "cy": "[{url} - {uri}] {artist} – {track} (o'r albwm: {album})",
+    "de": "[{url} - {uri}] {artist} – {track} (aus dem Album {album})",
+    "fr": "[{url} - {uri}] {artist} – {track} (tiré de {album})",
+    "it": "[{url} - {uri}] {artist} – {track} (dall' album {album})"
   },
   "not-found": {
     "en": "No results.",
