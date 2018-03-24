@@ -1,4 +1,4 @@
-var fs = require('fs'),
+ var fs = require('fs'),
     _ = require('underscore')._,
     jsbot = require('./jsbot/jsbot'),
     DatabaseDriver = require('./database').DatabaseDriver,
@@ -6,7 +6,7 @@ var fs = require('fs'),
     require('./snippets');
 
 var DBot = function() {
-    
+
     /*** Load the DB ***/
     if(fs.existsSync('db.json')) {
         try {
@@ -44,11 +44,11 @@ var DBot = function() {
          this.instance.addConnection(name, server.server, server.port,
                 this.config.admin, function(event) {
             var server = this.config.servers[event.server];
-            
+
             _.each(server.channels, function(channel) {
                 this.instance.join(event, channel);
             }, this);
-        }.bind(this), server.nickserv, server.password);        
+        }.bind(this), server.nickserv, server.password);
     }, this);
 
     // Load the modules and connect to the server
@@ -63,7 +63,7 @@ DBot.prototype.reloadConfig = function() {
         console.log('Error: config.json file does not exist. Stopping');
         process.exit();
     }
-    
+
     try {
         var configFile = fs.readFileSync('config.json', 'utf-8');
         this.config = JSON.parse(configFile);
@@ -96,11 +96,11 @@ DBot.prototype.say = function(server, channel, message) {
 // Format given stored string in config language
 DBot.prototype.t = function(string, formatData) {
     var formattedString = 'String not found. Something has gone screwy. Maybe.';
-    
+
     if(_.has(this.strings, string)) {
         var lang = this.config.language;
         if(!_.has(this.strings[string], lang)) {
-            lang = "en"; 
+            lang = "en";
         }
 
         if(_.has(this.strings[string], lang)) {
@@ -113,7 +113,7 @@ DBot.prototype.t = function(string, formatData) {
             }
         }
     }
-    
+
     return formattedString;
 };
 
@@ -146,7 +146,7 @@ DBot.prototype.reloadModules = function() {
     this.usage = {};
     this.reloadConfig();
     this.ddb.createDB(name, this.config.dbType, {}, function(db) {});
-    
+
     try {
         this.strings = JSON.parse(fs.readFileSync('strings.json', 'utf-8'));
     } catch(err) {
@@ -155,7 +155,7 @@ DBot.prototype.reloadModules = function() {
 
     var moduleNames = this.config.moduleNames;
 
-    // Enforce having command. it can still be reloaded, but dbot _will not_ 
+    // Enforce having command. it can still be reloaded, but dbot _will not_
     //  function without it, so not having it should be impossible
     if(!_.include(moduleNames, 'command')) {
         moduleNames.push("command");
@@ -244,15 +244,15 @@ DBot.prototype.reloadModules = function() {
                             if(propertyKey) delete require.cache[propertyKey];
                             propertyObj = require(moduleDir + property).fetch(this);
                         } catch(err) {
-                            console.log('Module error (' + module.name + ') in ' + 
+                            console.log('Module error (' + module.name + ') in ' +
                                 property + ': ' + err);
-                        } 
+                        }
                     }
 
                     if(!_.has(module, property)) module[property] = {};
                     _.extend(module[property], propertyObj);
                     _.each(module[property], function(item, itemName) {
-                        item.module = name; 
+                        item.module = name;
                         if(_.has(module.config, property) && _.has(module.config[property], itemName)) {
                             _.extend(item, module.config[property][itemName]);
                         }
@@ -283,7 +283,7 @@ DBot.prototype.reloadModules = function() {
                     try {
                         propertyData = JSON.parse(fs.readFileSync(moduleDir + property + '.json', 'utf-8'));
                     } catch(err) {
-                        console.log('Data error (' + module.name + ') in ' + 
+                        console.log('Data error (' + module.name + ') in ' +
                             property + ': ' + err);
                     };
                     _.extend(this[property], propertyData);
