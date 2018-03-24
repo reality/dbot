@@ -6,6 +6,10 @@ Various Spotify functionality.
 This module posts information on Spotify links, as well as providing Spotify
 search functionality.
 
+### config.json
+Edit the "api_key_clientid" setting with your Spotify API client ID. Edit the
+"api_key_clientsecret" setting with your Spotify API client secret.
+
 ## Commands
 
 ### ~spotify [query]
