@@ -280,22 +280,41 @@ var lastfm = function(dbot) {
                             'artist': track.artist['#text']
                         });
                     }
-                    dbot.api.youtube.search(term, function(body) {
-                        if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
-                                var link = body.items[0].id.videoId
-                            if(link) {
-                                output += ' - http://youtu.be/' + link;
-                            }
+                    
+                    async.parallel({
+                        youtube: function(cb) {
+                            dbot.api.youtube.search(term, function(body) {
+                                if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                                    var link = body.items[0].id.videoId
+                                    if(link) {
+                                        cb(null,"http://youtu.be/" + link);
+                                    } else {
+                                        cb(null, undefined);
+                                    }
+                                }
+                            });
+                        },
+                        spotify: function(cb) {
+                            dbot.api.spotify.spotifySearch(term, function(body, url, uri) {
+                               if(body) {
+                                   cb(null, { url:url, uri:uri });
+                               } else {
+                                   cb(null, undefined);
+                               }
+                            });
                         }
-
-                        dbot.api.spotify.spotifySearch(term, function(body, url, uri) {
-                          if(body) {
-                            output += ' - ' + url + ' - ' + uri;
-                          }
-                          
-                          event.reply(output);
-                        });
+                    }, function(err, results) {
+                        if (results.youtube || results.spotify) output += " - "
+                        
+                        if (results.youtube) output += results.youtube;
+                        if (results.spotify) {
+                            if (results.youtube) output += " | ";
+                            output += results.spotify.url + " - " + results.spotify.uri;
+                        }
+                        
+                        event.reply(output);
                     });
+                    
                 } else {
                     if(err == 'no_user') {
                         event.reply('Unknown LastFM user.');
