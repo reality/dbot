@@ -129,7 +129,8 @@ var spotify = function(dbot) {
                                     function(a) { return a.name }).join(', '), 
                                 'album': body.tracks.items[0].album.name, 
                                 'track': body.tracks.items[0].name, 
-                                'url': t
+                                'url': t,
+                                'uri': body.tracks.items[0].uri
                             }));
                         } else {
                             event.reply(dbot.t('not-found'));
