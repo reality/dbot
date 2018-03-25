@@ -21,16 +21,15 @@ var spotify = function(dbot) {
     this.spotifyText = '\u00039spotify\u000f';
     this.spotifyAuthUrl = 'https://accounts.spotify.com/api/token';
     
-    // ClientID and ClientSecret come from the spotify developer center; you will need to supply your own.
-    this.spotifyClientID = 'e2491c50879a4d7f900dcefcc74b7c90';
-    this.spotifyClientSecret = 'b29da299612e4e659099ab3367ffa3f4';
-    this.spotifyAuth = new Buffer(this.spotifyClientID + ":" + this.spotifyClientSecret).toString("base64");
-
+    this.auth = false;
+    
     this.authenticate = function(callback) {
+        this.auth = this.auth || new Buffer(this.config.api_key_clientid + ":" + this.config.api_key_clientsecret).toString("base64");
+        
         request({
             url: this.spotifyAuthUrl,
             method: "POST",
-            headers: { Authorization: "Basic " + this.spotifyAuth },
+            headers: { Authorization: "Basic " + this.auth },
             form: { grant_type: "client_credentials" }
         }, function(error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -83,11 +82,9 @@ var spotify = function(dbot) {
                 }, function(error, response, body) {
                     if(!error && response.statusCode == 200) {
                         if(_.has(body, 'tracks') && body.tracks.items[0] && _.has(body.tracks.items[0], 'href')) {
-                            var t = body.tracks.items[0].href;
-                            ///*t = t.replace(/:/g, '/');
-                            t = t.replace(/api.spotify.com\/v1\/tracks/,
-                            'open.spotify.com/track');
-                            callback(body, t);
+                            var url = body.tracks.items[0].href;
+                            url = url.replace(/api.spotify.com\/v1\/tracks/, 'open.spotify.com/track');
+                            callback(body, url, body.tracks.items[0].uri);
                         } else {
                             callback(false);
                         }
@@ -132,7 +129,8 @@ var spotify = function(dbot) {
                                     function(a) { return a.name }).join(', '), 
                                 'album': body.tracks.items[0].album.name, 
                                 'track': body.tracks.items[0].name, 
-                                'url': t
+                                'url': t,
+                                'uri': body.tracks.items[0].uri
                             }));
                         } else {
                             event.reply(dbot.t('not-found'));

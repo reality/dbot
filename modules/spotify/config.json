@@ -1,5 +1,7 @@
 {
   "dependencies": [ "link" ],
   "ignorable": true,
-  "outputPrefix": "\u00039spotify\u000f"
+  "outputPrefix": "\u00039spotify\u000f",
+  "api_key_clientid": "blah",
+  "api_key_clientsecret": "blah"
 }
