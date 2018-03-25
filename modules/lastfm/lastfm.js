@@ -287,7 +287,7 @@ var lastfm = function(dbot) {
                                 if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
                                     var link = body.items[0].id.videoId
                                     if(link) {
-                                        cb(null,"http://youtu.be/" + link);
+                                        cb(null,"https://youtu.be/" + link);
                                     } else {
                                         cb(null, undefined);
                                     }
