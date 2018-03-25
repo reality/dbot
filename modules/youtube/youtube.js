@@ -10,14 +10,16 @@ var youtube = function(dbot) {
     this.LinkRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
     this.api = {
-        'search': function(term, callback) {
+        'search': function(term, callback, type) {
+            type = type || "video"
             var qs = _.clone(this.params);
             request.get(this.ApiRoot + 'search', {
                 'qs': {
                     'key': this.config.api_key,
                     'q': term,
                     'maxResults': 1,
-                    'part': "snippet"
+                    'part': "snippet",
+                    'type': type
                 },
                 'json': true
             }, function(error, response, body) {
@@ -58,10 +60,25 @@ var youtube = function(dbot) {
             }
 
             return res;
-        }.bind(this)
+        }.bind(this),
+        
+        'formatPlaylistLink': function(v) {
+            var res = dbot.t('yt_playlist', {
+                'title': v.snippet.title,
+                'author': v.snippet.channelTitle,
+                'videos': v.contentDetails.itemCount
+            });
+            
+            if (v.id) {
+                res += " - https://www.youtube.com/playlist?list=" + v.id;
+            }
+            
+            return res;
+        }
     };
 
     this.commands = {
+        // search for a youtube video
         '~yt': function(event) {
             this.api.search(event.input[1], function(body) {
                 if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
@@ -81,10 +98,34 @@ var youtube = function(dbot) {
                 } else {
                     event.reply(dbot.t('yt_noresults'));
                 }
-            }.bind(this));
+            }.bind(this), "video");
+        },
+        
+        // search for a youtube playlist
+        '~ytpl': function(event) {
+            this.api.search(event.input[1], function(body) {
+                if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                    request.get(this.ApiRoot + 'playlists' , {
+                        'qs': {
+                            'key': this.config.api_key,
+                            'id': body.items[0].id.playlistId,
+                            'maxResults': 1,
+                            'part': "snippet,contentDetails"
+                        },
+                        'json': true
+                    }, function(error, response, body) {
+                        if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                            event.reply(this.internalAPI.formatPlaylistLink(body.items[0]));
+                        }
+                    }.bind(this));
+                } else {
+                    event.reply(dbot.t('yt_noresults'));
+                }
+            }.bind(this), "playlist");
         }
     };
     this.commands['~yt'].regex = [/^yt (.+)$/, 2];
+    this.commands['~ytpl'].regex = [/^ytpl (.+)$/, 2];
 
     this.onLoad = function() {
         dbot.api.link.addHandler(this.name, this.LinkRegex,
