@@ -1,0 +1,9 @@
+{
+    "dependencies": [ ],
+    "ignorable": true,
+    "outputPrefix": "minify",
+    "defaultMinifier": "bitly",
+    
+    "minifier-bitly-url": "https://api-ssl.bitly.com/v3/shorten",
+    "minifier-bitly-access_token": "insert token here"
+}

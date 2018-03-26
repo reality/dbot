@@ -91,6 +91,14 @@ var spotify = function(dbot) {
                     }
                 });
             }.bind(this));
+        },
+        
+        'getMinifiedSpotifyLink': function(link, callback) {
+            if(!dbot.modules.minify) {
+                callback();
+            } else {
+                dbot.modules.minify.api.minify(link, "bitly", callback);
+            }
         }
     };
 
@@ -99,14 +107,16 @@ var spotify = function(dbot) {
             var query = event.input[1];
             this.api.spotifySearch(query, function(body, t) {
                 if(body) {
-                    event.reply(dbot.t('found', {
-                        'artist': _.map(body.tracks.items[0].artists, function(a) { 
-                                return a.name }).join(', '), 
-                        'album': body.tracks.items[0].album.name, 
-                        'track': body.tracks.items[0].name, 
-                        'url': t,
-                        'uri': body.tracks.items[0].uri
-                    }));
+                    this.api.getMinifiedSpotifyLink(t, function(mini) {
+                        event.reply(dbot.t('found', {
+                            'artist': _.map(body.tracks.items[0].artists, function(a) { 
+                                    return a.name }).join(', '), 
+                            'album': body.tracks.items[0].album.name, 
+                            'track': body.tracks.items[0].name, 
+                            'url': mini || t,
+                            'uri': body.tracks.items[0].uri
+                        }));
+                    });
                 } else {
                     event.reply(dbot.t('not-found'));
                 }
@@ -118,20 +128,22 @@ var spotify = function(dbot) {
             if(!_.isUndefined(event.params[1])) {
                 lastLink = event.params[1];
             }
-            
+
             if(lastLink.match(this.youtubeRegex)) {
                 dbot.api.link.getTitle(lastLink, function(title) {
                     name = title.replace(' - YouTube', '');
                     this.api.spotifySearch(name, function(body, t) {
                         if(body) {
-                            event.reply(dbot.t('found', {
-                                'artist': _.map(body.tracks.items[0].artists, 
-                                    function(a) { return a.name }).join(', '), 
-                                'album': body.tracks.items[0].album.name, 
-                                'track': body.tracks.items[0].name, 
-                                'url': t,
-                                'uri': body.tracks.items[0].uri
-                            }));
+                            this.api.getMinifiedSpotifyLink(t, function(mini) {
+                                event.reply(dbot.t('found', {
+                                    'artist': _.map(body.tracks.items[0].artists, 
+                                        function(a) { return a.name }).join(', '), 
+                                    'album': body.tracks.items[0].album.name, 
+                                    'track': body.tracks.items[0].name, 
+                                    'url': mini || t,
+                                    'uri': body.tracks.items[0].uri
+                                }));
+                            });
                         } else {
                             event.reply(dbot.t('not-found'));
                         }
