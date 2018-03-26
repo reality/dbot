@@ -26,7 +26,14 @@ var minify = function(dbot) {
                     if (body.status_code == 200) {
                         callback(body.data.url);
                     } else {
-                        callback(false, body.status_txt);
+                        var emsg = function() {
+                            switch(body.status_txt) {
+                                case "INVALID_URI": return "Invalid URL was supplied";
+                                default: return body.status_txt;
+                            }
+                        }
+                        
+                        callback(false, emsg);
                     }
                 } else {
                     callback(false, error);
