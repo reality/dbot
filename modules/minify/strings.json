@@ -1,0 +1,11 @@
+{
+    "success": {
+        "en" : "Here you go! -> {miniurl}"
+    },
+    "fail-bad-minimizer": {
+        "en" : "The specified minimizer is not supported."
+    },
+    "fail" : {
+        "en" : "I couldn't. =( [{reason}]"
+    }
+}

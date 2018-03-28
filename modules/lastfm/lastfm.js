@@ -297,7 +297,13 @@ var lastfm = function(dbot) {
                         spotify: function(cb) {
                             dbot.api.spotify.spotifySearch(term, function(body, url, uri) {
                                if(body) {
-                                   cb(null, { url:url, uri:uri });
+                                    if (!dbot.modules.minify) {
+                                        cb(null, { url: url, uri:uri });
+                                    } else {
+                                        dbot.modules.minify.api.minify(url, "bitly", function(mini) {
+                                            cb(null, { url:mini || url, uri:uri });
+                                        });
+                                    }
                                } else {
                                    cb(null, undefined);
                                }
