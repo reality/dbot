@@ -4,7 +4,7 @@ var Wordnik = require('wordnik'),
 var words = function(dbot) {
     this.commands = {
         '~define': function(event) {
-            var query = event.params[1];
+            var query = event.params.slice(1).join(" ");
             this.wn.definitions(encodeURIComponent(query), function(err, defs) {
                 if(!err && defs[0]) {
                     event.reply(dbot.t('def', {
@@ -18,8 +18,8 @@ var words = function(dbot) {
         },
 
         '~like': function(event) {
-            var query = event.params[1];
-            this.wn.word(query, {}, function(err, word) {
+            var query = event.params.slice(1).join(" ");
+            this.wn.word(encodeURIComponent(query), {}, function(err, word) {
                 if(!err && word) {
                     word.related({
                         'limit': 10
@@ -40,22 +40,18 @@ var words = function(dbot) {
         },
 
         '~example': function(event) {
-            var query = event.params[1];
-            this.wn.word(query, {}, function(err, word) {
-                if(!err && word) {
-                    word.topExample({}, function(err, example) {
-                        if(!err && example) {
-                            var rep = new RegExp(query, 'g');
-                            event.reply(dbot.t('def', {
-                                'word': query + ' example',
-                                'definition': example.text.replace(rep, '\u00033'+query+'\u000f')
-                            }));
-                        } else {
-                            event.reply(dbot.t('no_example', { 'word': query }));
-                        }
-                    });
+            var query = event.params.slice(1).join(" ");
+            
+            this.wn.topExample(encodeURIComponent(query), {}, function(err, example) {
+                if(!err && example) {
+                    console.log(rep);
+                    var rep = new RegExp(query, 'g');
+                    event.reply(dbot.t('def', {
+                        'word': query + ' example',
+                        'definition': example.text.replace(rep, '\u00033'+query+'\u000f')
+                    }));
                 } else {
-                    event.reply(dbot.t('no_word', { 'word': query }));
+                    event.reply(dbot.t('no_example', { 'word': query }));
                 }
             });
         },
