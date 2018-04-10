@@ -6,16 +6,6 @@ var request = require('request'),
         _ = require('underscore')._;
 
 var spotify = function(dbot) {
-    /* Examples:
-     * http://open.spotify.com/track/42SYMWISn7xUpTNPLw9V5E
-     * spotify:track:42SYMWISn7xUpTNPLw9V5E
-     * http://open.spotify.com/artist/3yY2gUcIsjMr8hjo51PoJ8
-     * spotify:artist:3yY2gUcIsjMr8hjo51PoJ8
-     * http://open.spotify.com/album/30g571JKoxs8AnsgAViV2J
-     * spotify:album:30g571JKoxs8AnsgAViV2J
-     */
-    this.spotifyRegex = /(\b(https?:\/\/open.spotify.com\/(artist|track|album)\/\w*|spotify:(artist|track|album):\w*)\b)/ig;
-    this.spotifyLookup = 'http://ws.spotify.com/lookup/1/.json';
     this.spotifySearch = 'https://api.spotify.com/v1/search';
     this.youtubeRegex = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     this.spotifyText = '\u00039spotify\u000f';
@@ -38,37 +28,6 @@ var spotify = function(dbot) {
                 callback(token);
             }
         });
-    };
-
-    this.lookup = function(link, callback) {
-        this.authenticate(function(token) {
-            request({
-                'url': this.spotifyLookup,
-                'qs': { 'uri': link },
-                'json': true,
-                'headers': { 'Authorization': "Bearer " + token }
-            }, function(error, response, body) {
-                if(!error && response.statusCode == 200) {
-                    if(_.has(body, 'track')) {
-                        callback(dbot.t('track', {
-                            'artist': _.map(body.track.artists, 
-                                function(a) { return a.name }).join(', '), 
-                            'album': body.track.album.name, 
-                            'track': body.track.name
-                        }));
-                    } else if(_.has(body, 'album')) {
-                        callback(dbot.t('album', {
-                            'artist': body.album.artist, 
-                            'album': body.album.name
-                        }));
-                    } else if(_.has(body, 'artist')) {
-                        callback(dbot.t('artist', {
-                            'artist': body.artist.name
-                        }));
-                    }
-                }
-            });
-        }.bind(this));
     };
 
     this.api = {
@@ -157,11 +116,6 @@ var spotify = function(dbot) {
     commands['~spotify'].regex = [/^spotify (.*)/, 2];
     this.commands = commands;
 
-    this.onLoad = function() {
-        dbot.api.link.addHandler(this.name, this.spotifyRegex, function(matches, name, callback) {
-            this.lookup(matches[0], callback);
-        }.bind(this));
-    }.bind(this);
 };
 
 exports.fetch = function(dbot) {

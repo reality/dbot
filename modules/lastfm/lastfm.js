@@ -92,6 +92,7 @@ var lastfm = function(dbot) {
             }); 
         },
 
+        /*
         'tasteCompare': function(user, oUser, callback) {
             request.get(this.ApiRoot, {
                 'qs': {
@@ -105,6 +106,7 @@ var lastfm = function(dbot) {
                 },
                 'json': true
             }, function(err, res, body) {
+                console.log(body);
                 if(_.has(body, 'error') && body.error == 6 || body.error == 7) {
                     callback('no_user', user, null);
                 } else if(_.has(body, 'comparison') && _.has(body.comparison, 'result')) {
@@ -114,6 +116,7 @@ var lastfm = function(dbot) {
                 }
             }); 
         },
+        */
 
         'getInfo': function(lfm, callback) {
             request.get(this.ApiRoot, {
@@ -220,29 +223,54 @@ var lastfm = function(dbot) {
                                         'artist': track.artist.name
                                     });
                                     var term = track.name + ' ' + track.artist.name;
-
-                                    dbot.api.youtube.search(term, function(body) {
-                                       if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
-                                            var link = body.items[0].id.videoId
-                                            if(link) {
-                                                output += ' - http://youtu.be/' + link;
-                                            }
+                                    
+                                    async.parallel({
+                                        youtube: function(cb) {
+                                            dbot.api.youtube.search(term, function(body) {
+                                                if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
+                                                    var link = body.items[0].id.videoId
+                                                    if(link) {
+                                                        cb(null,"https://youtu.be/" + link);
+                                                    } else {
+                                                        cb(null, undefined);
+                                                    }
+                                                }
+                                            });
+                                        },
+                                        spotify: function(cb) {
+                                            dbot.api.spotify.spotifySearch(term, function(body, url, uri) {
+                                               if(body) {
+                                                    if (!dbot.modules.minify) {
+                                                        cb(null, { url: url, uri:uri });
+                                                    } else {
+                                                        dbot.modules.minify.api.minify(url, "bitly", function(mini) {
+                                                            cb(null, { url:mini || url, uri:uri });
+                                                        });
+                                                    }
+                                               } else {
+                                                   cb(null, undefined);
+                                               }
+                                            });
                                         }
-
-                                        dbot.api.spotify.spotifySearch(term, function(body, t) {
-                                          if(body) {
-                                            output += ' - ' + t;
-                                          }
-
-                                          event.reply(output);
-                                        });
-                                    });
+                                    }, function(err, results) {
+                                        if (results.youtube || results.spotify) output += " - "
+                                        
+                                        if (results.youtube) output += results.youtube;
+                                        if (results.spotify) {
+                                            if (results.youtube) output += " | ";
+                                            output += results.spotify.url + " - " + results.spotify.uri;
+                                        }
+                                        
+                                        event.reply(output);
+                                    });                                    
                                 } else {
-                                    event.reply('something broke');
+                                    event.reply('Couldn\'t get any suggested tracks.');
+                                    console.log(err);
                                 }
                             }); 
                         } else {
-                            event.reply('something broke');
+                            event.reply('Couldn\'t find any similar artists to what you\'re listening to.');
+                            console.log(err);
                         }
                     }.bind(this));
                 } else {
@@ -262,7 +290,7 @@ var lastfm = function(dbot) {
                 user = event.res[0].user;
                 lfm = event.res[0].lfm;
             }
-
+            
             this.api.getListening(lfm, function(err, track) {
                 if(!err) {
                     var term = track.name + ' ' + track.artist['#text'],
@@ -327,10 +355,12 @@ var lastfm = function(dbot) {
                     } else if(err == 'no_listen') {
                         event.reply(dbot.t('no_listen', { 'user': user.currentNick }));
                     }
+                    console.log(err);
                 }
             });
         },
 
+        /*
         '~taste': function(event) {
             var u1 = event.rUser,
                 lfm1 = event.rProfile.lastfm,
@@ -431,6 +461,7 @@ var lastfm = function(dbot) {
                 }.bind(this));
             }
         },
+        */
 
         '~artists': function(event) {
             var u1 = event.rUser,
@@ -456,7 +487,7 @@ var lastfm = function(dbot) {
             });
         }
     };
-    this.commands['~taste'].regex = [/^taste ([\d\w[\]{}^|\\`_-]+?)/, 2];
+    //this.commands['~taste'].regex = [/^taste ([\d\w[\]{}^|\\`_-]+?)/, 2];
     this.commands['~artists'].regex = [/^artists ([\d\w[\]{}^|\\`_-]+?)/, 2];
 
     _.each(this.commands, function(command) {
