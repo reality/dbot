@@ -5,7 +5,7 @@ var words = function(dbot) {
     this.commands = {
         '~define': function(event) {
             var query = event.params.slice(1).join(" ");
-            this.wn.definitions(encodeURIComponent(query), function(err, defs) {
+            this.wn.definitions(encodeURIComponent(query), { useCanonical: true }, function(err, defs) {
                 if(!err && defs[0]) {
                     event.reply(dbot.t('def', {
                         'word': query,
