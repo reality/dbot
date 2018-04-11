@@ -93,6 +93,7 @@ var youtube = function(dbot) {
                     }, function(error, response, body) {
                         if(_.isObject(body) && _.has(body, 'items') && body.items.length > 0) {
                             event.reply(this.internalAPI.formatLink(body.items[0]));
+                            dbot.modules.link.links[event.channel.name] = 'https://youtu.be/' + body.items[0].id;
                         }
                     }.bind(this));
                 } else {
