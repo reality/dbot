@@ -1,0 +1,6 @@
+{
+    "~book": "~book [bookname] - returns the title, author, rating, and GoodReads link",
+    "~booksummary": "~booksummary [bookname] - returns the summary for the requested book",
+    "~author": "~author [authorname] - returns the GoodReads link for the requested author",
+    "~reading": "~reading - displays up to 5 of the books you are currently reading"
+}
