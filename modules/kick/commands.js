@@ -297,7 +297,7 @@ var commands = function(dbot) {
             event.reply(orderedKickLeague(dbot.db.kicks, 'Kicked'));
             event.reply(orderedKickLeague(dbot.db.kickers, 'Kickers'));
         },
-
+        
         '~votequiet': function(event) {
           var target = event.input[1],
               reason = event.input[2];
@@ -353,6 +353,11 @@ var commands = function(dbot) {
                       if(vq.yes.length == 4) {
                         event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
                         this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, reason + '[votequiet]', function(response) {
+                          clearTimeout(vq.timer);
+                          vq.spent = true;
+                          setTimeout(function() {
+                            delete this.voteQuiets[user.id];
+                          }.bind(this), 600000);                          
                           event.reply(response); 
                         });
                       }
@@ -391,6 +396,10 @@ var commands = function(dbot) {
                     event.reply('Attempt to quiet ' + target + ' succeeded. Count: Yes (' + vq.yes.length + '). No (' + vq.no.length + ').');
                     this.api.quietUser(event.server, event.rUser, '10m', event.channel, target, vq.reason + '[votequiet]', function(response) {
                       clearTimeout(vq.timer);
+                      vq.spent = true;
+                      setTimeout(function() {
+                        delete this.voteQuiets[user.id];
+                      }.bind(this), 600000);                          
                       event.reply(response); 
                     });
                   }
