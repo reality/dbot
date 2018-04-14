@@ -2,13 +2,22 @@
     "gr_book": {
         "en": "[{title} by {author} - {rating}] - {link}"
     },
+    "gr_summary": {
+        "en": "[{title}] - {summary} - {link}"
+    },
+    "gr_author": {
+        "en": "[{author}] - https://www.goodreads.com/author/show/{id}"
+    },
     "gr_nobook": {
-        "en": "No books found."
+        "en": "No book by that name was found."
     },
-    "gr_books": {
-        "en": "{user} has read {read} books and is currently reading {currently_reading} books."
+    "gr_noauthor": {
+        "en": "No author by that name was found."
     },
-    "gr_unknown": {
-        "en": "Unknown Goodreads username!"
+    "gr_not_reading": {
+        "en": "{user} is not currently reading any books."
+    },
+    "gr_is_reading": {
+        "en": "{user} is currently reading the following {count} books:"
     }
 }
