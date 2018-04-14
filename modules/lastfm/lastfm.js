@@ -155,7 +155,7 @@ var lastfm = function(dbot) {
                     event.reply(dbot.t('lfm_profile', {
                         'user': user.currentNick,
                         'plays': profile.playcount.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"),
-                        'date': moment(profile.registered['#text']).format('DD/MM/YYYY'),
+                        'date': moment(profile.registered['#text'] * 1000).format('DD/MM/YYYY'),
                         'link': profile.url
                     }));
                 } else {

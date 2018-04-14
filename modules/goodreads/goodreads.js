@@ -3,12 +3,12 @@
  * Description: Interacts with the GoodReads API to provide book-oriented functionality to dbot
  */
 
-const util = require('util'),
+var util = require('util'),
       _ = require('underscore')._,
       rp = require('request-promise-native'),
       parseString = util.promisify(require('xml2js').parseString);
     
-const GoodReads = function(dbot) {
+var GoodReads = function(dbot) {
     this.apiRoot = 'https://www.goodreads.com';
     
     this.internalAPI = {
@@ -37,7 +37,7 @@ const GoodReads = function(dbot) {
     this.api = {
         'findBook': async term => {
             //https://www.goodreads.com/search/index.xml
-            const body = await rp({
+            var body = await rp({
                 uri: this.apiRoot + '/search/index.xml',
                 qs: {
                     key: this.config.api_key,
@@ -45,10 +45,10 @@ const GoodReads = function(dbot) {
                 }
             });
       
-            const response = await parseString(body, { explicitArray: false });
+            var response = await parseString(body, { explicitArray: false });
             if(!_.has(response, 'GoodreadsResponse')) throw 'goodreads-error';
             
-            const result = response.GoodreadsResponse.search.results;
+            var result = response.GoodreadsResponse.search.results;
             if(!result || !_.has(result, 'work')) throw 'book-not-found';
             if(!result.work[0]) throw 'book-not-found';
             
@@ -62,7 +62,7 @@ const GoodReads = function(dbot) {
         
         'getSummaryForBook': async id => {
             //https://www.goodreads.com/book/show.xml
-            const body = await rp({
+            var body = await rp({
                 uri: this.apiRoot + '/book/show.xml',
                 qs: {
                     key: this.config.api_key,
@@ -70,10 +70,10 @@ const GoodReads = function(dbot) {
                 }
             });
             
-            const response = await parseString(body, { explicitArray: false });
+            var response = await parseString(body, { explicitArray: false });
             if(!_.has(response, 'GoodreadsResponse')) throw 'goodreads-error';
             
-            const result = response.GoodreadsResponse.book;
+            var result = response.GoodreadsResponse.book;
             if(!result) throw 'book-not-found';
             if(!_.has(result, 'description')) throw 'no-description';
             
@@ -82,17 +82,17 @@ const GoodReads = function(dbot) {
         
         'findAuthor': async term => {
             //https://www.goodreads.com/api/author_url/<ID>
-            const body = await rp({
+            var body = await rp({
                 url: this.apiRoot + '/api/author_url/' + term,
                 qs: {
                     key: this.config.api_key
                 }
             });
             
-            const response = await parseString(body, {explicitArray: false });
+            var response = await parseString(body, {explicitArray: false });
             if(!_.has(response, 'GoodreadsResponse')) throw 'goodreads-error';
             
-            const result = response.GoodreadsResponse.author;
+            var result = response.GoodreadsResponse.author;
             if(!result) throw 'author-not-found';
             
             return {
@@ -121,10 +121,10 @@ const GoodReads = function(dbot) {
                 throw e;
             }
             
-            const response = await parseString(body, { explicitArray: false });
+            var response = await parseString(body, { explicitArray: false });
             if(!_.has(response, 'GoodreadsResponse')) throw 'goodreads-error';
             
-            const result = response.GoodreadsResponse.user;
+            var result = response.GoodreadsResponse.user;
             if(!result) throw 'user-not-found';
             
             return this.internalAPI.formatProfile(result);
@@ -150,10 +150,10 @@ const GoodReads = function(dbot) {
                 throw e;
             }
             
-            const response = await parseString(body, { explicitArray: false });
+            var response = await parseString(body, { explicitArray: false });
             if(!_.has(response, 'GoodreadsResponse')) throw 'goodreads-error';
             
-            const result = response.GoodreadsResponse.user;
+            var result = response.GoodreadsResponse.user;
             if(!result) throw 'user-not-found';
             
             return this.internalAPI.formatProfile(result);
@@ -171,7 +171,7 @@ const GoodReads = function(dbot) {
                 }
             });
             
-            const response = await parseString(body, { explicitArray: false });
+            var response = await parseString(body, { explicitArray: false });
             if(!_.has(response, 'GoodreadsResponse')) throw 'goodreads-error';
             
             let result = response.GoodreadsResponse.reviews.review;
@@ -193,7 +193,7 @@ const GoodReads = function(dbot) {
     this.commands = {
         '~book' : async evt => {
             try {
-                const book = await this.api.findBook(evt.input[1]);
+                var book = await this.api.findBook(evt.input[1]);
                 evt.reply(dbot.t('gr_book', {
                     author: book.author,
                     title: book.title,
@@ -206,9 +206,8 @@ const GoodReads = function(dbot) {
         
         '~booksummary': async evt => {
             try {
-                console.log(evt.input[1]);
-                const book = await this.api.findBook(evt.input[1]);
-                const summary = await this.api.getSummaryForBook(book.id);
+                var book = await this.api.findBook(evt.input[1]);
+                var summary = await this.api.getSummaryForBook(book.id);
                 evt.reply(dbot.t('gr_summary', {
                     title: book.title,
                     summary: summary,
@@ -228,7 +227,7 @@ const GoodReads = function(dbot) {
         '~reading': async (evt, profile) => {
             try {
                 let books = await this.api.getShelfForUserId(profile.id, 'currently-reading');
-                const booksCount = books.length;
+                var booksCount = books.length;
                 if(!booksCount) {
                     evt.reply(dbot.t('gr_not_reading', { user: evt.rUser.currentNick }));
                     return;
@@ -259,7 +258,7 @@ const GoodReads = function(dbot) {
     _.each(this.commands, ((cmd, cmdName) => {
         if(cmd.requiresProfile) {
             this.commands[cmdName] = (async evt => {
-                const grUsername = evt.rProfile.goodreads;
+                var grUsername = evt.rProfile.goodreads;
                 
                 if(!grUsername) {
                     evt.reply(evt.rUser.currentNick + ': Set a Goodreads username with "~set goodreads username"');
