@@ -1,0 +1,11 @@
+{
+    "output_sequence": {
+        "en": "{a6}: \"{name}\" - ({sample}) {url}"
+    },
+    "sequence_not_found": {
+        "en": "The sequence could not be identified."
+    },
+    "oeis_error": {
+        "en": "Error communicating with the OEIS database."
+    }
+}
