@@ -74,6 +74,28 @@ var OEIS = function(dbot) {
             
             if(!body.results) throw 'no-results';
             return this.internalAPI.parseResult(body.results[0]);
+        },
+        
+        'getRandomSequenceA': async set => {
+            // This feature uses OEIS's 'webcam' which serves up random entries
+            // each time the page is refreshed. It appears to be the only way to get
+            // valid random entries from the database. The alternative is to just generate
+            // random A-numbers from the set of all A-numbers, but that seems dirty to me.
+            var body = await rp({
+                url: this.webRoot + '/webcam',
+                qs: {
+                    fromjavascript: 1,
+                    q: 'keyword:' + set
+                }
+            });
+            
+            // Find where the A-number is located
+            var i = body.indexOf('<a href="/A');
+            if (i < 0) throw 'no-results';
+            i += 11;
+            
+            var a = body.slice(i, i + 6);
+            return a;
         }
     };
     
@@ -84,16 +106,24 @@ var OEIS = function(dbot) {
             try {
                 if (event.input[1]) {
                     // digit sequence
-                    var terms = event.params.slice(1);
+                    let terms = event.params.slice(1);
                     result = await this.api.lookupSequenceByExample(terms, true);
                 } else if (event.input[2]) {
                     // A-number
-                    var a = event.input[2];
+                    let a = event.input[2];
                     result = await this.api.lookupSequenceByA(a);
                 } else {
-                    // Keyword search
-                    var keywords = event.params.slice(1).join(' ');
-                    result = await this.api.lookupSequenceByKeywords(keywords);
+                    // Keyword search or random request
+                    if(event.input[3] == 'sequence') {
+                        // Random request
+                        let a = await this.api.getRandomSequenceA('nice');
+                        console.log(a);
+                        result = await this.api.lookupSequenceByA(a);
+                    } else {
+                        // Keyword search
+                        let keywords = event.params.slice(1).join(' ');
+                        result = await this.api.lookupSequenceByKeywords(keywords);
+                    }
                 }
             }
             catch(e) {
@@ -108,7 +138,7 @@ var OEIS = function(dbot) {
         }
     }
     
-    this.commands['~sequence'].regex = [/^sequence ((?:-?\d\s?)+)|A((?:\d)+)|([\D\s]*)$/i, 4];
+    this.commands['~sequence'].regex = [/^sequence ((?:-?\d\s?)+)|A(\d+)|([\D\s]*)$/i, 4];
 }
 
 exports.fetch = dbot => new OEIS(dbot);
