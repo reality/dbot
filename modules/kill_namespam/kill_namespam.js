@@ -16,7 +16,8 @@ var kill_namespam = function(dbot) {
         // Here we listen for atropos
         if(event.channel == this.config.cliconn_channel) {
           if(event.message.match('▶')) {
-            var matchedPattern = _.find(this.config.cliconn_patterns, function(p) { return event.message.match(p); }) 
+            var matchedPattern = _.find(this.config.cliconn_patterns,
+                  function(p) { try { return event.message.match(p); } catch(e) {}; }); // ok.jpg
             if(matchedPattern) {
               var ip = event.message.split(' ')[1]
 
