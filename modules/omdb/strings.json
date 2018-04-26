@@ -1,0 +1,10 @@
+{
+    "omdb_film": {
+        "en": "[{title} - Audience:{aRating} - Critic:{cRating} - {year}]",
+        "de": "[{title} - {aRating} - {year}]"
+    },
+    "omdb_noresults": {
+        "en": "No films found.",
+        "de": "Kein Film gefunden."
+    }
+}

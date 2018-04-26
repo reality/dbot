@@ -1,0 +1,6 @@
+{
+  "dependencies": [ ],
+  "ignorable": true,
+  "outputPrefix": "omdb",
+  "api_key": "insert api key here - get from http://www.omdbapi.com/apikey.aspx"
+}
