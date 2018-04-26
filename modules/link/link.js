@@ -9,15 +9,15 @@ var request = require('request'),
 
 var link = function(dbot) {
     this.urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-    this.links = {}; 
+    this.links = {};
     this.handlers = [];
- 
+
     this.api = {
         'addHandler': function(name, regex, handler) {
-            this.handlers.push({ 
-                'name': name, 
-                'regex': regex, 
-                'callback': handler 
+            this.handlers.push({
+                'name': name,
+                'regex': regex,
+                'callback': handler
             });
         },
 
@@ -43,8 +43,8 @@ var link = function(dbot) {
         },
 
         'udLookup': function(query, callback) {
-            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' + 
-                    encodeURI(query); 
+            var reqUrl = 'http://api.urbandictionary.com/v0/define?term=' +
+                    encodeURI(query);
 
             request(reqUrl, function(error, response, body) {
                 try {
@@ -62,14 +62,14 @@ var link = function(dbot) {
         'parseLink': function(link, callback) {
             var handler = false;
             for(var i=0;i<this.handlers.length;i++) {
-                var matches = this.handlers[i].regex.exec(link);     
+                var matches = this.handlers[i].regex.exec(link);
                 if(matches) {
                     console.log(this.handlers[i].name);
                     handler = this.handlers[i];
                     break;
                 }
             }
-            
+
             if(handler) {
                 this.handlers[i].callback(matches, this.handlers[i].name, function(parsed) {
                     callback(parsed);
@@ -81,7 +81,7 @@ var link = function(dbot) {
             }
         }
     };
-                
+
     var commands = {
         '~title': function(event) {
             var link = this.links[event.channel.name];
@@ -95,9 +95,10 @@ var link = function(dbot) {
                 event.reply(dbot.t('link', { 'link': title} ));
             });
         },
-        
+
         '~xkcd': function(event) {
-            var comicId = event.params[1] || "";
+            //var comicId = event.params[1] || "";
+            var comicId = event.params.slice(1).join(' ');
 
             if(comicId == "*") {
                 request("http://xkcd.com/info.0.json",  function(error, response, body){
@@ -108,18 +109,48 @@ var link = function(dbot) {
                             dbot.commands['~xkcd'](event);
                         }
                     } catch(err) { };
-                });    
+                });
             } else {
                 if (isNaN(parseInt(comicId))) {
-                    var relevantUrl = 'https://relevantxkcd.appspot.com/process';
                     request({
-                        url: relevantUrl,
-                        qs: {
-                            action:'xkcd',
-                            query: comicId
-                        }
+                      url: 'http://www.explainxkcd.com/wiki/api.php',
+                      qs: {
+                        action: 'query',
+                        format: 'json',
+                        generator: 'search',
+                        gsrwhat: 'text',
+                        gsrsearch: comicId,
+                        prop: 'info|categories',
+                        gsrlimit: 50
+                      },
+                      json: true
                     }, function(err, res, body) {
-                        comicId = body.split(' ').slice(2)[0].trim();
+                      if(!body) {
+                        event.reply(dbot.t("no-hits"));
+                        return;
+                      }
+
+                      var pages = _.values(body.query.pages);
+
+                      // page titles must be of the format "####: $$$$$$"
+                      pages = _.filter(pages, p => p.title.indexOf(':') > 0);
+
+                      if (pages.length > 0) {
+                        // See if any of these matches are exact title matches
+                        var match = false;
+                        _.each(pages, function(p) {
+                          var title = p.title.slice(p.title.indexOf(':')+2).trim();
+                          if(title.toLowerCase() == comicId.toLowerCase()) {
+                            match = p;
+                          }
+                        });
+
+                        if (match) {
+                          // We got a match! Get the ID and let's get tf out of here.
+                          comicId = match.title.slice(0, match.title.indexOf(':'));
+                        } else {
+                          comicId = pages[0].title.slice(0, pages[0].title.indexOf(':'));
+                        }
 
                         var link = "http://xkcd.com/"+comicId+"/info.0.json";
                         request(link,  function(error, response, body) {
@@ -132,6 +163,11 @@ var link = function(dbot) {
                                 }
                             } catch(err) { };
                         });
+
+
+                      } else {
+                        event.reply(dbot.t("no-hits"));
+                      }
                     });
                 } else {
                     if(comicId !== "") {
@@ -152,7 +188,7 @@ var link = function(dbot) {
                 }
             }
         },
-        
+
         '~ud': function(event) {
             var query = event.input[1];
 
@@ -175,7 +211,7 @@ var link = function(dbot) {
             console.log('DEBUG: got a link');
             if(this.config.autoTitle == true) {
                 this.api.parseLink(urlMatches[0], function(result) {
-                    event.reply(result); 
+                    event.reply(result);
                 });
             }
         }
