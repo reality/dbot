@@ -110,23 +110,47 @@ var link = function(dbot) {
                     } catch(err) { };
                 });    
             } else {
-                if(comicId !== "") {
-                    comicId = comicId + "/";
-                }
-
-                var link = "http://xkcd.com/"+comicId+"info.0.json";
-                request(link,  function(error, response, body) {
-                    try {
-                        if (response.statusCode == "200") {
-                            data = JSON.parse(body);
-                            event.reply(dbot.t("xkcd", data));
-                        } else {
-                            event.reply(dbot.t("no-hits"));
+                if (isNaN(parseInt(comicId))) {
+                    var relevantUrl = 'https://relevantxkcd.appspot.com/process';
+                    request({
+                        url: relevantUrl,
+                        qs: {
+                            action:'xkcd',
+                            query: comicId
                         }
-                    } catch(err) { };
-                });
+                    }, function(err, res, body) {
+                        comicId = body.split(' ').slice(2)[0].trim();
+
+                        var link = "http://xkcd.com/"+comicId+"/info.0.json";
+                        request(link,  function(error, response, body) {
+                            try {
+                                if (response.statusCode == "200") {
+                                    data = JSON.parse(body);
+                                    event.reply(dbot.t("xkcd", data));
+                                } else {
+                                    event.reply(dbot.t("no-hits"));
+                                }
+                            } catch(err) { };
+                        });
+                    });
+                } else {
+                    if(comicId !== "") {
+                        comicId = comicId + "/";
+                    }
+
+                    var link = "http://xkcd.com/"+comicId+"info.0.json";
+                    request(link,  function(error, response, body) {
+                        try {
+                            if (response.statusCode == "200") {
+                                data = JSON.parse(body);
+                                event.reply(dbot.t("xkcd", data));
+                            } else {
+                                event.reply(dbot.t("no-hits"));
+                            }
+                        } catch(err) { };
+                    });
+                }
             }
-            
         },
         
         '~ud': function(event) {
