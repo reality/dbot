@@ -121,7 +121,10 @@ var commands = function (dbot) {
       dbot.api.nickserv.getUserHost(event.server, banee, function (host) {
         // Add host record entry
         if (host) {
+          var didKill = false;
+          
           if ((reason.match('#line') || reason.match('#specialk') || reason.match('#kline')) && _.include(dbot.access.moderator(), event.rUser.primaryNick)) {
+            didKill = true;
             var t = ' !P ';
             if (timeout) {
               t = ' !T ' + (timeout * 60);
@@ -129,31 +132,34 @@ var commands = function (dbot) {
             dbot.say(event.server, 'operserv', 'akill add ' + banee + t + banee + ' banned by ' + banner + ': ' + reason);
           }
 
-          // Ban from current channel first
-          this.api.ban(server, host, event.channel);
-          this.api.kick(server, banee, event.channel, reason +
-            ' (network-wide ban)');
-          channels = _.without(channels, event.channel);
-          if (!_.isUndefined(adminChannel)) {
-            channels = _.without(channels, adminChannel);
-          } else {
-            adminChannel = event.channel.name;
-          }
-
-          // Ban the user from all channels
-          var i = 0;
-          var banChannel = function (channels) {
-            if (i >= channels.length)
-              return;
-            var channel = channels[i];
-            this.api.ban(server, host, channel);
-            this.api.kick(server, banee, channel, reason +
+          // Do not ban if user was killed - redundant
+          if(!didKill) {
+            // Ban from current channel first
+            this.api.ban(server, host, event.channel);
+            this.api.kick(server, banee, event.channel, reason +
               ' (network-wide ban)');
-            i++;
+            channels = _.without(channels, event.channel);
+            if (!_.isUndefined(adminChannel)) {
+              channels = _.without(channels, adminChannel);
+            } else {
+              adminChannel = event.channel.name;
+            }
+
+            // Ban the user from all channels
+            var i = 0;
+            var banChannel = function (channels) {
+              if (i >= channels.length)
+                return;
+              var channel = channels[i];
+              this.api.ban(server, host, channel);
+              this.api.kick(server, banee, channel, reason +
+                ' (network-wide ban)');
+              i++;
+              banChannel(channels);
+            }
+            .bind(this);
             banChannel(channels);
           }
-          .bind(this);
-          banChannel(channels);
 
           this.hosts[event.server][banee] = host;
 
@@ -172,10 +178,13 @@ var commands = function (dbot) {
               timeout += ' hours';
             }
 
-            if (!_.has(this.tempBans, event.server))
-              this.tempBans[event.server] = {};
-            this.tempBans[event.server][banee] = msTimeout;
-            this.internalAPI.addTempBan(event.server, banee, msTimeout);
+            // Do not schedule unbans if the user was killed as no ban was put in place
+            if(!didKill) {
+              if (!_.has(this.tempBans, event.server))
+                this.tempBans[event.server] = {};
+              this.tempBans[event.server][banee] = msTimeout;
+              this.internalAPI.addTempBan(event.server, banee, msTimeout);
+            }
 
             var notifyString = dbot.t('tbanned', {
                 'network': network,
