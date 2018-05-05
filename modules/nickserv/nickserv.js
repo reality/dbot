@@ -26,18 +26,22 @@ var nickserv = function(dbot) {
             }.bind(this), 6000);
         },
 
-        'getUserHost': function(server, nick, callback) {
+        'getUserHost': function(server, nick, callback, skipFallback) {
             if(!_.has(this.userStack, server)) this.userStack[server] = {};
             this.userStack[server][nick] = callback;
             dbot.instance.connections[server].send('USERHOST ' + nick);
             setTimeout(function() {
                 if(_.has(this.userStack[server], nick)) {
-                    dbot.instance.connections[server].send('WHOWAS ' + nick + ' 1');
-                    setTimeout(function() {
-                        if(_.has(this.userStack[server], nick)) {
-                            callback(false); 
-                        }
-                    }.bind(this), 2000);
+                    if (skipFallback) {
+                        callback(false);
+                    } else {
+                        dbot.instance.connections[server].send('WHOWAS ' + nick + ' 1');
+                        setTimeout(function() {
+                            if(_.has(this.userStack[server], nick)) {
+                                callback(false);
+                            }
+                        }.bind(this), 2000);
+                    }
                 }
             }.bind(this), 4000);
         }

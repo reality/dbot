@@ -7,5 +7,8 @@
   },
   "clikill_act": {
     "en": "Added K-Line for {ip}, due to matching pattern: /{pattern}/"
+  },
+  "clikill_spared": {
+    "en": "{user} spared from clikill matched pattern: /{pattern}/"
   }
 }

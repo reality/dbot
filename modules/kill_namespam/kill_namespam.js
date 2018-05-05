@@ -19,18 +19,29 @@ var kill_namespam = function(dbot) {
             var matchedPattern = _.find(this.config.cliconn_patterns,
                   function(p) { try { return event.message.match(p); } catch(e) {}; }); // ok.jpg
             if(matchedPattern) {
-              var ip = event.message.split(' ')[1]
+              var nick = event.message.split(' ')[2];
+              dbot.api.nickserv.getUserHost(event.server, nick, function(host) {
+                var userIsAuthenticated = host && host.startsWith('tripsit/');
+                if (userIsAuthenticated) {
+                  event.reply(dbot.t('clikill_spared', {
+                    'user': nick,
+                    'pattern': matchedPattern
+                  }));
+                } else {
+                  var ip = event.message.split(' ')[1]
 
-              // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
-              dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2. Matched pattern: /'+ matchedPattern +'/');
+                  // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
+                  dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2. Matched pattern: /'+ matchedPattern +'/');
 
-              var msg = dbot.t('clikill_act', {
-                'ip': ip,
-                'pattern': matchedPattern
-              });
-              event.reply(msg);
-              dbot.api.report.notify('autokill', event.server, event.rUser,
-                dbot.config.servers[event.server].admin_channel, msg, ip, ip);
+                  var msg = dbot.t('clikill_act', {
+                    'ip': ip,
+                    'pattern': matchedPattern
+                  });
+                  event.reply(msg);
+                  dbot.api.report.notify('autokill', event.server, event.rUser,
+                    dbot.config.servers[event.server].admin_channel, msg, ip, ip);
+                }
+              }, true);
             }
           }
         }
