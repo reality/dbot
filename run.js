@@ -332,7 +332,7 @@ DBot.prototype.reloadModules = function() {
 
     }.bind(this));
 
-    this.save();
+    this.save(function() {});
 };
 
 new DBot();
