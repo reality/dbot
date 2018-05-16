@@ -6,5 +6,6 @@
     "________  ______"
   ],
   "cliconn_channel": "#dnsbl",
-  "cliconn_patterns": []
+  "cliconn_patterns": [],
+  "exempt_channels": []
 }
