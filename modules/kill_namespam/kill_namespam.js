@@ -11,12 +11,15 @@ var kill_namespam = function(dbot) {
       dbot.customConfig.modules.kill_namespam = this.config;
       dbot.modules.admin.internalAPI.saveConfig();
     }.bind(this);
+    
+    this.matchedKill = {};
 
     this.listener = function(event) {
+      if(event.action == 'PRIVMSG') {
         // Here we listen for atropos
         if(event.channel == this.config.cliconn_channel) {
           if(event.message.match('▶')) {
-            var matchedPattern = _.find(this.config.cliconn_patterns, function(p) { return event.message.match(p); }) 
+            var matchedPattern = _.find(this.config.cliconn_patterns, function(p) { return event.message.match(p); })
             if(matchedPattern) {
               var nick = event.message.split(' ')[2];
               dbot.api.nickserv.getUserHost(event.server, nick, function(host) {
@@ -27,18 +30,15 @@ var kill_namespam = function(dbot) {
                     'pattern': matchedPattern
                   }));
                 } else {
-                  var ip = event.message.split(' ')[1]
-
-                  // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
-                  dbot.say(event.server, 'operserv', 'akill add *@'+ ip +' !P Naughty Nelly Auto-kill v6.2. Matched pattern: /'+ matchedPattern +'/');
-
-                  var msg = dbot.t('clikill_act', {
-                    'ip': ip,
-                    'pattern': matchedPattern
-                  });
-                  event.reply(msg);
-                  dbot.api.report.notify('autokill', event.server, event.rUser,
-                    dbot.config.servers[event.server].admin_channel, msg, ip, ip);
+                  if(!this.matchedKill[host]) {
+                    // Defer killing this connection until after they join a non-exempted channel
+                    this.matchedKill[host] = {
+                      ip: event.message.split(' ')[1],
+                      server: event.server,
+                      matchedPattern: matchedPattern,
+                      rUser: event.rUser
+                    };
+                  }
                 }
               }, true);
             }
@@ -75,7 +75,7 @@ var kill_namespam = function(dbot) {
 
         if(naughty) {
           switch(this.config.action) {
-            case 'kickban': 
+            case 'kickban':
               dbot.api.kick.ban(event.server, event.host, event.channel);
               dbot.api.kick.kick(event.server, event.user, message);
               break;
@@ -86,8 +86,31 @@ var kill_namespam = function(dbot) {
 
           dbot.api.report.notify('spam', event.server, event.user, event.channel, message, event.host, event.user);
         }
+      } else if (event.action == 'JOIN') {
+        
+        if(this.matchedKill[event.host]) {
+          if(this.config.exempt_channels.indexOf(event.channel) == -1) {
+            var kill = this.matchedKill[event.host];
+            delete this.matchedKill[event.host];
+            
+            // Alternatively you can just do dbot.api.kick.kill(event.server, event.user, message);
+            dbot.say(event.server, 'operserv', 'akill add *@'+ kill.ip +' !P Naughty Nelly Auto-kill v6.2. Matched pattern: /'+ kill.matchedPattern +'/');
+
+            var msg = dbot.t('clikill_act', {
+              'ip': kill.ip,
+              'pattern': kill.matchedPattern
+            });
+            dbot.api.report.notify('autokill', kill.server, kill.rUser,
+              dbot.config.servers[kill.server].admin_channel, msg, kill.ip, kill.ip);
+          }
+        }
+      } else if (event.action == 'QUIT') {
+        if(this.matchedKill[event.host]) {
+          delete this.matchedKill[event.host];
+        }
+      }
     }.bind(this);
-    this.on = 'PRIVMSG';
+    this.on = ['PRIVMSG', 'JOIN', 'QUIT'];
 
     this.commands = {
       '~add_spamkill': function(event) {
