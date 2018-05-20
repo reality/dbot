@@ -113,6 +113,8 @@ var spotify = function(dbot) {
             }
         }
     };
+    commands['~sp'] = commands['~spotify'].bind(this);
+    commands['~sp'].regex = [/^sp (.*)/, 2];
     commands['~spotify'].regex = [/^spotify (.*)/, 2];
     this.commands = commands;
 

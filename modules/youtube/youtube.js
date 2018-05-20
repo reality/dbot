@@ -23,20 +23,21 @@ var youtube = function(dbot) {
                 },
                 'json': true
             }, function(error, response, body) {
-                callback(body); 
+                callback(body);
             }.bind(this));
         }
     };
 
     this.internalAPI = {
         'formatLink': function(v) {
-            var time = v.contentDetails.duration.match(/^PT(\d+)?M?(\d+)S$/);
+            var time = v.contentDetails.duration.match(/^PT(?:(\d+)M)?(\d+)S$/);
+
             if(time) {
               if(time[1]) {
                   var seconds =((time[2]%60 < 10) ? "0"+time[2]%60 : time[2]%60),
                       minutes = time[1];
               } else {
-                  var seconds =((time[1]%60 < 10) ? "0"+time[1]%60 : time[1]%60),
+                  var seconds =((time[2]%60 < 10) ? "0"+time[2]%60 : time[2]%60),
                       minutes = 0;
               }
             } else {
@@ -61,18 +62,18 @@ var youtube = function(dbot) {
 
             return res;
         }.bind(this),
-        
+
         'formatPlaylistLink': function(v) {
             var res = dbot.t('yt_playlist', {
                 'title': v.snippet.title,
                 'author': v.snippet.channelTitle,
                 'videos': v.contentDetails.itemCount
             });
-            
+
             if (v.id) {
                 res += " - https://www.youtube.com/playlist?list=" + v.id;
             }
-            
+
             return res;
         }
     };
@@ -101,7 +102,7 @@ var youtube = function(dbot) {
                 }
             }.bind(this), "video");
         },
-        
+
         // search for a youtube playlist
         '~ytpl': function(event) {
             this.api.search(event.input[1], function(body) {
