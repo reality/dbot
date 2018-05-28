@@ -59,7 +59,7 @@ var kill_namespam = function(dbot) {
             'user': event.user,
             'channel': event.channel,
             'action': this.config.action
-          });
+          }) + ' ' + dbot.t('sasl_hint');
           naughty = true;
         }
 
@@ -70,7 +70,7 @@ var kill_namespam = function(dbot) {
             'channel': event.channel,
             'action': this.config.action,
             'sensitivity': this.config.sensitivity
-          });
+          }) + ' ' + dbot.t('sasl_hint');
           naughty = true;
         }
 
@@ -84,6 +84,7 @@ var kill_namespam = function(dbot) {
               dbot.api.kick.kill(event.server, event.user, message);
             default: break;
           }
+
 
           dbot.api.report.notify('spam', event.server, event.user, event.channel, message, event.host, event.user);
         }

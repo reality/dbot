@@ -10,5 +10,8 @@
   },
   "clikill_spared": {
     "en": "{user} spared from clikill matched pattern: /{pattern}/"
+  },
+  "sasl_hint": {
+    "en": "You have been killed by our spam filter. You can avoid broad VPN filters by using SASL."
   }
 }
