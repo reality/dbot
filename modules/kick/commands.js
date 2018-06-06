@@ -127,7 +127,7 @@ var commands = function (dbot) {
             didKill = true;
             var t = ' !P ';
             if (timeout) {
-              t = ' !T ' + (timeout * 60);
+              t = ' !T ' + timeout + ' ';
             }
             dbot.say(event.server, 'operserv', 'akill add ' + banee + t + banee + ' banned by ' + banner + ': ' + reason);
           }
