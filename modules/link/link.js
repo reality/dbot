@@ -47,14 +47,19 @@ var link = function(dbot) {
                     encodeURI(query);
 
             request(reqUrl, function(error, response, body) {
+                console.log(reqUrl);
+
                 try {
                     var result = JSON.parse(body);
-                    if(_.has(result, 'result_type') && result.result_type != 'no_results') {
+                    if(_.has(result, 'list') && result.list.length > 0) {
                         callback(result.list[0].word, result.list[0].definition.split('\n')[0]);
                     } else {
                         callback(false);
                     }
-                } catch(err) { callback(false); }
+                } catch(err) { 
+                    console.log(err);
+                    callback(false); 
+                }
             });
 
         },
