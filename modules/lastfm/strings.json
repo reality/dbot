@@ -28,5 +28,8 @@
     },
     "lfm_scrobbliest": {
         "en": "Users with the most played tracks: "
+    },
+    "lfm_unknown": {
+        "en": "Unknown Last.FM user. Please set your Last.FM user by typing '~set lastfm <name>' where <name> is your Last.FM username."
     }
 }
