@@ -160,7 +160,7 @@ var lastfm = function(dbot) {
                     }));
                 } else {
                     if(err == 'no_user') {
-                        event.reply('Unknown Last.FM user.');
+                        event.reply(dbot.t('lfm_unknown'));
                     } else if(err == 'no_listen') {
                         event.reply(dbot.t('no_listen', { 'user': event.user }));
                     }
@@ -275,7 +275,7 @@ var lastfm = function(dbot) {
                     }.bind(this));
                 } else {
                     if(err == 'no_user') {
-                        event.reply('Unknown Last.FM user.');
+                        event.reply(dbot.t('lfm_unknown'));
                     } else if(err == 'no_listen') {
                         event.reply(dbot.t('no_listen', { 'user': event.user }));
                     }
@@ -351,7 +351,7 @@ var lastfm = function(dbot) {
                     
                 } else {
                     if(err == 'no_user') {
-                        event.reply('Unknown LastFM user.');
+                        event.reply(dbot.t('lfm_unknown'));
                     } else if(err == 'no_listen') {
                         event.reply(dbot.t('no_listen', { 'user': user.currentNick }));
                     }
@@ -479,7 +479,7 @@ var lastfm = function(dbot) {
                     }));
                 } else {
                     if(err == 'no_user') {
-                        event.reply('Unknown Last.FM user.');
+                        event.reply(dbot.t('lfm_unknown'));
                     } else {
                         event.reply('Well something went wrong and I don\'t know what it means');
                     }
