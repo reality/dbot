@@ -1,0 +1,14 @@
+{
+    "added": {
+        "en": "[{user}] - {entry-number}: '{entry}' added to your todo list."
+    },
+    "marked-complete": {
+        "en": "[{user}] - {entry-number}: '{entry}' marked as complete."
+    },
+    "no-entry": {
+        "en": "[{user}] - There is no todo entry {entry-number}."
+    },
+    "empty-list": {
+        "en": "[{user}] - Your todo list is empty. Add entries via '~todoadd'."
+    }
+}
