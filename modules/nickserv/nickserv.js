@@ -94,6 +94,8 @@ var nickserv = function(dbot) {
         }
     };
 
+    this.commands['~hostmask'].access = 'moderator';
+
     this.listener = function(event) {
         if(event.action == 'NOTICE') {
             var nickserv = dbot.config.servers[event.server].nickserv,
