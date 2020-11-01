@@ -1,0 +1,329 @@
+(cl:defpackage #+NIL (NULLIFY IMPLEMENTATION LIKEABILITIES) #-: ;_;_;
+ :ergot (:use :cl . #.(mapcan 'ql:quickload '(:split-sequence))))
+(cl:in-package :ergot) ; the singular of eye and stem of scry please!
+
+(defparameter *words* ; eye scry why lie fie fly high tide died snide
+  '("powerful" "governor" "drainage" "budapest" "colonial" "syracuse" ;_; ;^; #|
+#||#"saturday" "lingerie" "infrared" "appendix" "plymouth" "honduras" ;SEVENTeee
+#||#"basement" "playlist" "judicial" "shepherd" "township" "enabling" ;SICK SICS
+#||#"february" "ordinary" "filename" "remedies" "ethernet" "nicholas" ;TROMBONES
+#||#"adequate" "workflow" "overview" "struggle" "gamespot" "manitoba" ; quit the
+#||#"membrane" "honolulu" "judgment" "military" "feedback" "everyone" ; counting
+#||#"cadillac" "platinum" "barbados" "trinidad" "doctrine" "civilian" ; pointers
+#||#"chairman" "nickname" "nitrogen" "hardwood" "dramatic" "flexible" ; |# #+nil
+#||#"pavilion" "drilling" "spending" "mattress" "cleaning" "shooting" ; foul owl
+#||#"hearings" "pressing" "limiting" "sterling" "arranged" "mounting" ; scowling
+#||#"selected" "statutes" "writings" "printers" "citation" "knitting" ; FRACTALS
+#||#"proceeds" "promotes" "arrested" "training" "reporter" "assisted" ; DIMENSAL
+#||#"staffing" "concepts" "wireless" "cassette" "homeless" "supposed" ; MALLOCK!
+#||#"reserves" "managing" "scanning" "sleeping" "creative" "followed" ; ENDS@CUE
+#||#"weekends" "warnings" "auctions" "scanners" "replaced" "patterns" ; jamaica"
+#||#"managers" "directed" "revealed" "rendered" "blogging" "shoppers" ; and con-
+#||#"patients" "religion" "premises" "weddings" "happened" "millions" ; -tains a
+#||#"bookings" "trainers" "monsters" "imported" "returned" "regarded" ; handfull
+#||#"cordless" "rankings" "incurred" "speakers" "smallest" "refugees" ; ovekstr-
+#||#"striking" "warriors" "executed" "reflects" "channels" "compared" ; -a bytes
+#||#"floating" "adapters" "browsers" "marriott" "reviewer" "senators" ; where no
+#||#"postings" "changing" "fraction" "pressure" "detailed" "teachers" ; behavior
+#||#"attached" "provider" "officers" "stranger" "thinking" "consists" ; modified
+#||#"browsing" "versions" "portions" "integral" "composer" "junction" ; byremarq
+#||#"contrary" "releases" "trustees" "seasonal" "accepted" "shipping"
+#||#"observer" "flashing" "distinct" "delivery" "speeches" "bloggers"
+#||#"analysts" "fighters" "greatest" "matching" "informed" "targeted"
+#||#"coaching" "taxation" "licensed" "commonly" "archives" "briefing"
+#||#"michelle" "stickers" "clinical" "innocent" "treasury" "wellness"
+#||#"regional" "insights" "cartoons" "becoming" "switched" "pictures"
+#||#"florists" "arrivals" "articles" "chambers" "interact" "progress"
+#||#"swingers" "intimate" "recently" "genetics" "untitled" "believed"
+#||#"unsigned" "epinions" "featured" "searched" "routines" "soldiers"
+#||#"findings" "learners" "cottages" "passport" "shoulder" "appeared"
+#||#"parental" "restored" "throwing" "fountain" "declared" "operated"
+#||#"entities" "gambling" "weighted" "unlikely" "upgrades" "studying"
+#||#"mistakes" "cultural" "dividend" "applying" "negative" "openings"
+#||#"cornwall" "courtesy" "cheapest" "friendly" "councils" "normally"
+#||#"strongly" "peterson" "analyzed" "uploaded" "whenever" "explorer"
+#||#"paradise" "swimming" "infinite" "packages" "december" "injuries"
+#||#"italiano" "scholars" "clothing" "criminal" "conclude" "ensuring"
+#||#"recovery" "sciences" "realized" "messages" "ministry" "branches"
+#||#"opponent" "properly" "clusters" "outdoors" "advances" "thoughts"
+#||#"exchange" "naturals" "visitors" "sequence" "artistic" "positive"
+#||#"disagree" "momentum" "examined" "textiles" "brussels" "enrolled"
+#||#"discover" "attempts" "retrieve" "outlined" "medicaid" "failures"
+#||#"partners" "graduate" "duration" "infected" "consumer" "balanced"
+#||#"includes" "purposes" "periodic" "requires" "reprints" "oriented"
+#||#"diseases" "handling" "practice" "literacy" "machines" "builders"
+#||#"actively" "movement" "tribunal" "evidence" "policies" "launches"
+#||#"memorial" "occupied" "airports" "polished" "potatoes" "actually"
+#||#"violence" "theology" "drawings" "phillips" "achieved" "document"
+#||#"moderate" "approval" "external" "combines" "maritime" "expanded"
+#||#"enjoying" "purchase" "advisory" "elements" "acquired" "canberra"
+#||#"requests" "invasion" "holdings" "exciting" "forestry" "excluded"
+#||#"columbus" "forecast" "entrance" "resource" "involves" "reliable"
+#||#"villages" "decrease" "upskirts" "colorado" "hundreds" "catalyst"
+#||#"romantic" "although" "surfaces" "roulette" "networks" "exterior"
+#||#"mobility" "reseller" "aberdeen" "moisture" "realtors" "enhanced"
+#||#"segments" "quantity" "churches" "strategy" "cashiers" "delaware"
+#||#"atlantic" "congress" "portugal" "marshall" "bacteria" "maryland"
+#||#"benefits" "transmit" "cingular" "assuming" "carolina" "highways"
+#||#"familiar" "warranty" "cabinets" "anything" "williams" "patricia"
+#||#"arkansas" "thriller" "kingston" "students" "medieval" "problems"
+#||#"maximize" "disputes" "netscape" "consoles" "mortgage" "wrapping"
+#||#"sunshine" "neighbor" "bargains" "disabled" "inspired" "suitable"
+#||#"possibly" "adjacent" "cellular" "enclosed" "nintendo" "midnight"
+#||#"adaptive" "jonathan" "magnetic" "dialogue" "hawaiian" "virginia"
+#||#"veterans" "dentists" "bulgaria" "homeland" "cameroon" "finances"
+#||#"promptly" "campbell" "pursuant" "sullivan" "brochure" "ericsson"
+#||#"pipeline" "midlands" "handjobs" "removing" "elephant" "navigate"
+#||#"firmware" "entirely" "proteins" "database" "scenario" "carnival"
+#||#"surgical" "portland" "antiques" "approach" "impaired" "disaster"
+#||#"airlines" "strictly" "colombia" "canadian" "darkness" "evaluate"
+#||#"theories" "vehicles" "emirates" "precious" "earliest" "modeling"
+#||#"aircraft" "postcard" "anderson" "brooklyn" "notebook" "accuracy"
+#||#"stanford" "ringtone" "antibody" "tropical" "gathered" "valuable"
+#||#"european" "criteria" "sapphire" "johnston" "airplane" "educated"
+#||#"captured" "aluminum" "overseas" "textbook" "seminars" "explicit"
+#||#"moreover" "thompson" "collapse" "minerals" "capacity" "disorder"
+#||#"shipment" "robinson" "focusing" "updating" "cumshots" "modified"
+#||#"portable" "plumbing" "advocate" "handbook" "attorney" "suburban"
+#||#"mcdonald" "costumes" "worldsex" "prostate" "brighton" "bookmark"
+#||#"slovenia" "adjusted" "holidays" "majority" "commerce" "variance"
+#||#"deutsche" "calendar" "formerly" "username" "baseline" "crawford"
+#||#"pleasant" "conflict" "situated" "flashers" "exhibits" "identify"
+#||#"chemical" "talented" "security" "lesbians" "reducing" "hospital"
+#||#"slightly" "vibrator" "protocol" "softball" "expansys" "pregnant"
+#||#"temporal" "engaging" "diameter" "simpsons" "intranet" "southern"
+#||#"horrible" "everyday" "suddenly" "scottish" "premiere" "checking"
+#||#"absolute" "anywhere" "podcasts" "surgeons" "deposits" "humanity" "jamaica"
+#||#"stomach" "livecam" "nirvana" "hamburg" "griffin" "trinity" "acrobat"
+#||#"douglas" "swedish" "ontario" "pentium" "phoenix" "estonia" "laundry"
+#||#"aquatic" "moldova" "comfort" "midwest" "samsung" "zealand" "painful"
+#||#"tsunami" "grocery" "baghdad" "ecuador" "croatia" "insulin" "myanmar"
+#||#"gregory" "awesome" "anxiety" "halifax" "glucose" "turkish" "without"
+#||#"penguin" "foreign" "husband" "antonio" "deficit" "buffalo" "jeffrey"
+#||#"helpful" "toddler" "welfare" "mustang" "gravity" "jelsoft" "levitra"
+#||#"wichita" "firefox" "tunisia" "tactics" "vatican" "gabriel" "glasgow"
+#||#"satisfy" "kitchen" "tiffany" "chicago" "runtime" "surplus" "bristol"
+#||#"diploma" "shakira" "triumph" "norfolk" "orlando" "anaheim" "minolta"
+#||#"kingdom" "barbara" "telecom" "sublime" "hotmail" "clinton" "raymond"
+#||#"workout" "october" "fujitsu" "lawsuit" "perfume" "deborah" "findlaw"
+#||#"bolivia" "karaoke" "alcohol" "gateway" "britney" "england" "montana"
+#||#"fantasy" "alabama" "jessica" "bermuda" "anthony" "cuisine" "arizona"
+#||#"raleigh" "bangbus" "airfare" "webpage" "bondage" "toolkit" "railway"
+#||#"orleans" "bouquet" "toshiba" "exhaust" "perhaps" "acrylic" "hitachi"
+#||#"pontiac" "somehow" "porsche" "uruguay" "timothy" "ampland" "expedia"
+#||#"belgium" "rainbow" "bizrate" "memphis" "ceramic" "lincoln" "pokemon"
+#||#"detroit" "oakland" "gourmet" "sitemap" "obesity" "hygiene" "quantum"
+#||#"hyundai" "phantom" "traffic" "english" "ukraine" "optimum" "charter"
+#||#"meeting" "cutting" "skating" "running" "kissing" "planets" "talking"
+#||#"pricing" "battery" "glasses" "working" "singing" "stories" "mothers"
+#||#"colours" "pioneer" "tracked" "causing" "joining" "relying" "varying"
+#||#"drivers" "dancing" "propose" "compile" "skilled" "attacks" "context"
+#||#"flights" "collins" "bidding" "passage" "changed" "pushing" "shipped"
+#||#"shannon" "solving" "beijing" "terrace" "matthew" "reuters" "farmers"
+#||#"beneath" "hottest" "account" "breasts" "reforms" "handled" "product"
+#||#"escorts" "written" "brought" "flowers" "madness" "suspect" "coupled"
+#||#"freight" "desired" "fucking" "framing" "savings" "prevent" "finnish"
+#||#"revised" "closely" "rebates" "workers" "doctors" "broader" "pockets"
+#||#"totally" "lessons" "creator" "visited" "elliott" "mounted" "hostels"
+#||#"defense" "angeles" "threads" "coaches" "grounds" "awarded" "blessed"
+#||#"assumed" "endless" "largely" "bridges" "baskets" "longest" "counsel"
+#||#"shelter" "appeals" "beatles" "cruises" "texture" "younger" "induced"
+#||#"delight" "copying" "senegal" "prayers" "through" "spirits" "patches"
+#||#"degrees" "applied" "streams" "dealers" "thunder" "damaged" "tablets"
+#||#"amounts" "beliefs" "rentals" "modules" "electro" "fifteen" "courier"
+#||#"blanket" "bukkake" "factory" "startup" "donated" "blocked" "nursing"
+#||#"however" "capable" "buttons" "company" "massive" "systems" "russian"
+#||#"twisted" "reality" "knowing" "wrapped" "antenna" "altered" "samples"
+#||#"surveys" "remarks" "evening" "integer" "wallace" "greatly" "sources"
+#||#"phrases" "aspects" "futures" "century" "service" "clearly" "implies"
+#||#"leisure" "mandate" "offline" "equally" "resolve" "vaccine" "percent"
+#||#"improve" "results" "coupons" "develop" "belongs" "livesex" "courage"
+#||#"musical" "choices" "healthy" "conduct" "caution" "medline" "nipples"
+#||#"hobbies" "intense" "another" "expired" "indians" "kennedy" "alberta"
+#||#"preview" "extends" "accused" "vendors" "imagine" "publish" "locator"
+#||#"ensures" "seventh" "adopted" "formats" "edwards" "silicon" "claimed"
+#||#"indexes" "shuttle" "secrets" "payment" "settled" "repairs" "neither"
+#||#"latinas" "affairs" "stuffed" "manuals" "andrews" "suicide" "biggest"
+#||#"notices" "ancient" "cologne" "cricket" "lawyers" "tractor" "vintage"
+#||#"becomes" "ordered" "weapons" "receipt" "minutes" "besides" "madonna"
+#||#"checked" "storage" "seconds" "headset" "teenage" "concord" "nursery"
+#||#"britain" "powered" "mirrors" "persian" "gadgets" "heavily" "shadows"
+#||#"radical" "optical" "scripts" "theatre" "signals" "finally" "finland"
+#||#"history" "invoice" "minimal" "decades" "grammar" "allergy" "replica"
+#||#"focuses" "example" "enquiry" "cameras" "bradley" "figured" "romance"
+#||#"summary" "demands" "amended" "coleman" "viewers" "logical" "solaris"
+#||#"african" "forward" "whereas" "melissa" "females" "tuition" "luggage"
+#||#"specify" "devices" "funeral" "beverly" "nigeria" "garbage" "tonight"
+#||#"auditor" "nearest" "unusual" "shortly" "updated" "rebound" "quizzes"
+#||#"profits" "studios" "fastest" "horizon" "tourism" "chinese" "harvest"
+#||#"engines" "revenge" "windsor" "prepare" "harbour" "digital" "qualify"
+#||#"wyoming" "poverty" "scratch" "calgary" "recipes" "density" "habitat"
+#||#"respond" "thereof" "enlarge" "mileage" "plastic" "retreat" "bahrain"
+#||#"hampton" "liberty" "justify" "emerald" "harvard" "illegal" "madison"
+#||#"packard" "clients" "domains" "iceland" "stewart" "freebsd" "cleanup"
+#||#"pacific" "western" "editors" "society" "poultry" "miracle" "vessels"
+#||#"mysimon" "spanish" "labeled" "expense" "because" "organic" "bedford"
+#||#"answers" "reunion" "insider" "mercury" "austria" "naughty" "display"
+#||#"durable" "denmark" "physics" "morocco" "destiny" "keyword" "briefly"
+#||#"curious" "florida" "somalia" "devoted" "default" "newport" "circuit"
+#||#"website" "fashion" "clothes" "olympic" "variety" "belfast" "tobacco"
+#||#"origins" "despite" "museums" "average" "peoples" "genuine" "spencer"
+#||#"outputs" "plugins" "weblogs" "katrina" "spatial" "further" "between"
+#||#"shemale" "germany" "royalty" "absence" "erotica" "neutral" "panties"
+#||#"whether" "economy" "thermal" "interim" "hungary" "numbers" "mystery"
+#||#"custody" "captain" "singles" "windows" "rapidly" "biology" "against"
+#||#"objects" "popular" "impacts" "casinos" "citizen" "faculty" "gardens"
+#||#"stylish" "webcast" "invited" "charlie" "academy" "polymer" "vampire"
+#||#"belarus" "victims" "lindsay" "lebanon" "grenada" "laptops" "puzzles"
+#||#"roughly" "chelsea" "elderly" "georgia" "queries" "supreme" "calcium"
+#||#"january" "harmful" "crystal" "obvious" "vitamin" "baptist" "cardiac"
+#||#"numeric" "infants" "crucial" "jumping" "stadium" "premium" "uniform"
+#||#"bicycle" "jackson" "hopkins" "chronic" "emperor" "embassy" "outcome"
+#||#"dynamic" "already" "journey" "antigua" "toolbox" "divorce" "invalid"
+#||#"gratuit" "enemies" "viruses" "credits" "redhead" "nuclear" "welcome"
+#||#"vietnam" "penalty" "anytime" "climate" "niagara" "mailman" "marilyn"
+#||#"myspace" "unified" "clarity" "israeli" "deviant" "quickly" "bangkok"
+#||#"vanilla" "episode" "library" "outlook" "toronto" "instead" "artwork"
+#||#"guitars" "muscles" "sunrise" "sheriff" "anymore" "proudly" "armenia"
+#||#"houston" "outside" "engaged" "trouble" "nervous" "ethical" "hormone"
+#||#"tragedy" "mozilla" "stephen" "islamic" "decimal" "amateur" "tuesday"
+#||#"utilize" "diamond" "ongoing" "unknown" "ignored" "refresh" "eclipse"
+#||#"assault" "fortune" "desktop" "bedroom" "therapy" "touched" "anatomy"
+#||#"blowjob" "bahamas" "exactly" "richard" "freedom" "vermont" "worship"
+#||#"someone" "prairie" "british" "private" "diagram" "playboy" "enjoyed"
+#||#"formula" "seafood" "rebecca" "stanley" "animals" "algebra" "preston"
+#||#"bernard" "spyware" "abraham" "namibia" "capital" "albania" "dietary"
+#||#"amongst" "siemens" "gazette" "ferrari" "gilbert" "maximum" "herself"
+#||#"insects" "hewlett" "methods" "prophet" "alumni" "asthma" "hybrid" "useful"
+#||#"celtic" "enzyme" "moscow" "bosnia" "inkjet" "ashley" "suzuki" "trembl"
+#||#"python" "rhythm" "oxygen" "gothic" "asylum" "adipex" "twelve" "cursor"
+#||#"duncan" "cinema" "newbie" "deemed" "ballet" "arrive" "ladder" "mixing"
+#||#"tranny" "redeem" "allows" "brakes" "sleeps" "hearts" "lenses" "spaces"
+#||#"morris" "tribes" "pepper" "cement" "gender" "points" "finger" "divine"
+#||#"foster" "served" "savage" "prince" "played" "sacred" "things" "sprint"
+#||#"blacks" "smooth" "effort" "across" "showed" "chains" "limits" "eleven"
+#||#"vision" "bottom" "linked" "horror" "hacker" "wanted" "powder" "buried"
+#||#"legend" "assign" "tigers" "stamps" "little" "powell" "strain" "drinks"
+#||#"wagner" "deadly" "middle" "nutten" "novels" "detect" "gloves" "mariah"
+#||#"chosen" "dollar" "oliver" "retail" "edited" "missed" "coffee" "glance"
+#||#"earned" "yellow" "freeze" "carpet" "forget" "heaven" "estate" "resort"
+#||#"surely" "titans" "silver" "remind" "bufing" "norton" "owners" "postal"
+#||#"trucks" "stereo" "option" "google" "holdem" "priest" "graphs" "valued"
+#||#"queens" "spider" "travel" "sensor" "apollo" "typing" "johnny" "bodies"
+#||#"ebooks" "fourth" "clarke" "emails" "itunes" "honors" "diesel" "approx"
+#||#"summit" "wishes" "adidas" "martha" "differ" "chapel" "harley" "sierra"
+#||#"enable" "thesis" "meetup" "exceed" "louise" "panama" "inline" "family"
+#||#"victor" "needle" "rachel" "timber" "fucked" "bumper" "robots" "affect"
+#||#"murder" "nissan" "easier" "linear" "forums" "sticky" "stroke" "daniel"
+#||#"deaths" "modern" "nickel" "images" "delays" "joined" "occurs" "spread"
+#||#"shield" "locale" "guests" "scroll" "social" "venice" "giants" "secure"
+#||#"basics" "saddam" "lookup" "french" "helped" "tissue" "casual" "sweden"
+#||#"struct" "expert" "topics" "spouse" "bikini" "maiden" "heroes" "parcel"
+#||#"invest" "reload" "crafts" "genius" "videos" "fraser" "essays" "adware"
+#||#"mainly" "throws" "chubby" "pupils" "zshops" "canyon" "analog" "photos"
+#||#"alpine" "temple" "bryant" "silent" "buyers" "simply" "argued" "jordan"
+#||#"combat" "sandra" "marcus" "beauty" "mailto" "chrome" "belize" "apache"
+#||#"pursue" "soccer" "square" "steady" "outlet" "watson" "barbie" "saturn"
+#||#"trivia" "months" "august" "quotes" "narrow" "beyond" "spoken" "comedy"
+#||#"christ" "sunset" "flavor" "exists" "memory" "monkey" "genome" "guards"
+#||#"thehun" "pamela" "employ" "hourly" "worthy" "pixels" "newark" "salmon"
+#||#"mutual" "remote" "pierce" "athens" "regime" "widely" "arabia" "turkey"
+#||#"versus" "knives" "matrix" "darwin" "unions" "floppy" "hilton" "plenty"
+#||#"prague" "corpus" "cycles" "verbal" "hughes" "bundle" "highly" "petite"
+#||#"nearby" "duties" "tomato" "herein" "radius" "advise" "italic" "reduce"
+#||#"cloudy" "stupid" "atomic" "thirty" "signup" "within" "fruits" "urgent"
+#||#"offset" "whilst" "prefix" "global" "muslim" "makeup" "jersey" "galaxy"
+#||#"amazon" "angola" "curtis" "always" "sunday" "eugene" "oregon" "superb"
+#||#"arcade" "patrol" "ronald" "avenue" "guinea" "afraid" "thomas" "london"
+#||#"monroe" "geneva" "hansen" "policy" "disney" "judges" "bronze" "tackle"
+#||#"dozens" "abroad" "unlock" "lauren" "income" "uganda" "malawi" "itself"
+#||#"binary" "frozen" "nicole" "inputs" "guilty" "yields" "monica" "energy"
+#||#"canvas" "almost" "calvin" "mumbai" "toyota" "batman" "famous" "vagina"
+#||#"growth" "immune" "advert" "nobody" "sexcam" "extras" "brutal" "fiscal"
+#||#"arctic" "wizard" "safety" "scenic" "ambien" "toilet" "samuel" "safari"
+#||#"backup" "velvet" "agency" "lolita" "inches" "quebec" "injury" "enough"
+#||#"plasma" "hentai" "vacuum" "exempt" "walnut" "violin" "random" "schema"
+#||#"excuse" "avatar" "pledge" "volume" "medium" "fetish" "brazil" "celebs"
+#||#"lambda" "newman" "nudist" "nextel" "joseph" "nevada" "legacy" "kinase"
+#||#"anchor" "robust" "norway" "layout" "vertex" "pubmed" "poison" "anyway"
+#||#"dublin" "luxury" "rotary" "eminem" "payday" "bureau" "ottawa" "helena"
+#||#"humans" "yamaha" "virtue" "picnic" "taylor" "cowboy" "kelkoo" "wesley"
+#||#"junior" "latvia" "aurora" "mostly" "myrtle" "serbia" "kruger" "nasdaq"
+#||#"belkin" "techno" "garlic" "flickr" "friday" "gibson" "config" "dildos"
+#||#"gospel" "brunei" "oxford" "unique" "tongue" "fossil" "oldest" "durham"
+#||#"bishop" "taiwan" "cyprus" "orgasm" "dayton" "modify" "sydney" "trauma"
+#||#"kernel" "slovak" "mexico" "prozac" "tariff" "kuwait" "joshua" "autumn"
+#||#"rescue" "symbol" "deluxe" "behalf" "leslie" "cheque" "hebrew" "albums"
+#||#"nvidia" "kijiji" "puerto" "voyuer" "guyana" "adults" "fabric" "msgstr"
+#||#"verify" "pencil" "arthur" "liquid" "length" "ultram" "ethnic" "slowly"
+#||#"wisdom" "tucson" "subaru" "dakota" "cialis" "lyrics" "syntax" "unwrap"
+#||#"arnold" "zoloft" "murphy" "egypt" "billy" "brook" "rover" "scoop" "hayes"
+#||#"wheel" "greek" "pearl" "jeans" "grill" "worse" "party" "jokes" "belts"
+#||#"skins" "fewer" "roads" "picks" "yeast" "latex" "essex" "facts" "snake"
+#||#"maple" "fatal" "casey" "false" "taken" "souls" "happy" "folks" "henry"
+#||#"sparc" "alarm" "funds" "whats" "carlo" "lanka" "japan" "solid" "bonus"
+#||#"after" "cream" "towns" "named" "milfs" "teach" "sword" "sized" "wound"
+#||#"burns" "singh" "mixer" "dodge" "rhode" "drawn" "types" "ghost" "ahead"
+#||#"staff" "blues" "prior" "first" "civil" "blink" "lopez" "paxil" "girls"
+#||#"jimmy" "bitch" "cindy" "merge" "daisy" "flags" "given" "promo" "crowd"
+#||#"boxed" "floyd" "curve" "lobby" "busty" "ozone" "honda" "notre" "ideal"
+#||#"crude" "theta" "chuck" "woman" "blair" "reply" "wrong" "swift" "haiti"
+#||#"abuse" "ascii" "piano" "ocean" "congo" "vista" "lemon" "mpegs" "movie"
+#||#"decor" "nancy" "fibre" "ruled" "rocky" "icons" "crazy" "fifty" "choir"
+#||#"chevy" "welsh" "keith" "truly" "dryer" "nepal" "until" "group" "weird"
+#||#"pilot" "atlas" "drugs" "unity" "lexus" "saudi" "punch" "tahoe" "quiet"
+#||#"chief" "pumps" "knows" "climb" "oxide" "items" "flush" "xanax" "vault"
+#||#"exams" "laugh" "kenya" "mambo" "vegas" "epson" "julie" "kathy" "twiki"
+#||#"serum" "cisco" "kevin" "which" "doubt" "width" "howto" "retro" "sigma"
+#||#"diego" "papua" "korea" "major" "endif" "adobe" "mazda" "nylon" "avoid"
+#||#"joyce" "zdnet" "thumb" "cyber" "skype" "admin" "miami" "edgar" "apnic"
+#||#"angry" "cubic" "linux" "lycos" "turbo" "ivory" "begun" "tokyo" "lucia"
+#||#"inbox" "fuzzy" "volvo" "micro" "pizza" "czech" "vinyl" "oscar" "omega"
+#||#"rehab" "debug" "scuba" "msgid" "phpbb" "tumor" "xerox" "jacob" "yacht"
+#||#"tulsa" "delhi" "rugby" "elvis" "multi" "iraqi" "alpha" "orbit" "xhtml"
+#||#"yukon" "sbjct" "nokia" "kodak" "mysql" "awful" "idaho" "wave" "corn"
+#||#"hint" "bias" "oops" "knee" "asks" "emma" "text" "yang" "benz" "desk"
+#||#"nato" "lamp" "poem" "tour" "dvds" "grab" "bomb" "rica" "pmid" "hawk"
+#||#"kirk" "oval" "flex" "ebay" "whom" "arch" "oecd" "ipod" "oclc" "divx"
+#||#"jeff" "cdna" "view" "smtp" "quad" "thru" "gulf" "bdsm" "plug" "erik"
+#||#"judy" "blvd" "sync" "ohio" "gzip" "usda" "myth" "orgy" "hugo" "utah"
+#||#"ntsc" "jazz" "yoga" "hdtv" "fuji" "expo" "gmbh" "aaa" "pct" "zoo" "iii"
+#||#"rrp" "nfl" "cpu" "mlb" "gym" "jvc" "egg" "qty" "www" "xxx" "hq"))
+
+(defun levenshtein (a b &aux (la (length a)) (lb (length b)))
+  (let ((rec (make-array `(,(1+ la) ,(1+ lb)) :initial-element ())))
+    (labels ((leven (x y)
+	       (symbol-macrolet ((cell (aref rec x y)))
+                 (cond ((zerop x) y) ((zerop y) x) (cell cell)
+                       (t (setf cell (+ (if (char= (char a (- la x))
+                                                   (char b (- lb y)))
+                                            0 1)
+                                        (min (leven (1- x) y) (leven x (1- y))
+                                             (leven (1- x) (1- y))))))))))
+      (leven la lb))))
+
+(defun find-or-fail (candidate)
+  (or (position-if (lambda (word) (< (levenshtein word candidate) 2)) *words*)
+      (cerror "retype this word better" "unrecognized word: ~A" candidate)
+      (find-or-fail (read-line))))
+
+(defun eatblob (&aux (count -1))
+  (flet ((process (line accumulator)
+           (reduce (lambda (p n)
+                     (logior p (ash (find-or-fail n) (* (incf count) 11))))
+                   (split-sequence #\Space line :remove-empty-subseqs t)
+                   :initial-value accumulator)))
+    (loop for line = (read-line) until (zerop (length line))
+       for bits = (process line 0) then (process line bits) finally
+         (loop for i from 0 with string = (make-string (ceiling (log bits 96)))
+            do (multiple-value-bind (b m) (floor bits 96)
+                 (setf bits b (char string i)
+                       (code-char (if (= m 95) 10 (+ m 32))))
+                 (when (zerop b) (return-from eatblob (nreverse string))))))))
+(defun shitblob (blob &aux (bits 0))
+  (loop for c across blob for i = (- (char-code c) 32) do
+       (unless (<= 0 i 94)
+         (if (= i -22) (setf i 95) (error "unshittable: ~@C" c)))
+       (setf bits (+ i (* bits 96))) finally
+       (return (loop until (zerop bits) for b = (ldb (byte 11 0) bits)
+                  do (setf bits (ash bits -11)) collect (nth b *words*)))))
