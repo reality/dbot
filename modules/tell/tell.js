@@ -39,7 +39,25 @@ var tell = function(dbot) {
           event.reply('no idea who that is mate');
         }
       });
-    } 
+    },
+    'ctells': function(event) { // from mokay: i disgust me too
+      //console.log(tells);
+      var found_tells = false;
+      for(var attr in tells){
+        for (var attr2 in tells[attr]){
+          if (tells[attr][attr2]["from"] == event.user){
+            found_tells = true;
+            tells[attr].splice(attr2, 1);
+            //console.log(tells);
+          }
+        }
+      }
+      if (found_tells == false){
+        event.reply(event.user + ": no tells found for your username");
+      } else if (found_tells == true){
+         event.reply(event.user + ": all tells removed from your username");
+      }
+    }
   }
   this.commands.tell.regex = [/tell ([^ ]+) (.+)/, 3];
 
