@@ -4,18 +4,15 @@
  * the channel. Also allows admins to run un-sandboxed Javascript code with
  * access to the DepressionBot instance memory.
  */
-var vm = require('vm');
-var sbox = require('sandbox');
+var VM = require('vm2').VM;
 
 var js = function(dbot) {
     var commands = {
         // Run JS code sandboxed, return result to channel.
         '~js': function(event) {
             try {
-                var s = new sbox();
-                s.run(event.input[1], function(output) {
-                    event.reply(output.result);
-                }.bind(this));
+                var s = new VM({timeout: 1000, sandbox: {}});
+                event.reply(s.run(code));
             } catch(err) {}
         },
 
