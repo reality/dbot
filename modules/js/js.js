@@ -12,8 +12,8 @@ var js = function(dbot) {
         '~js': function(event) {
             try {
                 var s = new VM({timeout: 1000, sandbox: {}});
-                event.reply(s.run(code));
-            } catch(err) {}
+                event.reply(s.run(event.input[1]));                                                                                                                                                                                                                           
+            } catch(err) { event.reply(err); }
         },
 
         // Run JS code un-sandboxed, with access to DBot memory (admin-only).
