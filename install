@@ -14,7 +14,7 @@ if [[ $? -gt 0 ]]; then
     exit 1
 fi
 
-npm install googlemaps humanize feedparser node-units tvdb method-override 500px process async wordnik node-uuid underscore request request-promise-native sandbox express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
+npm install googlemaps humanize feedparser node-units tvdb method-override 500px process async wordnik node-uuid underscore request request-promise-native vm2 express moment-timezone moment jade databank databank-redis ent passport passport-local password-hash connect-flash 
 
 cd public/
 wget https://github.com/twbs/bootstrap/releases/download/v3.3.2/bootstrap-3.3.2-dist.zip
