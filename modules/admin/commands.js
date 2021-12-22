@@ -41,6 +41,16 @@ var commands = function(dbot) {
             dbot.instance.mode(event, channel, ' +o ' + event.user);
         },
 
+        // Op via OperServ in order to work with channels dbot is not joined to, or joined to without having +o itself
+        '~forceopme': function(event) {
+            var channel = event.params[1];
+
+            if(!_.has(event.allChannels, channel)) {
+                channel = event.channel.name;
+            }
+            dbot.say('tripsit', 'OperServ', ' MODE ' + channel + ' +o ' + event.user);
+        },
+
         // Do a git pull and reload
         '~greload': function(event) {
             exec("git pull", function (error, stdout, stderr) {
@@ -229,8 +239,32 @@ var commands = function(dbot) {
             }
         },
 
+        '~rmconfig': function(event) {
+            var configPath = event.input[1],
+                rmOption = event.input[2];
+
+            if(!_.include(noChangeConfig, configPath)) {
+                this.internalAPI.getCurrentConfig(configPath, function(config) {
+                    if(config !== null) {
+                        if(_.isArray(config)) {
+                            event.reply(configPath + ": " + config + " - " + rmOption);
+                            config = _.without(config, rmOption)
+                            this.internalAPI.setConfig(configPath, config, function(err) {});
+                        } else {
+                            event.reply(dbot.t("config_array", { "alternate": "nope" }));
+                        }
+                    } else {
+                        event.reply(dbot.t("no_config_key", { 'path': configPath }));
+                    }
+                }.bind(this));
+            } else {
+                event.reply(dbot.t("config_lock"));
+            }
+        },
+
         '~showconfig': function(event) {
             var configPath = event.params[1];
+            if(configPath.indexOf('servers') != -1) { return false; }
             if(configPath) {
                 this.internalAPI.getCurrentConfig(configPath, function(config) {
                     if(config !== null) {
@@ -294,13 +328,17 @@ var commands = function(dbot) {
         command.access = 'admin'; 
     });
 
-    commands['~showconfig'].access = 'moderator';
-    commands['~join'].access = 'moderator';
-    commands['~part'].access = 'moderator';
+    commands['~showconfig'].access = 'admin';
+    commands['~join'].access = 'power_user';
+    commands['~part'].access = 'power_user';
     commands['~opme'].access = 'moderator';
-    commands['~say'].access = 'moderator';
+    commands['~forceopme'].access = 'power_user';
+    commands['~say'].access = 'power_user';
+    commands['~pushconfig'].access = 'moderator';
+    commands['~rmconfig'].access = 'moderator';
 
     commands['~pushconfig'].regex = [/pushconfig ([^ ]+) ([^ ]+)/, 3];
+    commands['~rmconfig'].regex = [/rmconfig ([^ ]+) ([^ ]+)/, 3];
     commands['~setconfig'].regex = [/setconfig ([^ ]+) ([^ ]+)/, 3];
 
     return commands;
