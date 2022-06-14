@@ -98,11 +98,20 @@ var words = function(dbot) {
                 }
             });
         },
-        
-        '~jimble': function(event) { 
-            event.reply(event.params[1].split('').sort(function() { 
-                return (Math.round(Math.random()) - 0.5);
-            }).join(''));  
+
+        '~jimble': function(event) {
+            var word = event.params[1].split('');
+            var used = [];
+            var jimbled = new Array(word.length);
+            for (var i = 0; i < word.length; i++) {
+                do {
+                    rnd = Math.floor(Math.random()*word.length);
+                } while (used.indexOf(rnd) != -1);
+
+                jimbled[i] = word[rnd];
+                used.push(rnd);
+            }
+            event.reply(jimbled.join(''));
         },
 
         '~merge': function(event) {
