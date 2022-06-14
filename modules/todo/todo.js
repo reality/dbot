@@ -52,10 +52,16 @@ var todo = function(dbot) {
                 evt.reply(dbot.t('empty-list', {'user': evt.user}));
             } else {
                 evt.reply('[' + evt.user + ']:');
-                for (let i = 0; i < myTodos.length; i++) {
+                var i = 0;
+
+                function loop() {
                     var todo = myTodos[i];
-                    evt.reply((i+1) + ': ' + todo);
+                    evt.reply((i + 1) + ': ' + todo);
+                    i = i + 1;
+                    if (i < myTodos.length) setTimeout(loop, 1000);
                 }
+
+                loop();
             }
         },
 
