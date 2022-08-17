@@ -1,6 +1,6 @@
 [submodule "jsbot"]
     path = jsbot
-    url = git://github.com/reality/jsbot.git
+    url = https://github.com/reality/jsbot.git
 [submodule "modules/github"]
     path = modules/github
-    url = git://github.com/zuzak/dbot-github.git
+    url = https://github.com/zuzak/dbot-github.git
